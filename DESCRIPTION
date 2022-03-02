@@ -1,6 +1,6 @@
 Package: nesttemplate
 Title: `pkgdown` template for NEST packages
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: 
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre"))
 Description: This is a private template for use by core NEST packages.
