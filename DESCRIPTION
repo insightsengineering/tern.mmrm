@@ -1,4 +1,4 @@
-Package: nesttemplate
+Package: tern.mmrm
 Title: `pkgdown` template for NEST packages
 Version: 0.0.0.9002
 Authors@R: 
@@ -9,9 +9,49 @@ License: MIT + file LICENSE
 URL: https://github.com/insightsengineering/nesttemplate,
     https://insightsengineering.github.io/nesttemplate/
 BugReports: https://github.com/insightsengineering/nesttemplate/issues
-Suggests: 
+Depends:
+    R (>= 3.6),
+    rtables (>= 0.4.1),
+    tern (>= 0.7.6)
+Imports:
+    assertthat,
+    broom,
+    car,
+    checkmate,
+    dfoptim,
+    dplyr,
+    emmeans (>= 1.4.5),
+    forcats,
+    ggplot2,
+    grDevices,
+    grid,
+    gridExtra,
+    gtable,
+    labeling,
+    lme4 (>= 1.1-21),
+    lmerTest (>= 3.1-1),
+    magrittr,
+    methods,
+    optimx,
+    parallel,
+    purrr,
+    rlang,
+    scales,
+    stats,
+    stringr,
+    tibble,
+    tidyr,
+    utils,
+    viridisLite
+Suggests:
     knitr,
-    rmarkdown
+    lattice,
+    Matrix,
+    rmarkdown,
+    scda (>= 0.1.2),
+    scda.2021 (>= 0.1.2),
+    scda.2022,
+    testthat (>= 2.0)
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
