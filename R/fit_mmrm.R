@@ -73,7 +73,7 @@ check_mmrm_vars <- function(vars,
 
   if (is_specified("arm")) {
     arm_values <- data_complete_regressors[[vars$arm]]
-    assertthat::assert_that(is_df_with_nlevels_factor(
+    assertthat::assert_that(tern::is_df_with_nlevels_factor(
       data_complete_regressors,
       variable = vars$arm,
       n_levels = 2,
@@ -91,7 +91,7 @@ check_mmrm_vars <- function(vars,
 
   if (is_specified("arm")) {
     # Check all arms will still be present after NA filtering.
-    assertthat::assert_that(is_df_with_nlevels_factor(
+    assertthat::assert_that(tern::is_df_with_nlevels_factor(
       data_complete,
       variable = vars$arm,
       n_levels = nlevels(arm_values),
@@ -145,15 +145,14 @@ build_mmrm_formula <- function(vars,
     )
   }
 
-  random_effects_part <- cor_struct %>%
-    switch(
-      "unstructured" = "(0 + visit_var | id_var)",
-      "random-quadratic" = "(stats::poly(as.numeric(visit_var), df=2) | id_var)",
-      "random-slope" = "(as.numeric(visit_var) | id_var)",
-      "compound-symmetry" = "(1 | id_var)"
-    ) %>%
-    gsub("visit_var", vars$visit, x = .) %>% # nolint
-    gsub("id_var", vars$id, x = .) # nolint
+  random_effects_part <- switch(cor_struct,
+    "unstructured" = "(0 + visit_var | id_var)",
+    "random-quadratic" = "(stats::poly(as.numeric(visit_var), df=2) | id_var)",
+    "random-slope" = "(as.numeric(visit_var) | id_var)",
+    "compound-symmetry" = "(1 | id_var)"
+  ) %>%
+    gsub(pattern = "visit_var", replacement = vars$visit) %>%
+    gsub(pattern = "id_var", replacement = vars$id)
 
   rhs_formula <- paste(
     arm_visit_part,
@@ -622,7 +621,7 @@ get_mmrm_lsmeans <- function(fit,
 #' @param data a \code{data.frame} with all the variables specified in
 #'   \code{vars}. Records with missing values in any independent variables
 #'   will be excluded.
-#' @inheritParams argument_convention
+#' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
 #' @param weights_emmeans argument from [emmeans::emmeans()], "proportional" by default.
@@ -730,7 +729,7 @@ fit_mmrm <- function(vars = list(
                      parallel = FALSE) {
   labels <- check_mmrm_vars(vars, data)
   assertthat::assert_that(
-    is_proportion(conf_level),
+    tern::is_proportion(conf_level),
     assertthat::is.flag(parallel)
   )
   formula <- build_mmrm_formula(vars, cor_struct)

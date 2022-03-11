@@ -32,6 +32,8 @@ Note that the main effects and interaction of \code{arm} and \code{visit} are by
 \code{vars}. Records with missing values in any independent variables
 will be excluded.}
 
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
 \item{cor_struct}{a string specifying the correlation structure, defaults to
 \code{"unstructured"}. See the details.}
 

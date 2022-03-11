@@ -79,7 +79,7 @@ g_mmrm_diagnostic <- function(object,
   result <- if (type == "fit-residual") {
     amended_data_smooth <- suppressWarnings(tryCatch(
       expr = { # nolint
-        get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
+        tern::get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
       },
       error = function(msg) {
         message(
@@ -133,7 +133,7 @@ g_mmrm_diagnostic <- function(object,
         res[[vars$visit]] <- data[[vars$visit]] # Note that these are all the same.
         res
       }) %>%
-      do.call(rbind, .)
+      do.call(rbind, .data)
     tmp <- ggplot2::ggplot(plot_data, ggplot2::aes_string(x = "x", y = "y")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::xlab("Standard normal quantiles") +

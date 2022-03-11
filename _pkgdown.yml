@@ -1,5 +1,54 @@
 ---
-url: https://insightsengineering.github.io/nesttemplate/
+url: https://insightsengineering.github.io/tern.mmrm/
 
 template:
-  package: nesttemplate
+  params:
+    bootswatch: cerulean
+    ganalytics: "UA-125641273-1"
+
+navbar:
+  right:
+    - icon: fa-github
+      href: https://github.com/insightsengineering/tern.mmrm
+
+reference:
+  - title: Statistics Functions
+    desc: Statistics functions should do the computation of the numbers that are tabulated later.
+          In order to separate computation from formatting, they should not take care of `rcell` type
+          formatting themselves.
+    contents:
+      - s_mmrm_lsmeans
+      - s_mmrm_lsmeans_single
+
+  - title: Formatted Analysis functions
+    desc: These have the same arguments as the corresponding statistics functions, and can be further
+          customized by calling `rtables::make_afun()` on them. They are used as `afun` in
+          `rtables::analyze()`.
+    contents:
+       - a_mmrm_lsmeans
+       - a_mmrm_lsmeans_single
+
+  - title: Analyze Functions
+    desc: Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates
+          the table.
+    contents:
+       - summarize_lsmeans
+
+  - title: Analysis Helper Functions
+    desc: these functions are useful to help definining the analysis
+    contents:
+      - h_mmrm_cov
+      - h_mmrm_diagnostic
+      - h_mmrm_fixed
+
+  - title: Model Specific Functions
+    desc: these functions help with fitting or extracting results from specific models
+    contents:
+      - as.rtable.mmrm
+      - fit_mmrm
+      - tidy.mmrm
+
+  - title: Graphs
+    desc: Graphs
+    contents:
+      - starts_with("g_mmrm")

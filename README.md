@@ -1,25 +1,20 @@
-# nesttemplate
+# tern.mmrm
 
 ## Overview
 
-`nesttemplate` provides a custom [`pkgdown`](https://pkgdown.r-lib.org) template for NEST packages.
-Please don’t use it for your own package.
+`tern.mmrm` provides interface for mixed model repeated measures (MMRM) within `tern` framework. Please refer to documentation of `fit_mmrm()` to see minimal example.
 
-In order to take full advantage of that template you would need to use `pkgdown` >= 2.0.0.
+## Installation
 
-## Templates
+This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
 
-Please ensure that the `_pkgdown.yml` file contains:
+```r
+Sys.setenv(GITHUB_PAT = "your_access_token_here")
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("insightsengineering/tern.mmrm@*release", dependencies = FALSE)
+```
 
-    template:
-        package: nesttemplate
+You might need to manually install all of the package dependencies before installing this package as without
+the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
-## Example sites
-
-- [`tern`](https://insightsengineering.github.io/tern/)
-
-- [`teal`](https://insightsengineering.github.io/teal/)
-
-- [`teal.modules.general`](https://insightsengineering.github.io/teal.modules.general/)
-
-- [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/)
+In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.

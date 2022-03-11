@@ -430,10 +430,10 @@ testthat::test_that("s_mmrm_lsmeans works as expected when not in reference colu
   expected <- list(
     n = 17L,
     adj_mean_se = c(51.1925843621987, 1.88904859234177),
-    adj_mean_ci = with_label(c(47.4579079047326, 54.9272608196649), label = "95% CI"),
+    adj_mean_ci = tern::with_label(c(47.4579079047326, 54.9272608196649), label = "95% CI"),
     diff_mean_se = c(1.1682418182127, 3.00637183592203),
-    diff_mean_ci = with_label(c(-4.77546443092749, 7.11194806735289), label = "95% CI"),
-    change = with_label(-0.0233534667084426, label = "Relative Reduction (%)"),
+    diff_mean_ci = tern::with_label(c(-4.77546443092749, 7.11194806735289), label = "95% CI"),
+    change = tern::with_label(-0.0233534667084426, label = "Relative Reduction (%)"),
     p_value = 0.698170225099465
   )
   testthat::expect_equal(result, expected, tolerance = 0.001)
@@ -448,10 +448,10 @@ testthat::test_that("s_mmrm_lsmeans works as expected when in reference column",
   expected <- list(
     n = 11L,
     adj_mean_se = c(46.3107108312587, 2.31529223374449),
-    adj_mean_ci = with_label(c(41.7359227134741, 50.8854989490432), label = "95% CI"),
+    adj_mean_ci = tern::with_label(c(41.7359227134741, 50.8854989490432), label = "95% CI"),
     diff_mean_se = character(0),
-    diff_mean_ci = with_label(character(0), label = "95% CI"),
-    change = with_label(character(0), label = "Relative Reduction (%)"),
+    diff_mean_ci = tern::with_label(character(0), label = "95% CI"),
+    change = tern::with_label(character(0), label = "Relative Reduction (%)"),
     p_value = character(0)
   )
   testthat::expect_equal(result, expected, tolerance = 0.001)
@@ -466,7 +466,7 @@ testthat::test_that("s_mmrm_lsmeans_single works as expected", {
   expected <- list(
     n = 41L,
     adj_mean_se = c(48.703420, 1.180417),
-    adj_mean_ci = with_label(c(46.37198, 51.03486), label = "95% CI")
+    adj_mean_ci = tern::with_label(c(46.37198, 51.03486), label = "95% CI")
   )
   testthat::expect_equal(result, expected, tolerance = 0.001)
 })

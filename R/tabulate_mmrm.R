@@ -7,6 +7,10 @@
 #'
 NULL
 
+#' @importFrom tern as.rtable
+#' @export
+tern::as.rtable
+
 #' @describeIn tabulate_mmrm Produce simple MMRM tables via the generic [as.rtable()].
 #'
 #' @param x (`mmrm`)\cr the original MMRM fit object.
@@ -116,15 +120,18 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
   build_table(lyt, df)
 }
 
+#' @importFrom generics tidy
+#' @export
+generics::tidy
+
 #' @describeIn tabulate_mmrm Helper method (for [broom::tidy()]) to prepare a data frame from an
 #'   `mmrm` object containing the LS means and contrasts.
 #' @method tidy mmrm
 #' @export
 #' @examples
-#' library(broom)
-#' df <- tidy(result)
-#' df_no_arm <- tidy(result_no_arm)
-tidy.mmrm <- function(x) { # nolint
+#' df <- broom::tidy(result)
+#' df_no_arm <- broom::tidy(result_no_arm)
+tidy.mmrm <- function(x, ...) { # nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {
@@ -149,7 +156,8 @@ tidy.mmrm <- function(x) { # nolint
 
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
 #'   data frame.
-#' @inheritParams argument_convention
+#' @param df (`data frame`)\cr data set containing all analysis variables.
+#' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param show_relative should the "reduction" (`control - treatment`, default) or the "increase"
 #'   (`treatment - control`) be shown for the relative change from baseline?
 #' @export
@@ -161,12 +169,12 @@ s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "incr
   list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
-    adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level)),
+    adj_mean_ci = tern::with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level)),
     diff_mean_se = if_not_ref(c(df$estimate_contr, df$se_contr)),
-    diff_mean_ci = with_label(if_not_ref(c(df$lower_cl_contr, df$upper_cl_contr)), f_conf_level(df$conf_level)),
+    diff_mean_ci = tern::with_label(if_not_ref(c(df$lower_cl_contr, df$upper_cl_contr)), f_conf_level(df$conf_level)),
     change = switch(show_relative,
-      reduction = with_label(if_not_ref(df$relative_reduc), "Relative Reduction (%)"),
-      increase = with_label(if_not_ref(-df$relative_reduc), "Relative Increase (%)")
+      reduction = tern::with_label(if_not_ref(df$relative_reduc), "Relative Reduction (%)"),
+      increase = tern::with_label(if_not_ref(-df$relative_reduc), "Relative Increase (%)")
     ),
     p_value = if_not_ref(df$p_value)
   )
@@ -203,7 +211,6 @@ a_mmrm_lsmeans <- make_afun(
 
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
 #' data frame when `ARM` is not considered in the model.
-#' @inheritParams argument_convention
 #' @export
 #' @examples
 #' s_mmrm_lsmeans_single(df_no_arm[4, ])
@@ -211,7 +218,7 @@ s_mmrm_lsmeans_single <- function(df) {
   list(
     n = df$n,
     adj_mean_se = c(df$estimate_est, df$se_est),
-    adj_mean_ci = with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
+    adj_mean_ci = tern::with_label(c(df$lower_cl_est, df$upper_cl_est), f_conf_level(df$conf_level))
   )
 }
 
@@ -236,7 +243,13 @@ a_mmrm_lsmeans_single <- make_afun(
 )
 
 #' @describeIn tabulate_mmrm Analyze function for tabulating LS means estimates from tidied `mmrm` results.
-#' @inheritParams argument_convention
+#' @param lyt (`layout`)\cr input layout where analyses will be added to.
+#' @param table_names (`character`)\cr this can be customized in case that the same `vars` are analyzed multiple times,
+#'   to avoid warnings from `rtables`.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#' @param .formats (named `character` or `list`)\cr formats for the statistics.
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels.
+#' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @export
 #' @examples
 #'

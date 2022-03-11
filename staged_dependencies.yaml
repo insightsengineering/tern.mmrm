@@ -1,0 +1,17 @@
+current_repo:
+  repo: insightsengineering/tern.mmrm
+  host: https://github.com
+upstream_repos:
+  insightsengineering/tern:
+    repo: insightsengineering/tern
+    host: https://github.com
+  insightsengineering/scda:
+    repo: insightsengineering/scda
+    host: https://github.com
+  insightsengineering/scda.2022:
+    repo: insightsengineering/scda.2022
+    host: https://github.com
+  Roche/rtables:
+    repo: Roche/rtables
+    host: https://github.com
+downstream_repos:

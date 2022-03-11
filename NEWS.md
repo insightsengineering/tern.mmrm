@@ -1,3 +1,3 @@
-# nesttemplate 0.0.0.9002
+# tern.mmrm 0.0.0.9002
 
 * Initialize the package.

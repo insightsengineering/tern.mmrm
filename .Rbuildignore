@@ -1,7 +1,12 @@
-^pkgdown$
-^README\.Rmd$
-^docs$
-^_pkgdown\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
 ^\.github$
+README.*
+man-roxygen/*
+^\.lintr$
+^\.pre-commit-config\.yaml$
+^staged_dependencies\.yaml$
+^LICENSE\.md$
+^\.gitlab-ci\.yml$

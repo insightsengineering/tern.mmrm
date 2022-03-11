@@ -22,7 +22,7 @@ h_mmrm_cov(x, format = "xx.xxxx")
 
 h_mmrm_diagnostic(x, format = "xx.xxxx")
 
-\method{tidy}{mmrm}(x)
+\method{tidy}{mmrm}(x, ...)
 
 s_mmrm_lsmeans(df, .in_ref_col, show_relative = c("reduction", "increase"))
 
@@ -52,11 +52,28 @@ summarize_lsmeans(
 
 \item{format}{(\code{string})\cr format for the numbers in the table.}
 
+\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
 \item{show_relative}{should the "reduction" (\code{control - treatment}, default) or the "increase"
 (\code{treatment - control}) be shown for the relative change from baseline?}
 
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
 \item{arms}{(\code{flag})\cr  should treatment variable be considered when using
 \code{summarize_lsmeans} layout generating function.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
 \value{
 \code{\link[=as.rtable.mmrm]{as.rtable.mmrm()}} returns the fixed effects, covariance estimate or
@@ -140,9 +157,8 @@ result_no_arm <- fit_mmrm(
   parallel = TRUE
 )
 as.rtable(result_no_arm, type = "cov", format = "xx.x")
-library(broom)
-df <- tidy(result)
-df_no_arm <- tidy(result_no_arm)
+df <- broom::tidy(result)
+df_no_arm <- broom::tidy(result_no_arm)
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 s_mmrm_lsmeans_single(df_no_arm[4, ])
 

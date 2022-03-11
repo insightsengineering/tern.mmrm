@@ -21,6 +21,8 @@ in \code{data}:
 }
 Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
 \item{weights}{(\code{string})\cr type of weights to be used for the LS means,
 see \code{\link[emmeans:emmeans]{emmeans::emmeans()}} for details.}
 }
