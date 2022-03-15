@@ -15,3 +15,6 @@ upstream_repos:
     repo: Roche/rtables
     host: https://github.com
 downstream_repos:
+  insightsengineering/teal.modules.clinical:
+    repo: insightsengineering/teal.modules.clinical
+    host: https://github.com

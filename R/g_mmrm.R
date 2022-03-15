@@ -133,7 +133,7 @@ g_mmrm_diagnostic <- function(object,
         res[[vars$visit]] <- data[[vars$visit]] # Note that these are all the same.
         res
       }) %>%
-      do.call(rbind, .data)
+      do.call(what = rbind)
     tmp <- ggplot2::ggplot(plot_data, ggplot2::aes_string(x = "x", y = "y")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::xlab("Standard normal quantiles") +
