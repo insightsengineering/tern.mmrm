@@ -11,6 +11,9 @@ upstream_repos:
   insightsengineering/scda.2022:
     repo: insightsengineering/scda.2022
     host: https://github.com
+  insightsengineering/formatters:
+    repo: insightsengineering/formatters
+    host: https://github.com
   Roche/rtables:
     repo: Roche/rtables
     host: https://github.com
