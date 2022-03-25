@@ -1,3 +1,3 @@
 # tern.mmrm 0.0.0.9002
 
-* Initialize the package.
+* Starting this separate package by moving out MMRM functionality from `tern`.

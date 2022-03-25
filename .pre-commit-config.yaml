@@ -15,26 +15,28 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
-          - checkmate
-          - digest
+          - assertthat
+          - dfoptim
+          - generics
           - dplyr
+          - emmeans
           - ggplot2
-          - glue
-          - grDevices
-          - lifecycle
-          - logger
+          - lme4
+          - lmerTest
           - magrittr
-          - methods
-          - bioc::MultiAssayExperiment
-          - R6
+          - optimx
+          - parallel
+          - purrr
           - rlang
           - rtables
-          - shinyjs
-          - shinyWidgets
           - stats
-          - bioc::SummarizedExperiment
-          - utils
-          - yaml
+          - tibble
+          - broom
+          - knitr
+          - Matrix
+          - rmarkdown
+          - testthat
+      - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
         exclude: >
@@ -68,4 +70,73 @@ repos:
           (.*/|)WORDLIST|
           \.github/.*\.yaml|
           data/.*
+          tests/testthat/_snaps/.*|
           )$
+      - id: lintr
+        exclude: >
+          (?x)^(
+          design/.*
+          )$
+        additional_dependencies:
+          - assertthat
+          - dfoptim
+          - generics
+          - dplyr
+          - emmeans
+          - ggplot2
+          - lme4
+          - lmerTest
+          - magrittr
+          - optimx
+          - parallel
+          - purrr
+          - rlang
+          - rtables
+          - stats
+          - tibble
+          - broom
+          - knitr
+          - Matrix
+          - rmarkdown
+          - testthat
+      - id: readme-rmd-rendered
+      - id: parsable-R
+        exclude: >
+          (?x)^(
+          design/.*
+          )$
+      - id: no-browser-statement
+      - id: deps-in-desc
+        exclude: >
+          (?x)^(
+          design/.*
+          )$
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=200"]
+      - id: end-of-file-fixer
+        exclude: >
+          (?x)^(
+          .*\.Rd|
+          tests/testthat/_snaps/.*
+          )$
+      - id: trailing-whitespace
+        exclude: >
+          (?x)^(
+          .*\.Rd|
+          tests/testthat/_snaps/.*
+          )$
+      - id: check-yaml
+      - id: no-commit-to-branch
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+  - repo: local
+    hooks:
+      - id: forbid-to-commit
+        name: Don't commit common R artifacts
+        entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
+        language: fail
+        files: '\.Rhistory|\.RData|\.Rds|\.rds$'
+        # `exclude: <regex>` to allow committing specific files

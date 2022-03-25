@@ -1,8 +1,14 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
 Version: 0.0.0.9002
-Authors@R: 
-    person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("NEST", email = "basel.nestcicd@roche.com", role = c("aut", "cre")),
+    person("Roche", role = c("cph", "fnd")),
+    person("Daniel", "Sabanes Bove", email = "daniel.sabanes_bove@roche.com", role = "aut"),
+    person("Godwin", "Yung", email = "yungg@gene.com", role = "aut"),
+    person("Francois", "Collin", role = "aut"),
+    person("Jana", "Stoilova", email = "jana.stoilova@roche.com", role = "aut")
+  )
 Description: MMRM interface for tern package.
 License: MIT + file LICENSE
 URL: https://github.com/insightsengineering/tern.mmrm,
