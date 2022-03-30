@@ -7,7 +7,7 @@
 ## Background
 
 For details on why we and how we implemented the MMRM in R please see the following
-slidedeck:
+slides:
 [Implementing Mixed Models with Repeated Measures (MMRM) in R](https://drive.google.com/file/d/1sOZUAFOc004H4jO8vuUc_4HyYHEgu45b/view)
 
 For details on the methodology please see [Chapter 6](https://docs.roche.com/doc/statistics_clinical_trials/latest/mixed-effect-models-with-repeated-measures-mmrm.html) in the NEST Statistics book.
