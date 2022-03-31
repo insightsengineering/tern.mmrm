@@ -17,7 +17,7 @@ will be excluded.}
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
 is chosen and does not give a valid result, an error will occur.}
 
-\item{n_cores}{(\code{count})\cr number of cores to parallelize over the "automatic" optimizer search.}
+\item{n_cores}{(\code{count})\cr number of cores to use in parallel for the "automatic" optimizer search.}
 }
 \value{
 the \code{\link[lmerTest:lmerModLmerTest-class]{lmerTest::lmerModLmerTest}} object.

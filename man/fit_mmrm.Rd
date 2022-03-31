@@ -83,11 +83,11 @@ effect of the results. Therefore we report here the actually relevant number of 
 
 For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
 \describe{
-\item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-\item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+\item{nloptwrap_neldermead}{\code{NLopt} version of the Nelder-Mead algorithm (via package \code{nloptr})}
+\item{nloptwrap_bobyqa}{\code{NLopt} version of the BOBYQA algorithm (via package \code{nloptr})}
 \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
 \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-\item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+\item{neldermead}{\code{lme4} version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
 \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
 \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 }
