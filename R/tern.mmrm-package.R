@@ -1,6 +1,6 @@
-#' tern.mmrm Package
+#' `tern.mmrm` Package
 #'
-#' tern.mmrm is an analysis package to create tables, listings and graphs to analyze clinical trials data.
+#' `tern.mmrm` is an analysis package to create tables, listings and graphs to analyze clinical trials data.
 #'
 #' @keywords internal
 "_PACKAGE"

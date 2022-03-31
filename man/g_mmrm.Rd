@@ -2,9 +2,9 @@
 % Please edit documentation in R/g_mmrm.R
 \name{g_mmrm}
 \alias{g_mmrm}
-\title{MMRM Plots}
+\title{\code{MMRM} Plots}
 \description{
-This summarizes available plotting functions for MMRM.
+This summarizes available plotting functions for \code{MMRM}.
 }
 \seealso{
 \link{g_mmrm_diagnostic}, \link{g_mmrm_lsmeans}

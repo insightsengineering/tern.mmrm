@@ -1,6 +1,6 @@
-#' MMRM Variables Helper
+#' `MMRM` Variables Helper
 #'
-#' Helper function to check the MMRM variables.
+#' The helper function to check the `MMRM` variables.
 #'
 #' @inheritParams fit_mmrm
 #'

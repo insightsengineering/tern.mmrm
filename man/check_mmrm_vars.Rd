@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_mmrm.R
 \name{check_mmrm_vars}
 \alias{check_mmrm_vars}
-\title{MMRM Variables Helper}
+\title{\code{MMRM} Variables Helper}
 \usage{
 check_mmrm_vars(vars, data)
 }
@@ -31,6 +31,6 @@ specification) is included. If a label is not found, the variable name is
 instead used.
 }
 \description{
-Helper function to check the MMRM variables.
+The helper function to check the \code{MMRM} variables.
 }
 \keyword{internal}

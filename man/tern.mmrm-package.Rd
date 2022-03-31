@@ -4,9 +4,9 @@
 \name{tern.mmrm-package}
 \alias{tern.mmrm}
 \alias{tern.mmrm-package}
-\title{tern.mmrm Package}
+\title{\code{tern.mmrm} Package}
 \description{
-tern.mmrm is an analysis package to create tables, listings and graphs to analyze clinical trials data.
+\code{tern.mmrm} is an analysis package to create tables, listings and graphs to analyze clinical trials data.
 }
 \seealso{
 Useful links:

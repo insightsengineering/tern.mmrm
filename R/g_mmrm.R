@@ -1,6 +1,6 @@
-#' MMRM Plots
+#' `MMRM` Plots
 #'
-#' This summarizes available plotting functions for MMRM.
+#' This summarizes available plotting functions for `MMRM`.
 #'
 #' @seealso [g_mmrm_diagnostic], [g_mmrm_lsmeans]
 #' @name g_mmrm
@@ -10,18 +10,18 @@ NULL
 #'
 #' This function produces diagnostic plots.
 #'
-#' @param object (`mmrm`)\cr model result produced by \code{\link{fit_mmrm}}.
+#' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param type (`string`)\cr specifying the type of diagnostic plot to be produced:
 #'   \describe{
 #'     \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
 #'       structure in the residuals that might be captured by adding additional covariates to the model.}
 #'     \item{q-q-residual}{A Q-Q plot for the residuals (i.e. sorted standardized residuals vs. normal quantiles),
-#'       grouped by visits. Observations with an absolute standardized residual above \code{z_threshold} will be
+#'       grouped by visits. Observations with an absolute standardized residual above `z_threshold` will be
 #'       labeled.}
 #'   }
 #' @param z_threshold (`numeric`)\cr optional number indicating the normal quantile threshold for the Q-Q plot.
 #'
-#' @return a \code{ggplot2} plot
+#' @return a `ggplot2` plot
 #'
 #' @details Here we use marginal fitted values and residuals. That is, only the fixed effects are used
 #'   to estimate fitted values, and the difference of those fitted values vs. the observed data are
@@ -30,7 +30,7 @@ NULL
 #'
 #' @export
 #'
-#' @seealso \code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
+#' @seealso [g_mmrm_lsmeans()] for plotting the LS means and contrasts.
 #'
 #' @examples
 #' \dontrun{
@@ -163,11 +163,11 @@ g_mmrm_diagnostic <- function(object,
 
 #' Plot LS means for MMRM
 #'
-#' This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
-#' comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
+#' This function summarizes adjusted `lsmeans` and standard error, as well as conducts
+#' comparisons between groups' adjusted `lsmeans`, where the first level of the group
 #' is the reference level.
 #'
-#' @param object (`mmrm`)\cr model result produced by \code{\link{fit_mmrm}}.
+#' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
 #' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
 #' @param titles (`character`)\cr with elements \code{estimates} and \code{contrasts} containing the plot titles.

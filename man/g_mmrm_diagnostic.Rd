@@ -11,7 +11,7 @@ g_mmrm_diagnostic(
 )
 }
 \arguments{
-\item{object}{(\code{mmrm})\cr model result produced by \code{\link{fit_mmrm}}.}
+\item{object}{(\code{mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{type}{(\code{string})\cr specifying the type of diagnostic plot to be produced:
 \describe{
@@ -66,5 +66,5 @@ g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
 }
 }
 \seealso{
-\code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
+\code{\link[=g_mmrm_lsmeans]{g_mmrm_lsmeans()}} for plotting the LS means and contrasts.
 }

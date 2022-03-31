@@ -89,27 +89,27 @@ These functions can be used to produce tables from a fitted MMRM produced with
 
 \item \code{h_mmrm_fixed}: Helper function to produce fixed effects table.
 
-\item \code{h_mmrm_cov}: Helper function to produce covariance matrix table.
+\item \code{h_mmrm_cov}: Helper function to produce a covariance matrix table.
 
-\item \code{h_mmrm_diagnostic}: Helper function to produce diagnostic statistics table.
+\item \code{h_mmrm_diagnostic}: Helper function to produce a diagnostic statistics table.
 
-\item \code{tidy.mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
-\code{mmrm} object containing the LS means and contrasts.
+\item \code{tidy.mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a \code{data.frame} from an
+\code{mmrm} object containing the \code{LS} means and contrasts.
 
-\item \code{s_mmrm_lsmeans}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans}: Statistics function which is extracting estimates from a tidied \code{LS} means
 data frame.
 
 \item \code{a_mmrm_lsmeans}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied \code{LS} means
 data frame when \code{ARM} is not considered in the model.
 
 \item \code{a_mmrm_lsmeans_single}: Formatted Analysis function (when \code{ARM} is not considered in the model)
 which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_lsmeans}: Analyze function for tabulating LS means estimates from tidied \code{mmrm} results.
+\item \code{summarize_lsmeans}: Analyze function for tabulating \code{LS} means estimates from tidied \code{mmrm} results.
 }}
 
 \examples{

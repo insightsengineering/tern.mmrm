@@ -2,7 +2,8 @@
 
 ## Overview
 
-`tern.mmrm` provides interface for mixed model repeated measures (MMRM) within `tern` framework. Please refer to documentation of `fit_mmrm()` to see minimal example.
+`tern.mmrm` provides an interface for mixed model repeated measures (MMRM) within `tern` framework. Please refer to
+documentation of `fit_mmrm()` to see a minimal example.
 
 ## Installation
 
