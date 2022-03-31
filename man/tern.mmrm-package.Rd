@@ -20,5 +20,18 @@ Useful links:
 \author{
 \strong{Maintainer}: NEST \email{basel.nestcicd@roche.com}
 
+Authors:
+\itemize{
+  \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+  \item Godwin Yung \email{yungg@gene.com}
+  \item Francois Collin
+  \item Jana Stoilova \email{jana.stoilova@roche.com}
+}
+
+Other contributors:
+\itemize{
+  \item Roche [copyright holder, funder]
+}
+
 }
 \keyword{internal}
