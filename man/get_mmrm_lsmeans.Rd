@@ -2,14 +2,14 @@
 % Please edit documentation in R/fit_mmrm.R
 \name{get_mmrm_lsmeans}
 \alias{get_mmrm_lsmeans}
-\title{Extract LS Means from MMRM}
+\title{Extract Least-Squares (\code{LS}) Means from \code{MMRM}}
 \usage{
 get_mmrm_lsmeans(fit, vars, conf_level, weights)
 }
 \arguments{
 \item{fit}{result of \code{\link[=fit_lme4]{fit_lme4()}}.}
 
-\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
 \describe{
@@ -23,14 +23,14 @@ Note that the main effects and interaction of \code{arm} and \code{visit} are by
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{weights}{(\code{string})\cr type of weights to be used for the LS means,
+\item{weights}{(\code{string})\cr type of weights to be used for the \code{LS} means,
 see \code{\link[emmeans:emmeans]{emmeans::emmeans()}} for details.}
 }
 \value{
-A list with the LS means \code{estimates} and \code{contrasts} results between the treatment
+A list with the \code{LS} means \code{estimates} and \code{contrasts} results between the treatment
 and control arm groups at the different visits.
 }
 \description{
-Helper function to extract the LS means from an MMRM fit.
+Helper function to extract the \code{LS} means from an \code{MMRM} fit.
 }
 \keyword{internal}

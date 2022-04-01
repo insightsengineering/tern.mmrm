@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_mmrm.R
 \name{fit_mmrm}
 \alias{fit_mmrm}
-\title{MMRM Analysis}
+\title{\code{MMRM} Analysis}
 \usage{
 fit_mmrm(
   vars = list(response = "AVAL", covariates = c(), id = "USUBJID", arm = "ARM", visit =
@@ -16,7 +16,7 @@ fit_mmrm(
 )
 }
 \arguments{
-\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
 \describe{
@@ -61,7 +61,7 @@ contains the finally used optimization algorithm, which can be useful for refitt
 }
 }
 \description{
-Does the MMRM analysis. Multiple other functions can be called on the result to produce
+Does the \code{MMRM} analysis. Multiple other functions can be called on the result to produce
 tables and graphs.
 }
 \details{

@@ -6,7 +6,7 @@
 #' @name g_mmrm
 NULL
 
-#' Diagnostic Plots for MMRM
+#' Diagnostic Plots for `MMRM`
 #'
 #' This function produces diagnostic plots.
 #'
@@ -25,12 +25,12 @@ NULL
 #'
 #' @details Here we use marginal fitted values and residuals. That is, only the fixed effects are used
 #'   to estimate fitted values, and the difference of those fitted values vs. the observed data are
-#'   the residuals. This is in line with the MMRM philosophy where random effects are only used to
+#'   the residuals. This is in line with the `MMRM` philosophy where random effects are only used to
 #'   model the marginal residual distribution.
 #'
 #' @export
 #'
-#' @seealso [g_mmrm_lsmeans()] for plotting the LS means and contrasts.
+#' @seealso [g_mmrm_lsmeans()] for plotting the least-squares means and contrasts.
 #'
 #' @examples
 #' \dontrun{
@@ -170,13 +170,13 @@ g_mmrm_diagnostic <- function(object,
 #' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
 #' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
-#' @param titles (`character`)\cr with elements \code{estimates} and \code{contrasts} containing the plot titles.
+#' @param titles (`character`)\cr with elements `estimates` and `contrasts` containing the plot titles.
 #' @param ylab (`string`)\cr with the y axis label.
 #' @param width (`numeric`)\cr width of the error bars.
 #' @param show_pval (`flag`)\cr should the p-values for the differences of
 #' LS means vs. control be displayed (not default)?
 #'
-#' @return a \code{ggplot2} plot
+#' @return a `ggplot2` plot
 #'
 #' @details If variable labels are available in the original data set, then these are used. Otherwise
 #'   the variable names themselves are used for annotating the plot.

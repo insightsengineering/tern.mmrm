@@ -7,7 +7,7 @@
 check_mmrm_vars(vars, data)
 }
 \arguments{
-\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
 \describe{
