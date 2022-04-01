@@ -55,9 +55,11 @@ The following simple example illustrates the concept of LS means. Suppose we hav
 
 ```{r, echo=FALSE}
 library(knitr)
-output <- data.frame(A1 = c("100 (20)", "50 (30)"),
-                     B1 = c("90 (35)", "40 (15)"),
-                     "..." = c("", ""))
+output <- data.frame(
+  A1 = c("100 (20)", "50 (30)"),
+  B1 = c("90 (35)", "40 (15)"),
+  "..." = c("", "")
+)
 row.names(output) <- c("M", "F")
 kable(output, align = "c")
 ```
@@ -98,17 +100,17 @@ head(mmrm_test_data)
 Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting function `fit_mmrm` assumes unstructured correlation and proportional weights when calculating LS means.
 ```{r message=FALSE, results="hide"}
 mmrm_results <- fit_mmrm(
-    vars = list(
-      response = "FEV1",
-      covariates = c("RACE", "SEX", "FEV1_BL"),
-      id = "USUBJID",
-      arm = "ARMCD",
-      visit = "AVISIT"
-    ),
-    data = mmrm_test_data,
-    cor_struct = "unstructured",
-    weights_emmeans = "proportional"
-  )
+  vars = list(
+    response = "FEV1",
+    covariates = c("RACE", "SEX", "FEV1_BL"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = mmrm_test_data,
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional"
+)
 ```
 The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in FEV1 over placebo at all study visits.
 ```{r}
@@ -118,12 +120,12 @@ Other correlation structures and weighting schemes can be considered. For exampl
 ```{r, eval=F}
 fit_mmrm(
   vars = list(
-      response = "FEV1",
-      covariates = c("RACE", "SEX", "FEV1_BL"),
-      id = "USUBJID",
-      arm = "ARMCD",
-      visit = "AVISIT"
-    ),
+    response = "FEV1",
+    covariates = c("RACE", "SEX", "FEV1_BL"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
   data = mmrm_test_data,
   cor_struct = "compound-symmetry",
   weights_emmeans = "equal"
@@ -136,12 +138,16 @@ One can reproduce these results manually in R. For example, to fit the unstructu
 library(lme4)
 library(emmeans)
 
-fit <- lmer(formula = FEV1 ~ RACE + SEX + FEV1_BL + ARMCD * AVISIT + (0 + AVISIT | USUBJID),
-           data = mmrm_test_data,
-           control = lmerControl(check.nobs.vs.nRE = "ignore",
-                                 optimizer = "nloptwrap",
-                                 optCtrl = list(algorithm = "NLOPT_LN_BOBYQA")))
-emmeans::emmeans(fit, mode="satterthwaite", pairwise ~ ARMCD|AVISIT, weights = "proportional")
+fit <- lmer(
+  formula = FEV1 ~ RACE + SEX + FEV1_BL + ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  data = mmrm_test_data,
+  control = lmerControl(
+    check.nobs.vs.nRE = "ignore",
+    optimizer = "nloptwrap",
+    optCtrl = list(algorithm = "NLOPT_LN_BOBYQA")
+  )
+)
+emmeans::emmeans(fit, mode = "satterthwaite", pairwise ~ ARMCD | AVISIT, weights = "proportional")
 ```
 As mentioned in the previous section, although an unstructured model is technically over-parametrized under `lmer`'s required formulation, the marginal covariance as a whole is identifiable and we can fit the model by including the argument `check.nobs.vs.nRE = "ignore"` to suppress error messages.
 

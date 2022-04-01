@@ -26,5 +26,5 @@ NULL
 #'   \item{`SEX`}{sex}
 #'   \item{`FEV1_BL`}{FEV1 at baseline (%)}
 #'   \item{`FEV1`}{FEV1 at study visits}
-#'}
+#' }
 "mmrm_test_data"
