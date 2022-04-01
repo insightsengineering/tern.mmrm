@@ -1,6 +1,6 @@
-#' MMRM Variables Helper
+#' `MMRM` Variables Helper
 #'
-#' Helper function to check the MMRM variables.
+#' The helper function to check the `MMRM` variables.
 #'
 #' @inheritParams fit_mmrm
 #'
@@ -482,16 +482,16 @@ fit_lme4 <- function(formula,
   }
 }
 
-#' Extract LS Means from MMRM
+#' Extract Least-Squares (`LS`) Means from `MMRM`
 #'
-#' Helper function to extract the LS means from an MMRM fit.
+#' Helper function to extract the `LS` means from an `MMRM` fit.
 #'
 #' @param fit result of [fit_lme4()].
 #' @inheritParams fit_mmrm
-#' @param weights (`string`)\cr type of weights to be used for the LS means,
+#' @param weights (`string`)\cr type of weights to be used for the `LS` means,
 #'   see [emmeans::emmeans()] for details.
 #'
-#' @return A list with the LS means `estimates` and `contrasts` results between the treatment
+#' @return A list with the `LS` means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
 #' @keywords internal
@@ -602,12 +602,12 @@ get_mmrm_lsmeans <- function(fit,
   return(results)
 }
 
-#' MMRM Analysis
+#' `MMRM` Analysis
 #'
-#' Does the MMRM analysis. Multiple other functions can be called on the result to produce
+#' Does the `MMRM` analysis. Multiple other functions can be called on the result to produce
 #' tables and graphs.
 #'
-#' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the MMRM.
+#' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the `MMRM`.
 #'   The following elements need to be included as character vectors and match corresponding columns
 #'   in \code{data}:
 #'   \describe{
