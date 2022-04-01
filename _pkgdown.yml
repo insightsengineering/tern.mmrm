@@ -52,3 +52,9 @@ reference:
     desc: Graphs
     contents:
       - starts_with("g_mmrm")
+
+  - title: Example Data
+    desc: Example Data
+    contents:
+      - mmrm_test_data
+
