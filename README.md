@@ -10,8 +10,6 @@ For details on why we and how we implemented the MMRM in R please see the follow
 slides:
 [Implementing Mixed Models with Repeated Measures (MMRM) in R](https://drive.google.com/file/d/1sOZUAFOc004H4jO8vuUc_4HyYHEgu45b/view)
 
-For details on the methodology please see [Chapter 6](https://docs.roche.com/doc/statistics_clinical_trials/latest/mixed-effect-models-with-repeated-measures-mmrm.html) in the NEST Statistics book.
-
 ## Installation
 
 This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
@@ -26,3 +24,5 @@ You might need to manually install all of the package dependencies before instal
 the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
 In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
+
+See package vignettes `browseVignettes(package = "tern.mmrm")` for usage of this package.
