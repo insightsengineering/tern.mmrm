@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
-Version: 0.0.0.9003.4
+Version: 0.0.0.9003.5
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
     person("Roche", role = c("cph", "fnd")),
