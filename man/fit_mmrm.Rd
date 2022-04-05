@@ -117,7 +117,6 @@ adqs_f <- adqs \%>\%
   )
 var_labels(adqs_f) <- var_labels(adqs)
 \dontrun{
-# sometimes results in failure to converge with 1 negative eigenvalue
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",
@@ -127,9 +126,8 @@ mmrm_results <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = adqs_f,
-  cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  optimizer = "nloptwrap_neldermead" # Only to speed up this example.
+  cor_struct = "random-quadratic",
+  weights_emmeans = "equal"
 )
 }
 
