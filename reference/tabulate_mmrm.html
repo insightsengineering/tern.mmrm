@@ -24,26 +24,20 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern.mmrm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
+  <a href="../articles/tern-mmrm.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern.mmrm" class="external-link">
     <span class="fa fa-github"></span>
@@ -59,13 +53,13 @@ Other releases
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tabulation of MMRM Results</h1>
+    <h1>Tabulation of <code>MMRM</code> Results</h1>
     <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern.mmrm/blob/HEAD/R/tabulate_mmrm.R" class="external-link"><code>R/tabulate_mmrm.R</code></a></small>
     <div class="hidden name"><code>tabulate_mmrm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions can be used to produce tables from a fitted MMRM produced with
+    <p>These functions can be used to produce tables from a fitted <code>MMRM</code> produced with
 <code><a href="fit_mmrm.html">fit_mmrm()</a></code>.</p>
     </div>
 
@@ -105,7 +99,7 @@ Other releases
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>(<code>mmrm</code>)<br> the original MMRM fit object.</p></dd>
+<dd><p>(<code>mmrm</code>)<br> the original <code>MMRM</code> fit object.</p></dd>
 <dt>type</dt>
 <dd><p>(<code>string</code>)<br> type of table which should be returned.</p></dd>
 <dt>...</dt>
@@ -144,22 +138,22 @@ diagnostic statistics tables.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>as.rtable.mmrm</code>: Produce simple MMRM tables via the generic <code><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable()</a></code>.</p></li>
+<ul><li><p><code>as.rtable.mmrm</code>: Produce simple <code>MMRM</code> tables via the generic <code><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable()</a></code>.</p></li>
 <li><p><code>h_mmrm_fixed</code>: Helper function to produce fixed effects table.</p></li>
-<li><p><code>h_mmrm_cov</code>: Helper function to produce covariance matrix table.</p></li>
-<li><p><code>h_mmrm_diagnostic</code>: Helper function to produce diagnostic statistics table.</p></li>
-<li><p><code>tidy.mmrm</code>: Helper method (for <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a data frame from an
-<code>mmrm</code> object containing the LS means and contrasts.</p></li>
-<li><p><code>s_mmrm_lsmeans</code>: Statistics function which is extracting estimates from a tidied LS means
+<li><p><code>h_mmrm_cov</code>: Helper function to produce a covariance matrix table.</p></li>
+<li><p><code>h_mmrm_diagnostic</code>: Helper function to produce a diagnostic statistics table.</p></li>
+<li><p><code>tidy.mmrm</code>: Helper method (for <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy()</a></code>) to prepare a <code>data.frame</code> from an
+<code>mmrm</code> object containing the least-squares means and contrasts.</p></li>
+<li><p><code>s_mmrm_lsmeans</code>: Statistics function which is extracting estimates from a tidied least-squares means
 data frame.</p></li>
 <li><p><code>a_mmrm_lsmeans</code>: Formatted Analysis function which can be further customized by calling
 <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-<li><p><code>s_mmrm_lsmeans_single</code>: Statistics function which is extracting estimates from a tidied LS means
+<li><p><code>s_mmrm_lsmeans_single</code>: Statistics function which is extracting estimates from a tidied least-squares means
 data frame when <code>ARM</code> is not considered in the model.</p></li>
 <li><p><code>a_mmrm_lsmeans_single</code>: Formatted Analysis function (when <code>ARM</code> is not considered in the model)
 which can be further customized by calling
 <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-<li><p><code>summarize_lsmeans</code>: Analyze function for tabulating LS means estimates from tidied <code>mmrm</code> results.</p></li>
+<li><p><code>summarize_lsmeans</code>: Analyze function for tabulating least-squares means estimates from tidied <code>mmrm</code> results.</p></li>
 </ul></div>
 
     <div id="ref-examples">

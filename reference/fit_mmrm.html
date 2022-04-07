@@ -24,26 +24,20 @@ tables and graphs."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tern.mmrm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
+  <a href="../articles/tern-mmrm.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/tern.mmrm" class="external-link">
     <span class="fa fa-github"></span>
@@ -59,13 +53,13 @@ Other releases
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>MMRM Analysis</h1>
+    <h1><code>MMRM</code> Analysis</h1>
     <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern.mmrm/blob/HEAD/R/fit_mmrm.R" class="external-link"><code>R/fit_mmrm.R</code></a></small>
     <div class="hidden name"><code>fit_mmrm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Does the MMRM analysis. Multiple other functions can be called on the result to produce
+    <p>Does the <code>MMRM</code> analysis. Multiple other functions can be called on the result to produce
 tables and graphs.</p>
     </div>
 
@@ -85,7 +79,7 @@ tables and graphs.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>vars</dt>
-<dd><p>(named <code>list</code> of <code>string</code> or <code>character</code>)<br> specifying the variables in the MMRM.
+<dd><p>(named <code>list</code> of <code>string</code> or <code>character</code>)<br> specifying the variables in the <code>MMRM</code>.
 The following elements need to be included as character vectors and match corresponding columns
 in <code>data</code>:</p><dl><dt>response</dt>
 <dd><p>the response variable</p></dd>
@@ -175,10 +169,10 @@ effect of the results. Therefore we report here the actually relevant number of 
 
 
 </dl><p>For the <code>optimizer</code>, the user can choose among the following alternatives to the recommended "automatic":</p><dl><dt>nloptwrap_neldermead</dt>
-<dd><p>NLopt version of the Nelder-Mead algorithm (via package <code>nloptr</code>)</p></dd>
+<dd><p><code>NLopt</code> version of the Nelder-Mead algorithm (via package <code>nloptr</code>)</p></dd>
 
 <dt>nloptwrap_bobyqa</dt>
-<dd><p>NLopt version of the BOBYQA algorithm (via package <code>nloptr</code>)</p></dd>
+<dd><p><code>NLopt</code> version of the BOBYQA algorithm (via package <code>nloptr</code>)</p></dd>
 
 <dt>bobyqa</dt>
 <dd><p>BOBYQA algorithm (via package <code>minqa</code>)</p></dd>
@@ -187,7 +181,7 @@ effect of the results. Therefore we report here the actually relevant number of 
 <dd><p>nlminb algorithm (wrapper for <code><a href="https://rdrr.io/r/stats/nlminb.html" class="external-link">nlminb</a>)</code></p></dd>
 
 <dt>neldermead</dt>
-<dd><p>lme4 version of the Nelder-Mead algorithm with box constraints (via package <code>lme4</code>)</p></dd>
+<dd><p><code>lme4</code> version of the Nelder-Mead algorithm with box constraints (via package <code>lme4</code>)</p></dd>
 
 <dt>nmkbw</dt>
 <dd><p>Nelder-Mead algorithm (via package <code>dfoptim</code>)</p></dd>
@@ -234,7 +228,6 @@ numerical precision.</p>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adqs_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/formatters/man/var_labels.html" class="external-link">var_labels</a></span><span class="op">(</span><span class="va">adqs</span><span class="op">)</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># sometimes results in failure to converge with 1 negative eigenvalue</span></span>
 <span class="r-in"><span class="va">mmrm_results</span> <span class="op">&lt;-</span> <span class="fu">fit_mmrm</span><span class="op">(</span></span>
 <span class="r-in">  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span class="r-in">    response <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
@@ -244,9 +237,8 @@ numerical precision.</p>
 <span class="r-in">    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span>
 <span class="r-in">  <span class="op">)</span>,</span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">adqs_f</span>,</span>
-<span class="r-in">  cor_struct <span class="op">=</span> <span class="st">"unstructured"</span>,</span>
-<span class="r-in">  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span>,</span>
-<span class="r-in">  optimizer <span class="op">=</span> <span class="st">"nloptwrap_neldermead"</span> <span class="co"># Only to speed up this example.</span></span>
+<span class="r-in">  cor_struct <span class="op">=</span> <span class="st">"random-quadratic"</span>,</span>
+<span class="r-in">  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
