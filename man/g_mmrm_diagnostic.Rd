@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_mmrm.R
 \name{g_mmrm_diagnostic}
 \alias{g_mmrm_diagnostic}
-\title{Diagnostic Plots for MMRM}
+\title{Diagnostic Plots for \code{MMRM}}
 \usage{
 g_mmrm_diagnostic(
   object,
@@ -11,7 +11,7 @@ g_mmrm_diagnostic(
 )
 }
 \arguments{
-\item{object}{(\code{mmrm})\cr model result produced by \code{\link{fit_mmrm}}.}
+\item{object}{(\code{mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{type}{(\code{string})\cr specifying the type of diagnostic plot to be produced:
 \describe{
@@ -33,7 +33,7 @@ This function produces diagnostic plots.
 \details{
 Here we use marginal fitted values and residuals. That is, only the fixed effects are used
 to estimate fitted values, and the difference of those fitted values vs. the observed data are
-the residuals. This is in line with the MMRM philosophy where random effects are only used to
+the residuals. This is in line with the \code{MMRM} philosophy where random effects are only used to
 model the marginal residual distribution.
 }
 \examples{
@@ -66,5 +66,5 @@ g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
 }
 }
 \seealso{
-\code{\link{g_mmrm_lsmeans}} for plotting the LS means and contrasts.
+\code{\link[=g_mmrm_lsmeans]{g_mmrm_lsmeans()}} for plotting the least-squares means and contrasts.
 }

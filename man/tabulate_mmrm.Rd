@@ -12,7 +12,7 @@
 \alias{s_mmrm_lsmeans_single}
 \alias{a_mmrm_lsmeans_single}
 \alias{summarize_lsmeans}
-\title{Tabulation of MMRM Results}
+\title{Tabulation of \code{MMRM} Results}
 \usage{
 \method{as.rtable}{mmrm}(x, type = c("fixed", "cov", "diagnostic"), ...)
 
@@ -44,7 +44,7 @@ summarize_lsmeans(
 )
 }
 \arguments{
-\item{x}{(\code{mmrm})\cr the original MMRM fit object.}
+\item{x}{(\code{mmrm})\cr the original \code{MMRM} fit object.}
 
 \item{type}{(\code{string})\cr type of table which should be returned.}
 
@@ -80,36 +80,36 @@ to avoid warnings from \code{rtables}.}
 diagnostic statistics tables.
 }
 \description{
-These functions can be used to produce tables from a fitted MMRM produced with
+These functions can be used to produce tables from a fitted \code{MMRM} produced with
 \code{\link[=fit_mmrm]{fit_mmrm()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{as.rtable.mmrm}: Produce simple MMRM tables via the generic \code{\link[=as.rtable]{as.rtable()}}.
+\item \code{as.rtable.mmrm}: Produce simple \code{MMRM} tables via the generic \code{\link[=as.rtable]{as.rtable()}}.
 
 \item \code{h_mmrm_fixed}: Helper function to produce fixed effects table.
 
-\item \code{h_mmrm_cov}: Helper function to produce covariance matrix table.
+\item \code{h_mmrm_cov}: Helper function to produce a covariance matrix table.
 
-\item \code{h_mmrm_diagnostic}: Helper function to produce diagnostic statistics table.
+\item \code{h_mmrm_diagnostic}: Helper function to produce a diagnostic statistics table.
 
-\item \code{tidy.mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a data frame from an
-\code{mmrm} object containing the LS means and contrasts.
+\item \code{tidy.mmrm}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a \code{data.frame} from an
+\code{mmrm} object containing the least-squares means and contrasts.
 
-\item \code{s_mmrm_lsmeans}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans}: Statistics function which is extracting estimates from a tidied least-squares means
 data frame.
 
 \item \code{a_mmrm_lsmeans}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied LS means
+\item \code{s_mmrm_lsmeans_single}: Statistics function which is extracting estimates from a tidied least-squares means
 data frame when \code{ARM} is not considered in the model.
 
 \item \code{a_mmrm_lsmeans_single}: Formatted Analysis function (when \code{ARM} is not considered in the model)
 which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_lsmeans}: Analyze function for tabulating LS means estimates from tidied \code{mmrm} results.
+\item \code{summarize_lsmeans}: Analyze function for tabulating least-squares means estimates from tidied \code{mmrm} results.
 }}
 
 \examples{

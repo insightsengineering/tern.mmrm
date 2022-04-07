@@ -1,0 +1,216 @@
+---
+title: "Introduction to tern.mmrm"
+date: "2022-03-09"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Introduction to tern.mmrm}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+Mixed effect Models with Repeated Measures (MMRM) are often used as the primary analysis of continuous longitudinal endpoints in clinical trials. In this setting, an MMRM is a specific linear mixed effects model that includes as fixed effects the variables: treatment arm, categorical visit, treatment by visit interaction, and other covariates for adjustment (e.g. age, gender). The covariance structure of the residuals can take on different forms. Often, an unstructured (i.e. saturated parametrization) covariance matrix is assumed which can be represented by random effects in the mixed model. 
+
+All of this has been implemented in proprietary software such as SAS, whose PROC MIXED routine is generally considered the gold standard for mixed models. However, this does not allow the use of interactive web applications to explore the clinical study data in a flexible way. Therefore, we wanted to implement MMRM in R in a way which could easily be embedded into a `shiny` application. See the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/) for more details about using this code inside a `shiny` application.
+
+## Descriptive Statistics
+
+Descriptive statistics for a relevant analysis population (e.g. those patients with at least one post baseline visit) can be obtained by the functions described in Section \@ref(baseline-tables).
+
+## Methodology
+
+### Statistical model
+
+Under the linear mixed model (LMM) framework, an outcome vector ${\bf Y}$ is modeled as 
+$$\bf Y = X \boldsymbol \beta + Z b + {\boldsymbol \varepsilon}$$
+where $\bf X$ is the matrix for fixed effects, $\bf Z$ is the matrix for random effects, $\mathbf b \sim N(0, \mathbf D(\boldsymbol \theta))$, and ${\boldsymbol \varepsilon} \sim N(0, \mathbf R(\boldsymbol \theta))$. Letting $\mathbf V = \mathbf Z \mathbf D \mathbf Z^T + \mathbf R$, the marginal and conditional models are then given by $\mathbf Y \sim N(\bf X \boldsymbol \beta, V)$ and $\mathbf Y | \mathbf b \sim N(\bf X \boldsymbol \beta + Z b, R)$, respectively.
+
+An MMRM is a special case of a LMM such that $\bf Y$ is a collection of measurements made on a set of individuals over time, i.e. $\mathbf Y = ({\bf Y}_1^T, {\bf Y}_2^T, ...)^T$ where $\mathbf Y_i = \mathbf X_i \boldsymbol \beta + \mathbf Z_i \mathbf b_i + {\boldsymbol \varepsilon}_i$. In our context of clinical trials, individuals are patients identified by their unique subject `id`, measurements are of treatment `response`, and fixed effects include treatment `arm`, categorical `visit`, treatment by visit interaction, and potentially other `covariates` (e.g. age, gender).
+
+### Estimation
+
+The parameters $\boldsymbol \beta$, $\bf b$, and $\boldsymbol \theta$ can be estimated by maximizing the penalized and restricted maximum likelihoods. The average treatment response at each visit is often of particular interest. However, simply comparing predicted marginal responses $E(Y_{ij})$ averaged across treatment x visit groups will not account for potential imbalance in covariates. (Imbalance may occur even in randomized trials due to patients dying or dropping out over time.) For a more fair comparison, **least-squares (LS) mean**:
+
+1. establishes a reference grid where each cell represents a unique combination of the factor (covariate) levels,
+2. calculates the predicted marginal response for each cell, and then
+3. takes a weighted average of the predicted marginal responses.
+
+The following simple example illustrates the concept of LS means. Suppose we have a longitudinal clinical trial where three factors are considered: treatment (A and B), visit (1, 2, ...), and gender (M and F). The marginal predicted response (sample size) for each reference cell is as follows.
+
+```{r, echo=FALSE}
+library(knitr)
+output <- data.frame(
+  A1 = c("100 (20)", "50 (30)"),
+  B1 = c("90 (35)", "40 (15)"),
+  "..." = c("", "")
+)
+row.names(output) <- c("M", "F")
+kable(output, align = "c")
+```
+
+The average predicted responses for arms A and B at Visit 1 are $(100 \times 20 + 50 \times 30) / 50 = 70$ and $(90 \times 35 + 40 \times 15) / 50 = 75$, respectively. The overall mean is higher in arm B than in arm A even though the mean is lower within each gender category. This seeming contradiction is caused by the imbalance in the data. LS mean calculates the weighted average across cells of the same treatment and visit. In this example, this is equivalent to taking the weighted average over each column. One may assign *equal* weights to each cell, i.e. $0.5 \times 100 + 0.5 \times 50 = 75$ and $0.5 \times 90 + 0.5 \times 40 = 65$. Alternatively, one may assign weights *proportional* to the observed frequencies of the factor combinations, i.e. $0.55 \times 100 + 0.45 \times 50 = 77.5$ and $0.55 \times 90 + 0.45 \times 40 = 67.5$. In both cases, the LS mean of response is lower in arm B than in arm A. 
+
+LS means are calculated in `tern.mmrm` via the R package `emmeans`. Users have the option to weigh marginal predicted responses with either `equal` weights or `proportional` weights. Note that for proportional weights, the weights are calculated at each visit by taking into account the observed frequencies of factor combinations at that time. Therefore, even though covariate imbalance may vary over time, LS mean provides an adjusted analysis of treatment response at all visits.
+
+### Inference
+
+Performing inference on estimated parameters (e.g. calculating p-values) is less straightforward for MMRM. This is because the exact null distributions for parameter effects are unknown. SAS addresses this issue by utilizing Satterthwaite's method to approximate the adjusted degrees of freedom for $F$ and $t$ tests. `lme4` and `lmerTest` have also implemented Satterthwaite's method. Thus, by relying on these two R packages, `tern.mmrm` is able to replicate outputs from SAS.
+
+### Covariance structure
+Users of `tern.mmrm` have the following options for the covariance structure $\mathbf V_i$:
+
+- Unstructured: $$V_{ij} = \theta_{ij}$$
+- Random Intercept (i.e. compound symmetry with positive correlation): $$\mathbf Z_i = \mathbf 1,\ b_i \overset{iid} \sim N(0, \theta),\ \varepsilon_{ij} \overset{iid}{\sim} N(0, \sigma^2)$$ so that $$\mathbf V_i = \begin{bmatrix} \theta + \sigma^2 & \theta & \theta & \cdots \\ \theta & \theta + \sigma^2 & \theta & \cdots \\ \theta & \theta & \ddots & \cdots \\ \theta & \theta & \cdots & \theta + \sigma^2 \end{bmatrix} \mbox{ and } corr(Y_{ij}, Y_{ik}) = \frac{\theta}{\theta + \sigma^2} \mbox{ for } j \neq k$$
+- Random Slope: $$\mathbf Z_i = \begin{bmatrix} 1 & t_{i1} \\ 1 & t_{i2} \\ \vdots & \vdots \\ 1 & t_{in_i} \end{bmatrix},\ b_i \overset{iid} \sim N \left (0, \begin{bmatrix} \theta_{11} & \theta_{12} \\ \theta_{12} & \theta_{22} \end{bmatrix} \right ),\ \varepsilon_{ij} \overset{iid}{\sim} N(0, \sigma^2)$$
+- Random Quadratic: $$\mathbf Z_i = \begin{bmatrix} 1 & t_{i1} & t_{i1}^2 \\ 1 & t_{i2} & t_{i2}^2 \\ \vdots & \vdots \\ 1 & t_{in_i} & t_{in_i}^2 \end{bmatrix},\ b_i \overset{iid} \sim N \left (0, \begin{bmatrix} \theta_{11} & \theta_{12} & \theta_{13} \\ \theta_{12} & \theta_{22} & \theta_{23} \\ \theta_{13} & \theta_{23} & \theta_{33} \end{bmatrix} \right ),\ \varepsilon_{ij} \overset{iid}{\sim} N(0, \sigma^2)$$
+
+Note that some options available in SAS are not available in `tern.mmrm`. This is because the `lme4` package which `tern.mmrm` relies on has more restrictions regarding the type of covariance structure that can be considered. Specifically, `lme4` assumes $\mathbf D_i$ is unstructured and $\mathbf R_i = \sigma^2 \mathbf I$, so that $\mathbf V_i$ is specified only through the random design matrix $\mathbf Z_i$. This prevents us from implementing covariance structures that fall outside of this scope, e.g. AR(1) where $(\mathbf V_i)_{jk} = \sigma^2 \rho^{|j-k|}$ or Toeplitz where $(\mathbf V_i)_{jk}=\theta_{|j-k|}$. The only exception is the unstructured model; although specifying $\mathbf Z_i = \mathbf I_{n_i \times n_i}$, unstructured $\mathbf D_i$, and $\mathbf R_i = \sigma^2 \mathbf I$ results in an over-parametrized model, $\mathbf V_i$ as a whole is identifiable so that after suppressing some error messages, we can in fact fit a MMRM with unstructured covariance matrix (see next section).
+
+Compared to `lme4`, the R package `nlme` can consider more flexible covariance structures. However, we have chosen not to use this package because it does not provide exact Satterthwaite adjusted degrees of freedom and the available approximate degrees of freedom can differ substantially.
+
+## Model fitting
+In this section, we illustrate how to fit a MMRM with `tern.mmrm` and how to fit a MMRM manually in R. We then compare with SAS to show that the results match.
+
+### Setup
+Our example dataset consists of several variables: subject ID (`USUBJID`), visit number (`AVISIT`), treatment (`ARMCD` = TRT or PBO), 3-category race, sex, FEV1 at baseline (%), and FEV1 at study visits (%). FEV1 (forced expired volume in one second) is a measure of how quickly the lungs can be emptied. Low levels of FEV1 may indicate chronic obstructive pulmonary disease (COPD). The scientific question at hand is whether treatment leads to an increase in FEV1 over time after adjusting for baseline covariates.
+
+```{r}
+library(tern.mmrm)
+data(mmrm_test_data)
+head(mmrm_test_data)
+```
+
+### Model fitting via `tern.mmrm`
+Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting function `fit_mmrm` assumes unstructured correlation and proportional weights when calculating LS means.
+```{r message=FALSE, results="hide"}
+mmrm_results <- fit_mmrm(
+  vars = list(
+    response = "FEV1",
+    covariates = c("RACE", "SEX", "FEV1_BL"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = mmrm_test_data,
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional"
+)
+```
+The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in FEV1 over placebo at all study visits.
+```{r}
+mmrm_results$lsmeans$contrasts
+```
+Other correlation structures and weighting schemes can be considered. For example, the following modified code fits a MMRM with random intercept (compound symmetry with positive correlation) and equal weights:
+```{r, eval=F}
+fit_mmrm(
+  vars = list(
+    response = "FEV1",
+    covariates = c("RACE", "SEX", "FEV1_BL"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = mmrm_test_data,
+  cor_struct = "compound-symmetry",
+  weights_emmeans = "equal"
+)
+```
+
+### Model fitting manually in R
+One can reproduce these results manually in R. For example, to fit the unstructured model:
+```{r, eval=FALSE}
+library(lme4)
+library(emmeans)
+
+fit <- lmer(
+  formula = FEV1 ~ RACE + SEX + FEV1_BL + ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  data = mmrm_test_data,
+  control = lmerControl(
+    check.nobs.vs.nRE = "ignore",
+    optimizer = "nloptwrap",
+    optCtrl = list(algorithm = "NLOPT_LN_BOBYQA")
+  )
+)
+emmeans::emmeans(fit, mode = "satterthwaite", pairwise ~ ARMCD | AVISIT, weights = "proportional")
+```
+As mentioned in the previous section, although an unstructured model is technically over-parametrized under `lmer`'s required formulation, the marginal covariance as a whole is identifiable and we can fit the model by including the argument `check.nobs.vs.nRE = "ignore"` to suppress error messages.
+
+Compared to manual implementation, `tern.mmrm` users can avoid specifying the `formula` as well as the non-linear `optimizer` used to fit the MMRM. `tern.mmrm` has a default optimizer which is in fact the same as the one shown here. If the default fails to converge, it automatically attempts to use multiple other optimizers, delivering results should there be a consensus. 
+
+### Model fitting via SAS
+
+For the unstructured model, the equivalent SAS code is given by
+```{block2, type='sas'}
+
+~~~sas
+proc import datafile="location_of_data.csv"
+     out=dat
+     dbms=csv
+     replace;
+     getnames=yes;
+run;
+     
+proc mixed data= dat; 
+       class ARMCD(ref="PBO") AVISIT(ref="VIS1") USUBJID SEX(ref="Male") RACE(ref="Asian");    
+       Model FEV1 = ARMCD  RACE  SEX  FEV1_BL  AVISIT  ARMCD*AVISIT    / solution ddfm=satterthwaite;
+       repeated AVISIT / type=UN subject=USUBJID;
+       lsmeans ARMCD*AVISIT/pdiff obsmargins cl;
+run;
+
+~~~
+
+```
+
+
+## Diagnostics
+
+### Model fitting
+A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in SAS PROC MIXED.
+
+```{r eval=F}
+mmrm_results$diagnostics
+```
+
+Each criterion is specifically calculated as follows:
+
+1. REML criterion: $-2 l$ where $l$ is the REML log-likelihood. This criterion has no penalty for complexity, so generally decreases as model becomes more complex.
+2. AIC: $-2l + 2d$ where $d$ is the number of covariance parameters.
+3. AICc: $-2l + 2dn^*/(n^*-d-1)$ where $n^*$ is the number of observations minus the number of fixed effects, or $d + 2$ if it is smaller than that. AICc is a finite-sample corrected version of AIC.
+4. BIC: $-2l + d \log n$ where $n$ is the number of subjects as opposed to the number of observations.
+
+An objective approach to model selection is to minimize the AIC, AICc, or BIC. For more details on these information criteria (including references), see [SAS Documentation](https://documentation.sas.com/?cdcId=statcdc&cdcVersion=14.2&docsetId=statug&docsetTarget=statug_mixed_syntax01.htm&locale=en#statug.mixed.procstmt_ic).
+
+### Residual analysis
+
+Another key part in the analysis of data is verifying model assumptions. `g_mmrm_diagnostic(fit, type = ...)` provides several handy residual plots, each of which is diagnostic for a different aspect of MMRMs.
+
+- Marginal fitted values ($\mathbf X_i \widehat {\boldsymbol \beta}$) vs. Marginal residuals ($\mathbf Y_i - \mathbf X_i \widehat{\boldsymbol \beta}$)
+  - Argument: `type = "fit-residual"`
+  - Diagnostic for: homoskedasticity of marginal residuals
+- QQ plot of standardized marginal residuals ($\widehat{\mathbf V}_i^{-1/2} (\mathbf Y_i - \mathbf X_i \widehat{\boldsymbol \beta})$)
+  - Argument: `type = q-q-residual`
+  - Diagnostic for: normality of marginal residuals
+
+## Outlook
+
+We are actively looking to expand the capabilities of `tern.mmrm`. Ongoing topics include:
+
+- sensitivity of `lme4` to ordering of the dataset: in some cases, `lme4` may not converge for a dataset but may converge for the same data rearranged.
+- intermediate covariance structures: to increase complexity compared to some simpler covariance structures, while having less model parameters compared to an unstructured covariance matrix
+- additional model diagnostics: information criterion specifically for evaluating fixed or random effects; residual plots to assess other model assumptions

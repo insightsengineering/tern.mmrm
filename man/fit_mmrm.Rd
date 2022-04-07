@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_mmrm.R
 \name{fit_mmrm}
 \alias{fit_mmrm}
-\title{MMRM Analysis}
+\title{\code{MMRM} Analysis}
 \usage{
 fit_mmrm(
   vars = list(response = "AVAL", covariates = c(), id = "USUBJID", arm = "ARM", visit =
@@ -16,7 +16,7 @@ fit_mmrm(
 )
 }
 \arguments{
-\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
 \describe{
@@ -61,7 +61,7 @@ contains the finally used optimization algorithm, which can be useful for refitt
 }
 }
 \description{
-Does the MMRM analysis. Multiple other functions can be called on the result to produce
+Does the \code{MMRM} analysis. Multiple other functions can be called on the result to produce
 tables and graphs.
 }
 \details{
@@ -83,11 +83,11 @@ effect of the results. Therefore we report here the actually relevant number of 
 
 For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
 \describe{
-\item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-\item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+\item{nloptwrap_neldermead}{\code{NLopt} version of the Nelder-Mead algorithm (via package \code{nloptr})}
+\item{nloptwrap_bobyqa}{\code{NLopt} version of the BOBYQA algorithm (via package \code{nloptr})}
 \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
 \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-\item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+\item{neldermead}{\code{lme4} version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
 \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
 \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 }
@@ -117,7 +117,6 @@ adqs_f <- adqs \%>\%
   )
 var_labels(adqs_f) <- var_labels(adqs)
 \dontrun{
-# sometimes results in failure to converge with 1 negative eigenvalue
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "AVAL",
@@ -127,9 +126,8 @@ mmrm_results <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = adqs_f,
-  cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  optimizer = "nloptwrap_neldermead" # Only to speed up this example.
+  cor_struct = "random-quadratic",
+  weights_emmeans = "equal"
 )
 }
 

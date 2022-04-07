@@ -2,12 +2,12 @@
 % Please edit documentation in R/fit_mmrm.R
 \name{check_mmrm_vars}
 \alias{check_mmrm_vars}
-\title{MMRM Variables Helper}
+\title{\code{MMRM} Variables Helper}
 \usage{
 check_mmrm_vars(vars, data)
 }
 \arguments{
-\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the MMRM.
+\item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
 \describe{
@@ -31,6 +31,6 @@ specification) is included. If a label is not found, the variable name is
 instead used.
 }
 \description{
-Helper function to check the MMRM variables.
+The helper function to check the \code{MMRM} variables.
 }
 \keyword{internal}

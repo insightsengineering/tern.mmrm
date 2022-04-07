@@ -2,15 +2,14 @@
 
 ## Overview
 
-`tern.mmrm` provides interface for mixed model repeated measures (MMRM) within `tern` framework. Please refer to documentation of `fit_mmrm()` to see minimal example.
+`tern.mmrm` provides an interface for mixed model repeated measures (MMRM) within the `tern` framework. Please refer to
+documentation of `fit_mmrm()` to see a minimal example.
 
 ## Background
 
 For details on why we and how we implemented the MMRM in R please see the following
-slidedeck:
+slides:
 [Implementing Mixed Models with Repeated Measures (MMRM) in R](https://drive.google.com/file/d/1sOZUAFOc004H4jO8vuUc_4HyYHEgu45b/view)
-
-For details on the methodology please see [Chapter 6](https://docs.roche.com/doc/statistics_clinical_trials/latest/mixed-effect-models-with-repeated-measures-mmrm.html) in the NEST Statistics book.
 
 ## Installation
 
@@ -26,3 +25,5 @@ You might need to manually install all of the package dependencies before instal
 the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
 In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
+
+See package vignettes `browseVignettes(package = "tern.mmrm")` for usage of this package.

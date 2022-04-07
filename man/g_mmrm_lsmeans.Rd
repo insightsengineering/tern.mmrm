@@ -16,7 +16,7 @@ g_mmrm_lsmeans(
 )
 }
 \arguments{
-\item{object}{(\code{mmrm})\cr model result produced by \code{\link{fit_mmrm}}.}
+\item{object}{(\code{mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{select}{(\code{character})\cr to select one or both of "estimates" and "contrasts" plots.
 Note "contrasts" option is not applicable to model summaries excluding an arm variable.}

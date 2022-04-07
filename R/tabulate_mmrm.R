@@ -1,6 +1,6 @@
-#' Tabulation of MMRM Results
+#' Tabulation of `MMRM` Results
 #'
-#' These functions can be used to produce tables from a fitted MMRM produced with
+#' These functions can be used to produce tables from a fitted `MMRM` produced with
 #' [fit_mmrm()].
 #'
 #' @name tabulate_mmrm
@@ -11,9 +11,9 @@ NULL
 #' @export
 tern::as.rtable
 
-#' @describeIn tabulate_mmrm Produce simple MMRM tables via the generic [as.rtable()].
+#' @describeIn tabulate_mmrm Produce simple `MMRM` tables via the generic [as.rtable()].
 #'
-#' @param x (`mmrm`)\cr the original MMRM fit object.
+#' @param x (`mmrm`)\cr the original `MMRM` fit object.
 #' @param type (`string`)\cr type of table which should be returned.
 #' @param arms (`flag`)\cr  should treatment variable be considered when using
 #' `summarize_lsmeans` layout generating function.
@@ -93,7 +93,7 @@ h_mmrm_fixed <- function(x, format = "xx.xxxx") {
   cbind_rtables(remaining_table, df_table, pvalue_table)
 }
 
-#' @describeIn tabulate_mmrm Helper function to produce covariance matrix table.
+#' @describeIn tabulate_mmrm Helper function to produce a covariance matrix table.
 #' @export
 #'
 h_mmrm_cov <- function(x, format = "xx.xxxx") {
@@ -101,7 +101,7 @@ h_mmrm_cov <- function(x, format = "xx.xxxx") {
   as.rtable(as.data.frame(cov_estimate), format = format)
 }
 
-#' @describeIn tabulate_mmrm Helper function to produce diagnostic statistics table.
+#' @describeIn tabulate_mmrm Helper function to produce a diagnostic statistics table.
 #' @export
 #'
 h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
@@ -124,8 +124,8 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 #' @export
 generics::tidy
 
-#' @describeIn tabulate_mmrm Helper method (for [broom::tidy()]) to prepare a data frame from an
-#'   `mmrm` object containing the LS means and contrasts.
+#' @describeIn tabulate_mmrm Helper method (for [broom::tidy()]) to prepare a `data.frame` from an
+#'   `mmrm` object containing the least-squares means and contrasts.
 #' @method tidy mmrm
 #' @export
 #' @examples
@@ -154,7 +154,7 @@ tidy.mmrm <- function(x, ...) { # nolint
   tibble::as_tibble(df)
 }
 
-#' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
+#' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied least-squares means
 #'   data frame.
 #' @param df (`data frame`)\cr data set containing all analysis variables.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
@@ -212,7 +212,7 @@ a_mmrm_lsmeans <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied LS means
+#' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied least-squares means
 #' data frame when `ARM` is not considered in the model.
 #' @export
 #' @examples
@@ -245,7 +245,7 @@ a_mmrm_lsmeans_single <- make_afun(
   )
 )
 
-#' @describeIn tabulate_mmrm Analyze function for tabulating LS means estimates from tidied `mmrm` results.
+#' @describeIn tabulate_mmrm Analyze function for tabulating least-squares means estimates from tidied `mmrm` results.
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.
 #' @param table_names (`character`)\cr this can be customized in case that the same `vars` are analyzed multiple times,
 #'   to avoid warnings from `rtables`.

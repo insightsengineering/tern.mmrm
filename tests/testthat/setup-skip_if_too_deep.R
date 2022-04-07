@@ -1,4 +1,4 @@
-skip_if_too_deep <- function(depth) { # nolintr
+skip_if_too_deep <- function(depth) {
   stopifnot(length(depth) == 1 && is.numeric(depth) && depth >= 0 && depth <= 5)
 
   testing_depth <- getOption("TESTING_DEPTH")

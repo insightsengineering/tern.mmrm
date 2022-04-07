@@ -1,6 +1,6 @@
-#' MMRM Variables Helper
+#' `MMRM` Variables Helper
 #'
-#' Helper function to check the MMRM variables.
+#' The helper function to check the `MMRM` variables.
 #'
 #' @inheritParams fit_mmrm
 #'
@@ -365,18 +365,18 @@ summary_all_fits <- function(all_fits) {
 
 #' Re-Fitting `lme4` Model
 #'
-#' Refit an lme4 model with all possible optimizers and return the best result.
+#' Refit an `lme4` model with all possible optimizers and return the best result.
 #'
 #' @param original_fit original model fit coming from [fit_lme4_single_optimizer()].
 #' @param n_cores (`count`)\cr number of cores which could in principle be used for
-#'   parallelizing the computations on Linux or Mac machines.
+#'   parallel computations on Linux or Mac machines.
 #'
 #' @return The "best" model fit, defined as a converging fit without any warnings or messages, leading
 #'   to the highest log-likelihood. If no optimizer succeeds, then an error is thrown.
 #'
 #' @note Currently there are 7 optimizers in total. Since 1 optimizer is already used in the original fit,
 #'   only 6 additional optimizer runs need to be done. Thus the maximum number of parallel runs is 6.
-#'   For Windows, no parallelization is currently implemented.
+#'   For Windows, no parallel computation is currently implemented.
 #' @keywords internal
 #'
 refit_lme4_all_optimizers <- function(original_fit,
@@ -448,7 +448,7 @@ refit_lme4_all_optimizers <- function(original_fit,
 #'
 #' @param formula (`formula`)\cr the MMRM formula (it could also be another `lme4` formula).
 #' @inheritParams fit_mmrm
-#' @param n_cores (`count`)\cr number of cores to parallelize over the "automatic" optimizer search.
+#' @param n_cores (`count`)\cr number of cores to use in parallel for the "automatic" optimizer search.
 #'
 #' @return the [`lmerTest::lmerModLmerTest`] object.
 #' @keywords internal
@@ -482,16 +482,16 @@ fit_lme4 <- function(formula,
   }
 }
 
-#' Extract LS Means from MMRM
+#' Extract Least-Squares (`LS`) Means from `MMRM`
 #'
-#' Helper function to extract the LS means from an MMRM fit.
+#' Helper function to extract the `LS` means from an `MMRM` fit.
 #'
 #' @param fit result of [fit_lme4()].
 #' @inheritParams fit_mmrm
-#' @param weights (`string`)\cr type of weights to be used for the LS means,
+#' @param weights (`string`)\cr type of weights to be used for the `LS` means,
 #'   see [emmeans::emmeans()] for details.
 #'
-#' @return A list with the LS means `estimates` and `contrasts` results between the treatment
+#' @return A list with the `LS` means `estimates` and `contrasts` results between the treatment
 #'   and control arm groups at the different visits.
 #'
 #' @keywords internal
@@ -602,12 +602,12 @@ get_mmrm_lsmeans <- function(fit,
   return(results)
 }
 
-#' MMRM Analysis
+#' `MMRM` Analysis
 #'
-#' Does the MMRM analysis. Multiple other functions can be called on the result to produce
+#' Does the `MMRM` analysis. Multiple other functions can be called on the result to produce
 #' tables and graphs.
 #'
-#' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the MMRM.
+#' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the `MMRM`.
 #'   The following elements need to be included as character vectors and match corresponding columns
 #'   in \code{data}:
 #'   \describe{
@@ -649,11 +649,11 @@ get_mmrm_lsmeans <- function(fit,
 #'
 #'   For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
 #'   \describe{
-#'   \item{nloptwrap_neldermead}{NLopt version of the Nelder-Mead algorithm (via package \code{nloptr})}
-#'   \item{nloptwrap_bobyqa}{NLopt version of the BOBYQA algorithm (via package \code{nloptr})}
+#'   \item{nloptwrap_neldermead}{\code{NLopt} version of the Nelder-Mead algorithm (via package \code{nloptr})}
+#'   \item{nloptwrap_bobyqa}{\code{NLopt} version of the BOBYQA algorithm (via package \code{nloptr})}
 #'   \item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
 #'   \item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-#'   \item{neldermead}{lme4 version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
+#'   \item{neldermead}{\code{lme4} version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
 #'   \item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
 #'   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 #'   }
@@ -698,7 +698,6 @@ get_mmrm_lsmeans <- function(fit,
 #'   )
 #' var_labels(adqs_f) <- var_labels(adqs)
 #' \dontrun{
-#' # sometimes results in failure to converge with 1 negative eigenvalue
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "AVAL",
@@ -708,9 +707,8 @@ get_mmrm_lsmeans <- function(fit,
 #'     visit = "AVISIT"
 #'   ),
 #'   data = adqs_f,
-#'   cor_struct = "unstructured",
-#'   weights_emmeans = "equal",
-#'   optimizer = "nloptwrap_neldermead" # Only to speed up this example.
+#'   cor_struct = "random-quadratic",
+#'   weights_emmeans = "equal"
 #' )
 #' }
 #'
