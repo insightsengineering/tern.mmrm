@@ -34,7 +34,8 @@ Imports:
     rlang,
     rtables (>= 0.5.0),
     stats,
-    tibble
+    tibble,
+    utils
 Suggests:
     broom,
     knitr,

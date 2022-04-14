@@ -10,6 +10,6 @@ capture_ouput <- function(code) {
     messages <<- c(messages, m$message)
     invokeRestart("muffleMessage")
   }
-  invisible(capture.output(result <- withCallingHandlers(code, warning = wHandler, message = mHandler)))
+  invisible(utils::capture.output(result <- withCallingHandlers(code, warning = wHandler, message = mHandler)))
   list(result = result, warnings = warnings, messages = messages)
 }
