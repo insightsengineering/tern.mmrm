@@ -320,7 +320,7 @@ testthat::test_that("h_mmrm_cov works as expected", {
 
   cell_values_to_list <- function(result, colpath) {
     cell_values(result, colpath = colpath) %>%
-      purrr::flatten() %>%
+      unlist(recursive = FALSE) %>%
       lapply(`attr<-`, "label", NULL) %>%
       unname()
   }
