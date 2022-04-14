@@ -55,3 +55,4 @@ Collate:
     'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
+    'utils.R'
