@@ -322,7 +322,7 @@ fit_lme4_single_optimizer <- function(formula,
       list()
     )
   )
-  quiet_fit <- capture_ouput(
+  quiet_fit <- capture_output(
     lmerTest::lmer(
       formula = formula,
       REML = TRUE,

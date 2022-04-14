@@ -1,5 +1,5 @@
 ## adapted from purrr, but we do not need the output saved
-capture_ouput <- function(code) {
+capture_output <- function(code) {
   warnings <- character()
   w_handler <- function(w) {
     warnings <<- c(warnings, w$message)
