@@ -1,0 +1,170 @@
+---
+title: "Satterthwaite DF Example"
+author: "Julia Dedic"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+GOAL: To see if we get similar results between `lme4`, `glmmTMB` and SAS (not considering the df correction that needs to be done)
+
+```{r, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Configuration
+
+```{r setup, message=FALSE}
+library(rtables)
+library(tern.mmrm)
+library(dplyr)
+library(r2stream)
+library(scda)
+library(glmmTMB)
+
+```
+
+## Data for example comparison
+
+
+```{r}
+adqs <- synthetic_cdisc_data("latest")$adqs
+adqs_f <- adqs %>%
+  dplyr::filter(PARAMCD == "FKSI-FWB" & AVISIT %in% c("WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22")) %>%
+  droplevels() %>%
+  dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
+  dplyr::mutate(
+    AVISITN = rank(AVISITN) %>%
+      as.factor() %>%
+      as.numeric() %>%
+      as.factor()
+  )
+formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
+```
+
+
+## Model fitting
+
+### Using the lme4 / lmerTest package to get the Satterthwaite df (Current `tern.mmrm` implementation)
+
+Results: Model did not converge for both `scda` and `random.cdisc.data` using all `AVISIT` values in datasets. Hence, for this example comparison, only "WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22" were filtered in the dataset.
+```{r}
+mmrm_results <- fit_mmrm(
+  vars = list(
+    response = "AVAL",
+    covariates = c("STRATA1", "BMRKR2"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = adqs_f,
+  cor_struct = "unstructured",
+  weights_emmeans = "equal",
+  optimizer = "automatic" #need an optimizer here for model to converge
+)
+
+# optimizer options “automatic”, “nloptwrap_neldermead”, “nloptwrap_bobyqa”, “nlminbwrap”, “bobyqa”, “neldermead”, “nmkbw”, “optimx_lbfgsb”
+
+df <- tidy(mmrm_results)
+attr(df$AVISIT, "label") <- "Visit"
+
+# Define the split function
+split_fun <- drop_split_levels
+
+result <- basic_table() %>%
+  split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
+  add_colcounts() %>%
+  split_rows_by("AVISIT", split_fun = split_fun, label_pos = "topleft", split_label = obj_label(df$AVISIT)) %>%
+  summarize_lsmeans(show_relative = "increase") %>%
+  append_topleft("  Statistics") %>%
+  build_table(df)
+
+result
+
+
+```
+### Using SAS
+
+```{r, results='hide', eval = FALSE}
+# https://code.roche.com/nest/r-packages/r2stream
+
+sascode <- list(
+  # "show" = "
+  #   PROC CONTENTS DATA = ana.dat;
+  #   RUN;
+  # "
+  
+  
+  "test" = "
+    PROC MIXED DATA = ana.dat cl method=reml;
+      CLASS USUBJID STRATA1 BMRKR2 AVISIT ARMCD;
+      MODEL AVAL = STRATA1 BMRKR2 ARMCD AVISIT ARMCD*AVISIT / ddfm=satterthwaite solution chisq;
+      REPEATED AVISIT / subject=USUBJID type=un r rcorr;
+      LSMEANS ARMCD*AVISIT / pdiff=all cl alpha=0.05 slice=AVISIT;
+    RUN;
+      "
+)
+
+
+result <- r2stream::bee_sas(data = list("dat" = adqs_f), sascode = sascode)
+
+```
+
+
+```{r, eval = FALSE}
+result$test$sas_log
+result$test$sas_out
+
+# The results from SAS are below
+# 
+#  [588] "                                                        Least Squares Means"
+#  [589] " "
+#  [590] "                                  Planned"
+#  [591] "                 Analysis         Arm                    Standard"
+#  [592] " Effect          Visit            Code       Estimate       Error      DF    t Value    Pr > |t|     Alpha       Lower       Upper"
+#  [593] ""
+#  [594] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM A       55.0505      0.6896     393      79.83      <.0001      0.05     53.6948     56.4062"
+#  [595] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM B       54.2473      0.6904     394      78.57      <.0001      0.05     52.8899     55.6046"
+#  [596] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM C       53.9807      0.6942     392      77.76      <.0001      0.05     52.6158     55.3456"
+#  [597] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM A       59.8226      0.7622     391      78.49      <.0001      0.05     58.3241     61.3210"
+#  [598] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM B       59.8945      0.7629     392      78.50      <.0001      0.05     58.3945     61.3944"
+#  [599] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM C       59.3272      0.7674     390      77.31      <.0001      0.05     57.8184     60.8361"
+#  [600] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM A       66.8182      0.8741     393      76.44      <.0001      0.05     65.0996     68.5367"
+#  [601] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM B       64.3064      0.8748     394      73.51      <.0001      0.05     62.5865     66.0262"
+#  [602] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM C       66.6071      0.8803     392      75.66      <.0001      0.05     64.8764     68.3378"
+#  [603] ""
+#  [604] ""
+#  [605] "                                                Differences of Least Squares Means"
+#  [606] " "
+#  [607] "                                   Planned                   Planned"
+#  [608] "                   Analysis        Arm       Analysis        Arm                  Standard"
+#  [609] "    Effect         Visit           Code      Visit           Code      Estimate      Error     DF   t Value   Pr > |t|    Alpha"
+#  [610] ""
+#  [611] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 1 DAY 8    ARM B       0.8033     0.9770    395      0.82     0.4115     0.05"
+#  [612] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 1 DAY 8    ARM C       1.0698     0.9779    392      1.09     0.2746     0.05"
+#  [613] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 2 DAY 15   ARM A      -4.7720     1.0331    397     -4.62     <.0001     0.05"
+#  [614] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 2 DAY 15   ARM B      -4.8440     1.0296    781     -4.70     <.0001     0.05"
+       
+```
+
+
+
+
+### Using glmmTMB
+
+```{r}
+fit <- glmmTMB(
+  formula = AVAL ~ STRATA1 +BMRKR2 + ARMCD + ARMCD + AVISIT + ARMCD*AVISIT + us(0 + AVISIT | USUBJID),
+  data = adqs_f,
+  dispformula = ~0,
+  REML = TRUE, #whether to use REML estimation rather than maximum likelihood.
+  # start = NULL,
+  control = glmmTMB::glmmTMBControl(optimizer = optim, optArgs = list(method = "L-BFGS-B"), parallel = 1)
+)
+
+lsmeans <- emmeans::emmeans(fit,
+                              specs = c("ARMCD","AVISIT"),
+                              data=adqs_f)
+lsmeans
+```
+
+
