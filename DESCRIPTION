@@ -30,7 +30,6 @@ Imports:
     magrittr,
     optimx,
     parallel,
-    purrr,
     rlang,
     rtables (>= 0.5.0),
     stats,
