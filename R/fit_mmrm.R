@@ -322,12 +322,13 @@ fit_lme4_single_optimizer <- function(formula,
       list()
     )
   )
-  quiet_lmer <- purrr::quietly(lmerTest::lmer)
-  quiet_fit <- quiet_lmer(
-    formula = formula,
-    REML = TRUE,
-    data = data,
-    control = control
+  quiet_fit <- capture_output(
+    lmerTest::lmer(
+      formula = formula,
+      REML = TRUE,
+      data = data,
+      control = control
+    )
   )
   result <- structure(
     quiet_fit$result,
@@ -410,8 +411,8 @@ refit_lme4_all_optimizers <- function(original_fit,
       n_cores
     )
   )
-  quiet_mclapply <- purrr::quietly(parallel::mclapply)
-  all_fits <- quiet_mclapply(
+
+  all_fits <- parallel::mclapply(
     X = all_optimizers,
     FUN = function(opt) {
       fit_lme4_single_optimizer(
@@ -422,7 +423,7 @@ refit_lme4_all_optimizers <- function(original_fit,
     },
     mc.cores = n_cores_used,
     mc.silent = TRUE
-  )$result
+  )
   names(all_fits) <- all_optimizers
   all_fits_summary <- summary_all_fits(all_fits)
 

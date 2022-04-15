@@ -30,11 +30,11 @@ Imports:
     magrittr,
     optimx,
     parallel,
-    purrr,
     rlang,
     rtables (>= 0.5.0),
     stats,
-    tibble
+    tibble,
+    utils
 Suggests:
     broom,
     knitr,
@@ -55,3 +55,4 @@ Collate:
     'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
+    'utils.R'
