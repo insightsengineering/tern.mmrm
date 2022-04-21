@@ -99,28 +99,15 @@ different convergence behavior. This is a known observation with the used packag
 numerical precision.
 }
 \examples{
-library(scda)
 library(dplyr)
 library(rtables)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
-adqs_f <- adqs \%>\%
-  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
-  droplevels() \%>\%
-  mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) \%>\%
-  mutate(
-    AVISITN = rank(AVISITN) \%>\%
-      as.factor() \%>\%
-      as.numeric() \%>\%
-      as.factor()
-  )
-var_labels(adqs_f) <- var_labels(adqs)
+adqs_f <- mmrm_test_data
 \dontrun{
 mmrm_results <- fit_mmrm(
   vars = list(
-    response = "AVAL",
-    covariates = c("STRATA1", "BMRKR2"),
+    response = "FEV1",
+    covariates = c("RACE", "SEX"),
     id = "USUBJID",
     arm = "ARMCD",
     visit = "AVISIT"

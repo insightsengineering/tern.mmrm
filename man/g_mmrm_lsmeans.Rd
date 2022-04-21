@@ -49,27 +49,17 @@ no matter if \code{select} argument contains \code{contrasts} value.
 \examples{
 \dontrun{
 library(dplyr)
-library(scda)
 library(rtables)
-
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
-adqs_f <- adqs \%>\%
-  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
-  droplevels() \%>\%
-  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
-var_labels(adqs_f) <- var_labels(adqs)
 
 mmrm_results <- fit_mmrm(
   vars = list(
-    response = "AVAL",
-    covariates = c("STRATA1", "BMRKR2"),
+    response = "FEV1",
+    covariates = c("RACE", "SEX"),
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   ),
-  data = adqs_f,
+  data = mmrm_test_data,
   cor_struct = "random-quadratic",
   weights_emmeans = "equal"
 )
@@ -83,13 +73,13 @@ g_mmrm_lsmeans(
   width = 0.8
 )
 
-adqs_f2 <- adqs_f \%>\%
-  filter(ARMCD == "ARM A")
+adqs_f2 <- mmrm_test_data \%>\%
+  filter(ARMCD == "TRT")
 
 mmrm_results_no_arm <- fit_mmrm(
   vars = list(
-    response = "AVAL",
-    covariates = c("STRATA1", "BMRKR2"),
+    response = "FEV1",
+    covariates = c("RACE", "SEX"),
     id = "USUBJID",
     visit = "AVISIT"
   ),

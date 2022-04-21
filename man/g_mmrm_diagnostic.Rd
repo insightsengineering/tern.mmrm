@@ -39,22 +39,15 @@ model the marginal residual distribution.
 \examples{
 \dontrun{
 library(dplyr)
-library(scda)
 
-adsl <- synthetic_cdisc_data("latest")$adsl
-adqs <- synthetic_cdisc_data("latest")$adqs
-adqs_f <- adqs \%>\%
-  filter(PARAMCD == "FKSI-FWB" & !AVISIT \%in\% c("BASELINE")) \%>\%
-  droplevels() \%>\%
-  mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) \%>\%
-  mutate(AVISITN = rank(AVISITN) \%>\% as.factor() \%>\% as.numeric() \%>\% as.factor())
+adqs_f <- mmrm_test_data
 
 mmrm_results <- fit_mmrm(
   vars = list(
-    response = "AVAL",
-    covariates = c("STRATA1", "BMRKR2"),
+    response = "FEV1",
+    covariates = c("RACE", "SEX"),
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   ),
   data = adqs_f,

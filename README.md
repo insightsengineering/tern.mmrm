@@ -24,6 +24,4 @@ devtools::install_github("insightsengineering/tern.mmrm@*release", dependencies 
 You might need to manually install all of the package dependencies before installing this package as without
 the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
-In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
-
 See package vignettes `browseVignettes(package = "tern.mmrm")` for usage of this package.
