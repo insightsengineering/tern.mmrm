@@ -309,13 +309,12 @@ testthat::test_that("h_mmrm_cov works as expected", {
   result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
   testthat::expect_identical(result, result2)
 
-  expected_tibble <- tibble::tribble(
-    ~"1", ~"2", ~"3", ~"4", ~"5",
-    62.9854, 0.1138, -2.2943, -3.144, -2.4352,
-    0.1138, 58.9081, -0.064, -0.0877, -0.0679,
-    -2.2943, -0.064, 60.195, 1.7678, 1.3693,
-    -3.144, -0.0877, 1.7678, 61.3275, 1.8764,
-    -2.4352, -0.0679, 1.3693, 1.8764, 60.3583
+  expected_df <- data.frame(
+    "X1" = c(62.9854, 0.1138, -2.2948, -3.144, -2.4352),
+    "X2" = c(0.1138, 58.9081, -0.064, -0.0877, -0.0679),
+    "X3" = c(-2.2943, -0.064, 60.195, 1.7678, 1.3693),
+    "X4" = c(-3.144, -0.0877, 1.7678, 61.3275, 1.8764),
+    "X5" = c(-2.4352, -0.0679, 1.3693, 1.8764, 60.3583)
   )
 
   cell_values_to_list <- function(result, colpath) {
@@ -327,31 +326,31 @@ testthat::test_that("h_mmrm_cov works as expected", {
 
   testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
-    as.list(expected_tibble[, "1"][[1]]),
+    as.list(expected_df[, "X1"]),
     tolerance = 5e-2
   )
 
   testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
-    as.list(expected_tibble[, "2"][[1]]),
+    as.list(expected_df[, "X2"]),
     tolerance = 5e-2
   )
 
   testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
-    as.list(expected_tibble[, "3"][[1]]),
+    as.list(expected_df[, "X3"]),
     tolerance = 5e-2
   )
 
   testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
-    as.list(expected_tibble[, "4"][[1]]),
+    as.list(expected_df[, "X4"]),
     tolerance = 5e-2
   )
 
   testthat::expect_equal(
     cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
-    as.list(expected_tibble[, "5"][[1]]),
+    as.list(expected_df[, "X5"]),
     tolerance = 5e-2
   )
 })
@@ -380,7 +379,8 @@ testthat::test_that("tidy.mmrm works as expected", {
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
   result_one_row <- result[8, ]
-  expected_one_row <- tibble::tibble(
+  row.names(result_one_row) <- NULL
+  expected_one_row <- data.frame(
     ARM = factor("A: Drug X", levels = c("B: Placebo", "A: Drug X", "C: Combination")),
     AVISIT = factor(
       "WEEK 3 DAY 22",
@@ -399,8 +399,8 @@ testthat::test_that("tidy.mmrm works as expected", {
     relative_reduc = -0.0233534667084426,
     conf_level = 0.95
   )
-  testthat::expect_is(result_one_row, "tbl_df")
-  testthat::expect_equal(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+  testthat::expect_is(result_one_row, "data.frame")
+  testthat::expect_equal(result_one_row, expected_one_row, tolerance = 0.001)
 })
 
 testthat::test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
@@ -409,7 +409,8 @@ testthat::test_that("tidy.mmrm works as expected when treatment is not considere
   mmrm <- get_mmrm_no_arm()
   result <- broom::tidy(mmrm)
   result_one_row <- result[5, ]
-  expected_one_row <- tibble::tibble(
+  row.names(result_one_row) <- NULL
+  expected_one_row <- data.frame(
     AVISIT = factor(
       "WEEK 5 DAY 36",
       levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
@@ -419,7 +420,7 @@ testthat::test_that("tidy.mmrm works as expected when treatment is not considere
     upper_cl_est = 53.36269, n = 41L,
     conf_level = 0.95
   )
-  testthat::expect_is(result_one_row, "tbl_df")
+  testthat::expect_is(result_one_row, "data.frame")
   testthat::expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
 })
 
@@ -486,43 +487,41 @@ testthat::test_that("summarize_lsmeans works as expected", {
     summarize_lsmeans(show_relative = "increase") %>%
     build_table(df)
 
-  expected_tibble <- tibble::tribble(
-    ~b, ~a, ~c,
-    11, 17, 13,
-    c(51.48359, 2.39400), c(51.604397, 1.932004), c(48.180218, 2.214652),
-    c(46.72589, 56.24129), c(47.7654, 55.4434), c(43.78005, 52.58039),
-    character(0), c(0.1208049, 3.0750730), c(-3.303373, 3.264212),
-    character(0), c(-5.990182, 6.231791), c(-9.789470, 3.182723),
-    character(0), 0.002346473, -0.06416362,
-    character(0), 0.9687519, 0.3142882,
-    11, 17, 13,
-    c(46.310711, 2.315292), c(50.468318, 1.868905), c(48.420077, 2.142674),
-    c(41.73592, 50.88550), c(46.77558, 54.16106), c(44.18642, 52.65373),
-    character(0), c(4.157607, 2.974152), c(2.109366, 3.157656),
-    character(0), c(-1.719011, 10.034224), c(-4.129797, 8.348529),
-    character(0), 0.08977635, 0.04554813,
-    character(0), 0.1642018, 0.5051483,
-    11, 17, 13,
-    c(50.024343, 2.340421), c(51.192584, 1.889049), c(52.164950, 2.165651),
-    c(45.39723, 54.65146), c(47.45791, 54.92726), c(47.88347, 56.44643),
-    character(0), c(1.168242, 3.006372), c(2.140608, 3.191672),
-    character(0), c(-4.775464, 7.111948), c(-4.169368, 8.450583),
-    character(0), 0.02335347, 0.04279133,
-    character(0), 0.6981702, 0.5035233,
-    11, 17, 13,
-    c(49.899831, 2.362312), c(48.420584, 1.906599), c(52.24301, 2.18567),
-    c(45.23468, 54.56498), c(44.65542, 52.18575), c(47.92677, 56.55926),
-    character(0), c(-1.479247, 3.034442), c(2.343181, 3.221309),
-    character(0), c(-7.471715, 4.513221), c(-4.018273, 8.704635),
-    character(0), -0.02964432, 0.04695769,
-    character(0), 0.6265778, 0.468037,
-    11, 17, 13,
-    c(50.28516, 2.34359), c(48.86415, 1.89159), c(53.901527, 2.168549),
-    c(45.63761, 54.93272), c(45.11318, 52.61511), c(49.60155, 58.20151),
-    character(0), c(-1.421018, 3.010436), c(3.616364, 3.195963),
-    character(0), c(-7.390893, 4.548858), c(-2.721113, 9.953841),
-    character(0), -0.02825918, 0.07191711,
-    character(0), 0.6378949, 0.2604215
+  expected_b <- list(
+    11, c(51.48359, 2.39400), c(46.72589, 56.24129),
+    character(0), character(0), character(0), character(0),
+    11, c(46.310711, 2.315292), c(41.73592, 50.88550),
+    character(0), character(0), character(0), character(0),
+    11, c(50.024343, 2.340421), c(45.39723, 54.65146),
+    character(0), character(0), character(0), character(0),
+    11, c(49.899831, 2.362312), c(45.23468, 54.56498),
+    character(0), character(0), character(0), character(0),
+    11, c(50.28516, 2.34359), c(45.63761, 54.93272),
+    character(0), character(0), character(0), character(0)
+  )
+  expected_a <- list(
+    17, c(51.604397, 1.932004), c(47.7654, 55.4434), c(0.1208049, 3.0750730), c(-5.990182, 6.231791),
+    0.002346473, 0.9687519,
+    17, c(50.468318, 1.868905), c(46.77558, 54.16106), c(4.157607, 2.974152), c(-1.719011, 10.034224),
+    0.08977635, 0.1642018,
+    17, c(51.192584, 1.889049), c(47.45791, 54.92726), c(1.168242, 3.006372), c(-4.775464, 7.111948),
+    0.02335347, 0.6981702,
+    17, c(48.420584, 1.906599), c(44.65542, 52.18575), c(-1.479247, 3.034442), c(-7.471715, 4.513221),
+    -0.02964432, 0.6265778,
+    17, c(48.86415, 1.89159), c(45.11318, 52.61511), c(-1.421018, 3.010436), c(-7.390893, 4.548858),
+    -0.02825918, 0.6378949
+  )
+  expected_c <- list(
+    13, c(48.180218, 2.214652), c(43.78005, 52.58039), c(-3.303373, 3.264212), c(-9.789470, 3.182723),
+    -0.06416362, 0.3142882,
+    13, c(48.420077, 2.142674), c(44.18642, 52.65373), c(2.109366, 3.157656), c(-4.129797, 8.348529),
+    0.04554813, 0.5051483,
+    13, c(52.164950, 2.165651), c(47.88347, 56.44643), c(2.140608, 3.191672), c(-4.169368, 8.450583),
+    0.04279133, 0.5035233,
+    13, c(52.24301, 2.18567), c(47.92677, 56.55926), c(2.343181, 3.221309), c(-4.018273, 8.704635),
+    0.04695769, 0.468037,
+    13, c(53.901527, 2.168549), c(49.60155, 58.20151), c(3.616364, 3.195963), c(-2.721113, 9.953841),
+    0.07191711, 0.2604215
   )
 
   cell_values_to_list <- function(result, colpath) {
@@ -533,13 +532,13 @@ testthat::test_that("summarize_lsmeans works as expected", {
   }
 
   result_b <- cell_values_to_list(result, colpath = c("ARM", "B: Placebo"))
-  testthat::expect_equal(result_b, as.list(expected_tibble[, "b"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_b, expected_b, tolerance = 1e-3)
 
   result_a <- cell_values_to_list(result, colpath = c("ARM", "A: Drug X"))
-  testthat::expect_equal(result_a, as.list(expected_tibble[, "a"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_a, expected_a, tolerance = 1e-3)
 
   result_c <- cell_values_to_list(result, colpath = c("ARM", "C: Combination"))
-  testthat::expect_equal(result_c, as.list(expected_tibble[, "c"][[1]]), tolerance = 1e-3)
+  testthat::expect_equal(result_c, expected_c, tolerance = 1e-3)
 })
 
 testthat::test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {

@@ -29,7 +29,6 @@ repos:
           - rlang
           - rtables
           - stats
-          - tibble
           - broom
           - knitr
           - Matrix
@@ -91,7 +90,6 @@ repos:
           - rlang
           - rtables
           - stats
-          - tibble
           - broom
           - knitr
           - Matrix

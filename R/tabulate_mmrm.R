@@ -151,7 +151,7 @@ tidy.mmrm <- function(x, ...) { # nolint
     )
   }
   df$conf_level <- x$conf_level
-  tibble::as_tibble(df)
+  df
 }
 
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied least-squares means
