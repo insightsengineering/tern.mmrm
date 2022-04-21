@@ -36,8 +36,6 @@ NULL
 #' \dontrun{
 #' library(dplyr)
 #'
-#' adqs_f <- mmrm_test_data
-#'
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",
@@ -46,7 +44,7 @@ NULL
 #'     arm = "ARMCD",
 #'     visit = "AVISIT"
 #'   ),
-#'   data = adqs_f,
+#'   data = mmrm_test_data,
 #'   cor_struct = "random-quadratic",
 #'   weights_emmeans = "equal"
 #' )
@@ -206,7 +204,7 @@ g_mmrm_diagnostic <- function(object,
 #'   width = 0.8
 #' )
 #'
-#' adqs_f2 <- mmrm_test_data %>%
+#' mmrm_test_data2 <- mmrm_test_data %>%
 #'   filter(ARMCD == "TRT")
 #'
 #' mmrm_results_no_arm <- fit_mmrm(
@@ -216,7 +214,7 @@ g_mmrm_diagnostic <- function(object,
 #'     id = "USUBJID",
 #'     visit = "AVISIT"
 #'   ),
-#'   data = adqs_f2,
+#'   data = mmrm_test_data2,
 #'   cor_struct = "random-quadratic",
 #'   weights_emmeans = "equal"
 #' )

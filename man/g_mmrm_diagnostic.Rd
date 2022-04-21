@@ -40,8 +40,6 @@ model the marginal residual distribution.
 \dontrun{
 library(dplyr)
 
-adqs_f <- mmrm_test_data
-
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -50,7 +48,7 @@ mmrm_results <- fit_mmrm(
     arm = "ARMCD",
     visit = "AVISIT"
   ),
-  data = adqs_f,
+  data = mmrm_test_data,
   cor_struct = "random-quadratic",
   weights_emmeans = "equal"
 )

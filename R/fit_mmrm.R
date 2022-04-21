@@ -684,7 +684,6 @@ get_mmrm_lsmeans <- function(fit,
 #' library(dplyr)
 #' library(rtables)
 #'
-#' adqs_f <- mmrm_test_data
 #' \dontrun{
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
@@ -694,7 +693,7 @@ get_mmrm_lsmeans <- function(fit,
 #'     arm = "ARMCD",
 #'     visit = "AVISIT"
 #'   ),
-#'   data = adqs_f,
+#'   data = mmrm_test_data,
 #'   cor_struct = "random-quadratic",
 #'   weights_emmeans = "equal"
 #' )

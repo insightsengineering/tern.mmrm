@@ -50,7 +50,7 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
 testthat::test_that("check_mmrm_vars works with interaction terms in `covariates`", {
   vars <- list(
     response = "FEV1",
-    covariates = c("RACE", "SEX", "FEV1_BL"),
+    covariates = c("ARMCD*FEV1_BL", "SEX", "FEV1_BL:ARMCD"),
     id = "USUBJID",
     arm = "ARMCD",
     visit = "AVISIT"
@@ -62,9 +62,9 @@ testthat::test_that("check_mmrm_vars works with interaction terms in `covariates
     arm = c(ARMCD = "ARMCD"),
     visit = c(AVISIT = "AVISIT"),
     parts = c(
-      RACE = "RACE",
-      SEX = "SEX",
-      FEV1_BL = "FEV1_BL"
+      ARMCD = "ARMCD",
+      FEV1_BL = "FEV1_BL",
+      SEX = "SEX"
     )
   )
   testthat::expect_identical(result, expected)
@@ -464,9 +464,6 @@ testthat::test_that("fit_lme4 fails when there are convergence issues with a spe
 testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   skip_if_too_deep(5)
 
-  data <- mmrm_test_data %>%
-    dplyr::filter(!AVISIT %in% c("BASELINE")) %>%
-    droplevels()
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -475,7 +472,7 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   )
   fit <- fit_lme4(
     formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
-    data = data,
+    data = mmrm_test_data,
     optimizer = "automatic" # fails to converge with "bobyqa"
   )
   testthat::expect_silent(result <- get_mmrm_lsmeans(
@@ -492,10 +489,6 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
   skip_if_too_deep(5)
 
-  data <- mmrm_test_data %>%
-    dplyr::filter(!AVISIT %in% c("BASELINE")) %>%
-    droplevels()
-
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -505,10 +498,9 @@ testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 
   fit <- fit_lme4(
     formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
-    data = data,
-    optimizer = "automatic" # fails to converge with "bobyqa"
+    data = mmrm_test_data,
+    optimizer = "automatic"
   )
-
 
   result <- get_mmrm_lsmeans(
     fit = fit,
@@ -517,8 +509,8 @@ testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
     weights = "proportional"
   )
 
-  testthat::expect_identical(levels(data$ARMCD), levels(result$estimates$ARMCD))
-  testthat::expect_identical(levels(data$ARMCD)[-1], levels(result$contrasts$ARMCD))
+  testthat::expect_identical(levels(mmrm_test_data$ARMCD), levels(result$estimates$ARMCD))
+  testthat::expect_identical(levels(mmrm_test_data$ARMCD)[-1], levels(result$contrasts$ARMCD))
 })
 
 

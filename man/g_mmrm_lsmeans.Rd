@@ -73,7 +73,7 @@ g_mmrm_lsmeans(
   width = 0.8
 )
 
-adqs_f2 <- mmrm_test_data \%>\%
+mmrm_test_data2 <- mmrm_test_data \%>\%
   filter(ARMCD == "TRT")
 
 mmrm_results_no_arm <- fit_mmrm(
@@ -83,7 +83,7 @@ mmrm_results_no_arm <- fit_mmrm(
     id = "USUBJID",
     visit = "AVISIT"
   ),
-  data = adqs_f2,
+  data = mmrm_test_data2,
   cor_struct = "random-quadratic",
   weights_emmeans = "equal"
 )
