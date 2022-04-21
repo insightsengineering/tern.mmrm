@@ -473,7 +473,7 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   fit <- fit_lme4(
     formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
     data = mmrm_test_data,
-    optimizer = "automatic" # fails to converge with "bobyqa"
+    optimizer = "automatic"
   )
   testthat::expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
