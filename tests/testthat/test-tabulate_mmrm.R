@@ -421,7 +421,7 @@ testthat::test_that("tidy.mmrm works as expected when treatment is not considere
     conf_level = 0.95
   )
   testthat::expect_is(result_one_row, "data.frame")
-  testthat::expect_equivalent(as.data.frame(result_one_row), as.data.frame(expected_one_row), tolerance = 0.001)
+  testthat::expect_equivalent(result_one_row, expected_one_row, tolerance = 0.001)
 })
 
 testthat::test_that("s_mmrm_lsmeans works as expected when not in reference column", {
