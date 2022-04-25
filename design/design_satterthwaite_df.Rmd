@@ -20,7 +20,6 @@ library(dplyr)
 library(r2stream)
 library(scda)
 library(glmmTMB)
-
 ```
 
 ## Data for example comparison
@@ -29,7 +28,7 @@ library(glmmTMB)
 ```{r}
 adqs <- synthetic_cdisc_data("latest")$adqs
 adqs_f <- adqs %>%
-  dplyr::filter(PARAMCD == "FKSI-FWB" & AVISIT %in% c("WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22")) %>%
+  dplyr::filter(PARAMCD == "FKSI-FWB" & AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22")) %>%
   droplevels() %>%
   dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
   dplyr::mutate(
@@ -47,6 +46,7 @@ formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 ### Using the lme4 / lmerTest package to get the Satterthwaite df (Current `tern.mmrm` implementation)
 
 Results: Model did not converge for both `scda` and `random.cdisc.data` using all `AVISIT` values in datasets. Hence, for this example comparison, only "WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22" were filtered in the dataset.
+
 ```{r}
 mmrm_results <- fit_mmrm(
   vars = list(
@@ -59,10 +59,8 @@ mmrm_results <- fit_mmrm(
   data = adqs_f,
   cor_struct = "unstructured",
   weights_emmeans = "equal",
-  optimizer = "automatic" #need an optimizer here for model to converge
+  optimizer = "automatic" # need an optimizer here for model to converge
 )
-
-# optimizer options “automatic”, “nloptwrap_neldermead”, “nloptwrap_bobyqa”, “nlminbwrap”, “bobyqa”, “neldermead”, “nmkbw”, “optimx_lbfgsb”
 
 df <- tidy(mmrm_results)
 attr(df$AVISIT, "label") <- "Visit"
@@ -79,8 +77,6 @@ result <- basic_table() %>%
   build_table(df)
 
 result
-
-
 ```
 ### Using SAS
 
@@ -92,8 +88,6 @@ sascode <- list(
   #   PROC CONTENTS DATA = ana.dat;
   #   RUN;
   # "
-  
-  
   "test" = "
     PROC MIXED DATA = ana.dat cl method=reml;
       CLASS USUBJID STRATA1 BMRKR2 AVISIT ARMCD;
@@ -106,16 +100,14 @@ sascode <- list(
 
 
 result <- r2stream::bee_sas(data = list("dat" = adqs_f), sascode = sascode)
-
 ```
-
 
 ```{r, eval = FALSE}
 result$test$sas_log
 result$test$sas_out
 
 # The results from SAS are below
-# 
+#
 #  [588] "                                                        Least Squares Means"
 #  [589] " "
 #  [590] "                                  Planned"
@@ -143,7 +135,6 @@ result$test$sas_out
 #  [612] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 1 DAY 8    ARM C       1.0698     0.9779    392      1.09     0.2746     0.05"
 #  [613] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 2 DAY 15   ARM A      -4.7720     1.0331    397     -4.62     <.0001     0.05"
 #  [614] "    AVISIT*ARMCD   WEEK 1 DAY 8    ARM A     WEEK 2 DAY 15   ARM B      -4.8440     1.0296    781     -4.70     <.0001     0.05"
-       
 ```
 
 
@@ -153,18 +144,17 @@ result$test$sas_out
 
 ```{r}
 fit <- glmmTMB(
-  formula = AVAL ~ STRATA1 +BMRKR2 + ARMCD + ARMCD + AVISIT + ARMCD*AVISIT + us(0 + AVISIT | USUBJID),
+  formula = AVAL ~ STRATA1 + BMRKR2 + ARMCD + ARMCD + AVISIT + ARMCD * AVISIT + us(0 + AVISIT | USUBJID),
   data = adqs_f,
   dispformula = ~0,
-  REML = TRUE, #whether to use REML estimation rather than maximum likelihood.
+  REML = TRUE, # whether to use REML estimation rather than maximum likelihood.
   # start = NULL,
   control = glmmTMB::glmmTMBControl(optimizer = optim, optArgs = list(method = "L-BFGS-B"), parallel = 1)
 )
 
 lsmeans <- emmeans::emmeans(fit,
-                              specs = c("ARMCD","AVISIT"),
-                              data=adqs_f)
+  specs = c("ARMCD", "AVISIT"),
+  data = adqs_f
+)
 lsmeans
 ```
-
-
