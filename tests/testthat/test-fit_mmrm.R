@@ -1,40 +1,34 @@
-library(scda)
 library(dplyr)
 
-data <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
-
 testthat::test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
-  data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
-
   # No additional covariates.
   vars1 <- list(
-    response = "AVAL",
+    response = "FEV1",
     covariates = c(),
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   )
-  testthat::expect_silent(result1 <- check_mmrm_vars(vars1, data))
+  testthat::expect_silent(result1 <- check_mmrm_vars(vars1, mmrm_test_data))
   expected1 <- list(
-    response = c(AVAL = "Analysis Value"),
-    id = c(USUBJID = "Unique Subject Identifier"),
-    arm = c(ARM = "ARM"),
-    visit = c(AVISIT = "Analysis Visit")
+    response = c(FEV1 = "FEV1"),
+    id = c(USUBJID = "USUBJID"),
+    arm = c(ARMCD = "ARMCD"),
+    visit = c(AVISIT = "AVISIT")
   )
   testthat::expect_identical(result1, expected1)
 
   # Additional covariates.
   vars2 <- vars1
-  vars2$covariates <- c("STRATA1", "BMRKR2")
-  testthat::expect_silent(result2 <- check_mmrm_vars(vars2, data))
+  vars2$covariates <- c("RACE", "SEX", "FEV1_BL")
+  testthat::expect_silent(result2 <- check_mmrm_vars(vars2, mmrm_test_data))
   expected2 <- c(
     expected1,
     list(
       parts = c(
-        STRATA1 = "Stratification Factor 1",
-        BMRKR2 = "Categorical Level Biomarker 2"
+        RACE = "RACE",
+        SEX = "SEX",
+        FEV1_BL = "FEV1_BL"
       )
     )
   )
@@ -43,80 +37,80 @@ testthat::test_that("check_mmrm_vars passes with healthy inputs and returns corr
   # Without arm
   vars3 <- vars1
   vars3$arm <- NULL
-  testthat::expect_silent(result3 <- check_mmrm_vars(vars3, data))
+  testthat::expect_silent(result3 <- check_mmrm_vars(vars3, mmrm_test_data))
 
   expected3 <- list(
-    response = c(AVAL = "Analysis Value"),
-    id = c(USUBJID = "Unique Subject Identifier"),
-    visit = c(AVISIT = "Analysis Visit")
+    response = c(FEV1 = "FEV1"),
+    id = c(USUBJID = "USUBJID"),
+    visit = c(AVISIT = "AVISIT")
   )
   testthat::expect_identical(result3, expected3)
 })
 
 testthat::test_that("check_mmrm_vars works with interaction terms in `covariates`", {
-  data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE"))
-
   vars <- list(
-    response = "AVAL",
-    covariates = c("ARM*BMRKR1", "STRATA1", "STRATA1:ARM"),
+    response = "FEV1",
+    covariates = c("ARMCD*FEV1_BL", "SEX", "FEV1_BL:ARMCD"),
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   )
-  testthat::expect_silent(result <- check_mmrm_vars(vars, data))
+  testthat::expect_silent(result <- check_mmrm_vars(vars, mmrm_test_data))
   expected <- list(
-    response = c(AVAL = "Analysis Value"),
-    id = c(USUBJID = "Unique Subject Identifier"),
-    arm = c(ARM = "ARM"),
-    visit = c(AVISIT = "Analysis Visit"),
-    parts = c(ARM = "ARM", BMRKR1 = "Continous Level Biomarker 1", STRATA1 = "Stratification Factor 1")
+    response = c(FEV1 = "FEV1"),
+    id = c(USUBJID = "USUBJID"),
+    arm = c(ARMCD = "ARMCD"),
+    visit = c(AVISIT = "AVISIT"),
+    parts = c(
+      ARMCD = "ARMCD",
+      FEV1_BL = "FEV1_BL",
+      SEX = "SEX"
+    )
   )
   testthat::expect_identical(result, expected)
 })
 
 testthat::test_that("check_mmrm_vars works when there are missing values", {
   set.seed(123)
-  data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
+  data <- mmrm_test_data %>%
     dplyr::mutate(
       # Introduce extra missing response variable values.
-      AVAL = ifelse(
-        sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+      FEV1 = ifelse(
+        sample(c(TRUE, FALSE), size = length(FEV1), replace = TRUE, prob = c(0.1, 0.9)),
         NA,
-        AVAL
+        FEV1
       ),
       # And also covariate values.
-      BMRKR1 = ifelse(
-        sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+      FEV1_BL = ifelse(
+        sample(c(TRUE, FALSE), size = length(FEV1_BL), replace = TRUE, prob = c(0.1, 0.9)),
         NA,
-        BMRKR1
+        FEV1_BL
       )
     )
 
   vars <- list(
-    response = "AVAL",
-    covariates = c("ARM*BMRKR1", "STRATA1", "STRATA1:ARM"),
+    response = "FEV1",
+    covariates = c("ARMCD*FEV1_BL", "RACE", "RACE:ARMCD"),
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   )
   testthat::expect_silent(result <- check_mmrm_vars(vars, data))
   expected <- list(
-    response = c(AVAL = "AVAL"),
-    id = c(USUBJID = "Unique Subject Identifier"),
-    arm = c(ARM = "ARM"),
-    visit = c(AVISIT = "Analysis Visit"),
-    parts = c(ARM = "ARM", BMRKR1 = "BMRKR1", STRATA1 = "Stratification Factor 1")
+    response = c(FEV1 = "FEV1"),
+    id = c(USUBJID = "USUBJID"),
+    arm = c(ARMCD = "ARMCD"),
+    visit = c(AVISIT = "AVISIT"),
+    parts = c(
+      ARMCD = "ARMCD",
+      FEV1_BL = "FEV1_BL",
+      RACE = "RACE"
+    )
   )
   testthat::expect_identical(result, expected)
 })
 
 testthat::test_that("check_mmrm_vars fails if a variable is missing", {
-  data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   full_vars <- list(
     response = "AVAL",
     id = "USUBJID",
@@ -126,13 +120,11 @@ testthat::test_that("check_mmrm_vars fails if a variable is missing", {
   for (var in names(full_vars)) {
     incomplete_vars <- full_vars
     incomplete_vars[[var]] <- NULL
-    testthat::expect_error(check_mmrm_vars(incomplete_vars, data))
+    testthat::expect_error(check_mmrm_vars(incomplete_vars, mmrm_test_data))
   }
 })
 
 testthat::test_that("check_mmrm_vars fails if a variable is not included in `data`", {
-  data <- data %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   vars <- list(
     response = "AVAL",
     id = "USUBJID",
@@ -142,9 +134,9 @@ testthat::test_that("check_mmrm_vars fails if a variable is not included in `dat
 
   for (var in names(vars)) {
     var_name <- vars[[var]]
-    incomplete_data <- data
+    incomplete_data <- mmrm_test_data
     incomplete_data[[var_name]] <- NULL
-    testthat::expect_error(check_mmrm_vars(vars, incomplete_data))
+    testthat::expect_error(check_mmrm_vars(vars, mmrm_test_data))
   }
 })
 
@@ -472,20 +464,16 @@ testthat::test_that("fit_lme4 fails when there are convergence issues with a spe
 testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   skip_if_too_deep(5)
 
-  data <- data %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
-    droplevels() %>%
-    dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")))
   vars <- list(
-    response = "AVAL",
+    response = "FEV1",
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   )
   fit <- fit_lme4(
-    formula = AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID),
-    data = data,
-    optimizer = "bobyqa"
+    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+    data = mmrm_test_data,
+    optimizer = "automatic"
   )
   testthat::expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
@@ -501,34 +489,18 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
   skip_if_too_deep(5)
 
-  data <- data %>%
-    dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
-    droplevels() %>%
-    dplyr::mutate(
-      ARM = factor(
-        ARM,
-        levels = c("B: Placebo", "A: Drug X", "C: Combination")
-      )
-    )
-
-  data$ARM <- combine_levels( # nolint
-    data$ARM,
-    levels = c("A: Drug X", "C: Combination")
-  )
-
   vars <- list(
-    response = "AVAL",
+    response = "FEV1",
     id = "USUBJID",
-    arm = "ARM",
+    arm = "ARMCD",
     visit = "AVISIT"
   )
 
   fit <- fit_lme4(
-    formula = AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID),
-    data = data,
-    optimizer = "bobyqa"
+    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+    data = mmrm_test_data,
+    optimizer = "automatic"
   )
-
 
   result <- get_mmrm_lsmeans(
     fit = fit,
@@ -537,8 +509,8 @@ testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
     weights = "proportional"
   )
 
-  testthat::expect_identical(levels(data$ARM), levels(result$estimates$ARM))
-  testthat::expect_identical(levels(data$ARM)[-1], levels(result$contrasts$ARM))
+  testthat::expect_identical(levels(mmrm_test_data$ARMCD), levels(result$estimates$ARMCD))
+  testthat::expect_identical(levels(mmrm_test_data$ARMCD)[-1], levels(result$contrasts$ARMCD))
 })
 
 
@@ -588,7 +560,7 @@ expect_equal_result_tables <- function(result,
   )
 
   # Then compare p-values which are not below the threshold in the expected table.
-  exp_pval_is_below_thresh <- expected[, pval_col] == 0
+  exp_pval_is_below_thresh <- expected[, pval_col] < pval_threshold
   testthat::expect_equal(
     result[, pval_col][!exp_pval_is_below_thresh],
     expected[, pval_col][!exp_pval_is_below_thresh],
@@ -606,39 +578,25 @@ expect_equal_result_tables <- function(result,
 # Produces different version of a ADQS subset.
 get_adqs <- function(version = c("A", "B")) {
   version <- match.arg(version)
-  adqs <- data
+  adqs <- mmrm_test_data
   set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
   adqs_f <- adqs %>%
-    { # nolint
-      if (version == "A") {
-        dplyr::filter(., .data$PARAMCD == "FKSI-FWB" & !.data$AVISIT %in% c("BASELINE"))
-      } else {
-        dplyr::filter(., .data$PARAMCD == "FATIGI" & !.data$AVISIT %in% c("BASELINE", "SCREENING"))
-      }
-    } %>%
     droplevels() %>%
-    dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM A", "ARM C"))) %>%
-    dplyr::mutate(
-      AVISITN = rank(AVISITN) %>%
-        as.factor() %>%
-        as.numeric() %>%
-        as.factor()
-    ) %>%
     { # nolint
       if (version == "B") {
         dplyr::mutate(
           .,
           # Introduce extra missing response variable values.
-          AVAL = ifelse(
-            sample(c(TRUE, FALSE), size = length(AVAL), replace = TRUE, prob = c(0.1, 0.9)),
+          FEV1 = ifelse(
+            sample(c(TRUE, FALSE), size = length(FEV1), replace = TRUE, prob = c(0.1, 0.9)),
             NA,
-            AVAL
+            FEV1
           ),
           # And also covariate values.
-          BMRKR1 = ifelse(
-            sample(c(TRUE, FALSE), size = length(BMRKR1), replace = TRUE, prob = c(0.1, 0.9)),
+          FEV1_BL = ifelse(
+            sample(c(TRUE, FALSE), size = length(FEV1_BL), replace = TRUE, prob = c(0.1, 0.9)),
             NA,
-            BMRKR1
+            FEV1_BL
           )
         )
       } else {
@@ -661,8 +619,8 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
 
   mmrm_results <- fit_mmrm(
     vars = list(
-      response = "AVAL",
-      covariates = c("STRATA1", "BMRKR2"),
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
       id = "USUBJID",
       arm = "ARMCD",
       visit = "AVISIT"
@@ -685,7 +643,7 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
   # REML criterion value.
   testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
-    17672.9,
+    3429.306,
     tol = 0.0001
   )
 
@@ -695,28 +653,19 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
 
   expected_fixed_effects <- data.frame(
     Estimate = c(
-      45.778, -0.1907, -0.3187, -0.3822, -0.8639, -0.6115, -0.4568,
-      9.1165, 14.7637, 19.1756, 23.731, 29.1319, 1.3369, 0.1241, 0.4617,
-      -0.1766, 3.0454, 2.6914, 1.955, 1.8577, 2.0059, 0.6498
+      25.721040582, -0.003946099, 0.171675073, 4.664924551, 4.857505880,
+      10.330361227, 15.371284868, -0.297149896, -1.097545882, 0.347873893
     ),
     df = c(
-      543, 393, 393, 393, 393, 398, 398, 397, 397, 397, 397, 397,
-      397, 397, 397, 397, 397, 397, 397, 397, 397, 397
+      252.8452, 173.0341, 192.3215, 142.4618, 141.4361, 154.8617, 137.4111, 136.2043, 157.6647, 128.6973
     ),
     "Pr(>|t|)" = c(
-      0, 0.6916, 0.5014, 0.4167, 0.0688, 0.5583, 0.663, 0, 0, 0,
-      0, 0, 0.3412, 0.9298, 0.7601, 0.9074, 0.0607, 0.0985, 0.2619,
-      0.2881, 0.2581, 0.715
+      3.645436e-41, 9.946610e-01, 4.772246e-07, 3.663454e-05, 1.229094e-08,
+      8.063096e-25, 2.730408e-22, 7.931854e-01, 3.663117e-01, 8.516917e-01
     ),
     row.names = c(
-      "(Intercept)", "STRATA1B", "STRATA1C", "BMRKR2MEDIUM", "BMRKR2HIGH",
-      "ARMCDARM A", "ARMCDARM C", "AVISITWEEK 1 DAY 8", "AVISITWEEK 2 DAY 15",
-      "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
-      "ARMCDARM A:AVISITWEEK 1 DAY 8", "ARMCDARM C:AVISITWEEK 1 DAY 8",
-      "ARMCDARM A:AVISITWEEK 2 DAY 15", "ARMCDARM C:AVISITWEEK 2 DAY 15",
-      "ARMCDARM A:AVISITWEEK 3 DAY 22", "ARMCDARM C:AVISITWEEK 3 DAY 22",
-      "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
-      "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
+      "(Intercept)", "SEXFemale", "FEV1_BL", "ARMCDTRT", "AVISITVIS2",
+      "AVISITVIS3", "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3", "ARMCDTRT:AVISITVIS4"
     ),
     check.names = FALSE # Necessary to get right p-value column name.
   )
@@ -730,27 +679,21 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
   lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-      labels = c("ARM B", "ARM A", "ARM C"),
+      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+      labels = c("PBO", "TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L, 6L, 6L, 6L),
-      labels = c("SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
+      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4"),
     ),
     estimate = c(
-      45.1928, 44.5813, 44.7361, 54.3093, 55.0347, 53.9767, 59.9566,
-      59.8068, 59.3232, 64.3685, 66.8024, 66.6031, 68.9239, 70.2673,
-      70.3249, 74.3247, 75.7191, 74.5178
+      32.62658, 37.29150, 37.48409, 41.85186, 42.95694, 46.52432, 47.99786, 53.01066
     ),
     lower_cl = c(
-      43.7422, 43.1316, 43.2759, 52.9548, 53.6811, 52.6134, 58.451,
-      58.302, 57.8076, 62.6578, 65.0925, 64.8808, 66.9695, 68.3136,
-      68.3568, 72.2462, 73.6411, 72.4245
+      31.11091, 35.74777, 36.28937, 40.66389, 41.94015, 45.39704, 45.61267, 50.61908
     ),
     upper_cl = c(
-      46.6435, 46.0311, 46.1962, 55.6639, 56.3884, 55.3399, 61.4622,
-      61.3116, 60.8388, 66.0791, 68.5123, 68.3254, 70.8782, 72.2211,
-      72.2929, 76.4033, 77.797, 76.611
+      34.14225, 38.83523, 38.67881, 43.03983, 43.97373, 47.65160, 50.38305, 55.40224
     )
   )
   testthat::expect_equal(
@@ -763,30 +706,18 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
     mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
-      labels = c("ARM A", "ARM C"),
+      c(1L, 1L, 1L, 1L),
+      labels = c("TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L, 6L, 6L),
-      labels = c("SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+      c(1L, 2L, 3L, 4),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4")
     ),
-    estimate = c(
-      -0.6115, -0.4568, 0.7254, -0.3327, -0.1498, -0.6334, 2.4339,
-      2.2346, 1.3435, 1.401, 1.3944, 0.193
-    ),
-    df = c(398, 398, 396, 396, 393, 393, 397, 396, 398, 398, 397, 397),
-    lower_cl = c(
-      -2.6636, -2.5161, -1.1909, -2.2556, -2.2797, -2.7707, 0.0142,
-      -0.1938, -1.4209, -1.3734, -1.5456, -2.7576
-    ),
-    upper_cl = c(
-      1.4407, 1.6026, 2.6417, 1.5902, 1.9801, 1.504, 4.8537, 4.663,
-      4.1078, 4.1754, 4.3343, 3.1437
-    ),
-    p_value = c(
-      0.5583, 0.663, 0.4572, 0.7339, 0.8901, 0.5605, 0.0487, 0.0712,
-      0.3399, 0.3214, 0.3517, 0.8977
-    )
+    estimate = c(4.664925, 4.367775, 3.567379, 5.012798),
+    df = c(142.4618, 144.9654, 131.2891, 134.3704),
+    lower_cl = c(2.501359, 2.683056, 2.051229, 1.635537),
+    upper_cl = c(6.828490, 6.052493, 5.083528, 8.390059),
+    p_value = c(3.663454e-05, 9.386112e-07, 7.837380e-06, 3.917510e-03)
   )
   expect_equal_result_tables(
     lsmeans_contrasts,
@@ -798,14 +729,13 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
   cov_estimate <- mmrm_results$cov_estimate
   expected_cov_estimate <- matrix(
     c(
-      72.7336, 2.1239, -0.9334, -0.8405, 1.0401, 6.0476,
-      2.1239, 63.3863, -0.6263, 2.7491, -1.5392, 0.3819, -0.9334, -0.6263,
-      78.3635, 1.532, -12.1098, -0.6274, -0.8405, 2.7491, 1.532, 101.23,
-      -5.975, 7.0188, 1.0401, -1.5392, -12.1098, -5.975, 132.2, -5.5353,
-      6.0476, 0.3819, -0.6274, 7.0188, -5.5353, 149.56
+      42.883581, 15.519333,  8.057128, 16.593116,
+      15.519333, 26.628885,  4.627223, 10.074424,
+      8.057128,  4.627223, 19.203109,  7.785749,
+      16.593116, 10.074424,  7.785749, 99.811086
     ),
-    nrow = 6L,
-    ncol = 6L
+    nrow = 4L,
+    ncol = 4L
   )
   testthat::expect_equal(
     cov_estimate,
@@ -817,7 +747,7 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
   # Diagnostics.
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
-  expected_diagnostics_values <- c(17672.9, 17714.9, 17715.3, 17798.7)
+  expected_diagnostics_values <- c(3429.306, 3449.306, 3449.733, 3482.138)
   testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
@@ -832,13 +762,13 @@ testthat::test_that("fit_mmrm works also with missing data", {
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(stats::na.omit(adqs_f)),
-    265L
+    440L
   ))
 
   mmrm_results <- fit_mmrm(
     vars = list(
-      response = "AVAL",
-      covariates = "BMRKR1",
+      response = "FEV1",
+      covariates = "FEV1_BL",
       id = "USUBJID",
       arm = "ARMCD",
       visit = "AVISIT"
@@ -861,7 +791,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
   # REML criterion value.
   testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
-    12003.9,
+    2791.552,
     tol = 0.00001
   )
 
@@ -871,25 +801,18 @@ testthat::test_that("fit_mmrm works also with missing data", {
 
   expected_fixed_effects <- data.frame(
     Estimate = c(
-      54.3624, 0.07187, 0.8587, -0.2784, 3.6532, 8.619, 16.5113,
-      19.3103, 1.9357, 1.8384, -0.3365, 1.5316, -2.6048, -1.0245, -1.1721,
-      2.5177
+      25.7381227, 0.1632488, 4.4265387, 4.5699130, 10.8910287, 14.7393256, 0.4212233, -1.0617322, 1.9545650
     ),
     df = c(
-      411, 390, 311, 311, 365, 371, 366, 333, 363, 374, 358, 378,
-      357, 370, 333, 350
+      231.3171, 173.0245, 120.2030, 126.5597, 132.3372, 125.3761, 124.6140, 127.8502, 111.1961
     ),
     "Pr(>|t|)" = c(
-      0, 0.299, 0.4337, 0.8064, 0.0016, 0, 0, 0, 0.2341, 0.263, 0.8465,
-      0.3978, 0.1459, 0.5731, 0.5639, 0.2378
+      3.446983e-40, 2.491892e-06, 1.811658e-04, 9.441030e-07, 1.087251e-22, 1.244173e-18,
+      7.409659e-01, 4.202541e-01, 3.297910e-01
     ),
     row.names = c(
-      "(Intercept)", "BMRKR1", "ARMCDARM A", "ARMCDARM C", "AVISITWEEK 2 DAY 15",
-      "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
-      "ARMCDARM A:AVISITWEEK 2 DAY 15", "ARMCDARM C:AVISITWEEK 2 DAY 15",
-      "ARMCDARM A:AVISITWEEK 3 DAY 22", "ARMCDARM C:AVISITWEEK 3 DAY 22",
-      "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
-      "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
+      "(Intercept)", "FEV1_BL", "ARMCDTRT", "AVISITVIS2", "AVISITVIS3",
+      "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3", "ARMCDTRT:AVISITVIS4"
     ),
     check.names = FALSE # Necessary to get right p-value column name.
   )
@@ -903,27 +826,21 @@ testthat::test_that("fit_mmrm works also with missing data", {
   lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-      labels = c("ARM B", "ARM A", "ARM C"),
+      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+      labels = c("PBO", "TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
-      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
+      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4"),
     ),
     estimate = c(
-      54.7786, 55.6373, 54.5002, 58.4318, 61.2261, 59.9917, 63.3977,
-      63.9199, 64.6508, 71.2899, 69.5438, 69.987, 74.089, 73.7756,
-      76.3282
+      32.26162, 36.68816, 36.83153, 41.67930, 43.15265, 46.51746, 47.00095, 53.38205
     ),
     lower_cl = c(
-      53.2579, 54.11, 52.8644, 56.7255, 59.5276, 58.338, 61.5672,
-      62.2407, 62.7936, 69.3391, 67.6101, 68.0361, 71.6637, 71.4754,
-      73.7687
+      30.69289, 35.05131, 35.59335, 40.42744, 41.98076, 45.32000, 44.46010, 50.83683
     ),
     upper_cl = c(
-      56.2994, 57.1647, 56.136, 60.1381, 62.9247, 61.6455, 65.2281,
-      65.599, 66.5081, 73.2408, 71.4775, 71.9378, 76.5142, 76.0758,
-      78.8876
+      33.83035, 38.32501, 38.06971, 42.93116, 44.32454, 47.71491, 49.54179, 55.92727
     )
   )
   testthat::expect_equal(
@@ -936,29 +853,25 @@ testthat::test_that("fit_mmrm works also with missing data", {
     mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
-      labels = c("ARM A", "ARM C"),
+      c(1L, 1L, 1L, 1L),
+      labels = c("TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L),
-      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+      c(1L, 2L, 3L, 4),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4")
     ),
     estimate = c(
-      0.8587, -0.2784, 2.7943, 1.5599, 0.5222, 1.2532, -1.7461, -1.303,
-      -0.3134, 2.2392
+      4.426539, 4.847762, 3.364807, 6.381104
     ),
-    df = c(311, 311, 327, 327, 330, 330, 327, 326, 319, 320),
+    df = c(120.2030, 117.2153, 102.9251, 112.9055),
     lower_cl = c(
-      -1.2969, -2.5123, 0.3867, -0.8163, -1.9619, -1.3544, -4.4937,
-      -4.0616, -3.656, -1.2869
+      2.158514, 3.086858, 1.689262, 2.784753
     ),
     upper_cl = c(
-      3.0143, 1.9554, 5.202, 3.9361, 3.0063, 3.8607, 1.0014, 1.4556,
-      3.0292, 5.7654
+      6.694563, 6.608666, 5.040351, 9.977455
     ),
     p_value = c(
-      0.4337, 0.8064, 0.0231, 0.1975, 0.6795, 0.3451, 0.2121, 0.3535,
-      0.8538, 0.2124
+      1.811658e-04, 2.801930e-07, 1.272328e-04, 6.333528e-04
     )
   )
   expect_equal_result_tables(
@@ -971,13 +884,13 @@ testthat::test_that("fit_mmrm works also with missing data", {
   cov_estimate <- mmrm_results$cov_estimate
   expected_cov_estimate <- matrix(
     c(
-      65.795, 2.0168, -7.5115, -1.5288, -1.0866, 2.0168,
-      80.6114, 1.3116, 6.8224, 4.6945, -7.5115, 1.3116, 91.1282, -2.9056,
-      -7.5785, -1.5288, 6.8224, -2.9056, 107.34, 9.3734, -1.0866, 4.6945,
-      -7.5785, 9.3734, 162.82
+      39.463808, 11.690001, 8.133941, 15.745417,
+      11.690001, 23.329029, 2.735221, 8.645571,
+      8.133941, 2.735221, 18.780584, 7.839711,
+      15.745417, 8.645571, 7.839711, 94.703091
     ),
-    nrow = 5L,
-    ncol = 5L
+    nrow = 4L,
+    ncol = 4L
   )
   testthat::expect_equal(
     cov_estimate,
@@ -989,7 +902,7 @@ testthat::test_that("fit_mmrm works also with missing data", {
   # Diagnostics.
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
-  expected_diagnostics_values <- c(12003.9, 12033.9, 12034.2, 12093.8)
+  expected_diagnostics_values <- c(2791.552, 2811.552, 2812.076, 2844.282)
   testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
@@ -1002,13 +915,13 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
   adqs_f <- get_adqs(version = "B")
   stopifnot(identical(
     nrow(stats::na.omit(adqs_f)),
-    265L
+    440L
   ))
 
   mmrm_results <- fit_mmrm(
     vars = list(
-      response = "AVAL",
-      covariates = "BMRKR1",
+      response = "FEV1",
+      covariates = "FEV1_BL",
       id = "USUBJID",
       arm = "ARMCD",
       visit = "AVISIT"
@@ -1030,7 +943,7 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
   # REML criterion value.
   testthat::expect_equal(
     lme4::REMLcrit(mmrm_results$fit),
-    12088.3,
+    2888.673,
     tol = 0.0001
   )
 
@@ -1040,25 +953,18 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
 
   expected_fixed_effects <- data.frame(
     Estimate = c(
-      54.6769, 0.01057, 0.9314, -0.1213, 3.6915, 8.632, 16.4946,
-      19.3054, 1.837, 1.6848, -0.3634, 1.3077, -2.609, -1.1365, -1.1479,
-      2.331
+      25.9032974, 0.1567089, 4.4368365, 4.7581709, 10.8380981, 14.7928207, 0.3221395, -0.9733533, 1.9690800
     ),
     df = c(
-      1489, 394, 1610, 1610, 1351, 1352, 1355, 1341, 1348, 1363,
-      1333, 1362, 1341, 1360, 1340, 1369
+      245.0971, 192.7569, 429.8670, 335.5291, 353.9999, 356.4097, 332.8183, 346.6242, 336.6210
     ),
     "Pr(>|t|)" = c(
-      0, 0.8855, 0.4943, 0.9316, 0.007, 0, 0, 0, 0.3418, 0.3889,
-      0.8486, 0.5103, 0.1746, 0.5622, 0.5478, 0.2432
+      5.338736e-33, 1.322295e-04, 3.997563e-04, 4.481823e-05, 6.025417e-18,
+      1.417764e-30, 8.451677e-01, 5.689422e-01, 2.353690e-01
     ),
     row.names = c(
-      "(Intercept)", "BMRKR1", "ARMCDARM A", "ARMCDARM C", "AVISITWEEK 2 DAY 15",
-      "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
-      "ARMCDARM A:AVISITWEEK 2 DAY 15", "ARMCDARM C:AVISITWEEK 2 DAY 15",
-      "ARMCDARM A:AVISITWEEK 3 DAY 22", "ARMCDARM C:AVISITWEEK 3 DAY 22",
-      "ARMCDARM A:AVISITWEEK 4 DAY 29", "ARMCDARM C:AVISITWEEK 4 DAY 29",
-      "ARMCDARM A:AVISITWEEK 5 DAY 36", "ARMCDARM C:AVISITWEEK 5 DAY 36"
+      "(Intercept)", "FEV1_BL", "ARMCDTRT", "AVISITVIS2", "AVISITVIS3",
+      "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3", "ARMCDTRT:AVISITVIS4"
     ),
     check.names = FALSE # Necessary to get right p-value column name.
   )
@@ -1072,26 +978,21 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
   lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-      labels = c("ARM B", "ARM A", "ARM C"),
+      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
+      labels = c("PBO", "TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L),
-      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36"),
+      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4"),
     ),
     estimate = c(
-      54.7381, 55.6694, 54.6168, 58.4295, 61.1979, 59.9931, 63.3701,
-      63.938, 64.5566, 71.2327, 69.555, 69.9749, 74.0435, 73.827, 76.2532
+      32.16546, 36.60229, 36.92363, 41.68260, 43.00356, 46.46704, 46.95828, 53.36419
     ),
     lower_cl = c(
-      52.8532, 53.776, 52.5886, 56.5186, 59.2956, 58.1415, 61.4409,
-      62.1698, 62.5992, 69.3389, 67.6778, 68.0813, 72.1323, 72.0149,
-      74.2355
+      30.47693, 34.83834, 35.20825, 39.94995, 41.21033, 44.63662, 45.22810, 51.63160
     ),
     upper_cl = c(
-      56.623, 57.5629, 56.645, 60.3405, 63.1002, 61.8448, 65.2992,
-      65.7062, 66.5139, 73.1264, 71.4322, 71.8685, 75.9546, 75.639,
-      78.2709
+      33.85398, 38.36625, 38.63900, 43.41526, 44.79678, 48.29746, 48.68845, 55.09679
     )
   )
   testthat::expect_equal(
@@ -1104,29 +1005,27 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
     mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
   expected_lsmeans_contrasts <- data.frame(
     ARMCD = factor(
-      c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
-      labels = c("ARM A", "ARM C"),
+      c(1L, 1L, 1L, 1L),
+      labels = c("TRT"),
     ),
     AVISIT = factor(
-      c(1L, 1L, 2L, 2L, 3L, 3L, 4L, 4L, 5L, 5L),
-      labels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
+      c(1L, 2L, 3L, 4),
+      labels = c("VIS1", "VIS2", "VIS3", "VIS4")
     ),
     estimate = c(
-      0.9314, -0.1213, 2.7684, 1.5636, 0.5679, 1.1865, -1.6776, -1.2577,
-      -0.2165, 2.2097
+      4.436837, 4.758976, 3.463483, 6.405917
     ),
-    df = c(1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610, 1610),
+    df = c(
+      429.8670, 429.6275, 430.7465, 429.8073
+    ),
     lower_cl = c(
-      -1.7406, -2.8904, 0.07199, -1.0973, -2.0492, -1.5616, -4.345,
-      -3.9353, -2.8502, -0.5697
+      1.9929345, 2.3207047, 0.9011265, 3.9577235
     ),
     upper_cl = c(
-      3.6033, 2.6479, 5.4647, 4.2245, 3.185, 3.9346, 0.9897, 1.4199,
-      2.4172, 4.9892
+      6.880739, 7.197247, 6.025840, 8.854110
     ),
     p_value = c(
-      0.4943, 0.9316, 0.0442, 0.2493, 0.6704, 0.3972, 0.2175, 0.357,
-      0.8719, 0.1191
+      3.997563e-04, 1.436671e-04, 8.183930e-03, 4.118787e-07
     )
   )
   expect_equal_result_tables(
@@ -1139,13 +1038,13 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
   cov_estimate <- mmrm_results$cov_estimate
   expected_cov_estimate <- matrix(
     c(
-      101.5635, 0.4235, 0.4235, 0.4235, 0.4235, 0.4235,
-      101.5635, 0.4235, 0.4235, 0.4235, 0.4235, 0.4235, 101.5635, 0.4235,
-      0.4235, 0.4235, 0.4235, 0.4235, 101.5635, 0.4235, 0.4235, 0.4235,
-      0.4235, 0.4235, 101.5635
+      44.532058, 9.022132, 9.022132, 9.022132,
+      9.022132, 44.532058, 9.022132, 9.022132,
+      9.022132, 9.022132, 44.532058, 9.022132,
+      9.022132, 9.022132, 9.022132, 44.532058
     ),
-    nrow = 5L,
-    ncol = 5L
+    nrow = 4L,
+    ncol = 4L
   )
   testthat::expect_equal(
     cov_estimate,
@@ -1157,7 +1056,7 @@ testthat::test_that("fit_mmrm works with compound symmetry covariance structure"
   # Diagnostics.
   diagnostics <- mmrm_results$diagnostics
   diagnostics_values <- unlist(diagnostics)
-  expected_diagnostics_values <- c(12088.3, 12092.3, 12092.4, 12100.3)
+  expected_diagnostics_values <- c(2888.673, 2892.673, 2892.701, 2899.219)
   testthat::expect_equal(
     diagnostics_values,
     expected_diagnostics_values,

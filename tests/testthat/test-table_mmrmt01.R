@@ -2,90 +2,77 @@
 
 library(dplyr)
 library(tern)
-library(scda)
 library(broom)
 
-adqs <- synthetic_cdisc_data("rcd_2021_05_05")$adqs
-adsl <- synthetic_cdisc_data("rcd_2021_05_05")$adsl
-
-# nolint start
-adqs_f <- adqs %>%
-  dplyr::filter(PARAMCD == "FKSI-FWB" & !AVISIT %in% c("BASELINE")) %>%
-  droplevels() %>%
-  dplyr::mutate(ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))) %>%
-  dplyr::mutate(AVISITN = rank(AVISITN) %>% as.factor() %>% as.numeric() %>% as.factor())
-# nolint end
-
 too_old_lme4 <- compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0
-
 
 mmrm_results <- if (too_old_lme4) {
   NULL
 } else {
   fit_mmrm(
     vars = list(
-      response = "AVAL",
-      covariates = c("STRATA2"),
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
       id = "USUBJID",
-      arm = "ARM",
+      arm = "ARMCD",
       visit = "AVISIT"
     ),
-    data = adqs_f,
+    data = mmrm_test_data,
     cor_struct = "unstructured",
     weights_emmeans = "proportional",
     optimizer = "automatic"
   )
 }
 
-
 testthat::test_that("LS means table is produced correctly", {
   testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
 
   df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = mmrm_results$ref_level) %>%
+    split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
     add_colcounts() %>%
     split_rows_by("AVISIT") %>%
     summarize_lsmeans(show_relative = "increase") %>%
-    build_table(df, alt_counts_df = adsl)
+    build_table(df, alt_counts_df = mmrm_test_data)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "", "SCREENING", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "WEEK 3 DAY 22", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "B: Placebo", "(N=134)",
-      "", "134", "45.233 (0.737)", "(43.784, 46.682)", "", "", "", "",
-      "", "134", "54.350 (0.691)", "(52.992, 55.707)", "", "", "", "",
-      "", "134", "59.997 (0.765)", "(58.494, 61.500)", "", "", "", "",
-      "", "134", "64.409 (0.866)", "(62.706, 66.112)", "", "", "", "",
-      "", "134", "68.964 (0.993)", "(67.012, 70.917)", "", "", "", "",
-      "", "134", "74.365 (1.057)", "(72.288, 76.442)", "", "", "", "",
-      "A: Drug X", "(N=134)",
-      "", "134", "44.567 (0.737)", "(43.118, 46.017)", "-0.666 (1.043)", "(-2.715, 1.384)", "-1.5%", "0.5235",
-      "", "134", "55.021 (0.691)", "(53.663, 56.379)", "0.671 (0.977)", "(-1.249, 2.591)", "1.2%", "0.4924",
-      "", "134", "59.793 (0.765)", "(58.289, 61.297)", "-0.204 (1.082)", "(-2.330, 1.922)", "-0.3%", "0.8504",
-      "", "134", "66.788 (0.866)", "(65.085, 68.492)", "2.380 (1.225)", "(-0.029, 4.788)", "3.7%", "0.0528",
-      "", "134", "70.253 (0.993)", "(68.300, 72.206)", "1.289 (1.405)", "(-1.472, 4.051)", "1.9%", "0.3593",
-      "", "134", "75.705 (1.057)", "(73.628, 77.783)", "1.340 (1.494)", "(-1.598, 4.278)", "1.8%", "0.3704",
-      "C: Combination", "(N=132)",
-      "", "132", "44.701 (0.743)", "(43.240, 46.162)", "-0.533 (1.047)", "(-2.591, 1.525)", "-1.2%", "0.6112",
-      "", "132", "53.941 (0.696)", "(52.572, 55.310)", "-0.409 (0.981)", "(-2.337, 1.520)", "-0.8%", "0.6772",
-      "", "132", "59.288 (0.771)", "(57.772, 60.803)", "-0.709 (1.086)", "(-2.844, 1.426)", "-1.2%", "0.5140",
-      "", "132", "66.568 (0.873)", "(64.851, 68.284)", "2.159 (1.230)", "(-0.259, 4.577)", "3.4%", "0.0800",
-      "", "132", "70.289 (1.001)", "(68.321, 72.257)", "1.325 (1.410)", "(-1.447, 4.098)", "1.9%", "0.3480",
-      "", "132", "74.482 (1.065)", "(72.389, 76.576)", "0.117 (1.500)", "(-2.832, 3.066)", "0.2%", "0.9378"
+      "", "", "VIS1",
+      "n", "Adjusted Mean (SE)", "95% CI",
+      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "VIS2", "n",
+      "Adjusted Mean (SE)", "95% CI", "Difference in Adjusted Means (SE)",
+      "95% CI", "Relative Increase (%)", "p-value (MMRM)",
+      "VIS3", "n", "Adjusted Mean (SE)",
+      "95% CI", "Difference in Adjusted Means (SE)", "95% CI",
+      "Relative Increase (%)", "p-value (MMRM)", "VIS4",
+      "n", "Adjusted Mean (SE)", "95% CI",
+      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "PBO", "(N=420)",
+      "", "68", "32.626 (0.767)",
+      "(31.111, 34.142)", "", "",
+      "", "", "",
+      "69", "37.484 (0.605)", "(36.289, 38.679)",
+      "", "", "",
+      "", "", "71",
+      "42.957 (0.514)", "(41.940, 43.974)", "",
+      "", "", "",
+      "", "67", "47.998 (1.206)",
+      "(45.613, 50.383)", "", "",
+      "", "", "TRT",
+      "(N=380)", "", "66",
+      "37.291 (0.781)", "(35.748, 38.835)", "4.665 (1.095)",
+      "(2.501, 6.828)", "14.3%", "<0.0001",
+      "", "71", "41.852 (0.600)",
+      "(40.666, 43.038)", "4.368 (0.852)", "(2.683, 6.052)",
+      "11.7%", "<0.0001", "",
+      "58", "46.524 (0.568)", "(45.400, 47.648)",
+      "3.567 (0.766)", "(2.051, 5.084)", "8.3%",
+      "<0.0001", "", "67",
+      "53.011 (1.209)", "(50.619, 55.402)", "5.013 (1.708)",
+      "(1.636, 8.390)", "10.4%", "0.0039"
     ),
-    .Dim = c(50L, 4L)
+    .Dim = c(34L, 3L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -97,26 +84,22 @@ testthat::test_that("Fixed effects table is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "(Intercept)", "STRATA2S2", "ARMA: Drug X", "ARMC: Combination",
-      "AVISITWEEK 1 DAY 8", "AVISITWEEK 2 DAY 15", "AVISITWEEK 3 DAY 22", "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36",
-      "ARMA: Drug X:AVISITWEEK 1 DAY 8", "ARMC: Combination:AVISITWEEK 1 DAY 8",
-      "ARMA: Drug X:AVISITWEEK 2 DAY 15", "ARMC: Combination:AVISITWEEK 2 DAY 15",
-      "ARMA: Drug X:AVISITWEEK 3 DAY 22", "ARMC: Combination:AVISITWEEK 3 DAY 22",
-      "ARMA: Drug X:AVISITWEEK 4 DAY 29", "ARMC: Combination:AVISITWEEK 4 DAY 29",
-      "ARMA: Drug X:AVISITWEEK 5 DAY 36", "ARMC: Combination:AVISITWEEK 5 DAY 36",
-      "Estimate", "45.2996", "-0.1302", "-0.6657", "-0.5326", "9.1165", "14.7637", "19.1756",
-      "23.7310", "29.1319", "1.3369", "0.1241", "0.4617", "-0.1766", "3.0454", "2.6914", "1.9550",
-      "1.8577", "2.0059", "0.6498", "Std. Error", "0.7620", "0.3862", "1.0426", "1.0468", "0.9920",
-      "1.0685", "1.1449", "1.2304", "1.2525", "1.4029", "1.4082", "1.5110", "1.5168", "1.6191",
-      "1.6252", "1.7400", "1.7466", "1.7713", "1.7780", "t value", "59.4468", "-0.3372", "-0.6385",
-      "-0.5088", "9.1898", "13.8177", "16.7488", "19.2875", "23.2596", "0.9529", "0.0881", "0.3055",
-      "-0.1164", "1.8809", "1.6560", "1.1235", "1.0636", "1.1324", "0.3655",
-      "df", "439", "396", "397", "397", "397", "397", "397", "397", "397", "397", "397", "397", "397",
-      "397", "397", "397", "397", "397", "397", "Pr(>|t|)", "<0.0001", "0.7362", "0.5235", "0.6112",
-      "<0.0001", "<0.0001", "<0.0001", "<0.0001", "<0.0001", "0.3412", "0.9298", "0.7601", "0.9074",
-      "0.0607", "0.0985", "0.2619", "0.2881", "0.2581", "0.7150"
+      "", "(Intercept)", "SEXFemale", "FEV1_BL", "ARMCDTRT",
+      "AVISITVIS2", "AVISITVIS3", "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3",
+      "ARMCDTRT:AVISITVIS4", "Estimate", "25.7210", "-0.0039", "0.1717",
+      "4.6649", "4.8575", "10.3304", "15.3713", "-0.2971",
+      "-1.0975", "0.3479", "Std. Error", "1.5822", "0.5889",
+      "0.0329", "1.0945", "0.8029", "0.8366", "1.3174",
+      "1.1312", "1.2114", "1.8569", "t value", "16.2561",
+      "-0.0067", "5.2130", "4.2621", "6.0501", "12.3482",
+      "11.6680", "-0.2627", "-0.9060", "0.1873", "df",
+      "253", "173", "192", "142", "141",
+      "155", "137", "136", "158", "129",
+      "Pr(>|t|)", "<0.0001", "0.9947", "<0.0001", "<0.0001",
+      "<0.0001", "<0.0001", "<0.0001", "0.7932", "0.3663",
+      "0.8517"
     ),
-    .Dim = c(20L, 6L)
+    .Dim = c(11L, 6L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -128,14 +111,11 @@ testthat::test_that("Covariance matrix table is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "SCREENING", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36",
-      "SCREENING", "72.8130", "2.4211", "-0.9076", "-1.1484", "1.0733", "6.0976", "WEEK 1 DAY 8", "2.4211",
-      "63.9014", "-0.3814", "2.6581", "-1.2883", "0.6494", "WEEK 2 DAY 15", "-0.9076", "-0.3814", "78.3489",
-      "1.1637", "-12.1309", "-0.6337", "WEEK 3 DAY 22", "-1.1484", "2.6581", "1.1637", "100.5352", "-6.3289",
-      "6.6827", "WEEK 4 DAY 29", "1.0733", "-1.2883", "-12.1309", "-6.3289", "132.1878", "-5.5313",
-      "WEEK 5 DAY 36", "6.0976", "0.6494", "-0.6337", "6.6827", "-5.5313", "149.5853"
+      "", "VIS1", "VIS2", "VIS3", "VIS4", "VIS1", "42.8836", "15.5193", "8.0571", "16.5931", "VIS2", "15.5193",
+      "26.6289", "4.6272", "10.0744", "VIS3", "8.0571", "4.6272", "19.2031", "7.7857", "VIS4", "16.5931", "10.0744",
+      "7.7857", "99.8111"
     ),
-    .Dim = c(7L, 7L)
+    .Dim = c(5L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
@@ -147,8 +127,9 @@ testthat::test_that("Model diagnostics table is produced correctly", {
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value", "17677.3763", "17719.3763",
-      "17719.7680", "17803.1971"
+      "", "REML criterion", "AIC", "AICc",
+      "BIC", "Diagnostic statistic value", "3429.3063", "3449.3063",
+      "3449.7326", "3482.1383"
     ),
     .Dim = c(5L, 2L)
   )
