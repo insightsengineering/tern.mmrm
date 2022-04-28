@@ -2,3 +2,5 @@
 .Rhistory
 docs
 inst/doc
+
+*.html
