@@ -91,6 +91,7 @@ repos:
           - rlang
           - rtables
           - stats
+          - tibble
           - broom
           - knitr
           - Matrix
