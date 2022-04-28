@@ -80,7 +80,6 @@ result <- basic_table() %>%
 result
 
 lsmeans_lme4 <- mmrm_results$lsmeans$estimate
-
 ```
 
 Coefficient Estimates
@@ -116,74 +115,74 @@ result <- r2stream::bee_sas(data = list("dat" = adqs_f), sascode = sascode)
 result$test$sas_log
 result$test$sas_out
 
-# ""                                                                                                                                      
-# [588] "                                                        Least Squares Means"                                                           
-# [589] " "                                                                                                                                     
-# [590] "                                  Planned"                                                                                             
-# [591] "                 Analysis         Arm                    Standard"                                                                     
-# [592] " Effect          Visit            Code       Estimate       Error      DF    t Value    Pr > |t|     Alpha       Lower       Upper"    
-# [593] ""                                                                                                                                      
-# [594] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM A       59.8226      0.7622     391      78.49      <.0001      0.05     58.3241     61.3210"    
-# [595] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM C       59.3272      0.7674     390      77.31      <.0001      0.05     57.8184     60.8361"    
-# [596] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM B       59.8945      0.7629     392      78.50      <.0001      0.05     58.3945     61.3944"    
-# [597] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM A       66.8182      0.8741     393      76.44      <.0001      0.05     65.0996     68.5367"    
-# [598] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM C       66.6071      0.8803     392      75.66      <.0001      0.05     64.8764     68.3378"    
-# [599] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM B       64.3064      0.8748     394      73.51      <.0001      0.05     62.5865     66.0262"    
-# [600] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM A       55.0505      0.6896     393      79.83      <.0001      0.05     53.6948     56.4062"    
-# [601] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM C       53.9807      0.6942     392      77.76      <.0001      0.05     52.6158     55.3456"    
-# [602] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM B       54.2473      0.6904     394      78.57      <.0001      0.05     52.8899     55.6046"    
-# [603] ""                                                                                                                                      
-# [604] ""                                                                                                                                      
-# [605] "                                                Differences of Least Squares Means"                                                    
-# [606] " "                                                                                                                                     
-# [607] "                                   Planned                   Planned"                                                                  
-# [608] "                   Analysis        Arm       Analysis        Arm                  Standard"                                            
-# [609] "    Effect         Visit           Code      Visit           Code      Estimate      Error     DF   t Value   Pr > |t|    Alpha"       
-# [610] ""                                                                                                                                      
-# [611] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 2 DAY 15   ARM C       0.4953     1.0810    390      0.46     0.6471     0.05"       
-# [612] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 2 DAY 15   ARM B     -0.07192     1.0795    393     -0.07     0.9469     0.05"       
-# [613] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 3 DAY 22   ARM A      -6.9956     1.1478    397     -6.09     <.0001     0.05"       
-# [614] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 3 DAY 22   ARM C      -6.7846     1.1639    772     -5.83     <.0001     0.05"       
+# ""
+# [588] "                                                        Least Squares Means"
+# [589] " "
+# [590] "                                  Planned"
+# [591] "                 Analysis         Arm                    Standard"
+# [592] " Effect          Visit            Code       Estimate       Error      DF    t Value    Pr > |t|     Alpha       Lower       Upper"
+# [593] ""
+# [594] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM A       59.8226      0.7622     391      78.49      <.0001      0.05     58.3241     61.3210"
+# [595] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM C       59.3272      0.7674     390      77.31      <.0001      0.05     57.8184     60.8361"
+# [596] " AVISIT*ARMCD    WEEK 2 DAY 15    ARM B       59.8945      0.7629     392      78.50      <.0001      0.05     58.3945     61.3944"
+# [597] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM A       66.8182      0.8741     393      76.44      <.0001      0.05     65.0996     68.5367"
+# [598] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM C       66.6071      0.8803     392      75.66      <.0001      0.05     64.8764     68.3378"
+# [599] " AVISIT*ARMCD    WEEK 3 DAY 22    ARM B       64.3064      0.8748     394      73.51      <.0001      0.05     62.5865     66.0262"
+# [600] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM A       55.0505      0.6896     393      79.83      <.0001      0.05     53.6948     56.4062"
+# [601] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM C       53.9807      0.6942     392      77.76      <.0001      0.05     52.6158     55.3456"
+# [602] " AVISIT*ARMCD    WEEK 1 DAY 8     ARM B       54.2473      0.6904     394      78.57      <.0001      0.05     52.8899     55.6046"
+# [603] ""
+# [604] ""
+# [605] "                                                Differences of Least Squares Means"
+# [606] " "
+# [607] "                                   Planned                   Planned"
+# [608] "                   Analysis        Arm       Analysis        Arm                  Standard"
+# [609] "    Effect         Visit           Code      Visit           Code      Estimate      Error     DF   t Value   Pr > |t|    Alpha"
+# [610] ""
+# [611] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 2 DAY 15   ARM C       0.4953     1.0810    390      0.46     0.6471     0.05"
+# [612] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 2 DAY 15   ARM B     -0.07192     1.0795    393     -0.07     0.9469     0.05"
+# [613] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 3 DAY 22   ARM A      -6.9956     1.1478    397     -6.09     <.0001     0.05"
+# [614] "    AVISIT*ARMCD   WEEK 2 DAY 15   ARM A     WEEK 3 DAY 22   ARM C      -6.7846     1.1639    772     -5.83     <.0001     0.05"
 
 
 
-#  "                                                     Solution for Fixed Effects"                                                       
-# [537] " "                                                                                                                                     
-# [538] "                                    Categorical                     Planned"                                                           
-# [539] "                  Stratification    Level          Analysis         Arm                    Standard"                                   
-# [540] "  Effect          Factor 1          Biomarker 2    Visit            Code       Estimate       Error      DF    t Value    Pr > |t|"    
-# [541] ""                                                                                                                                      
-# [542] "  Intercept                                                                     54.3982      0.8644     536      62.93      <.0001"    
-# [543] "  STRATA1         B                                                              0.2776      0.6463     393       0.43      0.6678"    
-# [544] "  STRATA1         C                                                             0.04540      0.6372     393       0.07      0.9432"    
-# [545] "  STRATA1         A                                                                   0           .       .        .         .    "    
-# [546] "  BMRKR2                            HIGH                                        -0.9818      0.6370     393      -1.54      0.1241"    
-# [547] "  BMRKR2                            MEDIUM                                       0.2061      0.6324     393       0.33      0.7447"    
-# [548] "  BMRKR2                            LOW                                               0           .       .        .         .    "    
-# [549] "  ARMCD                                                             ARM A        0.8033      0.9770     395       0.82      0.4115"    
-# [550] "  ARMCD                                                             ARM C       -0.2666      0.9801     394      -0.27      0.7858"    
-# [551] "  ARMCD                                                             ARM B             0           .       .        .         .    "    
-# [552] "  AVISIT                                           WEEK 2 DAY 15                 5.6472      1.0331     397       5.47      <.0001"    
-# [553] "  AVISIT                                           WEEK 3 DAY 22                10.0591      1.0897     397       9.23      <.0001"    
-# [554] "  AVISIT                                           WEEK 1 DAY 8                       0           .       .        .         .    "    
-# [556] ""                                                                                                                                      
-# [557] "                                                        The Mixed Procedure"                                                           
-# [558] ""                                                                                                                                      
-# [559] "                                                     Solution for Fixed Effects"                                                       
-# [560] " "                                                                                                                                     
-# [561] "                                    Categorical                     Planned"                                                           
-# [562] "                  Stratification    Level          Analysis         Arm                    Standard"                                   
-# [563] "  Effect          Factor 1          Biomarker 2    Visit            Code       Estimate       Error      DF    t Value    Pr > |t|"    
-# [564] ""                                                                                                                                      
-# [565] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM A       -0.8752      1.4610     397      -0.60      0.5495"    
-# [566] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM C       -0.3007      1.4665     397      -0.21      0.8377"    
-# [567] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM B             0           .       .        .         .    "    
-# [568] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM A        1.7085      1.5411     397       1.11      0.2682"    
-# [569] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM C        2.5673      1.5469     397       1.66      0.0978"    
-# [570] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM B             0           .       .        .         .    "    
-# [571] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM A             0           .       .        .         .    "    
-# [572] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM C             0           .       .        .         .    "    
-# [573] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM B             0           .       .        .         .    "         
+#  "                                                     Solution for Fixed Effects"
+# [537] " "
+# [538] "                                    Categorical                     Planned"
+# [539] "                  Stratification    Level          Analysis         Arm                    Standard"
+# [540] "  Effect          Factor 1          Biomarker 2    Visit            Code       Estimate       Error      DF    t Value    Pr > |t|"
+# [541] ""
+# [542] "  Intercept                                                                     54.3982      0.8644     536      62.93      <.0001"
+# [543] "  STRATA1         B                                                              0.2776      0.6463     393       0.43      0.6678"
+# [544] "  STRATA1         C                                                             0.04540      0.6372     393       0.07      0.9432"
+# [545] "  STRATA1         A                                                                   0           .       .        .         .    "
+# [546] "  BMRKR2                            HIGH                                        -0.9818      0.6370     393      -1.54      0.1241"
+# [547] "  BMRKR2                            MEDIUM                                       0.2061      0.6324     393       0.33      0.7447"
+# [548] "  BMRKR2                            LOW                                               0           .       .        .         .    "
+# [549] "  ARMCD                                                             ARM A        0.8033      0.9770     395       0.82      0.4115"
+# [550] "  ARMCD                                                             ARM C       -0.2666      0.9801     394      -0.27      0.7858"
+# [551] "  ARMCD                                                             ARM B             0           .       .        .         .    "
+# [552] "  AVISIT                                           WEEK 2 DAY 15                 5.6472      1.0331     397       5.47      <.0001"
+# [553] "  AVISIT                                           WEEK 3 DAY 22                10.0591      1.0897     397       9.23      <.0001"
+# [554] "  AVISIT                                           WEEK 1 DAY 8                       0           .       .        .         .    "
+# [556] ""
+# [557] "                                                        The Mixed Procedure"
+# [558] ""
+# [559] "                                                     Solution for Fixed Effects"
+# [560] " "
+# [561] "                                    Categorical                     Planned"
+# [562] "                  Stratification    Level          Analysis         Arm                    Standard"
+# [563] "  Effect          Factor 1          Biomarker 2    Visit            Code       Estimate       Error      DF    t Value    Pr > |t|"
+# [564] ""
+# [565] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM A       -0.8752      1.4610     397      -0.60      0.5495"
+# [566] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM C       -0.3007      1.4665     397      -0.21      0.8377"
+# [567] "  AVISIT*ARMCD                                     WEEK 2 DAY 15    ARM B             0           .       .        .         .    "
+# [568] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM A        1.7085      1.5411     397       1.11      0.2682"
+# [569] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM C        2.5673      1.5469     397       1.66      0.0978"
+# [570] "  AVISIT*ARMCD                                     WEEK 3 DAY 22    ARM B             0           .       .        .         .    "
+# [571] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM A             0           .       .        .         .    "
+# [572] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM C             0           .       .        .         .    "
+# [573] "  AVISIT*ARMCD                                     WEEK 1 DAY 8     ARM B             0           .       .        .         .    "
 ```
 
 
@@ -207,15 +206,13 @@ lsmeans_glmmtmb <- emmeans::emmeans(fit_glmmtmb,
   data = adqs_f
 )
 lsmeans_glmmtmb
-
 ```
 
 Coefficient Estimates
 ```{r}
 summary(fit_glmmtmb)
-
 ```
 
 ### Summary of Results
 
-In conclusion, the results between `lme4`,`glmmTMB` and `SAS` are pretty much identical up to at least 2 decimal places for the least square means, standard deviation, and confidence intervals. The model coefficient estimates are the same between `lme4`, `glmmTMB` and `SAS` to two and in some cases 3 decimal places.  
+In conclusion, the results between `lme4`,`glmmTMB` and `SAS` are pretty much identical up to at least 2 decimal places for the least square means, standard deviation, and confidence intervals. The model coefficient estimates are the same between `lme4`, `glmmTMB` and `SAS` to two and in some cases even to 3 decimal places.
