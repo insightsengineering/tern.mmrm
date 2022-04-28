@@ -33,7 +33,6 @@ Imports:
     rlang,
     rtables (>= 0.5.0),
     stats,
-    tibble,
     utils
 Suggests:
     broom,
