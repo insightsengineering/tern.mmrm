@@ -1,7 +1,6 @@
 # tern.mmrm 0.1.0.9001
 
-* Removed dependency on `purrr`. 
-* Removed dependency on `tibble`.
+* Removed dependency on `purrr` and `tibble`.
 * Removed dependency on `scda` and `scda.2022` and used `mmrm_test_data` as the sample dataset for tests and example apps.
 
 # tern.mmrm 0.1.0
