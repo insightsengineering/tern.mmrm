@@ -9,6 +9,7 @@ too_old_lme4 <- compareVersion(as.character(packageVersion("lme4")), "1.1.21") <
 mmrm_results <- if (too_old_lme4) {
   NULL
 } else {
+  skip_if_too_deep(5)
   fit_mmrm(
     vars = list(
       response = "FEV1",
