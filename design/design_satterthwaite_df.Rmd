@@ -1,8 +1,8 @@
 ---
 title: "Satterthwaite DF Example"
-author: "Julia Dedic"
-date: '`r Sys.Date()`'
 output: html_document
+editor_options:
+  chunk_output_type: console
 ---
 
 GOAL: To see if we get similar results between `lme4`, `glmmTMB` and `SAS` (not considering the df correction that needs to be done)
@@ -20,6 +20,7 @@ library(dplyr)
 library(r2stream)
 library(scda)
 library(glmmTMB)
+library(emmeans)
 ```
 
 ## Data for example comparison
@@ -201,17 +202,91 @@ fit_glmmtmb <- glmmTMB(
   control = glmmTMB::glmmTMBControl(optimizer = optim, optArgs = list(method = "L-BFGS-B"), parallel = 1)
 )
 
-lsmeans_glmmtmb <- emmeans::emmeans(fit_glmmtmb,
-  specs = c("ARMCD", "AVISIT"),
+lsmeans_glmmtmb <- emmeans(fit_glmmtmb,
+  specs = ~ ARMCD | AVISIT,
   data = adqs_f
 )
 lsmeans_glmmtmb
 ```
 
-Coefficient Estimates
+We can also look at the contrasts then easily:
+
+```{r}
+pairs(lsmeans_glmmtmb)
+```
+
+(Note that here of course the degrees of freedom are wrong.)
+
+Coefficient Estimates can be obtained with:
+
 ```{r}
 summary(fit_glmmtmb)
 ```
+
+### Visit averages with emmeans
+
+Let's try now to calculate averages of visits with emmeans for the
+`glmmTMB` result.
+
+The `contrast()` function in `emmeans` can be used to compute any linear functions
+of estimated marginal means (EMM), see https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html#linfcns
+for details.
+For this we cannot use the formula interface for `emmeans` as above, but first
+just specify the two variables involved here, i.e. arm and visit:
+
+```{r}
+lsmeans_general <- emmeans(fit_glmmtmb,
+  c("ARMCD", "AVISIT"),
+  data = adqs_f
+)
+lsmeans_general
+```
+
+Now based on this result we see the order of the marginal means, and similarly
+as in SAS, can specify the required linear combinations:
+
+```{r}
+contrast(
+  lsmeans_general,
+  list(
+    "ARM B Average W1D8 and W2D15" = c(1, 0, 0, 1, 0, 0, 0, 0, 0) / 2,
+    "ARM A Average W1D8 and W2D15" = c(0, 1, 0, 0, 1, 0, 0, 0, 0) / 2,
+    "ARM C Average W1D8 and W2D15" = c(0, 0, 1, 0, 0, 1, 0, 0, 0) / 2
+  )
+)
+```
+
+Obviously with this we can also estimate differences between the treatment arms.
+
+It is also possible to specify a `by` variable here which can be useful
+potentially:
+
+```{r}
+contrast(
+  lsmeans_general,
+  list(
+    "Average W1D8 and W2D15" = c(1, 1, 0) / 2
+  ),
+  by = "ARMCD"
+)
+```
+
+Another helpful tool could be to use grouping of factor levels.
+
+```{r}
+levels(lsmeans_general)
+lsmeans_with_grp <- add_grouping(
+  lsmeans_general,
+  newname = "AVISITGRP",
+  refname = "AVISIT",
+  newlevs = c("AVG W1D8 and W2D15", "AVG W1D8 and W2D15", NA)
+)
+lsmeans_by_avg_visit <- emmeans(lsmeans_with_grp, ~ ARMCD | AVISITGRP)
+lsmeans_by_avg_visit
+pairs(lsmeans_by_avg_visit)
+```
+
+So it is reassuring that the results are the same as above here.
 
 ### Summary of Results
 
