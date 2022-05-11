@@ -18,19 +18,16 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: NEST \email{basel.nestcicd@roche.com}
+\strong{Maintainer}: Joe Zhu \email{joe.zhu@roche.com}
 
 Authors:
 \itemize{
   \item Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
-  \item Godwin Yung \email{yungg@gene.com}
-  \item Francois Collin
-  \item Jana Stoilova \email{jana.stoilova@roche.com}
 }
 
 Other contributors:
 \itemize{
-  \item Roche [copyright holder, funder]
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
 }
 
 }
