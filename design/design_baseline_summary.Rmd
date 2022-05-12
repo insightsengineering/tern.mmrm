@@ -1,0 +1,85 @@
+---
+title: "Idea for baseline summary on top of LS means"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(lme4)
+library(tern.mmrm)
+
+dat <- sleepstudy %>%
+  mutate(
+    group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
+    days_grouped = cut(
+      Days,
+      breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
+      include.lowest = TRUE
+    ),
+    Subject = case_when(
+      group == "A" ~ as.character(Subject),
+      TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
+    )
+  ) %>%
+  distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
+
+result <- fit_mmrm(
+  vars = list(
+    response = "Reaction",
+    covariates = c(),
+    id = "Subject",
+    arm = "group",
+    visit = "days_grouped"
+  ),
+  data = dat,
+  cor_struct = "compound-symmetry",
+  parallel = TRUE
+)
+
+dat_adsl <- dat %>%
+  select(Subject, group) %>%
+  unique()
+
+# First have the ls means table.
+a <- basic_table() %>%
+  split_cols_by("group", ref_group = result$ref_level) %>%
+  add_colcounts() %>%
+  split_rows_by("days_grouped") %>%
+  summarize_lsmeans(show_relative = "increase") %>%
+  build_table(
+    df = broom::tidy(result),
+    alt_counts_df = dat_adsl
+  )
+rtables::table_structure(a)
+
+# second do the baseline table
+baseline_dat <- dat %>%
+  filter(Days == 0) %>%
+  mutate(days_grouped = droplevels(days_grouped))
+
+b <- basic_table() %>%
+  split_cols_by("group") %>%
+  add_colcounts() %>%
+  split_rows_by("days_grouped") %>%
+  summarize_vars("Reaction") %>%
+  build_table(
+    baseline_dat,
+    alt_counts_df = dat_adsl
+  )
+rtables::table_structure(b)
+rtables::table_structure(a)
+
+# Now we try to combine them.
+
+head(a)
+head(b)
+
+rbind(a, b)
+
+rtables:::col_info(a)
+rtables:::col_info(b)
+```
