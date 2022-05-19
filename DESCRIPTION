@@ -2,8 +2,11 @@ Package: tern.mmrm
 Title: MMRM interface for tern package
 Version: 0.1.0.9004
 Authors@R: c(
-    person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
-    person("Daniel", "Sabanes Bove", , "daniel.sabanes_bove@roche.com", role = "aut"),
+    person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
+    person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
+    person("Francois", "Collin", role = "aut"),
+    person("Jana", "Stoilova", , "jana.stoilova@roche.com", role = "aut"),
+    person("Joe", "Zhu", , "joe.zhu@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: MMRM interface for tern package.
