@@ -3,7 +3,7 @@ pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   tern-mmrm: tern-mmrm.html
-last_built: 2022-05-19T13:12Z
+last_built: 2022-05-24T15:38Z
 urls:
   reference: https://insightsengineering.github.io/tern.mmrm/reference
   article: https://insightsengineering.github.io/tern.mmrm/articles
