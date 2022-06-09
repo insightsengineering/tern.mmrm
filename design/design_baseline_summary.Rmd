@@ -62,7 +62,7 @@ baseline_dat <- dat %>%
   mutate(days_grouped = droplevels(days_grouped))
 
 b <- basic_table() %>%
-  split_cols_by("group") %>%
+  split_cols_by("group", ref_group = result$ref_level) %>%
   add_colcounts() %>%
   split_rows_by("days_grouped") %>%
   summarize_vars("Reaction") %>%
