@@ -1,0 +1,124 @@
+---
+title: "Covariance Plot"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+GOAL: Create a plot of the covariance matrix
+
+```{r, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Configuration
+```{r}
+library(ggplot2)
+```
+
+## Example Data Setup
+```{r}
+data(cholest)
+
+# Convert data between wide and long forms (each subject is now one row)
+cholest.w <- dcast(cholest, subjectID + group ~ week,value.var="ldl")
+
+# Variance-Covariance matrices
+cholest.cov <- cov(cholest.w[,c(3:ncol(cholest.w))],use="pairwise.complete.obs",method="pearson")
+```
+We need a helper function (`h_vectorization`) for downstream analyses for the plot of the covariance matrix. `h_vectorization` obtains lag and distance between pairs of observations when the column and row names of the input matrix have a numeric value denoting the time point. The columns and rows of the input matrix should be named by using the time point values only (ex. "0","3","9","15",...), or by a string (specified in the string argument) separated from the time point value by a period: (ex. "value.0","value.5","value.15",..., "resp.-1","resp.0.5","resp.1","resp.1.5", ...)
+
+#' @description This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix) 
+#' and obtains the lag and time distance between pairs of observations if the time values are part of 
+#' the names or are part of the matrix column/row names.
+#' @param d.matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @param string (`string`)\cr string in the column/row names of d.matrix that precedes the time point value. The default value is NULL, 
+#' which assumes that the   column/row names of the input matrix don't have any character
+#' string other than time point value. If string is specified, this value should appear in the column/row names 
+#' of the input matrix separated from the time point value by a period.
+#' @return This function returns a data frame with the upper-diagonal elements or a covariance or correlation 
+#' matrix. In the context of repeated measures, this matrix contains the association between pairs 
+#' of measurements taken at different time points.
+#' @examples
+#' h_vectorization(d.matrix=cholest.cov)
+```{r}
+h_vectorization  <- function(d.matrix,string=NULL){
+  if(!is.matrix(d.matrix)){ stop("d.matrix is not a matrix")
+  } else {
+    if(!isSymmetric(d.matrix)) stop("d.matrix should be a symetric matrix")  
+  }
+  resp.name <- paste(string,".",sep="")
+  diag <- upper.tri(d.matrix,diag=T)       
+  vect <- d.matrix[diag]                   
+  rnames <- rownames(d.matrix)             
+  cnames <- colnames(d.matrix)
+  nmat <- outer(rnames, cnames, paste, sep = ":")
+  names(vect) <- nmat[diag]
+  lab.t1 <- unlist(strsplit(names(vect), ":"))[seq(1,length(vect)*2,by=2)]  ## hyperfuntion
+  lab.t2 <- unlist(strsplit(names(vect), ":"))[seq(2,length(vect)*2,by=2)]
+  if(is.null(string)) {
+    if(any(is.na(as.numeric(lab.t1)))) { 
+      stop("You have not used the string argument when needed \n
+           or the col/row names of your input matrix don't have the time values")  
+    } else {
+      tp.1 <- as.numeric(lab.t1)
+      tp.2 <- as.numeric(lab.t2)
+    }
+  } else { 
+    if(!any(grepl(string,cnames))) { stop("The string you entered is not part of the column/row names of d.matrix")
+    } else{
+    tp.1 <- as.numeric(gsub(resp.name,"",lab.t1))
+    tp.2 <- as.numeric(gsub(resp.name,"",lab.t2))
+    }
+  }
+  tp.dist <- tp.2-tp.1
+  rnk.t1 <- as.numeric(as.factor(tp.1))
+  rnk.t2 <- as.numeric(as.factor(tp.2))
+  lag <- rnk.t2-rnk.t1
+  if(any(is.na(lag)) | any(is.na(tp.dist))) warning("Verify you have used the string argument correctly or that the columns and rows of your input matrix are named as expected")
+  vect <- data.frame(Vect=vect,tp.dist,lag,rnk.t1,rnk.t2)
+  return(vect)  
+}
+```
+
+Now we use this helper function as input for the function to create the covariance plot. 
+
+#' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
+#' needs to be vectorized and lag or time distances computed 
+#' @param  d.cov (`data frame`}\cr name of the data frame created by h_vectorization.
+#' @param {x.var} (`string`)\cr can be "lag" or "tp.dist" for lag and time distance respectively. The default value is "lag".
+#' @param legend.pos (`string`)\cr denoting where the legend should be shown. Option are c("topright","topleft","bottomright","bottomleft"). Default value is "topright"
+#' @examples
+#' g_covariance(d.cov = h_vectorization(d.matrix=cholest.cov), x.var="tp.dist")
+```{r}
+g_covariance <- function(d.cov,x.var=c("lag","tp.dist"),ylab="",
+                      xlab=NULL,col=tre.col,pch=NULL,lty=NULL,cex=2,
+                      legend.pos =c("topright","topleft","bottomright","bottomleft"),...) 
+{
+  tre.col <- c("#0080ff","#ff00ff","darkgreen","#ff0000","orange",
+               "#00ff00","brown")
+  x.var <- match.arg(x.var)
+  if(x.var=="lag" & is.null(xlab))
+    xlab <- "Lag"
+  if(x.var=="tp.dist" & is.null(xlab))
+    xlab <- "Distance (time units) btw measurements"
+  n.col <- length(unique(d.cov$lag))
+  ntp <- 1:max(d.cov$rnk.t1)
+  if(length(col)<n.col) col <- rep(col,n.col)
+  if(is.null(pch)) pch <- ntp
+  if(is.null(lty)) lty <- ntp
+  legend.pos <- match.arg(legend.pos)
+  if(legend.pos=="topright"){
+    my.corner <- c(1,1)
+  }else if(legend.pos=="topleft"){
+    my.corner <- c(0,1)
+  }else if(legend.pos=="bottomright"){
+    my.corner <- c(1,0)
+  }else if(legend.pos=="bottomleft"){
+    my.corner <- c(0,0)
+  }
+  ggplot2::ggplot(d.cov, aes(d.cov[,x.var], d.cov[,"Vect"], colour = as.factor(d.cov[,"rnk.t1"]), group = as.factor(d.cov[,"rnk.t1"]))) + geom_point() + geom_line() + labs(colour = "From time:", x = xlab, y = ylab)
+}
+```
+
+The example obtains covariance plot as expected!
