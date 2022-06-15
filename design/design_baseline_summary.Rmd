@@ -1,6 +1,8 @@
 ---
 title: "Idea for baseline summary on top of LS means"
 output: html_document
+editor_options:
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -54,15 +56,15 @@ a <- basic_table() %>%
     df = broom::tidy(result),
     alt_counts_df = dat_adsl
   )
-rtables::table_structure(a)
+table_structure(a)
 
 # second do the baseline table
 baseline_dat <- dat %>%
   filter(Days == 0) %>%
-  mutate(days_grouped = droplevels(days_grouped))
+  mutate(days_grouped = paste(droplevels(days_grouped), "values"))
 
 b <- basic_table() %>%
-  split_cols_by("group", ref_group = result$ref_level) %>%
+  split_cols_by("group") %>%
   add_colcounts() %>%
   split_rows_by("days_grouped") %>%
   summarize_vars("Reaction") %>%
@@ -70,16 +72,15 @@ b <- basic_table() %>%
     baseline_dat,
     alt_counts_df = dat_adsl
   )
-rtables::table_structure(b)
-rtables::table_structure(a)
+table_structure(b)
+table_structure(a)
 
 # Now we try to combine them.
 
 head(a)
 head(b)
 
-rbind(a, b)
-
-rtables:::col_info(a)
-rtables:::col_info(b)
+# We need a workaround to do that because the reference datasets are different.
+col_info(b) <- EmptyColInfo
+rbind(b, a)
 ```
