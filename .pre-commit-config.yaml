@@ -6,7 +6,7 @@ default_language_version:
   python: python3
 repos:
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.2.2.9009
+    rev: v0.3.1
     hooks:
       - id: style-files
         name: Style code with `styler`
@@ -16,6 +16,7 @@ repos:
         name: Regenerate package documentation
         additional_dependencies:
           - assertthat
+          - checkmate
           - dfoptim
           - generics
           - dplyr
@@ -35,6 +36,7 @@ repos:
           - Matrix
           - rmarkdown
           - testthat
+          - insightsengineering/tern
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -68,7 +70,8 @@ repos:
           (.*/|)staged_dependencies\.yaml|
           (.*/|)WORDLIST|
           \.github/.*\.yaml|
-          data/.*
+          data/.*|
+          design/.*|
           tests/testthat/_snaps/.*|
           )$
       - id: lintr
@@ -78,6 +81,7 @@ repos:
           )$
         additional_dependencies:
           - assertthat
+          - checkmate
           - dfoptim
           - generics
           - dplyr
@@ -97,6 +101,7 @@ repos:
           - Matrix
           - rmarkdown
           - testthat
+          - insightsengineering/tern
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >
@@ -110,7 +115,7 @@ repos:
           design/.*
           )$
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.3.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=200"]

@@ -489,6 +489,8 @@ fit_lme4 <- function(formula,
 #'
 #' @param fit result of [fit_lme4()].
 #' @inheritParams fit_mmrm
+#' @param averages (`list`)\cr named list of visit levels which should be averaged
+#'   and reported along side the single visits.
 #' @param weights (`string`)\cr type of weights to be used for the `LS` means,
 #'   see [emmeans::emmeans()] for details.
 #'
@@ -500,6 +502,7 @@ fit_lme4 <- function(formula,
 get_mmrm_lsmeans <- function(fit,
                              vars,
                              conf_level,
+                             averages,
                              weights) {
   data_complete <- fit@frame
 
@@ -625,6 +628,8 @@ get_mmrm_lsmeans <- function(fit,
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
+#' @param averages_emmeans (`list`)\cr optional named list of visit levels which should be averaged
+#'   and reported along side the single visits.
 #' @param weights_emmeans argument from [emmeans::emmeans()], "proportional" by default.
 #' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
 #'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
@@ -710,6 +715,7 @@ fit_mmrm <- function(vars = list(
                      conf_level = 0.95,
                      cor_struct = "unstructured",
                      weights_emmeans = "proportional",
+                     averages_emmeans = list(),
                      optimizer = "automatic",
                      parallel = FALSE) {
   labels <- check_mmrm_vars(vars, data)
@@ -730,6 +736,7 @@ fit_mmrm <- function(vars = list(
     fit = fit,
     vars = vars,
     conf_level = conf_level,
+    averages = averages_emmeans,
     weights = weights_emmeans
   )
 

@@ -5,7 +5,9 @@
 #' @keywords internal
 "_PACKAGE"
 
-#' @import rtables ggplot2
+#' @import checkmate
+#' @import ggplot2
+#' @import rtables
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data :=
 #' @importFrom optimx optimx

@@ -4,7 +4,7 @@
 \alias{get_mmrm_lsmeans}
 \title{Extract Least-Squares (\code{LS}) Means from \code{MMRM}}
 \usage{
-get_mmrm_lsmeans(fit, vars, conf_level, weights)
+get_mmrm_lsmeans(fit, vars, conf_level, averages, weights)
 }
 \arguments{
 \item{fit}{result of \code{\link[=fit_lme4]{fit_lme4()}}.}
@@ -22,6 +22,9 @@ in \code{data}:
 Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{averages}{(\code{list})\cr named list of visit levels which should be averaged
+and reported along side the single visits.}
 
 \item{weights}{(\code{string})\cr type of weights to be used for the \code{LS} means,
 see \code{\link[emmeans:emmeans]{emmeans::emmeans()}} for details.}
