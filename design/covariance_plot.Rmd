@@ -111,7 +111,7 @@ g_covariance <- function(d.cov, x.var = c("lag", "tp.dist"), ylab = "",
   if (is.null(pch)) pch <- ntp
   if (is.null(lty)) lty <- ntp
   legend.pos <- match.arg(legend.pos)
-  ggplot2::ggplot(d.cov, aes(d.cov[, x.var], d.cov[, "Vect"], colour = as.factor(d.cov[, "rnk.t1"]), group = as.factor(d.cov[, "rnk.t1"]))) +
+  ggplot(d.cov, aes(d.cov[, x.var], d.cov[, "Vect"], colour = as.factor(d.cov[, "rnk.t1"]), group = as.factor(d.cov[, "rnk.t1"]))) +
     geom_point() +
     geom_line() +
     labs(colour = "From time:", x = xlab, y = ylab)
