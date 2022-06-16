@@ -505,6 +505,7 @@ get_mmrm_lsmeans <- function(fit,
                              averages,
                              weights) {
   data_complete <- fit@frame
+  assert_list(averages, types = "character")
 
   specs <- if (is.null(vars$arm)) {
     stats::as.formula(paste("~ 1 |", vars$visit))

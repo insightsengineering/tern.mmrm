@@ -1,5 +1,7 @@
 library(dplyr)
 
+# check_mmrm_vars ----
+
 testthat::test_that("check_mmrm_vars passes with healthy inputs and returns correct labels", {
   # No additional covariates.
   vars1 <- list(
@@ -140,6 +142,8 @@ testthat::test_that("check_mmrm_vars fails if a variable is not included in `dat
   }
 })
 
+# build_mmrm_formula ----
+
 testthat::test_that("build_mmrm_formula builds the correct formula", {
   # No additional covariates.
   vars1 <- list(
@@ -170,6 +174,8 @@ testthat::test_that("build_mmrm_formula builds the correct formula", {
   expected3 <- AVAL ~ AVISIT + (stats::poly(as.numeric(AVISIT), df = 2) | USUBJID)
 })
 
+# fit_lme4_single_optimizer ----
+
 testthat::test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {
   # Default optimizer used.
   result1 <- fit_lme4_single_optimizer(
@@ -193,6 +199,33 @@ testthat::test_that("fit_lme4_single_optimizer works as expected when there are 
   # Results should be equal (without attributes which capture optimizer details).
   testthat::expect_equal(result1, result2, check.attributes = FALSE)
 })
+
+testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
+  data <- lme4::sleepstudy
+  data$days_copy <- data$Days
+
+  testthat::expect_silent(
+    result <- fit_lme4_single_optimizer(
+      formula = Reaction ~ Days + (Days + days_copy | Subject),
+      data = data
+    )
+  )
+  testthat::expect_s4_class(result, "lmerModLmerTest")
+  testthat::expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
+  testthat::expect_gt(length(attr(result, "messages")), 0)
+})
+
+testthat::test_that("fit_lme4_single_optimizer fails when there is an error", {
+  testthat::expect_error(
+    fit_lme4_single_optimizer(
+      formula = Reaction ~ Days + (Days | Subject),
+      data = does_not_exist
+    ),
+    "bad 'data'"
+  )
+})
+
+# get_lme4_cov_estimate ----
 
 # Helper function which is another implementation of the covariance matrix estimate from
 # https://stackoverflow.com/questions/45650548/get-residual-variance-covariance-matrix-in-lme4
@@ -307,6 +340,8 @@ testthat::test_that("get_lme4_cov_estimate works as expected with a random inter
   )
 })
 
+# get_lme4_diagnostics ----
+
 testthat::test_that("get_lme4_diagnostics works as expected with a random slope model", {
   fit <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
@@ -323,30 +358,7 @@ testthat::test_that("get_lme4_diagnostics works as expected with a random slope 
   testthat::expect_equal(result, expected, tol = 0.0001)
 })
 
-testthat::test_that("fit_lme4_single_optimizer correctly captures warnings and messages", {
-  data <- lme4::sleepstudy
-  data$days_copy <- data$Days
-
-  testthat::expect_silent(
-    result <- fit_lme4_single_optimizer(
-      formula = Reaction ~ Days + (Days + days_copy | Subject),
-      data = data
-    )
-  )
-  testthat::expect_s4_class(result, "lmerModLmerTest")
-  testthat::expect_identical(attr(result, "optimizer"), "nloptwrap_bobyqa")
-  testthat::expect_gt(length(attr(result, "messages")), 0)
-})
-
-testthat::test_that("fit_lme4_single_optimizer fails when there is an error", {
-  testthat::expect_error(
-    fit_lme4_single_optimizer(
-      formula = Reaction ~ Days + (Days | Subject),
-      data = does_not_exist
-    ),
-    "bad 'data'"
-  )
-})
+# summary_all_fits ----
 
 testthat::test_that("summary_all_fits works as expected", {
   single_fit <- fit_lme4_single_optimizer(
@@ -363,6 +375,8 @@ testthat::test_that("summary_all_fits works as expected", {
     expected = c("a", "b", "c") # Note that is also implicitly tests the length of the result elements.
   )
 })
+
+# refit_lme4_all_optimizers ----
 
 test_that("refit_lme4_all_optimizers fails when no optimizer succeeds", {
   skip_if_too_deep(5)
@@ -425,6 +439,8 @@ testthat::test_that("refit_lme4_all_optimizers works with parallelization", {
   )
 })
 
+# fit_lme4 ----
+
 testthat::test_that("fit_lme4 works with healthy inputs", {
   result <- fit_lme4(
     formula = Reaction ~ Days + (Days | Subject),
@@ -461,6 +477,8 @@ testthat::test_that("fit_lme4 fails when there are convergence issues with a spe
   )
 })
 
+# get_mmrm_lsmeans ----
+
 testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   skip_if_too_deep(5)
 
@@ -475,11 +493,13 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
     data = mmrm_test_data,
     optimizer = "automatic"
   )
+  conf_level <- 0.95
+  weights <- "proportional"
   testthat::expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
     vars = vars,
-    conf_level = 0.95,
-    weights = "proportional"
+    conf_level = conf_level,
+    weights = weights
   ))
   testthat::expect_is(result, "list")
   testthat::expect_is(result$estimates, "data.frame")
@@ -513,6 +533,7 @@ testthat::test_that("get_mmrm_lsmeans preserves combined arm levels.", {
   testthat::expect_identical(levels(mmrm_test_data$ARMCD)[-1], levels(result$contrasts$ARMCD))
 })
 
+# fit_mmrm ----
 
 testthat::test_that("fit_mmrm works with parallelization", {
   dat <- lme4::sleepstudy %>%
@@ -543,37 +564,6 @@ testthat::test_that("fit_mmrm works with parallelization", {
     parallel = TRUE
   ))
 })
-
-# Helper function to compare result and expected tables with proper handling of p-value column.
-expect_equal_result_tables <- function(result,
-                                       expected,
-                                       tol = 0.001,
-                                       pval_name = "Pr(>|t|)",
-                                       pval_threshold = 0.0001) {
-  pval_col <- match(pval_name, colnames(result))
-
-  # Compare first non-pvalue columns.
-  testthat::expect_equal(
-    result[, -pval_col],
-    expected[, -pval_col],
-    tol = tol
-  )
-
-  # Then compare p-values which are not below the threshold in the expected table.
-  exp_pval_is_below_thresh <- expected[, pval_col] < pval_threshold
-  testthat::expect_equal(
-    result[, pval_col][!exp_pval_is_below_thresh],
-    expected[, pval_col][!exp_pval_is_below_thresh],
-    tol = tol
-  )
-
-  # Now expect that the same p-values are below the thresholds in both tables.
-  res_pval_is_below_thresh <- result[, pval_col] < pval_threshold
-  testthat::expect_identical(
-    exp_pval_is_below_thresh,
-    res_pval_is_below_thresh
-  )
-}
 
 # Produces different version of a ADQS subset.
 get_adqs <- function(version = c("A", "B")) {
@@ -729,10 +719,10 @@ testthat::test_that("fit_mmrm works with unstructured covariance matrix and prod
   cov_estimate <- mmrm_results$cov_estimate
   expected_cov_estimate <- matrix(
     c(
-      42.883581, 15.519333,  8.057128, 16.593116,
-      15.519333, 26.628885,  4.627223, 10.074424,
-      8.057128,  4.627223, 19.203109,  7.785749,
-      16.593116, 10.074424,  7.785749, 99.811086
+      42.883581, 15.519333, 8.057128, 16.593116,
+      15.519333, 26.628885, 4.627223, 10.074424,
+      8.057128, 4.627223, 19.203109, 7.785749,
+      16.593116, 10.074424, 7.785749, 99.811086
     ),
     nrow = 4L,
     ncol = 4L
