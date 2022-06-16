@@ -495,6 +495,11 @@ testthat::test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   )
   conf_level <- 0.95
   weights <- "proportional"
+  averages <- list(
+    "VIS1+3" = c("VIS1", "VIS3"),
+    "VIS2+4" = c("VIS2", "VIS4")
+  )
+  result_old <- get_mmrm_lsmeans_old(fit, vars, conf_level, averages, weights)
   testthat::expect_silent(result <- get_mmrm_lsmeans(
     fit = fit,
     vars = vars,
