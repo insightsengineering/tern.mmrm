@@ -42,7 +42,7 @@ We need a helper function (`h_vectorization`) for downstream analyses for the pl
 #' @examples
 #' h_vectorization(d.matrix=cholest.cov)
 ```{r}
-h_vectorization <- function(d.matrix, string = NULL) {
+h_vectorization <- function(d_matrix, string = NULL) {
   assert_matrix(d.matrix)
   assert_true(isSymmetric(d.matrix))
   assert_string(string, null.ok = TRUE)
