@@ -43,11 +43,9 @@ We need a helper function (`h_vectorization`) for downstream analyses for the pl
 #' h_vectorization(d.matrix=cholest.cov)
 ```{r}
 h_vectorization <- function(d.matrix, string = NULL) {
-  if (!is.matrix(d.matrix)) {
-    stop("d.matrix is not a matrix")
-  } else {
-    if (!isSymmetric(d.matrix)) stop("d.matrix should be a symetric matrix")
-  }
+  assert_matrix(d.matrix)
+  assert_true(isSymmetric(d.matrix))
+  assert_string(string, null.ok = TRUE)
   resp.name <- paste(string, ".", sep = "")
   diag <- upper.tri(d.matrix, diag = T)
   vect <- d.matrix[diag]
