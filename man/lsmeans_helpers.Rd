@@ -82,3 +82,4 @@ relative reduction vs. reference arm based on single visit estimates.
 given the \code{specs} for single visit contrasts and the averages required.
 }}
 
+\keyword{internal}

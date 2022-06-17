@@ -12,6 +12,8 @@
 #' @param emmeans_res (`list`)\cr initial `emmeans` result from [h_get_emmeans_res()].
 #'
 #' @name lsmeans_helpers
+#' @keywords internal
+#'
 NULL
 
 #' @describeIn lsmeans_helpers returns a list with
