@@ -117,7 +117,10 @@ mmrm_results <- fit_mmrm(
   ),
   data = mmrm_test_data,
   cor_struct = "random-quadratic",
-  weights_emmeans = "equal"
+  weights_emmeans = "equal",
+  averages_emmeans = list(
+    "VIS1+2" = c("VIS1", "VIS2")
+  )
 )
 }
 

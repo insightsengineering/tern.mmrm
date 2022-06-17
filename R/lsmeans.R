@@ -3,8 +3,10 @@
 #' Helpers for Processing Least Square Means
 #'
 #' @param fit result of [fit_lme4()].
-#' @param data_complete (`data.frame`)\cr complete data set used for `fit`.
 #' @inheritParams fit_mmrm
+#' @param averages (`list`)\cr optional named list of visit levels which should be averaged
+#'   and reported along side the single visits.
+#' @param weights (`string`)\cr argument from [emmeans::emmeans()], "proportional" by default.
 #' @param specs (`list`)\cr list of least square means specifications, with
 #'   elements `coefs` (coefficient list) and `grid` (corresponding `data.frame`).
 #' @param emmeans_res (`list`)\cr initial `emmeans` result from [h_get_emmeans_res()].
@@ -17,9 +19,10 @@ NULL
 #'   (`data.frame` containing the potential arm and the visit variables
 #'   together with the sample size `n` for each combination).
 #' @export
-h_get_emmeans_res <- function(fit, data_complete, vars, weights) {
-  assert_data_frame(data_complete)
+h_get_emmeans_res <- function(fit, vars, weights) {
   assert_list(vars)
+  data_complete <- fit@frame
+  assert_data_frame(data_complete)
 
   emmeans_object <- emmeans::emmeans(
     fit,
@@ -32,6 +35,7 @@ h_get_emmeans_res <- function(fit, data_complete, vars, weights) {
   )
   wgt_index <- match(".wgt.", names(emmeans_object@grid))
   visit_arm_grid <- emmeans_object@grid[-wgt_index]
+
   data_by_visit_arm <- split(
     data_complete,
     stats::as.formula(paste("~", vars$arm, "+", vars$visit))
@@ -51,29 +55,43 @@ h_get_average_visit_specs <- function(emmeans_res,
                                       vars,
                                       averages) {
   visit_grid <- emmeans_res$grid[[vars$visit]]
-  arm_grid <- emmeans_res$grid[[vars$arm]]
   averages_list <- list()
-  arm_vec <- visit_vec <- n_vec <- c()
+  visit_vec <- n_vec <- c()
+  if (!is.null(vars$arm)) {
+    arm_grid <- emmeans_res$grid[[vars$arm]]
+    arm_vec <- c()
+  }
   for (i in seq_along(averages)) {
     average_label <- names(averages)[i]
     visits_average <- averages[[i]]
     which_visits_in_average <- visit_grid %in% visits_average
     average_coefs <- as.integer(which_visits_in_average) / length(visits_average)
     zero_coefs <- numeric(length = length(average_coefs))
-    for (this_arm in levels(arm_grid)) {
-      arm_average_label <- paste(this_arm, average_label)
-      this_coefs <- zero_coefs
-      which_arm <- arm_grid == this_arm
-      this_coefs[which_arm] <- average_coefs[which_arm]
-      averages_list[[arm_average_label]] <- this_coefs
-      arm_vec <- c(arm_vec, this_arm)
+
+    if (is.null(vars$arm)) {
+      averages_list[[average_label]] <- average_coefs
       visit_vec <- c(visit_vec, average_label)
-      n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average & which_arm]))
+      n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average]))
+    } else {
+      for (this_arm in levels(arm_grid)) {
+        this_coefs <- zero_coefs
+        arm_average_label <- paste(this_arm, average_label, sep = ".")
+        which_arm <- arm_grid == this_arm
+        this_coefs[which_arm] <- average_coefs[which_arm]
+        averages_list[[arm_average_label]] <- this_coefs
+        arm_vec <- c(arm_vec, this_arm)
+        visit_vec <- c(visit_vec, average_label)
+        n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average & which_arm]))
+      }
     }
   }
-  averages_grid <- data.frame(arm = arm_vec, visit = visit_vec, n = n_vec)
-  names(averages_grid) <- c(vars$arm, vars$visit, "n")
-
+  if (is.null(vars$arm)) {
+    averages_grid <- data.frame(visit = visit_vec, n = n_vec)
+    names(averages_grid) <- c(vars$visit, "n")
+  } else {
+    averages_grid <- data.frame(arm = arm_vec, visit = visit_vec, n = n_vec)
+    names(averages_grid) <- c(vars$arm, vars$visit, "n")
+  }
   list(
     coefs = averages_list,
     grid = averages_grid
@@ -140,8 +158,8 @@ h_get_single_visit_estimates <- function(emmeans_res,
 
 
 #' @describeIn lsmeans_helpers constructs `data.frame` with
-#'   relative reduction vs. reference arm.
-#' @param estimates (`data.frame`)\cr least square mean estimates.
+#'   relative reduction vs. reference arm based on single visit estimates.
+#' @param estimates (`data.frame`)\cr single visit least square mean estimates.
 #' @export
 h_get_relative_reduc_df <- function(estimates,
                                     vars) {
@@ -173,7 +191,7 @@ h_single_visit_contrast_specs <- function(emmeans_res,
 
   emmeans_res$grid$index <- seq_len(nrow(emmeans_res$grid))
 
-  grid_by_visit <- split(emmeans_res$grid, emmeans_res$grid$AVISIT)
+  grid_by_visit <- split(emmeans_res$grid, emmeans_res$grid[[vars$visit]])
 
   arm_levels <- emmeans_res$object@levels[[vars$arm]]
   ref_arm_level <- arm_levels[1L]
@@ -263,11 +281,11 @@ h_average_visit_contrast_specs <- function(specs,
 get_mmrm_lsmeans <- function(fit,
                              vars,
                              conf_level,
-                             averages,
-                             weights) {
+                             weights,
+                             averages = list()) {
   data_complete <- fit@frame
   assert_list(averages, types = "character")
-  emmeans_res <- h_get_emmeans_res(fit, data_complete, vars, weights)
+  emmeans_res <- h_get_emmeans_res(fit, vars, weights)
 
   # Get least square means estimates for single visits, and possibly averaged visits.
   estimates <- h_get_single_visit_estimates(emmeans_res, conf_level)
@@ -296,6 +314,8 @@ get_mmrm_lsmeans <- function(fit,
     by = c(vars$arm, vars$visit),
     sort = FALSE
   )
+  contrast_estimates[[vars$arm]] <- factor(contrast_estimates[[vars$arm]])
+  contrast_estimates[[vars$visit]] <- factor(contrast_estimates[[vars$visit]])
   list(
     estimates = estimates,
     contrasts = contrast_estimates

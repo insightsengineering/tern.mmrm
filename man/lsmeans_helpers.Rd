@@ -11,7 +11,7 @@
 \alias{h_average_visit_contrast_specs}
 \title{Helpers for Processing Least Square Means}
 \usage{
-h_get_emmeans_res(fit, data_complete, vars, weights)
+h_get_emmeans_res(fit, vars, weights)
 
 h_get_average_visit_specs(emmeans_res, vars, averages)
 
@@ -28,8 +28,6 @@ h_average_visit_contrast_specs(specs, averages)
 \arguments{
 \item{fit}{result of \code{\link[=fit_lme4]{fit_lme4()}}.}
 
-\item{data_complete}{(\code{data.frame})\cr complete data set used for \code{fit}.}
-
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
@@ -42,7 +40,12 @@ in \code{data}:
 }
 Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
+\item{weights}{(\code{string})\cr argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
+
 \item{emmeans_res}{(\code{list})\cr initial \code{emmeans} result from \code{\link[=h_get_emmeans_res]{h_get_emmeans_res()}}.}
+
+\item{averages}{(\code{list})\cr optional named list of visit levels which should be averaged
+and reported along side the single visits.}
 
 \item{specs}{(\code{list})\cr list of least square means specifications, with
 elements \code{coefs} (coefficient list) and \code{grid} (corresponding \code{data.frame}).}
@@ -51,7 +54,7 @@ elements \code{coefs} (coefficient list) and \code{grid} (corresponding \code{da
 
 \item{tests}{(\code{flag})\cr whether to add test results to the estimates.}
 
-\item{estimates}{(\code{data.frame})\cr least square mean estimates.}
+\item{estimates}{(\code{data.frame})\cr single visit least square mean estimates.}
 }
 \description{
 Helpers for Processing Least Square Means
@@ -71,7 +74,7 @@ given specifications.
 \item \code{h_get_single_visit_estimates}: estimates least square means for single visits.
 
 \item \code{h_get_relative_reduc_df}: constructs \code{data.frame} with
-relative reduction vs. reference arm.
+relative reduction vs. reference arm based on single visit estimates.
 
 \item \code{h_single_visit_contrast_specs}: constructs single visit contrast specifications.
 

@@ -7,23 +7,23 @@ expect_equal_result_tables <- function(result,
   pval_col <- match(pval_name, colnames(result))
 
   # Compare first non-pvalue columns.
-  testthat::expect_equal(
+  expect_equal(
     result[, -pval_col],
     expected[, -pval_col],
-    tol = tol
+    tolerance = tol
   )
 
   # Then compare p-values which are not below the threshold in the expected table.
   exp_pval_is_below_thresh <- expected[, pval_col] < pval_threshold
-  testthat::expect_equal(
+  expect_equal(
     result[, pval_col][!exp_pval_is_below_thresh],
     expected[, pval_col][!exp_pval_is_below_thresh],
-    tol = tol
+    tolerance = tol
   )
 
   # Now expect that the same p-values are below the thresholds in both tables.
   res_pval_is_below_thresh <- result[, pval_col] < pval_threshold
-  testthat::expect_identical(
+  expect_identical(
     exp_pval_is_below_thresh,
     res_pval_is_below_thresh
   )
