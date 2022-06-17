@@ -52,6 +52,7 @@ RoxygenNote: 7.2.0
 Collate:
     'fit_mmrm.R'
     'g_mmrm.R'
+    'lsmeans.R'
     'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'

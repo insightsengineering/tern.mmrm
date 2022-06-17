@@ -1,16 +1,26 @@
-#' Helper Evaluating `emmeans` Results
+# lsmeans_helpers ----
+
+#' Helpers for Processing Least Square Means
 #'
-#' @param fit
-#' @param data_complete
-#' @param vars
-#' @param weights
+#' @param fit result of [fit_lme4()].
+#' @param data_complete (`data.frame`)\cr complete data set used for `fit`.
+#' @inheritParams fit_mmrm
+#' @param specs (`list`)\cr list of least square means specifications, with
+#'   elements `coefs` (coefficient list) and `grid` (corresponding `data.frame`).
+#' @param emmeans_res (`list`)\cr initial `emmeans` result from [h_get_emmeans_res()].
 #'
-#' @return List with:
-#'   - `object`: `emmGrid` object containing `emmeans` results.
-#'   - `grid`: `data.frame` containing the potential arm and the visit variables
-#'               together with the sample size `n` for each combination.
+#' @name lsmeans_helpers
+NULL
+
+#' @describeIn lsmeans_helpers returns a list with
+#'   `object` (`emmGrid` object containing `emmeans` results) and `grid`
+#'   (`data.frame` containing the potential arm and the visit variables
+#'   together with the sample size `n` for each combination).
 #' @export
 h_get_emmeans_res <- function(fit, data_complete, vars, weights) {
+  assert_data_frame(data_complete)
+  assert_list(vars)
+
   emmeans_object <- emmeans::emmeans(
     fit,
     data = data_complete,
@@ -20,10 +30,13 @@ h_get_emmeans_res <- function(fit, data_complete, vars, weights) {
     # The below option is needed to enable analysis of more than 3000 observations.
     lmerTest.limit = nrow(data_complete)
   )
-
-  visit_arm_grid <- emmeans_object@grid[-match(".wgt.", names(emmeans_object@grid))]
-  data_by_visit_arm <- split(data_complete, f = as.formula(paste("~", vars$arm, "+", vars$visit)))
-  n_by_visit_arm <- sapply(data_by_visit_arm, nrow)
+  wgt_index <- match(".wgt.", names(emmeans_object@grid))
+  visit_arm_grid <- emmeans_object@grid[-wgt_index]
+  data_by_visit_arm <- split(
+    data_complete,
+    stats::as.formula(paste("~", vars$arm, "+", vars$visit))
+  )
+  n_by_visit_arm <- vapply(data_by_visit_arm, nrow, integer(1L))
   visit_arm_grid$n <- n_by_visit_arm
 
   list(
@@ -32,14 +45,7 @@ h_get_emmeans_res <- function(fit, data_complete, vars, weights) {
   )
 }
 
-
-#' Helper Constructing Average of Visits Specifications
-#'
-#' @param emmeans_res
-#' @param vars
-#' @param averages
-#'
-#' @return List with `coefs` list and `grid` data frame.
+#' @describeIn lsmeans_helpers constructs average of visits specifications.
 #' @export
 h_get_average_visit_specs <- function(emmeans_res,
                                       vars,
@@ -74,16 +80,14 @@ h_get_average_visit_specs <- function(emmeans_res,
   )
 }
 
-
-#' Helper Estimating General Combinations Least Square Means
-#'
-#' @param emmeans_res
-#' @param average_specs
-#' @param conf_level
-#'
-#' @return A `data.frame` with estimates.
+#' @describeIn lsmeans_helpers estimates least square means as a `data.frame`
+#'   given specifications.
+#' @param tests (`flag`)\cr whether to add test results to the estimates.
 #' @export
-h_get_spec_visit_estimates <- function(emmeans_res, specs, conf_level, tests = FALSE) {
+h_get_spec_visit_estimates <- function(emmeans_res,
+                                       specs,
+                                       conf_level,
+                                       tests = FALSE) {
   assert_list(emmeans_res)
   assert_list(specs)
   assert_number(conf_level)
@@ -112,12 +116,7 @@ h_get_spec_visit_estimates <- function(emmeans_res, specs, conf_level, tests = F
   res
 }
 
-#' Helper Calculating Single Visit Least Square Means Results
-#'
-#' @param emmeans_res
-#' @param conf_level
-#'
-#' @return The `data.frame` with the estimates.
+#' @describeIn lsmeans_helpers estimates least square means for single visits.
 #' @export
 h_get_single_visit_estimates <- function(emmeans_res,
                                          conf_level) {
@@ -140,13 +139,9 @@ h_get_single_visit_estimates <- function(emmeans_res,
 
 
 
-#' Helper Constructing Data Frame with Relative Reduction vs. Reference Arm
-#'
-#' @param estimates
-#' @param vars
-#'
-#' @return A `data.frame` with visit, arm and `relative_reduc`, the relative
-#'   reduction.
+#' @describeIn lsmeans_helpers constructs `data.frame` with
+#'   relative reduction vs. reference arm.
+#' @param estimates (`data.frame`)\cr least square mean estimates.
 #' @export
 h_get_relative_reduc_df <- function(estimates,
                                     vars) {
@@ -154,28 +149,28 @@ h_get_relative_reduc_df <- function(estimates,
   assert_list(vars)
 
   ref_arm_level <- estimates[[vars$arm]][1L]
-  ref_estimates <- estimates[estimates[[vars$arm]] == ref_arm_level, c(vars$visit, "estimate")]
+  ref_estimates <- estimates[
+    estimates[[vars$arm]] == ref_arm_level,
+    c(vars$visit, "estimate")
+  ]
   names(ref_estimates)[2L] <- "ref"
-  tmp <- merge(
+  result <- merge(
     estimates[estimates[[vars$arm]] != ref_arm_level, ],
     ref_estimates,
     by = vars$visit,
     sort = FALSE
   )
-  tmp$relative_reduc <- (tmp$ref - tmp$estimate) / tmp$ref
-  tmp[, c(vars$visit, vars$arm, "relative_reduc")]
+  result$relative_reduc <- (result$ref - result$estimate) / result$ref
+  result[, c(vars$visit, vars$arm, "relative_reduc")]
 }
 
-#' Helper Constructing Single Visit Contrast Specification List
-#'
-#' @param emmeans_res
-#' @param vars
-#'
-#' @return A list with `coefs` and `grid`, similar as from
-#'   [h_get_average_visit_specs()].
-#'
+#' @describeIn lsmeans_helpers constructs single visit contrast specifications.
 #' @export
-h_single_visit_contrast_specs <- function(emmeans_res, vars) {
+h_single_visit_contrast_specs <- function(emmeans_res,
+                                          vars) {
+  assert_list(emmeans_res)
+  assert_list(vars)
+
   emmeans_res$grid$index <- seq_len(nrow(emmeans_res$grid))
 
   grid_by_visit <- split(emmeans_res$grid, emmeans_res$grid$AVISIT)
@@ -212,10 +207,12 @@ h_single_visit_contrast_specs <- function(emmeans_res, vars) {
   )
 }
 
-
-h_average_visit_contrast_specs <- function(contrast_specs,
+#' @describeIn lsmeans_helpers constructs average visits contrast specifications,
+#'   given the `specs` for single visit contrasts and the averages required.
+#' @export
+h_average_visit_contrast_specs <- function(specs,
                                            averages) {
-  arm_visit_grid <- contrast_specs$grid
+  arm_visit_grid <- specs$grid
   arm_visit_grid$index <- seq_len(nrow(arm_visit_grid))
   grid_by_arm <- split(
     arm_visit_grid,
@@ -232,7 +229,7 @@ h_average_visit_contrast_specs <- function(contrast_specs,
       which_visits_in_average <- arm_visit_grid[, 2] %in% visits_average
       averaged_indices <- this_grid$index[which_visits_in_average]
       this_comb <- paste(this_arm, average_label, sep = ".")
-      averaged_coefs <- colMeans(do.call(rbind, contrast_specs$coefs[averaged_indices]))
+      averaged_coefs <- colMeans(do.call(rbind, specs$coefs[averaged_indices]))
       overall_list[[this_comb]] <- averaged_coefs
       arm_vec <- c(arm_vec, this_arm)
       visit_vec <- c(visit_vec, average_label)
@@ -247,6 +244,8 @@ h_average_visit_contrast_specs <- function(contrast_specs,
     grid = grid
   )
 }
+
+# get_mmrm_lsmeans ----
 
 #' Extract Least Square Means from `MMRM`
 #'
