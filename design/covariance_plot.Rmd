@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Configuration
 ```{r}
 library(CovStructRM)
+library(maditr)
 library(ggplot2)
 ```
 
@@ -25,7 +26,7 @@ data(cholest)
 cholest.w <- dcast(cholest, subjectID + group ~ week, value.var = "ldl")
 
 # Variance-Covariance matrices
-cholest.cov <- cov(cholest.w[, c(3:ncol(cholest.w))], use = "pairwise.complete.obs", method = "pearson")
+cholest.cov <- cov(cholest.w[,3:ncol(cholest.w)],use="pairwise.complete.obs",method="pearson")
 ```
 We need a helper function (`h_vectorization`) for downstream analyses for the plot of the covariance matrix. `h_vectorization` obtains lag and distance between pairs of observations when the column and row names of the input matrix have a numeric value denoting the time point. The columns and rows of the input matrix should be named by using the time point values only (ex. "0","3","9","15",...), or by a string (specified in the string argument) separated from the time point value by a period: (ex. "value.0","value.5","value.15",..., "resp.-1","resp.0.5","resp.1","resp.1.5", ...)
 
@@ -54,8 +55,8 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
   cnames <- colnames(vcov_matrix)
   nmat <- outer(rnames, cnames, paste, sep = ":")
   names(vect) <- nmat[diag]
-  lab.t1 <- unlist(strsplit(names(vect), ":"))[seq(1, length(vect) * 2, by = 2)] ## hyperfuntion
-  lab.t2 <- unlist(strsplit(names(vect), ":"))[seq(2, length(vect) * 2, by = 2)]
+  vcov_matrix_row_label <- unlist(strsplit(names(vect), ":"))[seq(1, length(vect) * 2, by = 2)] ## hyperfuntion #lab.t1
+  vcov_matrix_col_label <- unlist(strsplit(names(vect), ":"))[seq(2, length(vect) * 2, by = 2)] #lab.t2
   if (is.null(string)) {
     if (any(is.na(as.numeric(lab.t1)))) {
       stop("You have not used the string argument when needed \n
