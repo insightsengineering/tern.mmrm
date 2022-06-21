@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@
 
 
 <div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Introduction to tern.mmrm</h1>
             
             <h4 data-toc-skip class="date">2022-03-09</h4>
@@ -357,16 +357,16 @@ that supports treatment leading to an increase in FEV1 over placebo at
 all study visits.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mmrm_results</span><span class="op">$</span><span class="va">lsmeans</span><span class="op">$</span><span class="va">contrasts</span>
-<span class="co">#&gt;   AVISIT estimate        se       df lower_cl upper_cl   t_stat      p_value</span>
-<span class="co">#&gt; 1   VIS1 3.983491 1.0453975 142.3217 1.916978 6.050004 3.810504 2.057335e-04</span>
-<span class="co">#&gt; 2   VIS2 3.930770 0.8135014 142.2620 2.322657 5.538883 4.831916 3.458966e-06</span>
-<span class="co">#&gt; 3   VIS3 2.983733 0.6656817 129.6022 1.666723 4.300743 4.482221 1.606826e-05</span>
-<span class="co">#&gt; 4   VIS4 4.403899 1.6604869 132.8795 1.119493 7.688306 2.652174 8.971264e-03</span>
-<span class="co">#&gt;   ARMCD relative_reduc</span>
-<span class="co">#&gt; 1   TRT    -0.12102463</span>
-<span class="co">#&gt; 2   TRT    -0.10425034</span>
-<span class="co">#&gt; 3   TRT    -0.06893901</span>
-<span class="co">#&gt; 4   TRT    -0.09154381</span></code></pre></div>
+<span class="co">#&gt;   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat</span>
+<span class="co">#&gt; 1   TRT   VIS1 3.983491 1.0453975 142.3217 1.916978 6.050004 3.810504</span>
+<span class="co">#&gt; 2   TRT   VIS2 3.930770 0.8135014 142.2620 2.322657 5.538883 4.831916</span>
+<span class="co">#&gt; 3   TRT   VIS3 2.983733 0.6656817 129.6022 1.666723 4.300743 4.482221</span>
+<span class="co">#&gt; 4   TRT   VIS4 4.403899 1.6604869 132.8795 1.119493 7.688306 2.652174</span>
+<span class="co">#&gt;        p_value relative_reduc</span>
+<span class="co">#&gt; 1 2.057335e-04    -0.12102463</span>
+<span class="co">#&gt; 2 3.458966e-06    -0.10425034</span>
+<span class="co">#&gt; 3 1.606826e-05    -0.06893901</span>
+<span class="co">#&gt; 4 8.971264e-03    -0.09154381</span></code></pre></div>
 <p>Other correlation structures and weighting schemes can be considered.
 For example, the following modified code fits a MMRM with random
 intercept (compound symmetry with positive correlation) and equal
