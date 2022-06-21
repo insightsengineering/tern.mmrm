@@ -236,7 +236,7 @@ h_average_visit_contrast_specs <- function(specs,
   arm_visit_grid$index <- seq_len(nrow(arm_visit_grid))
   grid_by_arm <- split(
     arm_visit_grid,
-    arm_visit_grid[, 1]
+    arm_visit_grid[, 1L]
   )
   overall_list <- list()
   arm_vec <- visit_vec <- c()
@@ -246,7 +246,7 @@ h_average_visit_contrast_specs <- function(specs,
     for (i in seq_along(averages)) {
       average_label <- names(averages)[i]
       visits_average <- averages[[i]]
-      which_visits_in_average <- arm_visit_grid[, 2] %in% visits_average
+      which_visits_in_average <- this_grid[, 2L] %in% visits_average
       averaged_indices <- this_grid$index[which_visits_in_average]
       this_comb <- paste(this_arm, average_label, sep = ".")
       averaged_coefs <- colMeans(do.call(rbind, specs$coefs[averaged_indices]))
