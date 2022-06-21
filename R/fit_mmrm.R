@@ -483,126 +483,6 @@ fit_lme4 <- function(formula,
   }
 }
 
-#' Extract Least-Squares (`LS`) Means from `MMRM`
-#'
-#' Helper function to extract the `LS` means from an `MMRM` fit.
-#'
-#' @param fit result of [fit_lme4()].
-#' @inheritParams fit_mmrm
-#' @param weights (`string`)\cr type of weights to be used for the `LS` means,
-#'   see [emmeans::emmeans()] for details.
-#'
-#' @return A list with the `LS` means `estimates` and `contrasts` results between the treatment
-#'   and control arm groups at the different visits.
-#'
-#' @keywords internal
-#'
-get_mmrm_lsmeans <- function(fit,
-                             vars,
-                             conf_level,
-                             weights) {
-  data_complete <- fit@frame
-
-  specs <- if (is.null(vars$arm)) {
-    stats::as.formula(paste("~ 1 |", vars$visit))
-  } else {
-    stats::as.formula(paste("~ ", vars$arm, "|", vars$visit))
-  }
-
-  lsmeans <- emmeans::emmeans(
-    fit,
-    mode = "satterthwaite",
-    specs = specs,
-    weights = weights,
-    data = data_complete,
-    # The below option is needed to enable analysis of more than 3000 observations.
-    lmerTest.limit = nrow(data_complete)
-  )
-
-  # Relative Reduction (in change from baseline) is calculated using model based
-  # LS means as 100*(LS mean change from baseline in Control Pooled group –
-  # LS mean change from baseline in Treatment Group)/LS mean change from
-  # baseline in Control Pooled group.
-
-  # Adjusted estimate for each arm.
-  estimates <- stats::confint(lsmeans, level = conf_level) %>%
-    as.data.frame() %>%
-    dplyr::rename(
-      estimate = .data$emmean,
-      se = .data$SE,
-      lower_cl = .data$lower.CL,
-      upper_cl = .data$upper.CL
-    )
-
-  data_n <- data_complete %>%
-    dplyr::group_by_at(.vars = c(vars$visit, vars$arm)) %>%
-    dplyr::summarise(n = dplyr::n()) %>%
-    dplyr::ungroup()
-
-  estimates <- suppressWarnings(
-    # We don't have labels in `estimates`, which triggers a warning.
-    estimates %>%
-      dplyr::left_join(data_n, by = c(vars$visit, vars$arm))
-  )
-
-  results <- if (is.null(vars$arm)) {
-    list(
-      estimates = estimates
-    )
-  } else {
-    # Get LS means for reference group to join into full dataframe so that relative reduction in
-    # LS mean (mean of response variable) can be computed with respect to reference level (e.g. ARM A).
-    arm_levels <- levels(data_complete[[vars$arm]])
-    reference_level <- arm_levels[1]
-    means_at_ref <- estimates %>%
-      dplyr::filter(!!as.symbol(vars$arm) == reference_level) %>%
-      dplyr::select(c(vars$visit, "estimate")) %>%
-      dplyr::rename(ref = .data$estimate)
-
-    relative_reduc <- estimates %>%
-      dplyr::filter(!!as.symbol(vars$arm) != reference_level) %>%
-      dplyr::left_join(means_at_ref, by = c(vars$visit)) %>%
-      dplyr::mutate(relative_reduc = (.data$ref - .data$estimate) / .data$ref) %>%
-      dplyr::select(c(vars$visit, vars$arm, "relative_reduc"))
-
-    # Start with the differences between LS means.
-    sum_fit_diff <- summary(
-      emmeans::contrast(lsmeans, method = "trt.vs.ctrl", parens = NULL),
-      level = conf_level,
-      infer = c(TRUE, TRUE),
-      adjust = "none"
-    )
-
-    # Get the comparison group name from "contrast" column,
-    # e.g. "ARMB - ARMA" shall return "ARMB", i.e. remove " - ARMA" part.
-    contrasts <- sum_fit_diff %>%
-      dplyr::mutate(
-        col_by = factor(
-          gsub(paste0("\\s-\\s", reference_level), "", .data$contrast),
-          levels = arm_levels
-        )
-      ) %>%
-      dplyr::select(-.data$contrast) %>%
-      dplyr::rename(!!as.symbol(vars$arm) := .data$col_by) %>%
-      dplyr::left_join(relative_reduc, by = c(vars$visit, vars$arm)) %>%
-      dplyr::mutate(!!as.symbol(vars$arm) := droplevels(!!as.symbol(vars$arm), exclude = reference_level)) %>%
-      dplyr::rename(
-        se = .data$SE,
-        lower_cl = .data$lower.CL,
-        upper_cl = .data$upper.CL,
-        t_stat = .data$t.ratio,
-        p_value = .data$p.value
-      )
-
-    list(
-      estimates = estimates,
-      contrasts = contrasts
-    )
-  }
-
-  return(results)
-}
-
 #' `MMRM` Analysis
 #'
 #' Does the `MMRM` analysis. Multiple other functions can be called on the result to produce
@@ -625,6 +505,8 @@ get_mmrm_lsmeans <- function(fit,
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param cor_struct a string specifying the correlation structure, defaults to
 #'   \code{"unstructured"}. See the details.
+#' @param averages_emmeans (`list`)\cr optional named list of visit levels which should be averaged
+#'   and reported along side the single visits.
 #' @param weights_emmeans argument from [emmeans::emmeans()], "proportional" by default.
 #' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
 #'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
@@ -695,7 +577,10 @@ get_mmrm_lsmeans <- function(fit,
 #'   ),
 #'   data = mmrm_test_data,
 #'   cor_struct = "random-quadratic",
-#'   weights_emmeans = "equal"
+#'   weights_emmeans = "equal",
+#'   averages_emmeans = list(
+#'     "VIS1+2" = c("VIS1", "VIS2")
+#'   )
 #' )
 #' }
 #'
@@ -710,6 +595,7 @@ fit_mmrm <- function(vars = list(
                      conf_level = 0.95,
                      cor_struct = "unstructured",
                      weights_emmeans = "proportional",
+                     averages_emmeans = list(),
                      optimizer = "automatic",
                      parallel = FALSE) {
   labels <- check_mmrm_vars(vars, data)
@@ -730,6 +616,7 @@ fit_mmrm <- function(vars = list(
     fit = fit,
     vars = vars,
     conf_level = conf_level,
+    averages = averages_emmeans,
     weights = weights_emmeans
   )
 

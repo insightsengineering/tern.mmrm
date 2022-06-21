@@ -5,7 +5,8 @@ editor_options:
   chunk_output_type: console
 ---
 
-GOAL: To see if we get similar results between `lme4`, `glmmTMB` and `SAS` (not considering the df correction that needs to be done)
+GOAL: To see if we get similar results between `lme4`, `glmmTMB` and `SAS`
+(not considering the df correction that needs to be done).
 
 ```{r, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -48,7 +49,8 @@ Results: Model did not converge for both `scda` and `random.cdisc.data` using al
 
 ### Using the lme4 / lmerTest package to get the Satterthwaite df (Current `tern.mmrm` implementation)
 
-Least Squares Means
+#### Least Squares Means
+
 ```{r}
 mmrm_results <- fit_mmrm(
   vars = list(
@@ -83,7 +85,8 @@ result
 lsmeans_lme4 <- mmrm_results$lsmeans$estimate
 ```
 
-Coefficient Estimates
+#### Coefficient Estimates
+
 ```{r}
 summary(mmrm_results$fit)
 ```
@@ -189,7 +192,8 @@ result$test$sas_out
 
 ### Using glmmTMB
 
-Least Square Means
+#### Least Square Means
+
 ```{r}
 fit_glmmtmb <- glmmTMB(
   formula = AVAL ~ STRATA1 + BMRKR2 + ARMCD + ARMCD + AVISIT + ARMCD * AVISIT + us(0 + AVISIT | USUBJID),
@@ -215,7 +219,9 @@ pairs(lsmeans_glmmtmb)
 
 (Note that here of course the degrees of freedom are wrong.)
 
-Coefficient Estimates can be obtained with:
+#### Coefficient Estimates
+
+These can be obtained with:
 
 ```{r}
 summary(fit_glmmtmb)
@@ -223,12 +229,15 @@ summary(fit_glmmtmb)
 
 ### Visit averages with emmeans
 
-Let's try now to calculate averages of visits with emmeans for the
+Let's try now to calculate averages of visits with `emmeans` for the
 `glmmTMB` result.
 
-The `contrast()` function in `emmeans` can be used to compute any linear functions
+The `contrast()` function in `emmeans` can be used to compute any linear function
 of estimated marginal means (EMM), see https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html#linfcns
 for details.
+
+#### Starting point
+
 For this we cannot use the formula interface for `emmeans` as above, but first
 just specify the two variables involved here, i.e. arm and visit:
 
@@ -240,21 +249,83 @@ lsmeans_general <- emmeans(fit_glmmtmb,
 lsmeans_general
 ```
 
+#### Specifying coefficients for grid
+
 Now based on this result we see the order of the marginal means, and similarly
-as in SAS, can specify the required linear combinations:
+as in SAS, can specify the required linear combinations across the grid of treatment
+arms and visits:
 
 ```{r}
+average_specs <- list(
+  "ARM B Average W1D8 and W2D15" = c(1, 0, 0, 1, 0, 0, 0, 0, 0) / 2,
+  "ARM A Average W1D8 and W2D15" = c(0, 1, 0, 0, 1, 0, 0, 0, 0) / 2,
+  "ARM C Average W1D8 and W2D15" = c(0, 0, 1, 0, 0, 1, 0, 0, 0) / 2
+)
 contrast(
   lsmeans_general,
-  list(
-    "ARM B Average W1D8 and W2D15" = c(1, 0, 0, 1, 0, 0, 0, 0, 0) / 2,
-    "ARM A Average W1D8 and W2D15" = c(0, 1, 0, 0, 1, 0, 0, 0, 0) / 2,
-    "ARM C Average W1D8 and W2D15" = c(0, 0, 1, 0, 0, 1, 0, 0, 0) / 2
-  )
+  average_specs
+)
+```
+
+Note that we can see the grid by looking at the corresponding slot of the S4
+object:
+
+```{r}
+lsmeans_general@grid
+```
+
+We can also derive this list a bit more automatically.
+
+```{r}
+visit_grid_levels <- lsmeans_general@grid$AVISIT
+visits_average_specs <- list(
+  "Average W1D8, W2D15" = c("WEEK 1 DAY 8", "WEEK 2 DAY 15"),
+  "Average W2D15, W3D22" = c("WEEK 2 DAY 15", "WEEK 3 DAY 22")
+)
+average_grid_list <- list()
+for (i_spec in seq_along(visits_average_specs)) {
+  average_label <- names(visits_average_specs)[i_spec]
+  visits_average <- visits_average_specs[[i_spec]]
+  average_coefs <- as.integer(visit_grid_levels %in% visits_average) / length(visits_average)
+  zero_coefs <- numeric(length = length(average_coefs))
+  for (this_arm in levels(lsmeans_general@grid$ARMCD)) {
+    arm_average_label <- paste(this_arm, average_label)
+    this_coefs <- zero_coefs
+    this_index <- which(lsmeans_general@grid$ARMCD == this_arm)
+    this_coefs[this_index] <- average_coefs[this_index]
+    average_grid_list[[arm_average_label]] <- this_coefs
+  }
+}
+average_conts <- contrast(
+  lsmeans_general,
+  average_grid_list
 )
 ```
 
 Obviously with this we can also estimate differences between the treatment arms.
+For example, comparing both arms A and C with arm B (as that is labelled "Placebo"):
+
+```{r}
+diff_specs <- list(
+  "ARM A vs. ARM B for average W1D8 and W2D15" = average_specs[[2]] - average_specs[[1]],
+  "ARM C vs. ARM B for average W1D8 and W2D15" = average_specs[[3]] - average_specs[[1]]
+)
+contrast(
+  lsmeans_general,
+  diff_specs
+)
+```
+
+And actually it is even easier: We can call `pairs()` here.
+
+```{r}
+pairs(average_conts)
+```
+
+Only problem is that we have too many contrasts then here again. So probably
+specifying them manually is more efficient while needing a bit more code first.
+
+#### Coefficients for visits by arm
 
 It is also possible to specify a `by` variable here which can be useful
 potentially:
@@ -268,6 +339,36 @@ contrast(
   by = "ARMCD"
 )
 ```
+
+We could derive this a bit more automatically like this:
+
+```{r}
+visit_levels <- lsmeans_general@levels$AVISIT
+visits_average <- c("WEEK 1 DAY 8", "WEEK 2 DAY 15")
+average_label <- paste("Average", toString(visits_average))
+average_coefs <- as.integer(visit_levels %in% visits_average) / length(visits_average)
+average_list <- setNames(list(average_coefs), average_label)
+
+cont_by_arm <- contrast(
+  lsmeans_general,
+  average_list,
+  by = "ARMCD"
+)
+cont_by_arm
+```
+
+The question is whether we can get differences now?
+
+```{r}
+str(cont_by_arm)
+class(cont_by_arm)
+# pairs(cont_by_arm)
+# does not work unfortunately
+
+pairs(lsmeans_general, by = "AVISIT")
+```
+
+#### New grouped factor
 
 Another helpful tool could be to use grouping of factor levels.
 
@@ -285,6 +386,9 @@ pairs(lsmeans_by_avg_visit)
 ```
 
 So it is reassuring that the results are the same as above here.
+It is just a bit inconvenient that we then only get the results for this new
+average, rather than also for the other visits.
+
 
 ### Summary of Results
 
