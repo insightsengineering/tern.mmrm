@@ -1,4 +1,4 @@
-# tern.mmrm 0.1.1.9003
+# tern.mmrm 0.1.1.9004
 
 * Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
