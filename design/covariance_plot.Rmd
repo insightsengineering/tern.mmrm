@@ -1,0 +1,145 @@
+---
+title: "Covariance Plot"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+GOAL: Create a plot of the covariance matrix
+
+```{r, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Configuration
+```{r}
+library(CovStructRM)
+library(maditr)
+library(ggplot2)
+library(assertthat)
+library(checkmate)
+```
+
+## Example Data Setup
+```{r}
+data(cholest)
+
+# Convert data between wide and long forms (each subject is now one row)
+cholest.w <- dcast(cholest, subjectID + group ~ week, value.var = "ldl")
+
+# Variance-Covariance matrices
+cholest.cov <- cov(cholest.w[, 3:ncol(cholest.w)], use = "pairwise.complete.obs", method = "pearson")
+```
+
+We need a helper function (`h_get_timepoint_vars`) so that the columns and rows of the input matrix should be named by using the time point values only (ex. "0","3","9","15",...), or by a string (specified in the string argument) separated from the time point value by a period: (ex. "value.0","value.5","value.15",..., "resp.-1","resp.0.5","resp.1","resp.1.5", ...).
+
+```{r}
+#' @description get the inputted symmetric matrices row and column labels as numeric time points
+#' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @param string (`string`)\cr string in the column/row names of vcov_matrix that precedes the time point value. The default value is NULL,
+#' which assumes that the   column/row names of the input matrix don't have any character
+#' string other than time point value. If string is specified, this value should appear in the column/row names
+#' of the input matrix separated from the time point value by a period.
+#' @return This function returns a list with of two sets of numbers: the inputted symmetric matrices row labels and column label time points.
+#' @examples
+#' h_get_timepoint_vars(vcov_matrix = cholest.cov)
+h_get_timepoint_vars <- function(vcov_matrix, string = NULL) {
+  assert_string(string, null.ok = TRUE)
+  resp_name <- paste(string, ".", sep = "")
+  diag <- upper.tri(vcov_matrix, diag = T)
+  vect <- vcov_matrix[diag]
+  rnames <- rownames(vcov_matrix)
+  cnames <- colnames(vcov_matrix)
+  nmat <- outer(rnames, cnames, paste, sep = ":")
+  names(vect) <- nmat[diag]
+  vcov_matrix_row_label <- unlist(strsplit(names(vect), ":"))[seq(1, length(vect) * 2, by = 2)]
+  vcov_matrix_col_label <- unlist(strsplit(names(vect), ":"))[seq(2, length(vect) * 2, by = 2)]
+  if (is.null(string)) {
+    if (any(is.na(as.numeric(vcov_matrix_row_label)))) {
+      stop("You have not used the string argument when needed \n
+           or the col/row names of your input matrix don't have the time values")
+    } else {
+      numeric_vcov_matrix_row_label <- as.numeric(vcov_matrix_row_label) # tp.1
+      numeric_vcov_matrix_col_label <- as.numeric(vcov_matrix_col_label) # tp.2
+    }
+  } else {
+    if (!any(grepl(string, cnames))) {
+      stop("The string you entered is not part of the column/row names of vcov_matrix")
+    } else {
+      numeric_vcov_matrix_row_label <- as.numeric(gsub(resp_name, "", vcov_matrix_row_label))
+      numeric_vcov_matrix_col_label <- as.numeric(gsub(resp_name, "", vcov_matrix_col_label))
+    }
+  }
+  return(list(numeric_vcov_matrix_row_label = numeric_vcov_matrix_row_label, numeric_vcov_matrix_col_label = numeric_vcov_matrix_col_label))
+}
+```
+
+We need a helper function (`h_vectorization`) for downstream analyses for the plot of the covariance matrix. `h_vectorization` obtains lag and distance between pairs of observations when the column and row names of the input matrix have a numeric value denoting the time point. The columns and rows of the input matrix should be named by using the time point values only (ex. "0","3","9","15",...), or by a string (specified in the string argument) separated from the time point value by a period: (ex. "value.0","value.5","value.15",..., "resp.-1","resp.0.5","resp.1","resp.1.5", ...). The column and row names are obtained from `h_get_timepoint_vars` and so `h_vectorization` just calls this helper function. 
+
+```{r}
+#' @description This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
+#' and obtains the lag and time distance between pairs of observations if the time values are part of
+#' the names or are part of the matrix column/row names.
+#' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @return This function returns a data frame with the upper-diagonal elements or a covariance or correlation
+#' matrix. In the context of repeated measures, this matrix contains the association between pairs
+#' of measurements taken at different time points.
+#' @examples
+#' h_vectorization(vcov_matrix = cholest.cov)
+h_vectorization <- function(vcov_matrix) {
+  assert_matrix(vcov_matrix)
+  assert_true(isSymmetric(vcov_matrix))
+  diag <- upper.tri(vcov_matrix, diag = T)
+  vect <- vcov_matrix[diag]
+  timepoints <- h_get_timepoint_vars(vcov_matrix)
+  time_point_distribution <- timepoints$numeric_vcov_matrix_col_label - timepoints$numeric_vcov_matrix_row_label
+  rank_row <- as.numeric(as.factor(timepoints$numeric_vcov_matrix_row_label))
+  rank_col <- as.numeric(as.factor(timepoints$numeric_vcov_matrix_col_label))
+  lag <- rank_col - rank_row
+  if (any(is.na(lag)) | any(is.na(time_point_distribution))) warning("Verify you have used the string argument correctly or that the columns and rows of your input matrix are named as expected")
+  vect <- data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
+  return(vect)
+}
+```
+
+Now we use this helper function as input for the function to create the covariance plot. 
+
+```{r}
+#' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
+#' needs to be vectorized and lag or time distances computed
+#' @param  vcov_dataframe (`data frame`}\cr name of the data frame created by h_vectorization.
+#' @param {x_var} (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance respectively. The default value is "lag".
+#' @param legend_position (`string`)\cr denoting where the legend should be shown. Option are c("topright","topleft","bottomright","bottomleft"). Default #' value #' is "topright"
+#' @examples
+#' g_covariance(vcov_dataframe = h_vectorization(vcov_matrix = cholest.cov), x_var = "time_point_distribution")
+g_covariance <- function(vcov_dataframe, x_var = c("lag", "time_point_distribution"), ylab = "",
+                         xlab = NULL, col = tre_col, pch = NULL, lty = NULL, cex = 2,
+                         legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
+  tre_col <- c(
+    "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
+    "#00ff00", "brown"
+  )
+  x_var <- match.arg(x_var)
+  if (x_var == "lag" & is.null(xlab)) {
+    xlab <- "Lag"
+  }
+
+  if (x_var == "time_point_distribution" & is.null(xlab)) {
+    xlab <- "Distance (time units) btw measurements"
+  }
+
+  n_col <- length(unique(vcov_dataframe$lag))
+  ntp <- 1:max(vcov_dataframe$rank_row)
+  if (length(col) < n_col) col <- rep(col, n_col)
+  if (is.null(pch)) pch <- ntp
+  if (is.null(lty)) lty <- ntp
+  legend_position <- match.arg(legend_position)
+  vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
+  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = rank_row, group = rank_row)) +
+    geom_point() +
+    geom_line() +
+    labs(colour = "From time:", x = xlab, y = ylab)
+}
+```
+
+The example obtains covariance plot as expected!
