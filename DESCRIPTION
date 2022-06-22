@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
-Version: 0.1.1.9000
+Version: 0.1.1.9004
 Date: 2022-06-09
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
@@ -20,6 +20,7 @@ Depends:
     tern (>= 0.7.8)
 Imports:
     assertthat,
+    checkmate,
     dfoptim,
     dplyr,
     emmeans (>= 1.4.5),
@@ -40,16 +41,19 @@ Suggests:
     knitr,
     Matrix,
     rmarkdown,
-    testthat (>= 2.0)
+    testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Collate:
     'fit_mmrm.R'
     'g_mmrm.R'
+    'lsmeans.R'
     'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'

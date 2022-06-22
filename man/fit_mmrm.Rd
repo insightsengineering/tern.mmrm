@@ -11,6 +11,7 @@ fit_mmrm(
   conf_level = 0.95,
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
+  averages_emmeans = list(),
   optimizer = "automatic",
   parallel = FALSE
 )
@@ -38,6 +39,9 @@ will be excluded.}
 \code{"unstructured"}. See the details.}
 
 \item{weights_emmeans}{argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
+
+\item{averages_emmeans}{(\code{list})\cr optional named list of visit levels which should be averaged
+and reported along side the single visits.}
 
 \item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
 will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
@@ -113,7 +117,10 @@ mmrm_results <- fit_mmrm(
   ),
   data = mmrm_test_data,
   cor_struct = "random-quadratic",
-  weights_emmeans = "equal"
+  weights_emmeans = "equal",
+  averages_emmeans = list(
+    "VIS1+2" = c("VIS1", "VIS2")
+  )
 )
 }
 

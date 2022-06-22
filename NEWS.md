@@ -1,4 +1,9 @@
-# tern.mmrm 0.1.1.9000
+# tern.mmrm 0.1.1.9004
+
+* Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
+  least square means for averages of visits.
+
+# tern.mmrm 0.1.1
 
 * Removed dependency on `purrr`, `tibble`, `scda` and `scda.2022`
 * Changed tests and example apps to use `mmrm_test_data` as sample data.
