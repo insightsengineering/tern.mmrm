@@ -9,6 +9,7 @@
 #' @import ggplot2
 #' @import rtables
 #' @importFrom magrittr %>%
+#' @importFrom maditr dcast
 #' @importFrom rlang .data :=
 #' @importFrom optimx optimx
 #' @importFrom dfoptim nmk
