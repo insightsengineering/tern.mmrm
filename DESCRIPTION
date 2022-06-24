@@ -58,3 +58,4 @@ Collate:
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
     'utils.R'
+    'covariance_plot.R'
