@@ -9,13 +9,16 @@ h_get_timepoint_vars(vcov_matrix, string = NULL)
 \arguments{
 \item{vcov_matrix}{(\code{matrix})\cr name of the input symmetric matrix.}
 
-\item{string}{(\code{string})\cr string in the column/row names of vcov_matrix that precedes the time point value. The default value is NULL,
-which assumes that the   column/row names of the input matrix don't have any character
+\item{string}{(\code{string})\cr string in the column/row names of vcov_matrix that precedes
+the time point value. The default value is NULL,
+which assumes that the   column/row names of the input matrix
+don't have any character
 string other than time point value. If string is specified, this value should appear in the column/row names
 of the input matrix separated from the time point value by a period.}
 }
 \value{
-This function returns a list with of two sets of numbers: the inputted symmetric matrices row labels and column label time points.
+This function returns a list with of two sets of numbers:
+the inputted symmetric matrices row labels and column label time points.
 }
 \description{
 get the inputted symmetric matrices row and column labels as numeric time points

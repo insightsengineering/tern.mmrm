@@ -2,11 +2,14 @@
 #'
 #' @description get the inputted symmetric matrices row and column labels as numeric time points
 #' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
-#' @param string (`string`)\cr string in the column/row names of vcov_matrix that precedes the time point value. The default value is NULL,
-#' which assumes that the   column/row names of the input matrix don't have any character
+#' @param string (`string`)\cr string in the column/row names of vcov_matrix that precedes
+#' the time point value. The default value is NULL,
+#' which assumes that the   column/row names of the input matrix
+#' don't have any character
 #' string other than time point value. If string is specified, this value should appear in the column/row names
 #' of the input matrix separated from the time point value by a period.
-#' @return This function returns a list with of two sets of numbers: the inputted symmetric matrices row labels and column label time points.
+#' @return This function returns a list with of two sets of numbers:
+#' the inputted symmetric matrices row labels and column label time points.
 #' @export
 #'
 #' @examples
@@ -38,5 +41,8 @@ h_get_timepoint_vars <- function(vcov_matrix, string = NULL) {
       numeric_vcov_matrix_col_label <- as.numeric(gsub(resp_name, "", vcov_matrix_col_label))
     }
   }
-  return(list(numeric_vcov_matrix_row_label = numeric_vcov_matrix_row_label, numeric_vcov_matrix_col_label = numeric_vcov_matrix_col_label))
+  return(list(
+    numeric_vcov_matrix_row_label = numeric_vcov_matrix_row_label,
+    numeric_vcov_matrix_col_label = numeric_vcov_matrix_col_label
+  ))
 }
