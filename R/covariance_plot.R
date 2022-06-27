@@ -13,7 +13,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' h_get_timepoint_vars(vcov_matrix = cholest.cov)
+#' }
 h_get_timepoint_vars <- function(vcov_matrix, string = NULL) {
   assert_string(string, null.ok = TRUE)
   resp_name <- paste(string, sep = "")

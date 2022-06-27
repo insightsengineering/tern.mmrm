@@ -24,5 +24,7 @@ the inputted symmetric matrices row labels and column label time points.
 get the inputted symmetric matrices row and column labels as numeric time points
 }
 \examples{
+\dontrun{
 h_get_timepoint_vars(vcov_matrix = cholest.cov)
+}
 }
