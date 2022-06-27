@@ -1,5 +1,4 @@
 test_that("h_get_timepoint_vars works as expected with string specified", {
-  data("mmrm_test_data")
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   result <- h_get_timepoint_vars(vcov_matrix = data_cov, string = "VIS")
