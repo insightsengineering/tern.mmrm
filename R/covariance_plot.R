@@ -23,8 +23,9 @@ h_get_timepoint_vars <- function(vcov_matrix, string = NULL) {
   cnames <- colnames(vcov_matrix)
   nmat <- outer(rnames, cnames, paste, sep = ":")
   names(vect) <- nmat[diag]
-  vcov_matrix_row_label <- unlist(strsplit(names(vect), ":"))[seq(1, length(vect) * 2, by = 2)]
-  vcov_matrix_col_label <- unlist(strsplit(names(vect), ":"))[seq(2, length(vect) * 2, by = 2)]
+  split_names <- unlist(strsplit(names(vect), ":"))
+  vcov_matrix_row_label <- split_names[seq(1, length(vect) * 2, by = 2)]
+  vcov_matrix_col_label <- split_names[seq(2, length(vect) * 2, by = 2)]
   if (is.null(string)) {
     if (any(is.na(as.numeric(vcov_matrix_row_label)))) {
       stop("You have not used the string argument when needed \n
