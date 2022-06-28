@@ -41,7 +41,8 @@ Suggests:
     knitr,
     Matrix,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    maditr
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
@@ -58,3 +59,4 @@ Collate:
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
     'utils.R'
+    'covariance_plot.R'
