@@ -15,28 +15,24 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
-          - assertthat
-          - checkmate
-          - dfoptim
-          - generics
-          - dplyr
-          - emmeans
-          - ggplot2
-          - lme4
-          - lmerTest
-          - magrittr
-          - optimx
-          - parallel
-          - rlang
-          - rtables
-          - stats
-          - tibble
-          - broom
-          - knitr
-          - Matrix
-          - rmarkdown
-          - testthat
-          - insightsengineering/tern
+        -    insightsengineering/tern
+        -    assertthat
+        -    checkmate
+        -    dfoptim
+        -    dplyr
+        -    emmeans
+        -    insightsengineering/formatters
+        -    generics
+        -    ggplot2
+        -    lme4
+        -    lmerTest
+        -    magrittr
+        -    optimx
+        -    parallel
+        -    rlang
+        -    rtables
+        -    stats
+        -    utils
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -80,28 +76,24 @@ repos:
           design/.*
           )$
         additional_dependencies:
-          - assertthat
-          - checkmate
-          - dfoptim
-          - generics
-          - dplyr
-          - emmeans
-          - ggplot2
-          - lme4
-          - lmerTest
-          - magrittr
-          - optimx
-          - parallel
-          - rlang
-          - rtables
-          - stats
-          - tibble
-          - broom
-          - knitr
-          - Matrix
-          - rmarkdown
-          - testthat
-          - insightsengineering/tern
+        -    insightsengineering/tern
+        -    assertthat
+        -    checkmate
+        -    dfoptim
+        -    dplyr
+        -    emmeans
+        -    insightsengineering/formatters
+        -    generics
+        -    ggplot2
+        -    lme4
+        -    lmerTest
+        -    magrittr
+        -    optimx
+        -    parallel
+        -    rlang
+        -    rtables
+        -    stats
+        -    utils
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >

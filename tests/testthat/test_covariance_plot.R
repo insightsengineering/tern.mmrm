@@ -3,8 +3,8 @@ test_that("h_get_timepoint_vars works as expected with string specified", {
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   result <- h_get_timepoint_vars(vcov_matrix = data_cov, string = "VIS")
   expected <- list(
-    numeric_vcov_matrix_row_label = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
-    numeric_vcov_matrix_col_label = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
+    row_time = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
+    col_time = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
   )
   expect_identical(result, expected)
 })
@@ -22,8 +22,8 @@ test_that("h_get_timepoint_vars works as expected with string argument not neede
   colnames(data_cov) <- c(1, 2, 3, 4)
   result <- h_get_timepoint_vars(vcov_matrix = data_cov)
   expected <- list(
-    numeric_vcov_matrix_row_label = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
-    numeric_vcov_matrix_col_label = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
+    row_time = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
+    col_time = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
   )
   expect_identical(result, expected)
 })

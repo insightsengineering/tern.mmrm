@@ -7,24 +7,34 @@
 h_get_timepoint_vars(vcov_matrix, string = NULL)
 }
 \arguments{
-\item{vcov_matrix}{(\code{matrix})\cr name of the input symmetric matrix.}
+\item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
+row and column names.}
 
-\item{string}{(\code{string})\cr string in the column/row names of vcov_matrix that precedes
-the time point value. The default value is NULL,
-which assumes that the   column/row names of the input matrix
-don't have any character
-string other than time point value. If string is specified, this value should appear in the column/row names
-of the input matrix separated from the time point value by a period.}
+\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
+the time point value, see details.}
 }
 \value{
 This function returns a list with of two sets of numbers:
-the inputted symmetric matrices row labels and column label time points.
+\code{row_time} and \code{col_time}, identifying the timepoints of the upper triangular
+part of \code{vcov_matrix}.
 }
 \description{
 get the inputted symmetric matrices row and column labels as numeric time points
 }
-\examples{
-\dontrun{
-h_get_timepoint_vars(vcov_matrix = cholest.cov)
+\details{
+The default \code{string} value is \code{NULL}, which assumes that the names
+of the input matrix don't have any character string other than time point
+value. If a \code{string} is specified, this value should appear in the names
+of \code{vcov_matrix}.
 }
+\examples{
+vcov_matrix <- matrix(
+  c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
+  nrow = 4, ncol = 4,
+  dimnames = list(
+    c("VIS1", "VIS2", "VIS3", "VIS4"),
+    c("VIS1", "VIS2", "VIS3", "VIS4")
+  )
+)
+h_get_timepoint_vars(vcov_matrix, string = "VIS")
 }
