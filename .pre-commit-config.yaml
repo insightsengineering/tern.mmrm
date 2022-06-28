@@ -15,13 +15,14 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
+        - insightsengineering/nestcolor
         -    insightsengineering/tern
         -    assertthat
         -    checkmate
         -    dfoptim
         -    dplyr
         -    emmeans
-        -    insightsengineering/formatters
+        -    formatters
         -    generics
         -    ggplot2
         -    lme4
@@ -76,13 +77,14 @@ repos:
           design/.*
           )$
         additional_dependencies:
+        - insightsengineering/nestcolor
         -    insightsengineering/tern
         -    assertthat
         -    checkmate
         -    dfoptim
         -    dplyr
         -    emmeans
-        -    insightsengineering/formatters
+        -    formatters
         -    generics
         -    ggplot2
         -    lme4
