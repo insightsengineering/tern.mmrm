@@ -35,6 +35,15 @@ reference:
   - title: Analysis Helper Functions
     desc: these functions are useful to help definining the analysis
     contents:
+      - h_assert_one_rec_pt_visit
+      - h_assert_rsp_var
+      - h_assert_visit_var
+      - h_get_covariate_parts
+      - h_build_formula
+      - h_is_specified
+      - h_is_specified_and_in_data
+      - h_check_and_get_label
+      - h_labels
       - h_mmrm_cov
       - h_mmrm_diagnostic
       - h_mmrm_fixed
@@ -56,4 +65,3 @@ reference:
     desc: Example Data
     contents:
       - mmrm_test_data
-

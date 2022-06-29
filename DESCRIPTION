@@ -52,11 +52,12 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Collate:
+    'utils.R'
+    'assert_data.R'
+    'covariance_plot.R'
     'fit_mmrm.R'
     'g_mmrm.R'
     'lsmeans.R'
     'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
-    'utils.R'
-    'covariance_plot.R'
