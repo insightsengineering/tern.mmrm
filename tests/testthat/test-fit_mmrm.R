@@ -1,38 +1,5 @@
 library(dplyr)
 
-# build_mmrm_formula ----
-
-test_that("build_mmrm_formula builds the correct formula", {
-  # No additional covariates.
-  vars1 <- list(
-    response = "AVAL",
-    covariates = c(),
-    id = "USUBJID",
-    arm = "ARM",
-    visit = "AVISIT"
-  )
-  cor_struct1 <- "unstructured"
-  result1 <- build_mmrm_formula(vars1, cor_struct1)
-  expected1 <- AVAL ~ ARM * AVISIT + (0 + AVISIT | USUBJID)
-  expect_equal(result1, expected1, ignore_attr = TRUE)
-
-  # Additional covariates.
-  vars2 <- vars1
-  vars2$covariates <- c("STRATA1", "BMRKR2")
-  cor_struct2 <- "compound-symmetry"
-  result2 <- build_mmrm_formula(vars2, cor_struct2)
-  expected2 <- AVAL ~ STRATA1 + BMRKR2 + ARM * AVISIT + (1 | USUBJID)
-  expect_equal(result2, expected2, ignore_attr = TRUE)
-
-  # Without arm
-  vars3 <- vars1
-  vars3$arm <- NULL
-  cor_struct3 <- "random-quadratic"
-  result3 <- build_mmrm_formula(vars3, cor_struct3)
-  expected3 <- AVAL ~ AVISIT + (stats::poly(as.numeric(AVISIT), df = 2) | USUBJID)
-  expect_equal(result3, expected3, ignore_attr = TRUE)
-})
-
 # fit_lme4_single_optimizer ----
 
 test_that("fit_lme4_single_optimizer works as expected when there are no warnings or messages", {

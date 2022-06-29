@@ -1,67 +1,3 @@
-#' Build MMRM Formula
-#'
-#' Helper function to build the MMRM formula.
-#'
-#' @inheritParams fit_mmrm
-#'
-#' @return the complete MMRM formula to use with [lme4::lmer()].
-#' @keywords internal
-#'
-build_mmrm_formula <- function(vars,
-                               cor_struct = c(
-                                 "unstructured",
-                                 "random-quadratic",
-                                 "random-slope",
-                                 "compound-symmetry"
-                               )) {
-  cor_struct <- match.arg(cor_struct)
-
-  covariates_part <- paste(
-    vars$covariates,
-    collapse = " + "
-  )
-
-  arm_visit_part <- if (is.null(vars$arm)) {
-    vars$visit
-  } else {
-    paste0(
-      vars$arm,
-      "*",
-      vars$visit
-    )
-  }
-
-  random_effects_part <- switch(cor_struct,
-    "unstructured" = "(0 + visit_var | id_var)",
-    "random-quadratic" = "(stats::poly(as.numeric(visit_var), df=2) | id_var)",
-    "random-slope" = "(as.numeric(visit_var) | id_var)",
-    "compound-symmetry" = "(1 | id_var)"
-  ) %>%
-    gsub(pattern = "visit_var", replacement = vars$visit) %>%
-    gsub(pattern = "id_var", replacement = vars$id)
-
-  rhs_formula <- paste(
-    arm_visit_part,
-    "+",
-    random_effects_part
-  )
-  if (covariates_part != "") {
-    rhs_formula <- paste(
-      covariates_part,
-      "+",
-      rhs_formula
-    )
-  }
-
-  full_formula <- stats::as.formula(paste(
-    vars$response,
-    "~",
-    rhs_formula
-  ))
-
-  return(full_formula)
-}
-
 #' Covariance Matrix for MMRM
 #'
 #' Extract the covariance matrix estimate from a `lme4` fit.
@@ -484,12 +420,13 @@ fit_mmrm <- function(vars = list(
                      averages_emmeans = list(),
                      optimizer = "automatic",
                      parallel = FALSE) {
-  labels <- check_mmrm_vars(vars, data)
+  assert_data(vars, data)
+  labels <- h_labels(vars, data)
   assertthat::assert_that(
     tern::is_proportion(conf_level),
     assertthat::is.flag(parallel)
   )
-  formula <- build_mmrm_formula(vars, cor_struct)
+  formula <- h_build_formula(vars, cor_struct)
 
   fit <- fit_lme4(
     formula = formula,
