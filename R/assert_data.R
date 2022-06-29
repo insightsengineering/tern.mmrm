@@ -64,6 +64,17 @@ h_assert_visit_var <- function(vars, data) {
   assert_factor(visit_values)
 }
 
+#' @describeIn assert_data assert subject ID variable.
+#' @export
+h_assert_id_var <- function(vars, data) {
+  assert_list(vars)
+  assert_string(vars$id)
+  assert_data_frame(data)
+
+  id_values <- data[[vars$id]]
+  assert_factor(id_values)
+}
+
 #' @describeIn assert_data high-level assertion function to check the dataset.
 #' @export
 assert_data <- function(vars, data) {
@@ -81,6 +92,7 @@ assert_data <- function(vars, data) {
   h_assert_one_rec_pt_visit(vars, data_complete_regressors)
   h_assert_rsp_var(vars, data_complete_regressors)
   h_assert_visit_var(vars, data_complete_regressors)
+  h_assert_id_var(vars, data_complete_regressors)
 
   # Second only look at complete data.
   has_complete_response <- stats::complete.cases(data_complete_regressors[, vars$response, drop = FALSE])

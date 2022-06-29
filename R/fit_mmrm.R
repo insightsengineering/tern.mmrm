@@ -2,35 +2,21 @@
 #'
 #' Compute the model diagnostic statistics for a linear mixed model fit.
 #'
-#' @param fit (`lmerModLmerTest`)\cr object fit with REML using [lmerTest::lmer()].
-#' @param cov_est (`Matrix`)\cr covariance estimate coming from [get_lme4_cov_estimate()].
+#' @param fit (`mmrm`)\cr object fit with [mmrm::mmrm()].
 #'
-#' @return a list with the REML criterion, the AIC, AICc and BIC.
+#' @return A list with the REML criterion, the AIC, AICc and BIC.
 #'
-#' @details AICc is here defined as
-#' \deqn{-2 * loglik + 2 * df * (m / (m - df - 1))}
-#' where \code{loglik} is the restricted log likelihood value, \code{df} is the number of covariance parameters
-#' and \code{m} is the number of observations minus the number of fixed effects, or \code{df + 2} if it is smaller
-#' than that. The same \code{df} is used for AIC and BIC. Note that for BIC, the \code{n} used is the number of
-#' subjects (instead of the number of observations as in AIC and AICc). This matches the definitions in SAS.
 #' @keywords internal
 #'
-get_lme4_diagnostics <- function(fit,
-                                 cov_est = get_lme4_cov_estimate(fit)) {
-  stopifnot(inherits(fit, "lmerModLmerTest"))
-  stopifnot(lme4::isREML(fit))
-
-  n_obs <- lme4::getME(fit, "n")
-  df <- attr(cov_est, "n_parameters")
-  m <- max(df + 2, n_obs - lme4::getME(fit, "p"))
-  log_lik <- as.numeric(stats::logLik(fit))
-  n_subjects <- as.numeric(lme4::getME(fit, "l_i"))
+get_diagnostics <- function(fit) {
+  assert_class(fit, "mmrm")
+  assert_true(fit$reml)
 
   result <- list(
-    "REML criterion" = -2 * log_lik,
-    AIC = -2 * log_lik + 2 * df,
-    AICc = -2 * log_lik + 2 * df * (m / (m - df - 1)),
-    BIC = -2 * log_lik + df * log(n_subjects)
+    "REML criterion" = stats::deviance(fit),
+    AIC = stats::AIC(fit),
+    AICc = stats::AIC(fit, corrected = TRUE),
+    BIC = stats::BIC(fit)
   )
   return(result)
 }
@@ -93,9 +79,9 @@ get_lme4_diagnostics <- function(fit,
 #'   \item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
 #'   }
 #'
-#' @return An \code{mmrm} object which is a list with MMRM results:
+#' @return A \code{tern_mmrm} object which is a list with MMRM results:
 #' \describe{
-#'   \item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
+#'   \item{fit}{The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
 #'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 #'   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
 #'   \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
@@ -118,7 +104,6 @@ get_lme4_diagnostics <- function(fit,
 #' library(dplyr)
 #' library(rtables)
 #'
-#' \dontrun{
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",
@@ -128,13 +113,12 @@ get_lme4_diagnostics <- function(fit,
 #'     visit = "AVISIT"
 #'   ),
 #'   data = mmrm_test_data,
-#'   cor_struct = "random-quadratic",
+#'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal",
 #'   averages_emmeans = list(
 #'     "VIS1+2" = c("VIS1", "VIS2")
 #'   )
 #' )
-#' }
 #'
 fit_mmrm <- function(vars = list(
                        response = "AVAL",
@@ -152,17 +136,14 @@ fit_mmrm <- function(vars = list(
                      parallel = FALSE) {
   assert_data(vars, data)
   labels <- h_labels(vars, data)
-  assertthat::assert_that(
-    tern::is_proportion(conf_level),
-    assertthat::is.flag(parallel)
-  )
   formula <- h_build_formula(vars, cor_struct)
 
-  fit <- fit_lme4(
+  fit <- mmrm::mmrm(
     formula = formula,
     data = data,
+    reml = TRUE,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, get_free_cores(), 1L)
+    n_cores = ifelse(parallel, mmrm::h_free_cores(), 1L)
   )
 
   lsmeans <- get_mmrm_lsmeans(
@@ -173,23 +154,16 @@ fit_mmrm <- function(vars = list(
     weights = weights_emmeans
   )
 
-  cov_estimate <- get_lme4_cov_estimate(fit)
-  id_rows <- which(fit@frame[[vars$id]] == attr(cov_estimate, "id"))
-  visits <- fit@frame[[vars$visit]][id_rows]
-  rownames(cov_estimate) <- colnames(cov_estimate) <- as.character(visits)
-
-  diagnostics <- get_lme4_diagnostics(fit, cov_est = cov_estimate)
-
   results <- list(
     fit = fit,
-    cov_estimate = cov_estimate,
-    diagnostics = diagnostics,
+    cov_estimate = mmrm::VarCorr(fit),
+    diagnostics = get_diagnostics(fit),
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,
     ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
     conf_level = conf_level
   )
-  class(results) <- "mmrm"
+  class(results) <- "tern_mmrm"
   return(results)
 }

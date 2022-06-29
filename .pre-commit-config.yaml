@@ -19,16 +19,13 @@ repos:
         -    insightsengineering/tern
         -    assertthat
         -    checkmate
-        -    dfoptim
         -    dplyr
         -    emmeans
         -    formatters
         -    generics
         -    ggplot2
-        -    lme4
-        -    lmerTest
         -    magrittr
-        -    optimx
+        -    openpharma/mmrm
         -    parallel
         -    rlang
         -    rtables
@@ -81,16 +78,13 @@ repos:
         -    insightsengineering/tern
         -    assertthat
         -    checkmate
-        -    dfoptim
         -    dplyr
         -    emmeans
         -    formatters
         -    generics
         -    ggplot2
-        -    lme4
-        -    lmerTest
         -    magrittr
-        -    optimx
+        -    openpharma/mmrm
         -    parallel
         -    rlang
         -    rtables

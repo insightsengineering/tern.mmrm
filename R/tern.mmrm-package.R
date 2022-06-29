@@ -9,9 +9,8 @@
 #' @import ggplot2
 #' @import rtables
 #' @importFrom magrittr %>%
+#' @importFrom mmrm h_cov_estimate
 #' @importFrom rlang .data :=
-#' @importFrom optimx optimx
-#' @importFrom dfoptim nmk
 #' @importFrom tern f_conf_level
 NULL
 

@@ -1,61 +1,45 @@
 library(dplyr)
 
-# get_lme4_diagnostics ----
+# get_diagnostics ----
 
-test_that("get_lme4_diagnostics works as expected with a random slope model", {
-  fit <- fit_lme4(
-    formula = Reaction ~ Days + (Days | Subject),
-    data = lme4::sleepstudy
+test_that("get_diagnostics works as expected", {
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ us(AVISIT | USUBJID),
+    data = mmrm_test_data
   )
-  result <- get_lme4_diagnostics(fit)
+  result <- get_diagnostics(fit)
 
   expected <- list(
-    "REML criterion" = 1743.6,
-    AIC = 1751.6,
-    AICc = 1751.9,
-    BIC = 1755.2
+    "REML criterion" = 3700.9,
+    AIC = 3720.9,
+    AICc = 3721.4,
+    BIC = 3753.8
   )
-  expect_equal(result, expected, tolerance = 0.0001)
+  expect_equal(result, expected, tolerance = 1e-4)
 })
 
 # fit_mmrm ----
 
 test_that("fit_mmrm works with parallelization", {
-  dat <- lme4::sleepstudy %>%
-    dplyr::mutate(
-      group = factor(rep(c("A", "B"), length = nrow(lme4::sleepstudy))),
-      days_grouped = cut(
-        Days,
-        breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
-        include.lowest = TRUE
-      ),
-      Subject = dplyr::case_when(
-        group == "A" ~ as.character(Subject),
-        TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
-      )
-    ) %>%
-    dplyr::distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
-
   expect_silent(result <- fit_mmrm(
     vars = list(
-      response = "Reaction",
-      covariates = c(),
-      id = "Subject",
-      arm = "group",
-      visit = "days_grouped"
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
     ),
-    data = dat,
-    cor_struct = "compound-symmetry",
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
     parallel = TRUE
   ))
 })
 
-# Produces different version of a ADQS subset.
-get_adqs <- function(version = c("A", "B")) {
+# Produces different versions of mmrm_test_data.
+get_version <- function(version = c("A", "B")) {
   version <- match.arg(version)
-  adqs <- mmrm_test_data
   set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
-  adqs_f <- adqs %>%
+  mmrm_test_data %>%
     droplevels() %>%
     { # nolint
       if (version == "B") {
@@ -79,18 +63,10 @@ get_adqs <- function(version = c("A", "B")) {
         .
       }
     }
-
-  return(adqs_f)
 }
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
-  skip("does not converge at the moment, waiting for mmrm usage")
-
-  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
-  }
-
-  adqs_f <- get_adqs(version = "A")
+  dat <- get_version(version = "A")
 
   mmrm_results <- fit_mmrm(
     vars = list(
@@ -100,7 +76,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
       arm = "ARMCD",
       visit = "AVISIT"
     ),
-    data = adqs_f,
+    data = dat,
     cor_struct = "unstructured",
     weights_emmeans = "equal",
     optimizer = "automatic"
@@ -117,13 +93,13 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
 
   # REML criterion value.
   expect_equal(
-    lme4::REMLcrit(mmrm_results$fit),
+    stats::deviance(mmrm_results$fit),
     3429.306,
     tolerance = 0.0001
   )
 
   # Fixed effects estimates.
-  summary_table <- summary(mmrm_results$fit, ddf = "Satterthwaite")
+  summary_table <- summary(mmrm_results$fit)
   fixed_effects <- as.data.frame(summary_table$coefficients[, c("Estimate", "df", "Pr(>|t|)")])
 
   expected_fixed_effects <- data.frame(
@@ -151,7 +127,10 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   )
 
   # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
+  lsmeans_estimates <- mmrm_results$lsmeans$estimates[
+    c(1, 5, 2, 6, 3, 7, 4, 8),
+    c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")
+  ]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
       c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L),
@@ -174,7 +153,8 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
   expect_equal(
     lsmeans_estimates,
     expected_lsmeans_estimates,
-    tolerance = 0.00001
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 
   lsmeans_contrasts <-
@@ -232,11 +212,9 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
 })
 
 test_that("fit_mmrm works also with missing data", {
-  skip_if_too_deep(3)
-
-  adqs_f <- get_adqs(version = "B")
+  dat <- get_version(version = "B")
   stopifnot(identical(
-    nrow(stats::na.omit(adqs_f)),
+    nrow(stats::na.omit(dat)),
     440L
   ))
 
@@ -248,7 +226,7 @@ test_that("fit_mmrm works also with missing data", {
       arm = "ARMCD",
       visit = "AVISIT"
     ),
-    data = adqs_f,
+    data = dat,
     cor_struct = "unstructured",
     weights_emmeans = "equal",
     optimizer = "automatic"
@@ -265,13 +243,13 @@ test_that("fit_mmrm works also with missing data", {
 
   # REML criterion value.
   expect_equal(
-    lme4::REMLcrit(mmrm_results$fit),
+    stats::deviance(mmrm_results$fit),
     2791.552,
     tolerance = 0.00001
   )
 
   # Fixed effects estimates.
-  summary_table <- summary(mmrm_results$fit, ddf = "Satterthwaite")
+  summary_table <- summary(mmrm_results$fit)
   fixed_effects <- as.data.frame(summary_table$coefficients[, c("Estimate", "df", "Pr(>|t|)")])
 
   expected_fixed_effects <- data.frame(
@@ -298,7 +276,9 @@ test_that("fit_mmrm works also with missing data", {
   )
 
   # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
+  lsmeans_estimates <- mmrm_results$lsmeans$estimates[
+    c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")
+  ]
   expected_lsmeans_estimates <- data.frame(
     ARMCD = factor(
       c(rep(1L, 4), rep(2L, 4)),
@@ -321,7 +301,7 @@ test_that("fit_mmrm works also with missing data", {
   expect_equal(
     lsmeans_estimates,
     expected_lsmeans_estimates,
-    tolerance = 0.00001
+    tolerance = 1e-3
   )
 
   lsmeans_contrasts <-
@@ -371,7 +351,7 @@ test_that("fit_mmrm works also with missing data", {
     cov_estimate,
     expected_cov_estimate,
     ignore_attr = TRUE,
-    tolerance = 0.001
+    tolerance = 1e-3
   )
 
   # Diagnostics.
@@ -381,164 +361,7 @@ test_that("fit_mmrm works also with missing data", {
   expect_equal(
     diagnostics_values,
     expected_diagnostics_values,
-    tolerance = 0.00001,
-    ignore_attr = TRUE
-  )
-})
-
-test_that("fit_mmrm works with compound symmetry covariance structure", {
-  adqs_f <- get_adqs(version = "B")
-  stopifnot(identical(
-    nrow(stats::na.omit(adqs_f)),
-    440L
-  ))
-
-  mmrm_results <- fit_mmrm(
-    vars = list(
-      response = "FEV1",
-      covariates = "FEV1_BL",
-      id = "USUBJID",
-      arm = "ARMCD",
-      visit = "AVISIT"
-    ),
-    data = adqs_f,
-    cor_struct = "compound-symmetry",
-    weights_emmeans = "equal"
-  )
-
-  # Compare vs. SAS results calculated with the following statements:
-  #
-  # PROC MIXED DATA = ana.dat cl method=reml;
-  # CLASS USUBJID ARMCD(ref='ARM B') AVISIT(ref='WEEK 1 DAY 8');
-  # MODEL AVAL = BMRKR1 ARMCD AVISIT ARMCD*AVISIT / ddfm=satterthwaite solution chisq;
-  # REPEATED AVISIT / subject=USUBJID type=cs r rcorr;
-  # LSMEANS AVISIT*ARMCD / pdiff=all cl alpha=0.05 slice=AVISIT;
-  # RUN;
-
-  # REML criterion value.
-  expect_equal(
-    lme4::REMLcrit(mmrm_results$fit),
-    2888.673,
-    tolerance = 0.0001
-  )
-
-  # Fixed effects estimates.
-  summary_table <- summary(mmrm_results$fit, ddf = "Satterthwaite")
-  fixed_effects <- as.data.frame(summary_table$coefficients[, c("Estimate", "df", "Pr(>|t|)")])
-
-  expected_fixed_effects <- data.frame(
-    Estimate = c(
-      25.9032974, 0.1567089, 4.4368365, 4.7581709, 10.8380981, 14.7928207, 0.3221395, -0.9733533, 1.9690800
-    ),
-    df = c(
-      245.0971, 192.7569, 429.8670, 335.5291, 353.9999, 356.4097, 332.8183, 346.6242, 336.6210
-    ),
-    "Pr(>|t|)" = c(
-      5.338736e-33, 1.322295e-04, 3.997563e-04, 4.481823e-05, 6.025417e-18,
-      1.417764e-30, 8.451677e-01, 5.689422e-01, 2.353690e-01
-    ),
-    row.names = c(
-      "(Intercept)", "FEV1_BL", "ARMCDTRT", "AVISITVIS2", "AVISITVIS3",
-      "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3", "ARMCDTRT:AVISITVIS4"
-    ),
-    check.names = FALSE # Necessary to get right p-value column name.
-  )
-
-  expect_equal_result_tables(
-    subset(fixed_effects),
-    subset(expected_fixed_effects)
-  )
-
-  # Now compare LS means and their contrasts.
-  lsmeans_estimates <- mmrm_results$lsmeans$estimates[, c("ARMCD", "AVISIT", "estimate", "lower_cl", "upper_cl")]
-  expected_lsmeans_estimates <- data.frame(
-    ARMCD = factor(
-      c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
-      labels = c("PBO", "TRT"),
-    ),
-    AVISIT = factor(
-      c(1L, 2L, 3L, 4L, 1L, 2L, 3L, 4L),
-      labels = c("VIS1", "VIS2", "VIS3", "VIS4"),
-    ),
-    estimate = c(
-      32.16546, 36.92363,
-      43.00356, 46.95828, 36.60229, 41.6826, 46.46704, 53.36419
-    ),
-    lower_cl = c(
-      30.47693,
-      35.20825, 41.21033, 45.2281, 34.83834, 39.94995, 44.63662, 51.6316
-    ),
-    upper_cl = c(
-      33.85398, 38.639, 44.79678, 48.68845, 38.36625,
-      43.41526, 48.29746, 55.09679
-    )
-  )
-  expect_equal(
-    lsmeans_estimates,
-    expected_lsmeans_estimates,
-    tolerance = 0.00001
-  )
-
-  lsmeans_contrasts <-
-    mmrm_results$lsmeans$contrasts[, c("ARMCD", "AVISIT", "estimate", "df", "lower_cl", "upper_cl", "p_value")]
-  expected_lsmeans_contrasts <- data.frame(
-    ARMCD = factor(
-      c(1L, 1L, 1L, 1L),
-      labels = c("TRT"),
-    ),
-    AVISIT = factor(
-      c(1L, 2L, 3L, 4),
-      labels = c("VIS1", "VIS2", "VIS3", "VIS4")
-    ),
-    estimate = c(
-      4.436837, 4.758976, 3.463483, 6.405917
-    ),
-    df = c(
-      429.8670, 429.6275, 430.7465, 429.8073
-    ),
-    lower_cl = c(
-      1.9929345, 2.3207047, 0.9011265, 3.9577235
-    ),
-    upper_cl = c(
-      6.880739, 7.197247, 6.025840, 8.854110
-    ),
-    p_value = c(
-      3.997563e-04, 1.436671e-04, 8.183930e-03, 4.118787e-07
-    )
-  )
-  expect_equal_result_tables(
-    lsmeans_contrasts,
-    expected_lsmeans_contrasts,
-    pval_name = "p_value"
-  )
-
-  # Covariance matrix estimate.
-  cov_estimate <- mmrm_results$cov_estimate
-  expected_cov_estimate <- matrix(
-    c(
-      44.532058, 9.022132, 9.022132, 9.022132,
-      9.022132, 44.532058, 9.022132, 9.022132,
-      9.022132, 9.022132, 44.532058, 9.022132,
-      9.022132, 9.022132, 9.022132, 44.532058
-    ),
-    nrow = 4L,
-    ncol = 4L
-  )
-  expect_equal(
-    cov_estimate,
-    expected_cov_estimate,
-    ignore_attr = TRUE,
-    tolerance = 0.001
-  )
-
-  # Diagnostics.
-  diagnostics <- mmrm_results$diagnostics
-  diagnostics_values <- unlist(diagnostics)
-  expected_diagnostics_values <- c(2888.673, 2892.673, 2892.701, 2899.219)
-  expect_equal(
-    diagnostics_values,
-    expected_diagnostics_values,
-    tolerance = 0.00001,
+    tolerance = 1e-4,
     ignore_attr = TRUE
   )
 })

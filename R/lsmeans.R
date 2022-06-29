@@ -22,9 +22,10 @@ NULL
 #'   together with the sample size `n` for each combination).
 #' @export
 h_get_emmeans_res <- function(fit, vars, weights) {
-  assert_list(vars)
-  data_complete <- fit@frame
+  assert_class(fit, "mmrm")
+  data_complete <- fit$data
   assert_data_frame(data_complete)
+  assert_list(vars)
 
   emmeans_object <- emmeans::emmeans(
     fit,
@@ -271,7 +272,7 @@ h_average_visit_contrast_specs <- function(specs,
 #'
 #' Helper function to extract the least square means from an `MMRM` fit.
 #'
-#' @param fit result of [fit_lme4()].
+#' @param fit result of [fit_mmrm()].
 #' @inheritParams fit_mmrm
 #' @param averages (`list`)\cr named list of visit levels which should be averaged
 #'   and reported along side the single visits.
@@ -285,7 +286,7 @@ get_mmrm_lsmeans <- function(fit,
                              conf_level,
                              weights,
                              averages = list()) {
-  data_complete <- fit@frame
+  assert_class(fit, "mmrm")
   assert_list(averages, types = "character")
   emmeans_res <- h_get_emmeans_res(fit, vars, weights)
 
