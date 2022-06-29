@@ -60,6 +60,5 @@ Collate:
     'g_mmrm.R'
     'labels.R'
     'lsmeans.R'
-    'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
