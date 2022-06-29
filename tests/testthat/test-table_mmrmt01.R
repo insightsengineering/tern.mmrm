@@ -4,137 +4,111 @@ library(dplyr)
 library(tern)
 library(broom)
 
-too_old_lme4 <- compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0
-
-mmrm_results <- if (too_old_lme4) {
-  NULL
-} else {
-  skip_if_too_deep(5)
-  fit_mmrm(
-    vars = list(
-      response = "FEV1",
-      covariates = c("SEX", "FEV1_BL"),
-      id = "USUBJID",
-      arm = "ARMCD",
-      visit = "AVISIT"
-    ),
-    data = mmrm_test_data,
-    cor_struct = "unstructured",
-    weights_emmeans = "proportional",
-    optimizer = "automatic"
-  )
-}
+mmrm_results <- fit_mmrm(
+  vars = list(
+    response = "FEV1",
+    covariates = c("SEX", "FEV1_BL"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = mmrm_test_data,
+  cor_struct = "unstructured",
+  weights_emmeans = "proportional",
+  optimizer = "automatic"
+)
 
 testthat::test_that("LS means table is produced correctly", {
-  testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
-  skip_if_too_deep(5)
-
   df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
     add_colcounts() %>%
     split_rows_by("AVISIT") %>%
-    summarize_lsmeans(show_relative = "increase") %>%
+    summarize_lsmeans(
+      show_relative = "increase",
+      # Note: We are using less precise formats here to avoid spurious differences
+      # between systems while still checking overall structure.
+      .formats = c(
+        n = "xx.",
+        adj_mean_se = sprintf_format("%.1f (%.1f)"),
+        adj_mean_ci = "(xx.x, xx.x)",
+        diff_mean_se = sprintf_format("%.1f (%.1f)"),
+        diff_mean_ci = "(xx.x, xx.x)",
+        change = "xx.%",
+        p_value = "xx.xx"
+      )
+    ) %>%
     build_table(df, alt_counts_df = mmrm_test_data)
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "", "VIS1",
-      "n", "Adjusted Mean (SE)", "95% CI",
+      "", "", "VIS1", "n", "Adjusted Mean (SE)", "95% CI",
       "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "VIS2", "n",
-      "Adjusted Mean (SE)", "95% CI", "Difference in Adjusted Means (SE)",
-      "95% CI", "Relative Increase (%)", "p-value (MMRM)",
-      "VIS3", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI",
-      "Relative Increase (%)", "p-value (MMRM)", "VIS4",
-      "n", "Adjusted Mean (SE)", "95% CI",
+      "p-value (MMRM)", "VIS2", "n", "Adjusted Mean (SE)", "95% CI",
       "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "PBO", "(N=420)",
-      "", "68", "32.626 (0.767)",
-      "(31.111, 34.142)", "", "",
-      "", "", "",
-      "69", "37.484 (0.605)", "(36.289, 38.679)",
-      "", "", "",
-      "", "", "71",
-      "42.957 (0.514)", "(41.940, 43.974)", "",
-      "", "", "",
-      "", "67", "47.998 (1.206)",
-      "(45.613, 50.383)", "", "",
-      "", "", "TRT",
-      "(N=380)", "", "66",
-      "37.291 (0.781)", "(35.748, 38.835)", "4.665 (1.095)",
-      "(2.501, 6.828)", "14.3%", "<0.0001",
-      "", "71", "41.852 (0.600)",
-      "(40.666, 43.038)", "4.368 (0.852)", "(2.683, 6.052)",
-      "11.7%", "<0.0001", "",
-      "58", "46.524 (0.568)", "(45.400, 47.648)",
-      "3.567 (0.766)", "(2.051, 5.084)", "8.3%",
-      "<0.0001", "", "67",
-      "53.011 (1.209)", "(50.619, 55.402)", "5.013 (1.708)",
-      "(1.636, 8.390)", "10.4%", "0.0039"
+      "p-value (MMRM)", "VIS3", "n", "Adjusted Mean (SE)", "95% CI",
+      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "VIS4", "n", "Adjusted Mean (SE)", "95% CI",
+      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "PBO", "(N=420)", "", "68", "32.6 (0.8)", "(31.1, 34.1)",
+      "", "", "", "", "", "69", "37.5 (0.6)", "(36.3, 38.7)", "", "",
+      "", "", "", "71", "43.0 (0.5)", "(41.9, 44.0)", "", "", "", "",
+      "", "67", "48.0 (1.2)", "(45.6, 50.4)", "", "", "", "", "TRT",
+      "(N=380)", "", "66", "37.3 (0.8)", "(35.7, 38.8)", "4.7 (1.1)",
+      "(2.5, 6.8)", "14%", "0.00", "", "71", "41.9 (0.6)", "(40.7, 43.0)",
+      "4.4 (0.9)", "(2.7, 6.1)", "12%", "0.00", "", "58", "46.5 (0.6)",
+      "(45.4, 47.6)", "3.6 (0.8)", "(2.1, 5.1)", "8%", "0.00", "",
+      "67", "53.0 (1.2)", "(50.6, 55.4)", "5.0 (1.7)", "(1.6, 8.4)",
+      "10%", "0.00"
     ),
-    .Dim = c(34L, 3L)
+    dim = c(34L, 3L)
   )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Fixed effects table is produced correctly", {
-  testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
-  skip_if_too_deep(5)
-
-  result <- as.rtable(mmrm_results, type = "fixed")
+  result <- as.rtable(mmrm_results, type = "fixed", format = "xx.xx")
   result_matrix <- to_string_matrix(result)
+  expect_identical(result_matrix[1L, -1L], c("Estimate", "Std. Error", "t value", "df", "Pr(>|t|)"))
   expected_matrix <- structure(
     c(
       "", "(Intercept)", "SEXFemale", "FEV1_BL", "ARMCDTRT",
-      "AVISITVIS2", "AVISITVIS3", "AVISITVIS4", "ARMCDTRT:AVISITVIS2", "ARMCDTRT:AVISITVIS3",
-      "ARMCDTRT:AVISITVIS4", "Estimate", "25.7210", "-0.0039", "0.1717",
-      "4.6649", "4.8575", "10.3304", "15.3713", "-0.2971",
-      "-1.0975", "0.3479", "Std. Error", "1.5822", "0.5889",
-      "0.0329", "1.0945", "0.8029", "0.8366", "1.3174",
-      "1.1312", "1.2114", "1.8569", "t value", "16.2561",
-      "-0.0067", "5.2130", "4.2621", "6.0501", "12.3482",
-      "11.6680", "-0.2627", "-0.9060", "0.1873", "df",
-      "253", "173", "192", "142", "141",
-      "155", "137", "136", "158", "129",
-      "Pr(>|t|)", "<0.0001", "0.9947", "<0.0001", "<0.0001",
-      "<0.0001", "<0.0001", "<0.0001", "0.7932", "0.3663",
-      "0.8517"
+      "AVISITVIS2", "AVISITVIS3", "AVISITVIS4", "ARMCDTRT:AVISITVIS2",
+      "ARMCDTRT:AVISITVIS3", "ARMCDTRT:AVISITVIS4", "Estimate", "25.72",
+      "-0.00", "0.17", "4.66", "4.86", "10.33", "15.37", "-0.30", "-1.10",
+      "0.35", "Std. Error", "1.58", "0.59", "0.03", "1.09", "0.80",
+      "0.84", "1.32", "1.13", "1.21", "1.86", "t value", "16.26", "-0.01",
+      "5.21", "4.26", "6.05", "12.35", "11.67", "-0.26", "-0.91", "0.19",
+      "df", "253", "173", "192", "142", "141", "155", "137", "136",
+      "158", "129"
     ),
-    .Dim = c(11L, 6L)
+    dim = c(11L, 5L)
   )
-  testthat::expect_identical(result_matrix, expected_matrix)
+  testthat::expect_identical(result_matrix[, -6L], expected_matrix)
 })
 
 testthat::test_that("Covariance matrix table is produced correctly", {
-  testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
-  skip_if_too_deep(5)
-
-  result <- as.rtable(mmrm_results, type = "cov")
+  result <- as.rtable(mmrm_results, type = "cov", format = "xx.xx")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "VIS1", "VIS2", "VIS3", "VIS4", "VIS1", "42.8836", "15.5193", "8.0571", "16.5931", "VIS2", "15.5193",
-      "26.6289", "4.6272", "10.0744", "VIS3", "8.0571", "4.6272", "19.2031", "7.7857", "VIS4", "16.5931", "10.0744",
-      "7.7857", "99.8111"
+      "", "VIS1", "VIS2", "VIS3", "VIS4", "VIS1", "42.89",
+      "15.52", "8.06", "16.59", "VIS2", "15.52", "26.63", "4.63", "10.07",
+      "VIS3", "8.06", "4.63", "19.20", "7.79", "VIS4", "16.59", "10.07",
+      "7.79", "99.81"
     ),
-    .Dim = c(5L, 5L)
+    dim = c(5L, 5L)
   )
   testthat::expect_identical(result_matrix, expected_matrix)
 })
 
 testthat::test_that("Model diagnostics table is produced correctly", {
-  testthat::skip_if(too_old_lme4, "lme4 version is <= 1.1.21, a newer version is needed for the test.")
-  skip_if_too_deep(5)
-
-  result <- as.rtable(mmrm_results, type = "diagnostic")
+  result <- as.rtable(mmrm_results, type = "diagnostic", format = "xx.xx")
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
-      "", "REML criterion", "AIC", "AICc",
-      "BIC", "Diagnostic statistic value", "3429.3063", "3449.3063",
-      "3449.7326", "3482.1383"
+      "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
+      "3429.31", "3449.31", "3449.73", "3482.14"
     ),
     .Dim = c(5L, 2L)
   )

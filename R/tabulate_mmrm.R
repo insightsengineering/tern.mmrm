@@ -238,6 +238,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #' @export
 #' @examples
 #'
+#' library(dplyr)
 #' dat_adsl <- mmrm_test_data %>%
 #'   select(USUBJID, ARMCD) %>%
 #'   unique()

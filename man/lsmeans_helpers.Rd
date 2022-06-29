@@ -26,7 +26,7 @@ h_single_visit_contrast_specs(emmeans_res, vars)
 h_average_visit_contrast_specs(specs, averages)
 }
 \arguments{
-\item{fit}{result of \code{\link[=fit_lme4]{fit_lme4()}}.}
+\item{fit}{result of \code{\link[mmrm:mmrm]{mmrm::mmrm()}}.}
 
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns

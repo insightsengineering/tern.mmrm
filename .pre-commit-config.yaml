@@ -17,7 +17,6 @@ repos:
         additional_dependencies:
         - insightsengineering/nestcolor
         -    insightsengineering/tern
-        -    assertthat
         -    checkmate
         -    dplyr
         -    emmeans
@@ -30,7 +29,6 @@ repos:
         -    rlang
         -    rtables
         -    stats
-        -    utils
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -76,7 +74,6 @@ repos:
         additional_dependencies:
         - insightsengineering/nestcolor
         -    insightsengineering/tern
-        -    assertthat
         -    checkmate
         -    dplyr
         -    emmeans
@@ -89,7 +86,6 @@ repos:
         -    rlang
         -    rtables
         -    stats
-        -    utils
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >

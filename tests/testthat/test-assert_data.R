@@ -82,7 +82,7 @@ test_that("h_assert_visit_var works as expected", {
 test_that("assert_data passes as expected", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP")
   data <- data.frame(
-    MYID = c(1, 1, 2, 2, 3, 3),
+    MYID = factor(c(1, 1, 2, 2, 3, 3)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 2)),
     RSP = c(25.3245, 234.34, 5.1, 35.2, 24.24, 346.32)
   )
@@ -92,7 +92,7 @@ test_that("assert_data passes as expected", {
 test_that("assert_data does not look at rows with incomplete regressors for checking duplicates", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", covariates = "BLA")
   data <- data.frame(
-    MYID = c(1, 1, 2, 2, 3, 3),
+    MYID = factor(c(1, 1, 2, 2, 3, 3)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 1)), # Duplicate visit 1 for id 3.
     BLA = c(1, 1, 1, 1, 1, NA), # But regressor is missing there.
     RSP = c(25.3245, 234.34, 5.1, 35.2, 24.24, 346.32)
@@ -104,7 +104,7 @@ test_that("assert_data fails when less than 5 rows in complete data set without 
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", covariates = "BLA")
   # Only 4 rows with complete data.
   data <- data.frame(
-    MYID = c(1, 1, 2, 2, 3, 3),
+    MYID = factor(c(1, 1, 2, 2, 3, 3)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 1)),
     BLA = c(1, 1, 1, 1, 1, NA),
     RSP = c(25.3245, 234.34, 5.1, NA, 24.24, 346.32)
@@ -119,7 +119,7 @@ test_that("assert_data fails when less than 5 rows in complete data set per arm"
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", arm = "TRT")
   # Only 4 rows with complete data for TRT 1.
   data <- data.frame(
-    MYID = c(1, 1, 2, 2, 3, 3, 4, 4, 5, 5),
+    MYID = factor(c(1, 1, 2, 2, 3, 3, 4, 4, 5, 5)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2)),
     TRT = factor(c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)),
     RSP = c(25.3245, 234.34, 5.1, NA, 24.24, 346.32, 1.2, 1.3, 1.4, 1.5)
