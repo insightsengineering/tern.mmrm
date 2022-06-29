@@ -155,7 +155,7 @@ g_mmrm_diagnostic <- function(object,
 #' comparisons between groups' adjusted `lsmeans`, where the first level of the group
 #' is the reference level.
 #'
-#' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
+#' @param object (`tern_mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
 #' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
 #' @param titles (`character`)\cr with elements `estimates` and `contrasts` containing the plot titles.
@@ -169,8 +169,8 @@ g_mmrm_diagnostic <- function(object,
 #' @details If variable labels are available in the original data set, then these are used. Otherwise
 #'   the variable names themselves are used for annotating the plot.
 #' @details Contrast plot is not going to be returned if treatment is not
-#' considered in the `mmrm` object considered in `object` argument,
-#' no matter if `select` argument contains `contrasts` value.
+#'   considered in the `tern_mmrm` object considered in the `object` argument,
+#'   no matter if `select` argument contains `contrasts` value.
 #'
 #' @export
 #'

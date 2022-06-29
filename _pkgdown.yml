@@ -52,9 +52,9 @@ reference:
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models
     contents:
-      - as.rtable.mmrm
+      - as.rtable.tern_mmrm
       - fit_mmrm
-      - tidy.mmrm
+      - tidy.tern_mmrm
 
   - title: Graphs
     desc: Graphs

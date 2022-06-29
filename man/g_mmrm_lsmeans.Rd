@@ -16,7 +16,7 @@ g_mmrm_lsmeans(
 )
 }
 \arguments{
-\item{object}{(\code{mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
+\item{object}{(\code{tern_mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{select}{(\code{character})\cr to select one or both of "estimates" and "contrasts" plots.
 Note "contrasts" option is not applicable to model summaries excluding an arm variable.}
@@ -43,7 +43,7 @@ If variable labels are available in the original data set, then these are used. 
 the variable names themselves are used for annotating the plot.
 
 Contrast plot is not going to be returned if treatment is not
-considered in the \code{mmrm} object considered in \code{object} argument,
+considered in the \code{tern_mmrm} object considered in the \code{object} argument,
 no matter if \code{select} argument contains \code{contrasts} value.
 }
 \examples{
