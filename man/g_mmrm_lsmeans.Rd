@@ -47,7 +47,6 @@ considered in the \code{mmrm} object considered in \code{object} argument,
 no matter if \code{select} argument contains \code{contrasts} value.
 }
 \examples{
-\dontrun{
 library(dplyr)
 library(rtables)
 
@@ -60,7 +59,7 @@ mmrm_results <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = mmrm_test_data,
-  cor_struct = "random-quadratic",
+  cor_struct = "unstructured",
   weights_emmeans = "equal"
 )
 g_mmrm_lsmeans(mmrm_results)
@@ -84,7 +83,7 @@ mmrm_results_no_arm <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = mmrm_test_data2,
-  cor_struct = "random-quadratic",
+  cor_struct = "unstructured",
   weights_emmeans = "equal"
 )
 
@@ -107,5 +106,4 @@ g_mmrm_lsmeans(
   show_pval = TRUE,
   width = 0.8
 )
-}
 }

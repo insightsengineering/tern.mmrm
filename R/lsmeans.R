@@ -23,7 +23,7 @@ NULL
 #' @export
 h_get_emmeans_res <- function(fit, vars, weights) {
   assert_class(fit, "mmrm")
-  data_complete <- fit$data
+  data_complete <- stats::model.frame(fit)
   assert_data_frame(data_complete)
   assert_list(vars)
 

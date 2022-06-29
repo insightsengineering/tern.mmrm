@@ -13,64 +13,46 @@ tern::as.rtable
 
 #' @describeIn tabulate_mmrm Produce simple `MMRM` tables via the generic [as.rtable()].
 #'
-#' @param x (`mmrm`)\cr the original `MMRM` fit object.
+#' @param x (`tern_mmrm`)\cr the original result from [fit_mmrm()].
 #' @param type (`string`)\cr type of table which should be returned.
 #' @param arms (`flag`)\cr  should treatment variable be considered when using
 #' `summarize_lsmeans` layout generating function.
 #' @param ... additional argument `format` for controlling the numeric format.
-#' @return [as.rtable.mmrm()] returns the fixed effects, covariance estimate or
+#' @return [as.rtable.tern_mmrm()] returns the fixed effects, covariance estimate or
 #'   diagnostic statistics tables.
 #' @export
-#' @method as.rtable mmrm
+#' @method as.rtable tern_mmrm
 #'
 #' @examples
-#' library(dplyr)
-#' library(lme4)
-#'
-#' dat <- sleepstudy %>%
-#'   mutate(
-#'     group = factor(rep(c("A", "B"), length = nrow(sleepstudy))),
-#'     days_grouped = cut(
-#'       Days,
-#'       breaks = stats::quantile(Days, probs = seq(0, 1, length = 5)),
-#'       include.lowest = TRUE
-#'     ),
-#'     Subject = case_when(
-#'       group == "A" ~ as.character(Subject),
-#'       TRUE ~ as.character(as.numeric(as.character(Subject)) + 50)
-#'     )
-#'   ) %>%
-#'   distinct_at(.vars = c("Subject", "days_grouped", "group"), .keep_all = TRUE)
-#'
 #' result <- fit_mmrm(
 #'   vars = list(
-#'     response = "Reaction",
-#'     covariates = c(),
-#'     id = "Subject",
-#'     arm = "group",
-#'     visit = "days_grouped"
+#'     response = "FEV1",
+#'     covariates = c("RACE", "SEX"),
+#'     id = "USUBJID",
+#'     arm = "ARMCD",
+#'     visit = "AVISIT"
 #'   ),
-#'   data = dat,
-#'   cor_struct = "compound-symmetry",
-#'   parallel = TRUE
+#'   data = mmrm_test_data,
+#'   cor_struct = "unstructured",
+#'   weights_emmeans = "equal"
 #' )
 #' as.rtable(result, type = "cov", format = "xx.x")
 #'
 #' result_no_arm <- fit_mmrm(
 #'   vars = list(
-#'     response = "Reaction",
-#'     covariates = c(),
-#'     id = "Subject",
-#'     visit = "days_grouped"
+#'     response = "FEV1",
+#'     covariates = c("RACE", "SEX"),
+#'     id = "USUBJID",
+#'     visit = "AVISIT"
 #'   ),
-#'   data = dat,
-#'   cor_struct = "compound-symmetry",
-#'   parallel = TRUE
+#'   data = mmrm_test_data,
+#'   cor_struct = "unstructured",
+#'   weights_emmeans = "equal"
 #' )
 #' as.rtable(result_no_arm, type = "cov", format = "xx.x")
-as.rtable.mmrm <- function(x, # nolint
-                           type = c("fixed", "cov", "diagnostic"),
-                           ...) {
+as.rtable.tern_mmrm <- function(x, # nolint
+                                type = c("fixed", "cov", "diagnostic"),
+                                ...) {
   type <- match.arg(type)
   switch(type,
     fixed = h_mmrm_fixed(x, ...),
@@ -125,13 +107,13 @@ h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
 generics::tidy
 
 #' @describeIn tabulate_mmrm Helper method (for [broom::tidy()]) to prepare a `data.frame` from an
-#'   `mmrm` object containing the least-squares means and contrasts.
-#' @method tidy mmrm
+#'   `tern_mmrm` object containing the least-squares means and contrasts.
+#' @method tidy tern_mmrm
 #' @export
 #' @examples
 #' df <- broom::tidy(result)
 #' df_no_arm <- broom::tidy(result_no_arm)
-tidy.mmrm <- function(x, ...) { # nolint
+tidy.tern_mmrm <- function(x, ...) { # nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {
@@ -256,13 +238,13 @@ a_mmrm_lsmeans_single <- make_afun(
 #' @export
 #' @examples
 #'
-#' dat_adsl <- dat %>%
-#'   select(Subject, group) %>%
+#' dat_adsl <- mmrm_test_data %>%
+#'   select(USUBJID, ARMCD) %>%
 #'   unique()
 #' basic_table() %>%
-#'   split_cols_by("group", ref_group = result$ref_level) %>%
+#'   split_cols_by("ARMCD", ref_group = result$ref_level) %>%
 #'   add_colcounts() %>%
-#'   split_rows_by("days_grouped") %>%
+#'   split_rows_by("AVISIT") %>%
 #'   summarize_lsmeans(show_relative = "increase") %>%
 #'   build_table(
 #'     df = broom::tidy(result),
@@ -270,7 +252,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #'   )
 #'
 #' basic_table() %>%
-#'   split_rows_by("days_grouped") %>%
+#'   split_rows_by("AVISIT") %>%
 #'   summarize_lsmeans(arms = FALSE) %>%
 #'   build_table(
 #'     df = broom::tidy(result_no_arm),
