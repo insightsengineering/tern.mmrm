@@ -10,7 +10,7 @@ NULL
 #'
 #' This function produces diagnostic plots.
 #'
-#' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
+#' @param object (`tern_mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param type (`string`)\cr specifying the type of diagnostic plot to be produced:
 #'   \describe{
 #'     \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
@@ -21,7 +21,7 @@ NULL
 #'   }
 #' @param z_threshold (`numeric`)\cr optional number indicating the normal quantile threshold for the Q-Q plot.
 #'
-#' @return a `ggplot2` plot
+#' @return A `ggplot2` plot.
 #'
 #' @details Here we use marginal fitted values and residuals. That is, only the fixed effects are used
 #'   to estimate fitted values, and the difference of those fitted values vs. the observed data are
@@ -45,7 +45,7 @@ NULL
 #'     visit = "AVISIT"
 #'   ),
 #'   data = mmrm_test_data,
-#'   cor_struct = "random-quadratic",
+#'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal"
 #' )
 #' g_mmrm_diagnostic(mmrm_results)
@@ -54,17 +54,14 @@ NULL
 g_mmrm_diagnostic <- function(object,
                               type = c("fit-residual", "q-q-residual"),
                               z_threshold = NULL) {
-  stopifnot(inherits(object, "mmrm"))
+  stopifnot(inherits(object, "tern_mmrm"))
   type <- match.arg(type)
   stopifnot(is.null(z_threshold) || (is.numeric(z_threshold) && z_threshold > 0))
 
   model <- object$fit
   vars <- object$vars
-  amended_data <- object$fit@frame
-  amended_data$.fitted <- stats::predict(
-    model,
-    re.form = NA # Don't include random effects. We want marginal fitted values.
-  )
+  amended_data <- stats::model.frame(model)
+  amended_data$.fitted <- stats::fitted(model)
   amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
 
   result <- if (type == "fit-residual") {
@@ -158,7 +155,7 @@ g_mmrm_diagnostic <- function(object,
 #' comparisons between groups' adjusted `lsmeans`, where the first level of the group
 #' is the reference level.
 #'
-#' @param object (`mmrm`)\cr model result produced by [fit_mmrm()].
+#' @param object (`tern_mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
 #' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
 #' @param titles (`character`)\cr with elements `estimates` and `contrasts` containing the plot titles.
@@ -172,13 +169,12 @@ g_mmrm_diagnostic <- function(object,
 #' @details If variable labels are available in the original data set, then these are used. Otherwise
 #'   the variable names themselves are used for annotating the plot.
 #' @details Contrast plot is not going to be returned if treatment is not
-#' considered in the `mmrm` object considered in `object` argument,
-#' no matter if `select` argument contains `contrasts` value.
+#'   considered in the `tern_mmrm` object considered in the `object` argument,
+#'   no matter if `select` argument contains `contrasts` value.
 #'
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' library(dplyr)
 #' library(rtables)
 #'
@@ -191,7 +187,7 @@ g_mmrm_diagnostic <- function(object,
 #'     visit = "AVISIT"
 #'   ),
 #'   data = mmrm_test_data,
-#'   cor_struct = "random-quadratic",
+#'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal"
 #' )
 #' g_mmrm_lsmeans(mmrm_results)
@@ -215,7 +211,7 @@ g_mmrm_diagnostic <- function(object,
 #'     visit = "AVISIT"
 #'   ),
 #'   data = mmrm_test_data2,
-#'   cor_struct = "random-quadratic",
+#'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal"
 #' )
 #'
@@ -238,7 +234,6 @@ g_mmrm_diagnostic <- function(object,
 #'   show_pval = TRUE,
 #'   width = 0.8
 #' )
-#' }
 g_mmrm_lsmeans <-
   function(object,
            select = c("estimates", "contrasts"),
@@ -251,7 +246,7 @@ g_mmrm_lsmeans <-
            ylab = paste0("Estimates with ", round(object$conf_level * 100), "% CIs"),
            width = 0.6,
            show_pval = TRUE) {
-    stopifnot(inherits(object, "mmrm"))
+    stopifnot(inherits(object, "tern_mmrm"))
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
       select <- "estimates"

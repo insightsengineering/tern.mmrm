@@ -17,23 +17,18 @@ repos:
         additional_dependencies:
         - insightsengineering/nestcolor
         -    insightsengineering/tern
-        -    assertthat
         -    checkmate
-        -    dfoptim
         -    dplyr
         -    emmeans
         -    formatters
         -    generics
         -    ggplot2
-        -    lme4
-        -    lmerTest
         -    magrittr
-        -    optimx
+        -    openpharma/mmrm
         -    parallel
         -    rlang
         -    rtables
         -    stats
-        -    utils
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -79,23 +74,18 @@ repos:
         additional_dependencies:
         - insightsengineering/nestcolor
         -    insightsengineering/tern
-        -    assertthat
         -    checkmate
-        -    dfoptim
         -    dplyr
         -    emmeans
         -    formatters
         -    generics
         -    ggplot2
-        -    lme4
-        -    lmerTest
         -    magrittr
-        -    optimx
+        -    openpharma/mmrm
         -    parallel
         -    rlang
         -    rtables
         -    stats
-        -    utils
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >

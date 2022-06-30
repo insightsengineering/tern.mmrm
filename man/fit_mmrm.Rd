@@ -51,9 +51,9 @@ is chosen and does not give a valid result, an error will occur.}
 machine (not default).}
 }
 \value{
-An \code{mmrm} object which is a list with MMRM results:
+A \code{tern_mmrm} object which is a list with MMRM results:
 \describe{
-\item{fit}{The \code{lmerModLmerTest} object which was fitted to the data. Note that the attribute \code{optimizer}
+\item{fit}{The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
 contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
 \item{cov_estimate}{The matrix with the covariance matrix estimate.}
 \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
@@ -106,7 +106,6 @@ numerical precision.
 library(dplyr)
 library(rtables)
 
-\dontrun{
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -116,12 +115,11 @@ mmrm_results <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = mmrm_test_data,
-  cor_struct = "random-quadratic",
+  cor_struct = "unstructured",
   weights_emmeans = "equal",
   averages_emmeans = list(
     "VIS1+2" = c("VIS1", "VIS2")
   )
 )
-}
 
 }

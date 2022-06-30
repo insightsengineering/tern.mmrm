@@ -5,8 +5,8 @@ get_lsmeans_example <- function() {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
     optimizer = "automatic"
   )
@@ -28,10 +28,10 @@ get_lsmeans_example_no_arm <- function() {
     id = "USUBJID",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
-    optimizer = "nlminbwrap"
+    optimizer = "nlminb"
   )
   emmeans_res <- h_get_emmeans_res(
     fit = fit,
@@ -54,8 +54,8 @@ test_that("h_get_emmeans_res works as expected", {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
     optimizer = "automatic"
   )
@@ -70,6 +70,14 @@ test_that("h_get_emmeans_res works as expected", {
   expect_class(result$grid, "data.frame")
   expect_named(result$grid, c("AVISIT", "ARMCD", "n"))
   expect_identical(nrow(result$grid), nrow(result$object@grid))
+
+  datfull <- na.omit(fit$data)
+  assert_true(identical(nrow(datfull), length(fit$tmb_data$y_vector)))
+  ns <- datfull %>%
+    dplyr::group_by(ARMCD, AVISIT) %>%
+    dplyr::summarize(n_expected = n())
+  compare_grid <- result$grid %>% dplyr::full_join(ns)
+  expect_identical(compare_grid$n, compare_grid$n_expected)
 })
 
 test_that("h_get_emmeans_res works as expected without arm variable", {
@@ -78,10 +86,10 @@ test_that("h_get_emmeans_res works as expected without arm variable", {
     id = "USUBJID",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
-    optimizer = "nlminbwrap"
+    optimizer = "nlminb"
   )
   weights <- "proportional"
   result <- expect_silent(h_get_emmeans_res(
@@ -119,7 +127,7 @@ test_that("h_get_average_visit_specs works as expected", {
     grid = data.frame(
       ARMCD = c("PBO", "TRT", "PBO", "TRT"),
       AVISIT = c("VIS1+3", "VIS1+3", "VIS2+4", "VIS2+4"),
-      n = c(68L, 67L, 66L, 58L)
+      n = c(68L, 58L, 67L, 67L)
     )
   )
   expect_identical(result, expected)
@@ -503,8 +511,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
     optimizer = "automatic"
   )
@@ -533,8 +541,8 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ ARMCD * AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
     optimizer = "automatic"
   )
@@ -560,10 +568,10 @@ test_that("get_mmrm_lsmeans works without arm", {
     id = "USUBJID",
     visit = "AVISIT"
   )
-  fit <- fit_lme4(
-    formula = FEV1 ~ AVISIT + (0 + AVISIT | USUBJID),
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ AVISIT + us(AVISIT | USUBJID),
     data = mmrm_test_data,
-    optimizer = "nlminbwrap"
+    optimizer = "nlminb"
   )
   conf_level <- 0.95
   weights <- "proportional"

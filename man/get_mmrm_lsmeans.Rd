@@ -7,7 +7,7 @@
 get_mmrm_lsmeans(fit, vars, conf_level, weights, averages = list())
 }
 \arguments{
-\item{fit}{result of \code{\link[=fit_lme4]{fit_lme4()}}.}
+\item{fit}{result of \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns

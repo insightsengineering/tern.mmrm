@@ -4,7 +4,7 @@ get_anl <- function() {
   read.table(
     header = TRUE,
     sep = ";",
-    stringsAsFactors = FALSE,
+    stringsAsFactors = TRUE,
     text = '
       "USUBJID";"ARM";"STRATA1";"BMRKR2";"AVISIT";"BASE";"AVAL"
       "AB12345-BRA-1-id-105";"A: Drug X";"B";"MEDIUM";"WEEK 1 DAY 8";"67.88985864";"50.43875924"
@@ -231,7 +231,7 @@ get_mmrm <- function() {
       id = "USUBJID"
     ),
     data = anl,
-    cor_struct = "random-quadratic"
+    cor_struct = "unstructured"
   )
 }
 
@@ -250,21 +250,18 @@ get_mmrm_no_arm <- function() {
       id = "USUBJID"
     ),
     data = anl,
-    cor_struct = "random-quadratic"
+    cor_struct = "unstructured"
   )
 }
 
 
 test_that("h_mmrm_fixed works as expected", {
-  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
-  }
-
   mmrm <- get_mmrm()
-  result <- h_mmrm_fixed(mmrm, format = "xx.xxxx")
-  result2 <- as.rtable(mmrm, type = "fixed", format = "xx.xxxx")
+  result <- h_mmrm_fixed(mmrm, format = "xx.xx")
+  result2 <- as.rtable(mmrm, type = "fixed", format = "xx.xx")
   expect_identical(result, result2)
   result_matrix <- to_string_matrix(result)
+  expect_identical(result_matrix[1L, -1L], c("Estimate", "Std. Error", "t value", "df", "Pr(>|t|)"))
   expected_matrix <- structure(
     c(
       "", "(Intercept)", "BMRKR2LOW", "BMRKR2MEDIUM", "ARMA: Drug X",
@@ -273,91 +270,45 @@ test_that("h_mmrm_fixed works as expected", {
       "ARMC: Combination:AVISITWEEK 2 DAY 15", "ARMA: Drug X:AVISITWEEK 3 DAY 22",
       "ARMC: Combination:AVISITWEEK 3 DAY 22", "ARMA: Drug X:AVISITWEEK 4 DAY 29",
       "ARMC: Combination:AVISITWEEK 4 DAY 29", "ARMA: Drug X:AVISITWEEK 5 DAY 36",
-      "ARMC: Combination:AVISITWEEK 5 DAY 36", "Estimate", "52.0558",
-      "1.6235", "-2.278", "0.1208", "-3.3034", "-5.1729", "-1.4592",
-      "-1.5838", "-1.1984", "4.0368", "5.4127", "1.0474", "5.444",
-      "-1.6001", "5.6466", "-1.5418", "6.9197", "Std. Error", "2.5006",
-      "1.5467", "1.2309", "3.0751", "3.2642", "3.3257", "3.4081", "3.4457",
-      "3.4141", "4.2682", "4.5188", "4.3739", "4.6307", "4.4221", "4.6818",
-      "4.3815", "4.6388", "t value", "20.8177", "1.0497", "-1.8507",
-      "0.0393", "-1.012", "-1.5554", "-0.4282", "-0.4596", "-0.351",
-      "0.9458", "1.1978", "0.2395", "1.1756", "-0.3618", "1.2061",
-      "-0.3519", "1.4917", "df", "100", "142", "142", "88", "89", "150",
-      "71", "65", "66", "150", "150", "71", "71", "65", "65", "66",
-      "66", "Pr(>|t|)", "<0.0001", "0.2957", "0.0663", "0.9688", "0.3143",
-      "0.1220", "0.6698", "0.6473", "0.7267", "0.3458", "0.2329", "0.8114",
-      "0.2437", "0.7187", "0.2322", "0.7260", "0.1406"
+      "ARMC: Combination:AVISITWEEK 5 DAY 36", "Estimate", "51.97",
+      "1.58", "-2.08", "0.13", "-3.28", "-5.17", "-1.46", "-1.58",
+      "-1.20", "4.04", "5.41", "1.05", "5.44", "-1.60", "5.65", "-1.54",
+      "6.92", "Std. Error", "2.35", "1.27", "1.01", "2.92", "3.09",
+      "3.51", "3.40", "3.25", "3.73", "4.51", "4.77", "4.36", "4.62",
+      "4.18", "4.42", "4.78", "5.06", "t value", "22.14", "1.24", "-2.06",
+      "0.05", "-1.06", "-1.47", "-0.43", "-0.49", "-0.32", "0.90",
+      "1.13", "0.24", "1.18", "-0.38", "1.28", "-0.32", "1.37", "df",
+      "42", "36", "36", "38", "38", "38", "38", "38", "38", "38", "38",
+      "38", "38", "38", "38", "38", "38"
     ),
-    .Dim = c(18L, 6L)
+    dim = c(18L, 5L)
   )
-
-  result_numbers <- as.numeric(result_matrix[grepl("^-?\\d+", result_matrix)])
-  expected_numbers <- as.numeric(expected_matrix[grepl("^-?\\d+", result_matrix)])
-
-  expect_equal(result_numbers, expected_numbers, tolerance = 1e-3)
+  expect_identical(result_matrix[, -6L], expected_matrix)
 })
 
 test_that("h_mmrm_cov works as expected", {
-  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
-  }
-
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm()
-  result <- h_mmrm_cov(mmrm, format = "xx.xxxx")
-  result2 <- as.rtable(mmrm, type = "cov", format = "xx.xxxx")
+  result <- h_mmrm_cov(mmrm, format = "xx.xx")
+  result2 <- as.rtable(mmrm, type = "cov", format = "xx.xx")
   expect_identical(result, result2)
 
-  expected_df <- data.frame(
-    "X1" = c(62.9854, 0.1138, -2.2948, -3.144, -2.4352),
-    "X2" = c(0.1138, 58.9081, -0.064, -0.0877, -0.0679),
-    "X3" = c(-2.2943, -0.064, 60.195, 1.7678, 1.3693),
-    "X4" = c(-3.144, -0.0877, 1.7678, 61.3275, 1.8764),
-    "X5" = c(-2.4352, -0.0679, 1.3693, 1.8764, 60.3583)
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22",
+      "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8", "56.70", "-8.87",
+      "-6.67", "0.50", "-14.57", "WEEK 2 DAY 15", "-8.87", "61.29",
+      "-5.99", "-16.25", "7.92", "WEEK 3 DAY 22", "-6.67", "-5.99",
+      "57.12", "9.43", "1.59", "WEEK 4 DAY 29", "0.50", "-16.25", "9.43",
+      "60.79", "-14.50", "WEEK 5 DAY 36", "-14.57", "7.92", "1.59",
+      "-14.50", "66.96"
+    ),
+    dim = c(6L, 6L)
   )
-
-  cell_values_to_list <- function(result, colpath) {
-    cell_values(result, colpath = colpath) %>%
-      unlist(recursive = FALSE) %>%
-      lapply(`attr<-`, "label", NULL) %>%
-      unname()
-  }
-
-  expect_equal(
-    cell_values_to_list(result, colpath = c("WEEK 1 DAY 8")),
-    as.list(expected_df[, "X1"]),
-    tolerance = 5e-2
-  )
-
-  expect_equal(
-    cell_values_to_list(result, colpath = c("WEEK 2 DAY 15")),
-    as.list(expected_df[, "X2"]),
-    tolerance = 5e-2
-  )
-
-  expect_equal(
-    cell_values_to_list(result, colpath = c("WEEK 3 DAY 22")),
-    as.list(expected_df[, "X3"]),
-    tolerance = 5e-2
-  )
-
-  expect_equal(
-    cell_values_to_list(result, colpath = c("WEEK 4 DAY 29")),
-    as.list(expected_df[, "X4"]),
-    tolerance = 5e-2
-  )
-
-  expect_equal(
-    cell_values_to_list(result, colpath = c("WEEK 5 DAY 36")),
-    as.list(expected_df[, "X5"]),
-    tolerance = 5e-2
-  )
+  expect_identical(result_matrix, expected_matrix)
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
   result2 <- as.rtable(mmrm, type = "diagnostic", format = "xx.x")
@@ -366,7 +317,7 @@ test_that("h_mmrm_diagnostic works as expected", {
   expected_matrix <- structure(
     c(
       "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "1351.4", "1365.4", "1366.0", "1377.4"
+      "1341.7", "1371.7", "1374.5", "1397.4"
     ),
     .Dim = c(5L, 2L)
   )
@@ -374,54 +325,31 @@ test_that("h_mmrm_diagnostic works as expected", {
 })
 
 test_that("tidy.mmrm works as expected", {
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
-  result_one_row <- result[8, ]
-  row.names(result_one_row) <- NULL
-  expected_one_row <- data.frame(
-    ARM = factor("A: Drug X", levels = c("B: Placebo", "A: Drug X", "C: Combination")),
-    AVISIT = factor(
-      "WEEK 3 DAY 22",
-      levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
-    ),
-    estimate_est = 51.1925843621987, se_est = 1.88904859234177,
-    df_est = 140.319306325214, lower_cl_est = 47.4579079047326,
-    upper_cl_est = 54.9272608196649, n = 17L,
-    estimate_contr = 1.1682418182127,
-    se_contr = 3.00637183592203,
-    df_contr = 140.141644095178,
-    lower_cl_contr = -4.77546443092749,
-    upper_cl_contr = 7.11194806735289,
-    t_stat = 0.388588598474018,
-    p_value = 0.698170225099465,
-    relative_reduc = -0.0233534667084426,
-    conf_level = 0.95
+  expect_data_frame(result, nrows = 15L, ncols = 17L)
+  expect_named(
+    result,
+    c(
+      "ARM", "AVISIT", "estimate_est", "se_est", "df_est", "lower_cl_est",
+      "upper_cl_est", "n", "estimate_contr", "se_contr", "df_contr",
+      "lower_cl_contr", "upper_cl_contr", "t_stat", "p_value", "relative_reduc",
+      "conf_level"
+    )
   )
-  expect_class(result_one_row, "data.frame")
-  expect_equal(result_one_row, expected_one_row, tolerance = 0.001)
 })
 
 test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm_no_arm()
   result <- broom::tidy(mmrm)
-  result_one_row <- result[5, ]
-  row.names(result_one_row) <- NULL
-  expected_one_row <- data.frame(
-    AVISIT = factor(
-      "WEEK 5 DAY 36",
-      levels = c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22", "WEEK 4 DAY 29", "WEEK 5 DAY 36")
-    ),
-    estimate_est = 50.84261, se_est = 1.263442,
-    df_est = 69.64544, lower_cl_est = 48.32253,
-    upper_cl_est = 53.36269, n = 41L,
-    conf_level = 0.95
+  expect_data_frame(result, nrows = 5L, ncols = 8L)
+  expect_named(
+    result,
+    c(
+      "AVISIT", "estimate_est", "se_est", "df_est", "lower_cl_est",
+      "upper_cl_est", "n", "conf_level"
+    )
   )
-  expect_class(result_one_row, "data.frame")
-  expect_equal(result_one_row, expected_one_row, tolerance = 0.001, ignore_attr = TRUE)
 })
 
 test_that("s_mmrm_lsmeans works as expected when not in reference column", {
@@ -430,93 +358,116 @@ test_that("s_mmrm_lsmeans works as expected when not in reference column", {
   result <- s_mmrm_lsmeans(df[8, ], FALSE)
   expected <- list(
     n = 17L,
-    adj_mean_se = c(51.1925843621987, 1.88904859234177),
-    adj_mean_ci = formatters::with_label(c(47.4579079047326, 54.9272608196649), label = "95% CI"),
-    diff_mean_se = c(1.1682418182127, 3.00637183592203),
-    diff_mean_ci = formatters::with_label(c(-4.77546443092749, 7.11194806735289), label = "95% CI"),
-    change = formatters::with_label(-0.0233534667084426, label = "Relative Reduction (%)"),
-    p_value = 0.698170225099465
+    adj_mean_se = c(51.19, 1.83),
+    adj_mean_ci = formatters::with_label(c(47.47, 54.92), label = "95% CI"),
+    diff_mean_se = c(1.18, 2.93),
+    diff_mean_ci = formatters::with_label(c(-4.75, 7.11), label = "95% CI"),
+    change = formatters::with_label(-0.0236, label = "Relative Reduction (%)"),
+    p_value = 0.69
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  expect_equal(result, expected, tolerance = 1e-2)
 })
 
 test_that("s_mmrm_lsmeans works as expected when in reference column", {
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[2, ], TRUE)
   expected <- list(
-    n = 17L,
-    adj_mean_se = c(46.3107108312587, 2.31529223374449),
-    adj_mean_ci = formatters::with_label(c(41.7359227134741, 50.8854989490432), label = "95% CI"),
+    n = 11L,
+    adj_mean_se = c(46.3, 2.36),
+    adj_mean_ci = formatters::with_label(c(41.5, 51.1), label = "95% CI"),
     diff_mean_se = character(0),
     diff_mean_ci = formatters::with_label(character(0), label = "95% CI"),
     change = formatters::with_label(character(0), label = "Relative Reduction (%)"),
     p_value = character(0)
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  expect_equal(result, expected, tolerance = 1e-2)
 })
 
 test_that("s_mmrm_lsmeans_single works as expected", {
-  skip_if_too_deep(3)
-
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans_single(df[2, ])
   expected <- list(
     n = 41L,
-    adj_mean_se = c(48.703420, 1.180417),
-    adj_mean_ci = formatters::with_label(c(46.37198, 51.03486), label = "95% CI")
+    adj_mean_se = c(48.7, 1.19),
+    adj_mean_ci = formatters::with_label(c(46.3, 51.1), label = "95% CI")
   )
-  expect_equal(result, expected, tolerance = 0.001)
+  expect_equal(result, expected, tolerance = 1e-2)
 })
 
 test_that("summarize_lsmeans works as expected", {
-  skip_if_too_deep(3)
-
-  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
-  }
-
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%
     split_cols_by("ARM", ref_group = mmrm$ref_level) %>%
     split_rows_by("AVISIT") %>%
-    summarize_lsmeans(show_relative = "increase") %>%
+    summarize_lsmeans(
+      show_relative = "increase",
+      .formats = c(
+        n = "xx.",
+        adj_mean_se = sprintf_format("%.1f (%.1f)"),
+        adj_mean_ci = "(xx.x, xx.x)",
+        diff_mean_se = sprintf_format("%.1f (%.1f)"),
+        diff_mean_ci = "(xx.x, xx.x)",
+        change = "xx.%",
+        p_value = "xx.xx"
+      )
+    ) %>%
     build_table(df)
 
-  cell_values_to_list <- function(result, colpath) {
-    cell_values(result, colpath = colpath) %>%
-      unlist(recursive = FALSE) %>%
-      lapply(`attr<-`, "label", NULL) %>%
-      unname()
-  }
-
-  result_b <- cell_values_to_list(result, colpath = c("ARM", "B: Placebo"))
-  expect_snapshot_value(result_b, tolerance = 1e-3, style = "serialize")
-
-  result_a <- cell_values_to_list(result, colpath = c("ARM", "A: Drug X"))
-  expect_snapshot_value(result_a, tolerance = 1e-3, style = "serialize")
-
-  result_c <- cell_values_to_list(result, colpath = c("ARM", "C: Combination"))
-  expect_snapshot_value(result_c, tolerance = 1e-3, style = "serialize")
+  result_matrix <- to_string_matrix(result)
+  expected_matrix <- structure(
+    c(
+      "", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
+      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)",
+      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "WEEK 3 DAY 22", "n", "Adjusted Mean (SE)",
+      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
+      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)",
+      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
+      "p-value (MMRM)", "B: Placebo", "", "11", "51.5 (2.3)", "(46.9, 56.1)",
+      "", "", "", "", "", "11", "46.3 (2.4)", "(41.5, 51.1)", "", "",
+      "", "", "", "11", "50.0 (2.3)", "(45.4, 54.6)", "", "", "", "",
+      "", "11", "49.9 (2.4)", "(45.1, 54.6)", "", "", "", "", "", "11",
+      "50.3 (2.5)", "(45.3, 55.3)", "", "", "", "", "A: Drug X", "",
+      "17", "51.6 (1.8)", "(47.9, 55.3)", "0.1 (2.9)", "(-5.8, 6.0)",
+      "0%", "0.96", "", "17", "50.5 (1.9)", "(46.6, 54.3)", "4.2 (3.0)",
+      "(-2.0, 10.3)", "9%", "0.18", "", "17", "51.2 (1.8)", "(47.5, 54.9)",
+      "1.2 (2.9)", "(-4.7, 7.1)", "2%", "0.69", "", "17", "48.4 (1.9)",
+      "(44.6, 52.3)", "-1.5 (3.0)", "(-7.6, 4.6)", "-3%", "0.63", "",
+      "17", "48.9 (2.0)", "(44.8, 52.9)", "-1.4 (3.2)", "(-7.8, 5.0)",
+      "-3%", "0.66", "C: Combination", "", "13", "48.2 (2.1)", "(43.9, 52.4)",
+      "-3.3 (3.1)", "(-9.5, 3.0)", "-6%", "0.30", "", "13", "48.4 (2.2)",
+      "(44.0, 52.8)", "2.1 (3.2)", "(-4.4, 8.6)", "5%", "0.51", "",
+      "13", "52.2 (2.1)", "(47.9, 56.4)", "2.2 (3.1)", "(-4.1, 8.5)",
+      "4%", "0.49", "", "13", "52.3 (2.2)", "(47.9, 56.6)", "2.4 (3.2)",
+      "(-4.1, 8.9)", "5%", "0.46", "", "13", "53.9 (2.3)", "(49.3, 58.5)",
+      "3.6 (3.4)", "(-3.2, 10.4)", "7%", "0.29"
+    ),
+    dim = c(41L, 4L)
+  )
+  expect_identical(result_matrix, expected_matrix)
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
-  skip_if_too_deep(3)
-
-  if (compareVersion(as.character(packageVersion("lme4")), "1.1.21") <= 0) {
-    skip("tests dont run with older version of lme4")
-  }
-
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%
     split_rows_by("AVISIT") %>%
-    summarize_lsmeans(arms = FALSE) %>%
+    summarize_lsmeans(
+      arms = FALSE,
+      .formats = c(
+        n = "xx.",
+        adj_mean_se = sprintf_format("%.1f (%.1f)"),
+        adj_mean_ci = "(xx.x, xx.x)"
+      )
+    ) %>%
     build_table(df)
+
   result_matrix <- to_string_matrix(result)
   expected_matrix <- structure(
     c(
@@ -524,12 +475,12 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
       "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
       "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
       "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
-      "all obs", "", "41", "50.486 (1.238)", "(48.030, 52.942)", "",
-      "41", "48.703 (1.194)", "(46.346, 51.061)", "", "41", "51.187 (1.230)",
-      "(48.752, 53.623)", "", "41", "50.029 (1.266)", "(47.527, 52.532)",
-      "", "41", "50.843 (1.263)", "(48.323, 53.363)"
+      "all obs", "", "41", "50.5 (1.2)", "(48.1, 52.8)", "", "41",
+      "48.7 (1.2)", "(46.3, 51.1)", "", "41", "51.2 (1.2)", "(48.7, 53.7)",
+      "", "41", "50.0 (1.3)", "(47.5, 52.6)", "", "41", "50.8 (1.3)",
+      "(48.2, 53.5)"
     ),
-    .Dim = c(21L, 2L)
+    dim = c(21L, 2L)
   )
   expect_identical(result_matrix, expected_matrix)
 })
@@ -554,14 +505,24 @@ test_that("summarize_lsmeans works with averages of visits as expected", {
       "W1D8 + W2D15" = c("WEEK 1 DAY 8", " WEEK 2 DAY 15"),
       "W3D22 + W5D36" = c("WEEK 3 DAY 22", "WEEK 5 DAY 36")
     ),
-    cor_struct = "random-quadratic"
+    cor_struct = "unstructured"
   )
 
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%
     split_cols_by("ARM", ref_group = mmrm$ref_level) %>%
     split_rows_by("AVISIT") %>%
-    summarize_lsmeans(arms = TRUE) %>%
+    summarize_lsmeans(
+      .formats = c(
+        n = "xx.",
+        adj_mean_se = sprintf_format("%.1f (%.1f)"),
+        adj_mean_ci = "(xx.x, xx.x)",
+        diff_mean_se = sprintf_format("%.1f (%.1f)"),
+        diff_mean_ci = "(xx.x, xx.x)",
+        change = "xx.%",
+        p_value = "xx.xx"
+      )
+    ) %>%
     build_table(df)
   result_matrix <- to_string_matrix(result)
   expect_snapshot(result_matrix)

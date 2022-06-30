@@ -2,7 +2,7 @@
 
 #' Helpers for Processing Least Square Means
 #'
-#' @param fit result of [fit_lme4()].
+#' @param fit result of [mmrm::mmrm()].
 #' @inheritParams fit_mmrm
 #' @param averages (`list`)\cr optional named list of visit levels which should be averaged
 #'   and reported along side the single visits.
@@ -22,28 +22,23 @@ NULL
 #'   together with the sample size `n` for each combination).
 #' @export
 h_get_emmeans_res <- function(fit, vars, weights) {
-  assert_list(vars)
-  data_complete <- fit@frame
+  assert_class(fit, "mmrm")
+  data_complete <- stats::model.frame(fit)
   assert_data_frame(data_complete)
+  assert_list(vars)
 
   emmeans_object <- emmeans::emmeans(
     fit,
     data = data_complete,
     specs = c(vars$visit, vars$arm),
-    mode = "satterthwaite",
-    weights = weights,
-    # The below option is needed to enable analysis of more than 3000 observations.
-    lmerTest.limit = nrow(data_complete)
+    weights = weights
   )
-  wgt_index <- match(".wgt.", names(emmeans_object@grid))
-  visit_arm_grid <- emmeans_object@grid[-wgt_index]
 
-  data_by_visit_arm <- split(
-    data_complete,
-    stats::as.formula(paste("~", vars$arm, "+", vars$visit))
-  )
-  n_by_visit_arm <- vapply(data_by_visit_arm, nrow, integer(1L))
-  visit_arm_grid$n <- n_by_visit_arm
+  # Save grid with renamed number of subjects column.
+  visit_arm_grid <- emmeans_object@grid
+  wgt_index <- match(".wgt.", names(visit_arm_grid))
+  names(visit_arm_grid)[wgt_index] <- "n"
+  visit_arm_grid$n <- as.integer(visit_arm_grid$n)
 
   list(
     object = emmeans_object,
@@ -271,7 +266,7 @@ h_average_visit_contrast_specs <- function(specs,
 #'
 #' Helper function to extract the least square means from an `MMRM` fit.
 #'
-#' @param fit result of [fit_lme4()].
+#' @param fit result of [fit_mmrm()].
 #' @inheritParams fit_mmrm
 #' @param averages (`list`)\cr named list of visit levels which should be averaged
 #'   and reported along side the single visits.
@@ -285,7 +280,7 @@ get_mmrm_lsmeans <- function(fit,
                              conf_level,
                              weights,
                              averages = list()) {
-  data_complete <- fit@frame
+  assert_class(fit, "mmrm")
   assert_list(averages, types = "character")
   emmeans_res <- h_get_emmeans_res(fit, vars, weights)
 

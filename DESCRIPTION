@@ -19,25 +19,19 @@ Depends:
     R (>= 3.6),
     tern (>= 0.7.8)
 Imports:
-    assertthat,
     checkmate,
-    dfoptim,
-    dplyr,
     emmeans (>= 1.4.5),
     formatters (>= 0.3.1),
     generics,
     ggplot2,
-    lme4 (>= 1.1-21),
-    lmerTest (>= 3.1-1),
     magrittr,
-    optimx,
-    parallel,
+    mmrm,
     rlang,
     rtables (>= 0.5.1),
-    stats,
-    utils
+    stats
 Suggests:
     broom,
+    dplyr,
     knitr,
     maditr,
     Matrix,
@@ -52,11 +46,13 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Collate:
+    'utils.R'
+    'assert_data.R'
+    'covariance_plot.R'
     'fit_mmrm.R'
+    'formula.R'
     'g_mmrm.R'
+    'labels.R'
     'lsmeans.R'
-    'parallel.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
-    'utils.R'
-    'covariance_plot.R'

@@ -11,7 +11,7 @@ g_mmrm_diagnostic(
 )
 }
 \arguments{
-\item{object}{(\code{mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
+\item{object}{(\code{tern_mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{type}{(\code{string})\cr specifying the type of diagnostic plot to be produced:
 \describe{
@@ -25,7 +25,7 @@ labeled.}
 \item{z_threshold}{(\code{numeric})\cr optional number indicating the normal quantile threshold for the Q-Q plot.}
 }
 \value{
-a \code{ggplot2} plot
+A \code{ggplot2} plot.
 }
 \description{
 This function produces diagnostic plots.
@@ -49,7 +49,7 @@ mmrm_results <- fit_mmrm(
     visit = "AVISIT"
   ),
   data = mmrm_test_data,
-  cor_struct = "random-quadratic",
+  cor_struct = "unstructured",
   weights_emmeans = "equal"
 )
 g_mmrm_diagnostic(mmrm_results)
