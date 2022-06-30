@@ -30,13 +30,13 @@ test_that("h_get_timepoint_vars works as expected with string argument not neede
 
 test_that("h_vectorization works as expected with string specified", {
   vcov_matrix <- matrix(
-      c(49, 12, 12, 23),
-      nrow = 2, ncol = 2,
-      dimnames = list(
-        c("VIS1", "VIS2"),
-        c("VIS1", "VIS2" )
-      )
+    c(49, 12, 12, 23),
+    nrow = 2, ncol = 2,
+    dimnames = list(
+      c("VIS1", "VIS2"),
+      c("VIS1", "VIS2")
     )
+  )
   result <- h_vectorization(vcov_matrix, string = "VIS")
   expected <- data.frame(
     Vect = c(49, 12, 23),
@@ -54,7 +54,7 @@ test_that("h_vectorization works as expected when string not specified", {
     nrow = 2, ncol = 2,
     dimnames = list(
       c(1, 2),
-      c(1, 2 )
+      c(1, 2)
     )
   )
   result <- h_vectorization(vcov_matrix)
