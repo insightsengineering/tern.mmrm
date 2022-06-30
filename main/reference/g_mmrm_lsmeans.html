@@ -14,7 +14,7 @@ is the reference level."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,12 +31,6 @@ is the reference level."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -81,7 +75,7 @@ is the reference level.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
-<dd><p>(<code>mmrm</code>)<br> model result produced by <code><a href="fit_mmrm.html">fit_mmrm()</a></code>.</p></dd>
+<dd><p>(<code>tern_mmrm</code>)<br> model result produced by <code><a href="fit_mmrm.html">fit_mmrm()</a></code>.</p></dd>
 
 
 <dt>select</dt>
@@ -117,14 +111,13 @@ LS means vs. control be displayed (not default)?</p></dd>
     <p>If variable labels are available in the original data set, then these are used. Otherwise
 the variable names themselves are used for annotating the plot.</p>
 <p>Contrast plot is not going to be returned if treatment is not
-considered in the <code>mmrm</code> object considered in <code>object</code> argument,
+considered in the <code>tern_mmrm</code> object considered in the <code>object</code> argument,
 no matter if <code>select</code> argument contains <code>contrasts</code> value.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mmrm_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
@@ -136,11 +129,13 @@ no matter if <code>select</code> argument contains <code>contrasts</code> value.
 <span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span>,</span></span>
-<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"random-quadratic"</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"unstructured"</span>,</span></span>
 <span class="r-in"><span>  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span><span class="va">mmrm_results</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span><span class="va">mmrm_results</span>, select <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">mmrm_results</span>,</span></span>
 <span class="r-in"><span>  select <span class="op">=</span> <span class="st">"contrasts"</span>,</span></span>
@@ -148,6 +143,7 @@ no matter if <code>select</code> argument contains <code>contrasts</code> value.
 <span class="r-in"><span>  show_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  width <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mmrm_test_data2</span> <span class="op">&lt;-</span> <span class="va">mmrm_test_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"TRT"</span><span class="op">)</span></span></span>
@@ -160,11 +156,12 @@ no matter if <code>select</code> argument contains <code>contrasts</code> value.
 <span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">mmrm_test_data2</span>,</span></span>
-<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"random-quadratic"</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"unstructured"</span>,</span></span>
 <span class="r-in"><span>  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span><span class="va">mmrm_results_no_arm</span>, select <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">mmrm_results_no_arm</span>,</span></span>
 <span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"estimates"</span>, <span class="st">"contrasts"</span><span class="op">)</span>,</span></span>
@@ -175,6 +172,7 @@ no matter if <code>select</code> argument contains <code>contrasts</code> value.
 <span class="r-in"><span>  show_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  width <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">mmrm_results_no_arm</span>,</span></span>
@@ -183,7 +181,7 @@ no matter if <code>select</code> argument contains <code>contrasts</code> value.
 <span class="r-in"><span>  show_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  width <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

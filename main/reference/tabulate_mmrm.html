@@ -12,7 +12,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,12 +29,6 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -63,7 +57,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for mmrm</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for tern_mmrm</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"cov"</span>, <span class="st">"diagnostic"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">h_mmrm_fixed</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span></span>
@@ -72,7 +66,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 <span></span>
 <span><span class="fu">h_mmrm_diagnostic</span><span class="op">(</span><span class="va">x</span>, format <span class="op">=</span> <span class="st">"xx.xxxx"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for mmrm</span></span>
+<span><span class="co"># S3 method for tern_mmrm</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span>, <span class="va">.in_ref_col</span>, show_relative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"reduction"</span>, <span class="st">"increase"</span><span class="op">)</span><span class="op">)</span></span>
@@ -98,7 +92,7 @@ fit_mmrm()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>(<code>mmrm</code>)<br> the original <code>MMRM</code> fit object.</p></dd>
+<dd><p>(<code>tern_mmrm</code>)<br> the original result from <code><a href="fit_mmrm.html">fit_mmrm()</a></code>.</p></dd>
 
 
 <dt>type</dt>
@@ -160,18 +154,18 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>as.rtable.mmrm()</code> returns the fixed effects, covariance estimate or
+<p><code>as.rtable.tern_mmrm()</code> returns the fixed effects, covariance estimate or
 diagnostic statistics tables.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>as.rtable.mmrm</code>: Produce simple <code>MMRM</code> tables via the generic <code><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable()</a></code>.</p></li>
+<ul><li><p><code>as.rtable.tern_mmrm</code>: Produce simple <code>MMRM</code> tables via the generic <code><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable()</a></code>.</p></li>
 <li><p><code>h_mmrm_fixed</code>: Helper function to produce fixed effects table.</p></li>
 <li><p><code>h_mmrm_cov</code>: Helper function to produce a covariance matrix table.</p></li>
 <li><p><code>h_mmrm_diagnostic</code>: Helper function to produce a diagnostic statistics table.</p></li>
-<li><p><code>tidy.mmrm</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a <code>data.frame</code> from an
-<code>mmrm</code> object containing the least-squares means and contrasts.</p></li>
+<li><p><code>tidy.tern_mmrm</code>: Helper method (for <code><a href="https://broom.tidymodels.org/reference/reexports.html" class="external-link">broom::tidy()</a></code>) to prepare a <code>data.frame</code> from an
+<code>tern_mmrm</code> object containing the least-squares means and contrasts.</p></li>
 <li><p><code>s_mmrm_lsmeans</code>: Statistics function which is extracting estimates from a tidied least-squares means
 data frame.</p></li>
 <li><p><code>a_mmrm_lsmeans</code>: Formatted Analysis function which can be further customized by calling
@@ -186,179 +180,161 @@ which can be further customized by calling
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Matrix</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">sleepstudy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sleepstudy</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    days_grouped <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="va">Days</span>,</span></span>
-<span class="r-in"><span>      breaks <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">Days</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      include.lowest <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>    Subject <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct_all.html" class="external-link">distinct_at</a></span><span class="op">(</span>.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject"</span>, <span class="st">"days_grouped"</span>, <span class="st">"group"</span><span class="op">)</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span></span>
-<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"Subject"</span>,</span></span>
-<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"group"</span>,</span></span>
-<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"FEV1"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"SEX"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span></span>
+<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dat</span>,</span></span>
-<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span></span>
-<span class="r-in"><span>  parallel <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"unstructured"</span>,</span></span>
+<span class="r-in"><span>  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [0,2]    (2,4.5]   (4.5,7]   (7,9] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0,2]     2531.4   1443.7    1443.7    1443.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (2,4.5]   1443.7   2531.4    1443.7    1443.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (4.5,7]   1443.7   1443.7    2531.4    1443.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (7,9]     1443.7   1443.7    1443.7    2531.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        VIS1   VIS2   VIS3   VIS4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS1   40.6   14.4   5.0    13.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS2   14.4   26.6   2.8    7.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS3   5.0    2.8    14.9   0.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS4   13.4   7.5    0.9    95.6</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result_no_arm</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"Reaction"</span>,</span></span>
-<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"Subject"</span>,</span></span>
-<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"days_grouped"</span></span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"FEV1"</span>,</span></span>
+<span class="r-in"><span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"SEX"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dat</span>,</span></span>
-<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span></span>
-<span class="r-in"><span>  parallel <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span>,</span></span>
+<span class="r-in"><span>  cor_struct <span class="op">=</span> <span class="st">"unstructured"</span>,</span></span>
+<span class="r-in"><span>  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/tern/man/as.rtable.html" class="external-link">as.rtable</a></span><span class="op">(</span><span class="va">result_no_arm</span>, type <span class="op">=</span> <span class="st">"cov"</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [0,2]    (2,4.5]   (4.5,7]   (7,9] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0,2]     2479.0   1399.3    1399.3    1399.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (2,4.5]   1399.3   2479.0    1399.3    1399.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (4.5,7]   1399.3   1399.3    2479.0    1399.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (7,9]     1399.3   1399.3    1399.3    2479.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        VIS1   VIS2   VIS3   VIS4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS1   43.3   17.8   7.3    18.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS2   17.8   30.4   6.0    10.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS3   7.3    6.0    17.0   5.0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS4   18.1   10.7   5.0    98.9</span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df_no_arm</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_mmrm_lsmeans</span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="fl">8</span>, <span class="op">]</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $adj_mean_se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 350.85122  11.85897</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 52.78422  1.18776</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $adj_mean_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 327.1922 374.5102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50.43481 55.13362</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_mean_se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14.22172 16.77111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.398457 1.680545</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_mean_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -19.23716  47.68060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.074493 7.722422</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $change</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.04224739</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.09090396</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Relative Reduction (%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3993832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.009886854</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">s_mmrm_lsmeans_single</span><span class="op">(</span><span class="va">df_no_arm</span><span class="op">[</span><span class="fl">4</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 134</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $adj_mean_se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 343.740364   8.298227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50.6510864  0.8508787</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $adj_mean_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 327.1965 360.2842</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 48.96834 52.33383</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dat_adsl</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Subject</span>, <span class="va">group</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat_adsl</span> <span class="op">&lt;-</span> <span class="va">mmrm_test_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">ARMCD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"group"</span>, ref_group <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">ref_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">ref_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_lsmeans</span><span class="op">(</span>show_relative <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                               A                    B         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             (N=18)               (N=18)      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0,2]                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                           18                   18        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   256.652 (11.859)     264.496 (11.859) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (232.993, 280.311)   (240.837, 288.155)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                          7.844 (16.771)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                 (-25.615, 41.303) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                         3.1%       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                               0.6415      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (2,4.5]                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                           18                   18        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   288.649 (11.859)     282.992 (11.859) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (264.990, 312.308)   (259.333, 306.651)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                         -5.657 (16.771)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                 (-39.116, 27.801) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                        -2.0%       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                               0.7369      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (4.5,7]                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                           18                   18        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   312.178 (11.859)     308.518 (11.859) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (288.519, 335.837)   (284.859, 332.177)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                         -3.660 (16.771)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                 (-37.119, 29.799) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                        -1.2%       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                               0.8279      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (7,9]                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                           18                   18        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   336.630 (11.859)     350.851 (11.859) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (312.971, 360.289)   (327.192, 374.510)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                         14.222 (16.771)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                 (-19.237, 47.681) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                         4.2%       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                               0.3994      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                             PBO                TRT       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           (N=105)             (N=95)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS1                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                          68                 66       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   33.332 (0.755)     37.106 (0.763) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (31.839, 34.825)   (35.599, 38.613)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                       3.774 (1.074)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                (1.651, 5.897) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                     11.3%      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                            0.0006     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS2                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                          69                 71       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   38.171 (0.612)     41.904 (0.602) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (36.963, 39.380)   (40.713, 43.094)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                       3.732 (0.859)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                (2.035, 5.430) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                      9.8%      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                           &lt;0.0001     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS3                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                          71                 58       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   43.674 (0.462)     46.755 (0.509) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (42.760, 44.588)   (45.748, 47.761)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                       3.081 (0.690)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                (1.716, 4.445) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                      7.1%      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                           &lt;0.0001     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS4                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                          67                 67       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)                   48.386 (1.189)     52.784 (1.188) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                            (46.035, 50.737)   (50.435, 55.134)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means (SE)                       4.398 (1.681)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                (1.074, 7.722) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Relative Increase (%)                                      9.1%      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (MMRM)                                            0.0099     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://roche.github.io/rtables/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"days_grouped"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_lsmeans</span><span class="op">(</span>arms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://roche.github.io/rtables/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    df <span class="op">=</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">result_no_arm</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    alt_counts_df <span class="op">=</span> <span class="va">dat_adsl</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             all obs      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0,2]                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                            36        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    260.574 (8.298)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (244.030, 277.118)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (2,4.5]                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                            36        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    285.821 (8.298)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (269.277, 302.365)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (4.5,7]                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                            36        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    310.348 (8.298)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (293.804, 326.892)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (7,9]                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                            36        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    343.740 (8.298)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (327.196, 360.284)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                            all obs     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS1                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                          134       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    35.191 (0.550) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (34.105, 36.277)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS2                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                          140       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    40.039 (0.455) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (39.140, 40.938)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS3                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                          129       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    45.029 (0.361) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (44.314, 45.744)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> VIS4                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                          134       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Adjusted Mean (SE)    50.651 (0.851) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI             (48.968, 52.334)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

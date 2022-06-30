@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -221,8 +215,14 @@ null distributions for parameter effects are unknown. SAS addresses this
 issue by utilizing Satterthwaite’s method to approximate the adjusted
 degrees of freedom for <span class="math inline">\(F\)</span> and <span class="math inline">\(t\)</span> tests. <code>lme4</code> and
 <code>lmerTest</code> have also implemented Satterthwaite’s method.
-Thus, by relying on these two R packages, <code>tern.mmrm</code> is able
-to replicate outputs from SAS.</p>
+Unfortunately we found that these are not robust in their convergence
+behavior. Compared to <code>lme4</code>, the R package <code>nlme</code>
+can consider more flexible covariance structures. However, we have
+chosen not to use this package because it does not provide exact
+Satterthwaite adjusted degrees of freedom and the available approximate
+degrees of freedom can differ substantially. Therefore we built the new
+package <code>mmrm</code>. With <code>mmrm</code>,
+<code>tern.mmrm</code> is able to replicate outputs from SAS.</p>
 </div>
 <div class="section level3">
 <h3 id="covariance-structure">Covariance structure<a class="anchor" aria-label="anchor" href="#covariance-structure"></a>
@@ -234,56 +234,11 @@ V_i\)</span>:</p>
 <li>Unstructured: <span class="math display">\[V_{ij} =
 \theta_{ij}\]</span>
 </li>
-<li>Random Intercept (i.e. compound symmetry with positive correlation):
-<span class="math display">\[\mathbf Z_i = \mathbf 1,\ b_i \overset{iid}
-\sim N(0, \theta),\ \varepsilon_{ij} \overset{iid}{\sim} N(0,
-\sigma^2)\]</span> so that <span class="math display">\[\mathbf V_i =
-\begin{bmatrix} \theta + \sigma^2 &amp; \theta &amp; \theta &amp; \cdots
-\\ \theta &amp; \theta + \sigma^2 &amp; \theta &amp; \cdots \\ \theta
-&amp; \theta &amp; \ddots &amp; \cdots \\ \theta &amp; \theta &amp;
-\cdots &amp; \theta + \sigma^2 \end{bmatrix} \mbox{ and } corr(Y_{ij},
-Y_{ik}) = \frac{\theta}{\theta + \sigma^2} \mbox{ for } j \neq
-k\]</span>
-</li>
-<li>Random Slope: <span class="math display">\[\mathbf Z_i =
-\begin{bmatrix} 1 &amp; t_{i1} \\ 1 &amp; t_{i2} \\ \vdots &amp; \vdots
-\\ 1 &amp; t_{in_i} \end{bmatrix},\ b_i \overset{iid} \sim N \left (0,
-\begin{bmatrix} \theta_{11} &amp; \theta_{12} \\ \theta_{12} &amp;
-\theta_{22} \end{bmatrix} \right ),\ \varepsilon_{ij}
-\overset{iid}{\sim} N(0, \sigma^2)\]</span>
-</li>
-<li>Random Quadratic: <span class="math display">\[\mathbf Z_i =
-\begin{bmatrix} 1 &amp; t_{i1} &amp; t_{i1}^2 \\ 1 &amp; t_{i2} &amp;
-t_{i2}^2 \\ \vdots &amp; \vdots \\ 1 &amp; t_{in_i} &amp; t_{in_i}^2
-\end{bmatrix},\ b_i \overset{iid} \sim N \left (0, \begin{bmatrix}
-\theta_{11} &amp; \theta_{12} &amp; \theta_{13} \\ \theta_{12} &amp;
-\theta_{22} &amp; \theta_{23} \\ \theta_{13} &amp; \theta_{23} &amp;
-\theta_{33} \end{bmatrix} \right ),\ \varepsilon_{ij}
-\overset{iid}{\sim} N(0, \sigma^2)\]</span>
-</li>
 </ul>
-<p>Note that some options available in SAS are not available in
-<code>tern.mmrm</code>. This is because the <code>lme4</code> package
-which <code>tern.mmrm</code> relies on has more restrictions regarding
-the type of covariance structure that can be considered. Specifically,
-<code>lme4</code> assumes <span class="math inline">\(\mathbf
-D_i\)</span> is unstructured and <span class="math inline">\(\mathbf R_i
-= \sigma^2 \mathbf I\)</span>, so that <span class="math inline">\(\mathbf V_i\)</span> is specified only through the
-random design matrix <span class="math inline">\(\mathbf Z_i\)</span>.
-This prevents us from implementing covariance structures that fall
-outside of this scope, e.g. AR(1) where <span class="math inline">\((\mathbf V_i)_{jk} = \sigma^2
-\rho^{|j-k|}\)</span> or Toeplitz where <span class="math inline">\((\mathbf V_i)_{jk}=\theta_{|j-k|}\)</span>. The
-only exception is the unstructured model; although specifying <span class="math inline">\(\mathbf Z_i = \mathbf I_{n_i \times n_i}\)</span>,
-unstructured <span class="math inline">\(\mathbf D_i\)</span>, and <span class="math inline">\(\mathbf R_i = \sigma^2 \mathbf I\)</span> results
-in an over-parametrized model, <span class="math inline">\(\mathbf
-V_i\)</span> as a whole is identifiable so that after suppressing some
-error messages, we can in fact fit a MMRM with unstructured covariance
-matrix (see next section).</p>
-<p>Compared to <code>lme4</code>, the R package <code>nlme</code> can
-consider more flexible covariance structures. However, we have chosen
-not to use this package because it does not provide exact Satterthwaite
-adjusted degrees of freedom and the available approximate degrees of
-freedom can differ substantially.</p>
+<p>Note that currently many options available in SAS are not available
+in <code>tern.mmrm</code>, e.g. AR(1) where <span class="math inline">\((\mathbf V_i)_{jk} = \sigma^2
+\rho^{|j-k|}\)</span> or Toeplitz where <span class="math inline">\((\mathbf V_i)_{jk}=\theta_{|j-k|}\)</span>. We are
+currently working on them.</p>
 </div>
 </div>
 <div class="section level2">
@@ -312,10 +267,6 @@ increase in FEV1 over time after adjusting for baseline covariates.</p>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'tern':</span></span>
 <span><span class="co">#&gt;   method   from </span></span>
 <span><span class="co">#&gt;   tidy.glm broom</span></span>
-<span><span class="co">#&gt; Registered S3 methods overwritten by 'tern.mmrm':</span></span>
-<span><span class="co">#&gt;   method         from</span></span>
-<span><span class="co">#&gt;   as.rtable.mmrm tern</span></span>
-<span><span class="co">#&gt;   tidy.mmrm      tern</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'tern.mmrm'</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:tern':</span></span>
@@ -364,64 +315,38 @@ all study visits.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">lsmeans</span><span class="op">$</span><span class="va">contrasts</span></span>
 <span><span class="co">#&gt;   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat</span></span>
-<span><span class="co">#&gt; 1   TRT   VIS1 3.983491 1.0453975 142.3217 1.916978 6.050004 3.810504</span></span>
-<span><span class="co">#&gt; 2   TRT   VIS2 3.930770 0.8135014 142.2620 2.322657 5.538883 4.831916</span></span>
-<span><span class="co">#&gt; 3   TRT   VIS3 2.983733 0.6656817 129.6022 1.666723 4.300743 4.482221</span></span>
-<span><span class="co">#&gt; 4   TRT   VIS4 4.403899 1.6604869 132.8795 1.119493 7.688306 2.652174</span></span>
+<span><span class="co">#&gt; 1   TRT   VIS1 3.983290 1.0454036 142.3210 1.916765 6.049815 3.810289</span></span>
+<span><span class="co">#&gt; 2   TRT   VIS2 3.930758 0.8135131 142.2576 2.322622 5.538895 4.831831</span></span>
+<span><span class="co">#&gt; 3   TRT   VIS3 2.983718 0.6656674 129.6093 1.666737 4.300699 4.482295</span></span>
+<span><span class="co">#&gt; 4   TRT   VIS4 4.404001 1.6604869 132.8789 1.119595 7.688407 2.652235</span></span>
 <span><span class="co">#&gt;        p_value relative_reduc</span></span>
-<span><span class="co">#&gt; 1 2.057335e-04    -0.12102463</span></span>
-<span><span class="co">#&gt; 2 3.458966e-06    -0.10425034</span></span>
-<span><span class="co">#&gt; 3 1.606826e-05    -0.06893901</span></span>
-<span><span class="co">#&gt; 4 8.971264e-03    -0.09154381</span></span></code></pre></div>
-<p>Other correlation structures and weighting schemes can be considered.
-For example, the following modified code fits a MMRM with random
-intercept (compound symmetry with positive correlation) and equal
-weights:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span>
-<span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    response <span class="op">=</span> <span class="st">"FEV1"</span>,</span>
-<span>    covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span>, <span class="st">"SEX"</span>, <span class="st">"FEV1_BL"</span><span class="op">)</span>,</span>
-<span>    id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span>    arm <span class="op">=</span> <span class="st">"ARMCD"</span>,</span>
-<span>    visit <span class="op">=</span> <span class="st">"AVISIT"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span>,</span>
-<span>  cor_struct <span class="op">=</span> <span class="st">"compound-symmetry"</span>,</span>
-<span>  weights_emmeans <span class="op">=</span> <span class="st">"equal"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 2.058960e-04    -0.12101832</span></span>
+<span><span class="co">#&gt; 2 3.460313e-06    -0.10424997</span></span>
+<span><span class="co">#&gt; 3 1.606280e-05    -0.06893864</span></span>
+<span><span class="co">#&gt; 4 8.969722e-03    -0.09154581</span></span></code></pre></div>
+<p>Other correlation structures and weighting schemes can be
+considered.</p>
 </div>
 <div class="section level3">
 <h3 id="model-fitting-manually-in-r">Model fitting manually in R<a class="anchor" aria-label="anchor" href="#model-fitting-manually-in-r"></a>
 </h3>
 <p>One can reproduce these results manually in R. For example, to fit
 the unstructured model:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/openpharma/mmrm/" class="external-link">mmrm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans" class="external-link">emmeans</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span></span>
-<span>  formula <span class="op">=</span> <span class="va">FEV1</span> <span class="op">~</span> <span class="va">RACE</span> <span class="op">+</span> <span class="va">SEX</span> <span class="op">+</span> <span class="va">FEV1_BL</span> <span class="op">+</span> <span class="va">ARMCD</span> <span class="op">*</span> <span class="va">AVISIT</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0</span> <span class="op">+</span> <span class="va">AVISIT</span> <span class="op">|</span> <span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmerControl.html" class="external-link">lmerControl</a></span><span class="op">(</span></span>
-<span>    check.nobs.vs.nRE <span class="op">=</span> <span class="st">"ignore"</span>,</span>
-<span>    optimizer <span class="op">=</span> <span class="st">"nloptwrap"</span>,</span>
-<span>    optCtrl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>algorithm <span class="op">=</span> <span class="st">"NLOPT_LN_BOBYQA"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">FEV1</span> <span class="op">~</span> <span class="va">RACE</span> <span class="op">+</span> <span class="va">SEX</span> <span class="op">+</span> <span class="va">FEV1_BL</span> <span class="op">+</span> <span class="va">ARMCD</span> <span class="op">*</span> <span class="va">AVISIT</span> <span class="op">+</span> <span class="fu">us</span><span class="op">(</span><span class="va">AVISIT</span> <span class="op">|</span> <span class="va">USUBJID</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, mode <span class="op">=</span> <span class="st">"satterthwaite"</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span></code></pre></div>
-<p>As mentioned in the previous section, although an unstructured model
-is technically over-parametrized under <code>lmer</code>’s required
-formulation, the marginal covariance as a whole is identifiable and we
-can fit the model by including the argument
-<code>check.nobs.vs.nRE = "ignore"</code> to suppress error
-messages.</p>
+<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span></code></pre></div>
 <p>Compared to manual implementation, <code>tern.mmrm</code> users can
-avoid specifying the <code>formula</code> as well as the non-linear
-<code>optimizer</code> used to fit the MMRM. <code>tern.mmrm</code> has
-a default optimizer which is in fact the same as the one shown here. If
-the default fails to converge, it automatically attempts to use multiple
-other optimizers, delivering results should there be a consensus.</p>
+avoid specifying the <code>formula</code> manually. Note also that
+<code>tern.mmrm</code> has a default optimizer which is in fact the same
+as the one shown here. If the default fails to converge, it
+automatically attempts to use multiple other optimizers, delivering
+results should there be a consensus.</p>
 </div>
 <div class="section level3">
 <h3 id="model-fitting-via-sas">Model fitting via SAS<a class="anchor" aria-label="anchor" href="#model-fitting-via-sas"></a>
@@ -434,9 +359,9 @@ For the unstructured model, the equivalent SAS code is given by
      replace;
      getnames=yes;
 run;
-     
-proc mixed data= dat; 
-       class ARMCD(ref="PBO") AVISIT(ref="VIS1") USUBJID SEX(ref="Male") RACE(ref="Asian");    
+
+proc mixed data= dat;
+       class ARMCD(ref="PBO") AVISIT(ref="VIS1") USUBJID SEX(ref="Male") RACE(ref="Asian");
        Model FEV1 = ARMCD  RACE  SEX  FEV1_BL  AVISIT  ARMCD*AVISIT    / solution ddfm=satterthwaite;
        repeated AVISIT / type=UN subject=USUBJID;
        lsmeans ARMCD*AVISIT/pdiff obsmargins cl;
@@ -455,7 +380,7 @@ run;
 the desire is to select a parsimonious model that adequately fits the
 data. We provide four of the same information criteria as found in SAS
 PROC MIXED.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">diagnostics</span></span></code></pre></div>
 <p>Each criterion is specifically calculated as follows:</p>
 <ol style="list-style-type: decimal">
@@ -509,18 +434,10 @@ different aspect of MMRMs.</p>
 <h2 id="outlook">Outlook<a class="anchor" aria-label="anchor" href="#outlook"></a>
 </h2>
 <p>We are actively looking to expand the capabilities of
-<code>tern.mmrm</code>. Ongoing topics include:</p>
-<ul>
-<li>sensitivity of <code>lme4</code> to ordering of the dataset: in some
-cases, <code>lme4</code> may not converge for a dataset but may converge
-for the same data rearranged.</li>
-<li>intermediate covariance structures: to increase complexity compared
-to some simpler covariance structures, while having less model
-parameters compared to an unstructured covariance matrix</li>
-<li>additional model diagnostics: information criterion specifically for
-evaluating fixed or random effects; residual plots to assess other model
-assumptions</li>
-</ul>
+<code>tern.mmrm</code>. In particular we are working on the foundational
+package <code>mmrm</code> to include more features, such as treatment
+group specific covariance matrices and additional covariance
+structures.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

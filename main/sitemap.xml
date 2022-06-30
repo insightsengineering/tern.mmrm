@@ -34,16 +34,7 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/build_mmrm_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/check_mmrm_vars.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_lme4.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_lme4_single_optimizer.html</loc>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/assert_data.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_mmrm.html</loc>
@@ -58,19 +49,25 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_mmrm_lsmeans.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_lme4_cov_estimate.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_lme4_diagnostics.html</loc>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_diagnostics.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_mmrm_lsmeans.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_build_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_covariate_parts.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_timepoint_vars.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/labels.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/lsmeans_helpers.html</loc>
@@ -80,12 +77,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/refit_lme4_all_optimizers.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/summary_all_fits.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/tabulate_mmrm.html</loc>
