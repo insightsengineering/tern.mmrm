@@ -65,3 +65,37 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
+#' @description This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
+#' and obtains the lag and time distance between pairs of observations if the time values are part of
+#' the names or are part of the matrix column/row names.
+#'
+#' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @return This function returns a data frame with the upper-diagonal elements or a covariance or correlation
+#' matrix. In the context of repeated measures, this matrix contains the association between pairs
+#' of measurements taken at different time points.
+#'
+#' @examples
+#' vcov_matrix <- matrix(
+#'   c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
+#'   nrow = 4, ncol = 4,
+#'   dimnames = list(
+#'     c("VIS1", "VIS2", "VIS3", "VIS4"),
+#'     c("VIS1", "VIS2", "VIS3", "VIS4")
+#'   )
+#' )
+#' h_vectorization(vcov_matrix, string = "VIS")
+h_vectorization <- function(vcov_matrix, string = NULL) {
+assert_matrix(vcov_matrix)
+assert_true(isSymmetric(vcov_matrix))
+diag <- upper.tri(vcov_matrix, diag = T)
+vect <- vcov_matrix[diag]
+timepoints <- h_get_timepoint_vars(vcov_matrix, string)
+time_point_distribution <- timepoints$row_time - timepoints$row_time
+rank_row <- as.numeric(as.factor(timepoints$row_time))
+rank_col <- as.numeric(as.factor(timepoints$row_time))
+lag <- rank_col - rank_row
+if (any(is.na(lag)) | any(is.na(time_point_distribution)))
+  warning("Verify you have used the string argument correctly or that the columns and rows of your input matrix are named as expected")
+vect <- data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
+return(vect)
+}
