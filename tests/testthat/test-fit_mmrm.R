@@ -35,6 +35,22 @@ test_that("fit_mmrm works with parallelization", {
   ))
 })
 
+test_that("fit_mmrm works with character ID variable", {
+  dat <- mmrm_test_data
+  dat$USUBJID <- as.character(dat$USUBJID)
+  expect_silent(result <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = dat,
+    cor_struct = "unstructured"
+  ))
+})
+
 # Produces different versions of mmrm_test_data.
 get_version <- function(version = c("A", "B")) {
   version <- match.arg(version)

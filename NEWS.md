@@ -1,5 +1,9 @@
-# tern.mmrm 0.1.1.9009
+# tern.mmrm 0.1.9.9009
 
+* Complete refactoring of the computations, which now use the new `mmrm`
+  package instead of `lme4` and `lmerTest`. This increases convergence
+  and speed a lot. Different covariance structures and optimizers are therefore
+  now available compared to before.
 * Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
 
