@@ -49,6 +49,18 @@ test_that("fit_mmrm works with character ID variable", {
     data = dat,
     cor_struct = "unstructured"
   ))
+  expected <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured"
+  )
+  expect_identical(coef(result$fit), coef(expected$fit))
 })
 
 # Produces different versions of mmrm_test_data.
