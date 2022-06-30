@@ -77,12 +77,30 @@ test_that("h_assert_visit_var works as expected", {
   expect_error(h_assert_visit_var(vars, data3))
 })
 
+# h_assert_id_var ----
+
+test_that("h_assert_id_var works as expected", {
+  vars <- list(id = "MYID")
+
+  data <- data.frame(MYID = factor(1))
+  expect_silent(h_assert_id_var(vars, data))
+
+  data2 <- data.frame(MYID = "1")
+  expect_silent(h_assert_id_var(vars, data2))
+
+  data3 <- data.frame(boo = factor(1))
+  expect_error(h_assert_id_var(vars, data3))
+
+  data4 <- data.frame(MYID = numeric(1))
+  expect_error(h_assert_visit_var(vars, data4))
+})
+
 # assert_data ----
 
 test_that("assert_data passes as expected", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP")
   data <- data.frame(
-    MYID = factor(c(1, 1, 2, 2, 3, 3)),
+    MYID = as.character(c(1, 1, 2, 2, 3, 3)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 2)),
     RSP = c(25.3245, 234.34, 5.1, 35.2, 24.24, 346.32)
   )

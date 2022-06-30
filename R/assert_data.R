@@ -72,7 +72,7 @@ h_assert_id_var <- function(vars, data) {
   assert_data_frame(data)
 
   id_values <- data[[vars$id]]
-  assert_factor(id_values)
+  assert_true(is.factor(id_values) || is.character(id_values))
 }
 
 #' @describeIn assert_data high-level assertion function to check the dataset.
