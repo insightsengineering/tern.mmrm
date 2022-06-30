@@ -37,7 +37,7 @@ test_that("fit_mmrm works with parallelization", {
 
 test_that("fit_mmrm works with character ID variable", {
   dat <- mmrm_test_data
-  dat$USUBJID <- as.character(dat$USUBJID)
+  dat$USUBJID <- as.character(dat$USUBJID) # nolint
   expect_silent(result <- fit_mmrm(
     vars = list(
       response = "FEV1",
