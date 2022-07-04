@@ -74,12 +74,13 @@ Performing inference on estimated parameters (e.g. calculating p-values) is less
 Therefore we built the new package `mmrm`. With `mmrm`, `tern.mmrm` is able to replicate outputs from SAS.
 
 ### Covariance structure
-Users of `tern.mmrm` have the following options for the covariance structure $\mathbf V_i$:
+Users of `tern.mmrm` have currently the following options for the covariance structure $\mathbf V_i$:
 
 - Unstructured: $$V_{ij} = \theta_{ij}$$
-
-Note that currently many options available in SAS are not available in `tern.mmrm`, e.g. AR(1) where $(\mathbf V_i)_{jk} = \sigma^2 \rho^{|j-k|}$ or Toeplitz where $(\mathbf V_i)_{jk}=\theta_{|j-k|}$.
-We are currently working on them.
+- Homogeneous AR(1): $$(\mathbf V_i)_{jk} = \sigma^2 \rho^{|j-k|}$$
+- Heterogeneous AR(1): $$(\mathbf V_i)_{jk} = \sigma_j \sigma_k \rho^{|j-k|}$$
+- Heterogeneous Toeplitz: $$(\mathbf V_i)_{jk}=\sigma_j \sigma_k \theta_{|j-k|}$$
+- Heterogeneous Ante-Dependence: $$(\mathbf V_i)_{jk} = \sigma_j \sigma_k \prod_{i=j}^{k}\rho_i$$
 
 ## Model fitting
 In this section, we illustrate how to fit a MMRM with `tern.mmrm` and how to fit a MMRM manually in R. We then compare with SAS to show that the results match.
