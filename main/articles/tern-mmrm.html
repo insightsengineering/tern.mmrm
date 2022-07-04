@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.9010</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -233,18 +227,26 @@ package <code>mmrm</code>. With <code>mmrm</code>,
 <div class="section level3">
 <h3 id="covariance-structure">Covariance structure<a class="anchor" aria-label="anchor" href="#covariance-structure"></a>
 </h3>
-<p>Users of <code>tern.mmrm</code> have the following options for the
-covariance structure <span class="math inline">\(\mathbf
+<p>Users of <code>tern.mmrm</code> have currently the following options
+for the covariance structure <span class="math inline">\(\mathbf
 V_i\)</span>:</p>
 <ul>
 <li>Unstructured: <span class="math display">\[V_{ij} =
 \theta_{ij}\]</span>
 </li>
+<li>Homogeneous AR(1): <span class="math display">\[(\mathbf V_i)_{jk} =
+\sigma^2 \rho^{|j-k|}\]</span>
+</li>
+<li>Heterogeneous AR(1): <span class="math display">\[(\mathbf V_i)_{jk}
+= \sigma_j \sigma_k \rho^{|j-k|}\]</span>
+</li>
+<li>Heterogeneous Toeplitz: <span class="math display">\[(\mathbf
+V_i)_{jk}=\sigma_j \sigma_k \theta_{|j-k|}\]</span>
+</li>
+<li>Heterogeneous Ante-Dependence: <span class="math display">\[(\mathbf
+V_i)_{jk} = \sigma_j \sigma_k \prod_{i=j}^{k}\rho_i\]</span>
+</li>
 </ul>
-<p>Note that currently many options available in SAS are not available
-in <code>tern.mmrm</code>, e.g. AR(1) where <span class="math inline">\((\mathbf V_i)_{jk} = \sigma^2
-\rho^{|j-k|}\)</span> or Toeplitz where <span class="math inline">\((\mathbf V_i)_{jk}=\theta_{|j-k|}\)</span>. We are
-currently working on them.</p>
 </div>
 </div>
 <div class="section level2">
