@@ -393,3 +393,71 @@ test_that("fit_mmrm works also with missing data", {
     ignore_attr = TRUE
   )
 })
+
+test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous toeplitz",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous auto-regressive",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "auto-regressive",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous ante-dependence",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
