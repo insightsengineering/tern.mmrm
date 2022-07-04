@@ -35,7 +35,7 @@ will be excluded.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{cor_struct}{a string specifying the correlation structure, defaults to
+\item{cor_struct}{a string specifying the covariance structure, defaults to
 \code{"unstructured"}. See the details.}
 
 \item{weights_emmeans}{argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
@@ -72,35 +72,23 @@ tables and graphs.
 Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
 match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
 
-For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
-in descending number of variance parameters:
+For the covariance structure (\code{cor_struct}), the user can choose among the following options.
 \describe{
 \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
-Note: the current actual implementation uses one more variance parameter, which does not have any
-effect of the results. Therefore we report here the actually relevant number of parameters.}
-\item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
-7 variance parameters are used.}
-\item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
-\item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
+If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
+\item{toeplitz}{Heterogeneous Toeplitz covariance matrix,
+which uses \code{2 * T - 1} variance parameters.}
+\item{ad}{Heterogeneous Ante-Dependence covariance matrix,
+which uses \code{2 * T - 1} variance parameters.}
+\item{ar1h}{Heterogeneous Auto-Regressive (order 1) covariance matrix,
+which uses \code{T + 1} variance parameters.}
+\item{ar1}{Homogeneous Auto-Regressive (order 1) covariance matrix,
+which uses 2 variance parameters.}
 }
 
-For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
-\describe{
-\item{nloptwrap_neldermead}{\code{NLopt} version of the Nelder-Mead algorithm (via package \code{nloptr})}
-\item{nloptwrap_bobyqa}{\code{NLopt} version of the BOBYQA algorithm (via package \code{nloptr})}
-\item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
-\item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-\item{neldermead}{\code{lme4} version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
-\item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
-\item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
-}
-}
-\note{
-The ordering of the input data sets can lead to slightly different numerical results or
-different convergence behavior. This is a known observation with the used package
-\code{lme4}. However, once convergence is achieved, the results are reliable up to
-numerical precision.
+For the \code{optimizer}, the user can choose among alternatives to the recommended "automatic",
+please see \code{?mmrm::refit_multiple_optimizers} for details. Usually it should not be necessary
+to use a specific optimizer and the "automatic" setting should be kept.
 }
 \examples{
 library(dplyr)

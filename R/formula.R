@@ -17,10 +17,10 @@
 h_build_formula <- function(vars,
                             cor_struct = c(
                               "unstructured",
-                              "toeplitz",
+                              "heterogeneous toeplitz",
                               "auto-regressive",
-                              "compound-symmetry",
-                              "ante-dependence"
+                              "heterogeneous auto-regressive",
+                              "heterogeneous ante-dependence"
                             )) {
   assert_list(vars)
   cor_struct <- match.arg(cor_struct)
@@ -39,10 +39,10 @@ h_build_formula <- function(vars,
   }
   random_effects_fun <- switch(cor_struct,
     "unstructured" = "us",
-    "toeplitz" = "toep",
+    "heterogeneous toeplitz" = "toep",
     "auto-regressive" = "ar1",
-    "compound-symmetry" = "cs",
-    "ante-dependence" = "ad"
+    "heterogeneous auto-regressive" = "ar1h",
+    "heterogeneous ante-dependence" = "ad"
   )
   random_effects_part <- paste0(
     random_effects_fun, "(", vars$visit, " | ", vars$id, ")"
