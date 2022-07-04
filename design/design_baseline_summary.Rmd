@@ -38,7 +38,7 @@ result <- fit_mmrm(
     visit = "days_grouped"
   ),
   data = dat,
-  cor_struct = "compound-symmetry",
+  cor_struct = "auto-regressive",
   parallel = TRUE
 )
 

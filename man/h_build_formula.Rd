@@ -6,8 +6,8 @@
 \usage{
 h_build_formula(
   vars,
-  cor_struct = c("unstructured", "toeplitz", "auto-regressive", "compound-symmetry",
-    "ante-dependence")
+  cor_struct = c("unstructured", "heterogeneous toeplitz", "auto-regressive",
+    "heterogeneous auto-regressive", "heterogeneous ante-dependence")
 )
 }
 \arguments{
@@ -26,6 +26,6 @@ vars <- list(
   response = "AVAL", covariates = c("RACE", "SEX"),
   id = "USUBJID", arm = "ARMCD", visit = "AVISIT"
 )
-h_build_formula(vars, "compound-symmetry")
+h_build_formula(vars, "auto-regressive")
 h_build_formula(vars)
 }

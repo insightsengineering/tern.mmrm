@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import rtables
 #' @importFrom magrittr %>%
-#' @importFrom mmrm h_cov_estimate
+#' @importFrom mmrm df_1d
 #' @importFrom rlang .data :=
 #' @importFrom tern f_conf_level
 NULL
