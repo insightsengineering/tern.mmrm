@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.9011</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,12 +27,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -53,54 +47,6 @@
     </div>
 
     <div class="section level2">
-      <h2 id="statistics-functions">Statistics Functions<a class="anchor" aria-label="anchor" href="#statistics-functions"></a></h2>
-      
-      <p class="section-desc"></p><p>Statistics functions should do the computation of the numbers that are tabulated later. In order to separate computation from formatting, they should not take care of <code>rcell</code> type formatting themselves.</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of <code>MMRM</code> Results</dd>
-      </dl></div><div class="section level2">
-      <h2 id="formatted-analysis-functions">Formatted Analysis functions<a class="anchor" aria-label="anchor" href="#formatted-analysis-functions"></a></h2>
-      
-      <p class="section-desc"></p><p>These have the same arguments as the corresponding statistics functions, and can be further customized by calling <code><a href="https://roche.github.io/rtables/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on them. They are used as <code>afun</code> in <code><a href="https://roche.github.io/rtables/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of <code>MMRM</code> Results</dd>
-      </dl></div><div class="section level2">
-      <h2 id="analyze-functions">Analyze Functions<a class="anchor" aria-label="anchor" href="#analyze-functions"></a></h2>
-      
-      <p class="section-desc"></p><p>Analyze Functions are used in combination with the rtables layout functions, in the pipeline which creates the table.</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of <code>MMRM</code> Results</dd>
-      </dl></div><div class="section level2">
       <h2 id="analysis-helper-functions">Analysis Helper Functions<a class="anchor" aria-label="anchor" href="#analysis-helper-functions"></a></h2>
       
       <p class="section-desc"></p><p>these functions are useful to help definining the analysis</p>
@@ -113,34 +59,14 @@
 
       <dl><dt>
           
-          <code><a href="assert_data.html">h_assert_one_rec_pt_visit()</a></code> <code><a href="assert_data.html">h_assert_rsp_var()</a></code> <code><a href="assert_data.html">h_assert_visit_var()</a></code> <code><a href="assert_data.html">h_assert_id_var()</a></code> <code><a href="assert_data.html">assert_data()</a></code> 
-        </dt>
-        <dd>Assertions for Datasets</dd>
-      </dl><dl><dt>
-          
-          <code><a href="h_get_covariate_parts.html">h_get_covariate_parts()</a></code> 
-        </dt>
-        <dd>Extraction of Covariate Parts from Character Vector</dd>
-      </dl><dl><dt>
-          
-          <code><a href="h_build_formula.html">h_build_formula()</a></code> 
+          <code><a href="build_formula.html">build_formula()</a></code> 
         </dt>
         <dd>Building Model Formula</dd>
       </dl><dl><dt>
           
-          <code><a href="labels.html">h_is_specified()</a></code> <code><a href="labels.html">h_is_specified_and_in_data()</a></code> <code><a href="labels.html">h_check_and_get_label()</a></code> <code><a href="labels.html">h_labels()</a></code> 
+          <code><a href="get_mmrm_lsmeans.html">get_mmrm_lsmeans()</a></code> 
         </dt>
-        <dd>Adding Labels To Variables For Model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of <code>MMRM</code> Results</dd>
-      </dl><dl><dt>
-          
-          <code><a href="h_get_timepoint_vars.html">h_get_timepoint_vars()</a></code> 
-        </dt>
-        <dd>Helpers for Covariance Plot</dd>
+        <dd>Extract Least Square Means from <code>MMRM</code></dd>
       </dl></div><div class="section level2">
       <h2 id="model-specific-functions">Model Specific Functions<a class="anchor" aria-label="anchor" href="#model-specific-functions"></a></h2>
       
@@ -154,14 +80,14 @@
 
       <dl><dt>
           
-          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
-        </dt>
-        <dd>Tabulation of <code>MMRM</code> Results</dd>
-      </dl><dl><dt>
-          
           <code><a href="fit_mmrm.html">fit_mmrm()</a></code> 
         </dt>
         <dd><code>MMRM</code> Analysis</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tabulate_mmrm.html">as.rtable(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_fixed()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_cov()</a></code> <code><a href="tabulate_mmrm.html">h_mmrm_diagnostic()</a></code> <code><a href="tabulate_mmrm.html">tidy(<i>&lt;tern_mmrm&gt;</i>)</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans()</a></code> <code><a href="tabulate_mmrm.html">s_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">a_mmrm_lsmeans_single()</a></code> <code><a href="tabulate_mmrm.html">summarize_lsmeans()</a></code> 
+        </dt>
+        <dd>Tabulation of <code>MMRM</code> Results</dd>
       </dl></div><div class="section level2">
       <h2 id="graphs">Graphs<a class="anchor" aria-label="anchor" href="#graphs"></a></h2>
       
@@ -174,11 +100,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="g_mmrm.html">g_mmrm</a></code> 
-        </dt>
-        <dd><code>MMRM</code> Plots</dd>
-      </dl><dl><dt>
           
           <code><a href="g_mmrm_diagnostic.html">g_mmrm_diagnostic()</a></code> 
         </dt>

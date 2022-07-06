@@ -34,13 +34,10 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/assert_data.html</loc>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/build_formula.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_mmrm.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_mmrm.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_mmrm_diagnostic.html</loc>
@@ -49,16 +46,16 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_mmrm_lsmeans.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_diagnostics.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/get_mmrm_lsmeans.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_build_formula.html</loc>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_assert_data.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_covariate_parts.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_diagnostics.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_timepoint_vars.html</loc>
