@@ -4,11 +4,6 @@
 #'
 #' @return Character vector of the covariates involved in `covariates` specification.
 #' @keywords internal
-#'
-#' @examples
-#' h_get_covariate_parts(NULL)
-#' h_get_covariate_parts("VISIT:ARM")
-#' h_get_covariate_parts(c("VISIT:ARM", "COUNTRY"))
 h_get_covariate_parts <- function(covariates) {
   assert_character(covariates, null.ok = TRUE)
   if (is.null(covariates)) {

@@ -15,9 +15,4 @@ Character vector of the covariates involved in \code{covariates} specification.
 \description{
 Extraction of Covariate Parts from Character Vector
 }
-\examples{
-h_get_covariate_parts(NULL)
-h_get_covariate_parts("VISIT:ARM")
-h_get_covariate_parts(c("VISIT:ARM", "COUNTRY"))
-}
 \keyword{internal}
