@@ -23,9 +23,6 @@ h_labels(vars, data)
 
 \item{data}{(\code{data.frame})\cr data to use.}
 }
-\value{
-list of variables with labels
-}
 \description{
 Adding Labels To Variables For Model
 }
@@ -37,7 +34,7 @@ Adding Labels To Variables For Model
 
 \item \code{h_check_and_get_label}: gets label for each element in vars.
 
-\item \code{h_labels}: returns list of variables with labels.
+\item \code{h_labels}: returns the list of variables with labels.
 }}
 
 \examples{

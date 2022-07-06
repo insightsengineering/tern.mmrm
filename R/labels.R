@@ -3,7 +3,6 @@
 #' @param vars (`list`)\cr variables to use.
 #' @param data (`data.frame`)\cr data to use.
 #' @param x (`character`)\cr an element in vars.
-#' @return list of variables with labels
 #'
 #' @name labels
 #' @keywords internal
@@ -31,7 +30,7 @@ h_check_and_get_label <- function(x, vars, data) {
   res
 }
 
-#' @describeIn labels returns list of variables with labels.
+#' @describeIn labels returns the list of variables with labels.
 #' @examples
 #' data <- data.frame(
 #'   MYID = c(1, 1, 2, 2, 3, 3),
