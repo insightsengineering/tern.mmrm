@@ -124,7 +124,7 @@ fit_mmrm <- function(vars = list(
                      parallel = FALSE) {
   assert_data(vars, data)
   labels <- h_labels(vars, data)
-  formula <- h_build_formula(vars, cor_struct)
+  formula <- build_formula(vars, cor_struct)
 
   fit <- mmrm::mmrm(
     formula = formula,

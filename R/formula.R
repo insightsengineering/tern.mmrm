@@ -1,10 +1,14 @@
 #' Building Model Formula
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This builds the model formula which is used inside [fit_mmrm()] and provided
+#' to [mmrm::mmrm()] internally. It can be instructive to look at the resulting
+#' formula directly sometimes.
 #'
 #' @param vars (`list`)\cr variables to use in the model.
 #' @param cor_struct (`string`)\cr specify the covariance structure to use.
-#' @return Formula to use in [h_mmrm_tmb()].
+#' @return Formula to use in [mmrm::mmrm()].
 #' @export
 #'
 #' @examples
@@ -12,16 +16,16 @@
 #'   response = "AVAL", covariates = c("RACE", "SEX"),
 #'   id = "USUBJID", arm = "ARMCD", visit = "AVISIT"
 #' )
-#' h_build_formula(vars, "auto-regressive")
-#' h_build_formula(vars)
-h_build_formula <- function(vars,
-                            cor_struct = c(
-                              "unstructured",
-                              "heterogeneous toeplitz",
-                              "auto-regressive",
-                              "heterogeneous auto-regressive",
-                              "heterogeneous ante-dependence"
-                            )) {
+#' build_formula(vars, "auto-regressive")
+#' build_formula(vars)
+build_formula <- function(vars,
+                          cor_struct = c(
+                            "unstructured",
+                            "heterogeneous toeplitz",
+                            "auto-regressive",
+                            "heterogeneous auto-regressive",
+                            "heterogeneous ante-dependence"
+                          )) {
   assert_list(vars)
   cor_struct <- match.arg(cor_struct)
   covariates_part <- paste(
