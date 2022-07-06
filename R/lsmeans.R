@@ -22,7 +22,7 @@ NULL
 h_get_emmeans_res <- function(fit, vars, weights) {
   assert_class(fit, "mmrm")
   data_complete <- stats::model.frame(fit)
-  h_assert_data_frame(data_complete)
+  assert_data_frame(data_complete)
   assert_list(vars)
 
   emmeans_object <- emmeans::emmeans(
@@ -154,7 +154,7 @@ h_get_single_visit_estimates <- function(emmeans_res,
 #' @param estimates (`data.frame`)\cr single visit least square mean estimates.
 h_get_relative_reduc_df <- function(estimates,
                                     vars) {
-  h_assert_data_frame(estimates)
+  assert_data_frame(estimates)
   assert_list(vars)
 
   ref_arm_level <- estimates[[vars$arm]][1L]

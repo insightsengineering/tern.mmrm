@@ -45,7 +45,7 @@ h_check_and_get_label <- function(x, vars, data) {
 h_labels <- function(vars,
                      data) {
   assert_list(vars)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
   labels <- list()
   labels$response <- h_check_and_get_label("response", vars, data)
   labels$id <- h_check_and_get_label("id", vars, data)

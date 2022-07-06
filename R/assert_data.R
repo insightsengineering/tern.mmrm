@@ -16,7 +16,7 @@ h_assert_one_rec_pt_visit <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
   assert_string(vars$id)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
 
   visit_id_combinations <- interaction(data[[vars$visit]], data[[vars$id]])
   grouped_data <- split(data, f = visit_id_combinations)
@@ -41,7 +41,7 @@ h_assert_one_rec_pt_visit <- function(vars, data) {
 h_assert_rsp_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$response)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
 
   response_values <- data[[vars$response]]
   assert_numeric(response_values)
@@ -51,7 +51,7 @@ h_assert_rsp_var <- function(vars, data) {
 h_assert_visit_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
 
   visit_values <- data[[vars$visit]]
   assert_factor(visit_values)
@@ -61,7 +61,7 @@ h_assert_visit_var <- function(vars, data) {
 h_assert_id_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$id)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
 
   id_values <- data[[vars$id]]
   assert_true(is.factor(id_values) || is.character(id_values))
@@ -73,7 +73,7 @@ h_assert_data <- function(vars, data) {
   assert_string(vars$arm, null.ok = TRUE)
   assert_string(vars$visit)
   assert_string(vars$response)
-  h_assert_data_frame(data)
+  assert_data_frame(data)
 
   # First subset data to observations with complete regressors.
   regressor_vars <- c(vars$arm, vars$visit, h_get_covariate_parts(vars$covariates))
@@ -97,6 +97,6 @@ h_assert_data <- function(vars, data) {
     )
     assert_true(all(table(data_complete[[vars$arm]]) > 5))
   } else {
-    h_assert_data_frame(data_complete, min.rows = 5L)
+    assert_data_frame(data_complete, min.rows = 5L)
   }
 }
