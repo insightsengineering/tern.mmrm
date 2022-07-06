@@ -7,8 +7,7 @@
 #' @return A list with the REML criterion, the AIC, AICc and BIC.
 #'
 #' @keywords internal
-#'
-get_diagnostics <- function(fit) {
+h_get_diagnostics <- function(fit) {
   assert_class(fit, "mmrm")
   assert_true(fit$reml)
 
@@ -145,7 +144,7 @@ fit_mmrm <- function(vars = list(
   results <- list(
     fit = fit,
     cov_estimate = mmrm::VarCorr(fit),
-    diagnostics = get_diagnostics(fit),
+    diagnostics = h_get_diagnostics(fit),
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,
