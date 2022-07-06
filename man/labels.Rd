@@ -27,7 +27,7 @@ h_labels(vars, data)
 list of variables with labels
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Adding Labels To Variables For Model
 }
 \section{Functions}{
 \itemize{
@@ -52,3 +52,4 @@ data <- data.frame(
 vars <- list(response = "AVAL", id = "MYID", arm = "ARM", visit = "AVISIT", covariates = c("SEX", "RACE"))
 h_labels(vars, data)
 }
+\keyword{internal}

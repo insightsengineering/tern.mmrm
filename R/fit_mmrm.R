@@ -123,7 +123,7 @@ fit_mmrm <- function(vars = list(
                      averages_emmeans = list(),
                      optimizer = "automatic",
                      parallel = FALSE) {
-  assert_data(vars, data)
+  h_assert_data(vars, data)
   labels <- h_labels(vars, data)
   formula <- build_formula(vars, cor_struct)
 

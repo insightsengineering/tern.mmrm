@@ -1,9 +1,4 @@
-#' @include utils.R
-NULL
-
 #' Assertions for Datasets
-#'
-#' @description `r lifecycle::badge("experimental")`
 #'
 #' We provide assertion functions to check the input dataset.
 #'
@@ -12,16 +7,16 @@ NULL
 #'
 #' @return Nothing, only fails with an error if assertion does not hold.
 #'
-#' @name assert_data
+#' @name h_assert_data
+#' @keywords internal
 NULL
 
-#' @describeIn assert_data asserts single record per patient and visit.
-#' @export
+#' @describeIn h_assert_data asserts single record per patient and visit.
 h_assert_one_rec_pt_visit <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
   assert_string(vars$id)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
 
   visit_id_combinations <- interaction(data[[vars$visit]], data[[vars$id]])
   grouped_data <- split(data, f = visit_id_combinations)
@@ -42,47 +37,43 @@ h_assert_one_rec_pt_visit <- function(vars, data) {
   }
 }
 
-#' @describeIn assert_data assert numeric response variable.
-#' @export
+#' @describeIn h_assert_data assert numeric response variable.
 h_assert_rsp_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$response)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
 
   response_values <- data[[vars$response]]
   assert_numeric(response_values)
 }
 
-#' @describeIn assert_data assert factor visit variable.
-#' @export
+#' @describeIn h_assert_data assert factor visit variable.
 h_assert_visit_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
 
   visit_values <- data[[vars$visit]]
   assert_factor(visit_values)
 }
 
-#' @describeIn assert_data assert subject ID variable.
-#' @export
+#' @describeIn h_assert_data assert subject ID variable.
 h_assert_id_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$id)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
 
   id_values <- data[[vars$id]]
   assert_true(is.factor(id_values) || is.character(id_values))
 }
 
-#' @describeIn assert_data high-level assertion function to check the dataset.
-#' @export
-assert_data <- function(vars, data) {
+#' @describeIn h_assert_data high-level assertion function to check the dataset.
+h_assert_data <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$arm, null.ok = TRUE)
   assert_string(vars$visit)
   assert_string(vars$response)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
 
   # First subset data to observations with complete regressors.
   regressor_vars <- c(vars$arm, vars$visit, h_get_covariate_parts(vars$covariates))
@@ -106,6 +97,6 @@ assert_data <- function(vars, data) {
     )
     assert_true(all(table(data_complete[[vars$arm]]) > 5))
   } else {
-    assert_data_frame(data_complete, min.rows = 5L)
+    h_assert_data_frame(data_complete, min.rows = 5L)
   }
 }

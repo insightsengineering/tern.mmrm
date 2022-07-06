@@ -1,29 +1,25 @@
 #' Adding Labels To Variables For Model
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' @param vars (`list`)\cr variables to use.
 #' @param data (`data.frame`)\cr data to use.
 #' @param x (`character`)\cr an element in vars.
 #' @return list of variables with labels
 #'
 #' @name labels
+#' @keywords internal
 NULL
 
 #' @describeIn labels checks if element in `vars` is not `NULL`.
-#' @export
 h_is_specified <- function(x, vars) {
   !is.null(vars[[x]])
 }
 
 #' @describeIn labels checks if element in vars is not NULL and exists in dataset.
-#' @export
 h_is_specified_and_in_data <- function(x, vars, data) {
   h_is_specified(x, vars) && all(vars[[x]] %in% names(data))
 }
 
 #' @describeIn labels gets label for each element in vars.
-#' @export
 h_check_and_get_label <- function(x, vars, data) {
   assert_true(h_is_specified_and_in_data(x, vars, data))
   res <- NULL
@@ -36,7 +32,6 @@ h_check_and_get_label <- function(x, vars, data) {
 }
 
 #' @describeIn labels returns list of variables with labels.
-#' @export
 #' @examples
 #' data <- data.frame(
 #'   MYID = c(1, 1, 2, 2, 3, 3),
@@ -51,7 +46,7 @@ h_check_and_get_label <- function(x, vars, data) {
 h_labels <- function(vars,
                      data) {
   assert_list(vars)
-  assert_data_frame(data)
+  h_assert_data_frame(data)
   labels <- list()
   labels$response <- h_check_and_get_label("response", vars, data)
   labels$id <- h_check_and_get_label("id", vars, data)
