@@ -20,12 +20,13 @@ Depends:
     tern (>= 0.7.8)
 Imports:
     checkmate,
-    emmeans (>= 1.4.5),
+    emmeans (>= 1.6),
     formatters (>= 0.3.1),
     generics,
     ggplot2,
+    lifecycle,
     magrittr,
-    mmrm,
+    mmrm (>= 0.0.0.9006),
     rlang,
     rtables (>= 0.5.1),
     stats
@@ -36,7 +37,7 @@ Suggests:
     maditr,
     Matrix,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.1)
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3

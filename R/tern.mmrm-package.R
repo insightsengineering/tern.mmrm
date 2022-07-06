@@ -8,6 +8,7 @@
 #' @import checkmate
 #' @import ggplot2
 #' @import rtables
+#' @importFrom lifecycle deprecated
 #' @importFrom magrittr %>%
 #' @importFrom mmrm df_1d
 #' @importFrom rlang .data :=
