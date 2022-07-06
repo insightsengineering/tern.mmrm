@@ -27,15 +27,4 @@ of the input matrix don't have any character string other than time point
 value. If a \code{string} is specified, this value should appear in the names
 of \code{vcov_matrix}.
 }
-\examples{
-vcov_matrix <- matrix(
-  c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
-  nrow = 4, ncol = 4,
-  dimnames = list(
-    c("VIS1", "VIS2", "VIS3", "VIS4"),
-    c("VIS1", "VIS2", "VIS3", "VIS4")
-  )
-)
-h_get_timepoint_vars(vcov_matrix, string = "VIS")
-}
 \keyword{internal}

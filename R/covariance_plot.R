@@ -16,17 +16,6 @@
 #'   of `vcov_matrix`.
 #'
 #' @keywords internal
-#'
-#' @examples
-#' vcov_matrix <- matrix(
-#'   c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
-#'   nrow = 4, ncol = 4,
-#'   dimnames = list(
-#'     c("VIS1", "VIS2", "VIS3", "VIS4"),
-#'     c("VIS1", "VIS2", "VIS3", "VIS4")
-#'   )
-#' )
-#' h_get_timepoint_vars(vcov_matrix, string = "VIS")
 h_get_timepoint_vars <- function(vcov_matrix,
                                  string = NULL) {
   assert_matrix(vcov_matrix)
