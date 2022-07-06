@@ -1,10 +1,11 @@
 #' Tabulation of `MMRM` Results
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' These functions can be used to produce tables from a fitted `MMRM` produced with
 #' [fit_mmrm()].
 #'
 #' @name tabulate_mmrm
-#'
 NULL
 
 #' @importFrom tern as.rtable
@@ -64,7 +65,6 @@ as.rtable.tern_mmrm <- function(x, # nolint
 #' @describeIn tabulate_mmrm Helper function to produce fixed effects table.
 #' @param format (`string`)\cr format for the numbers in the table.
 #' @export
-#'
 h_mmrm_fixed <- function(x, format = "xx.xxxx") {
   fixed_table <- as.data.frame(stats::coef(summary(x$fit)))
   pvalue_column <- match("Pr(>|t|)", names(fixed_table))
@@ -77,7 +77,6 @@ h_mmrm_fixed <- function(x, format = "xx.xxxx") {
 
 #' @describeIn tabulate_mmrm Helper function to produce a covariance matrix table.
 #' @export
-#'
 h_mmrm_cov <- function(x, format = "xx.xxxx") {
   cov_estimate <- x$cov_estimate
   as.rtable(as.data.frame(cov_estimate), format = format)
@@ -85,7 +84,6 @@ h_mmrm_cov <- function(x, format = "xx.xxxx") {
 
 #' @describeIn tabulate_mmrm Helper function to produce a diagnostic statistics table.
 #' @export
-#'
 h_mmrm_diagnostic <- function(x, format = "xx.xxxx") {
   sfun <- function(df, ...) {
     as.list(df[c("REML.criterion", "AIC", "AICc", "BIC")])
@@ -113,7 +111,8 @@ generics::tidy
 #' @examples
 #' df <- broom::tidy(result)
 #' df_no_arm <- broom::tidy(result_no_arm)
-tidy.tern_mmrm <- function(x, ...) { # nolint
+tidy.tern_mmrm <- function(x, ...) {
+  # nolint
   vars <- x$vars
   estimates <- x$lsmeans$estimates
   df <- if (is.null(vars$arm)) {
@@ -246,7 +245,11 @@ a_mmrm_lsmeans_single <- make_afun(
 #'   split_cols_by("ARMCD", ref_group = result$ref_level) %>%
 #'   add_colcounts() %>%
 #'   split_rows_by("AVISIT") %>%
-#'   summarize_lsmeans(show_relative = "increase") %>%
+#'   summarize_lsmeans(
+#'     .stats = c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci"),
+#'     .labels = c(adj_mean_se = "Adj. LS Mean (Std. Error)"),
+#'     .formats = c(adj_mean_se = sprintf_format("%.1f (%.2f)"))
+#'   ) %>%
 #'   build_table(
 #'     df = broom::tidy(result),
 #'     alt_counts_df = dat_adsl

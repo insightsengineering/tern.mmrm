@@ -20,87 +20,80 @@ fit_mmrm(
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
-\describe{
-\item{response}{the response variable}
-\item{covariates}{the additional covariate terms (might also include interactions)}
-\item{id}{the subject ID variable}
-\item{arm}{the treatment group variable (factor)}
-\item{visit}{the visit variable (factor)}
+\itemize{
+\item \code{response}: the response variable.
+\item \code{covariates}: the additional covariate terms (might also include interactions).
+\item \code{id}: the subject ID variable.
+\item \code{arm}: the treatment group variable (factor).
+\item \code{visit}: the visit variable (factor).
 }
-Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
 
-\item{data}{a \code{data.frame} with all the variables specified in
+Note that the main effects and interaction of \code{arm} and \code{visit} are by default
+included in the model.}
+
+\item{data}{(\code{data.frame})\cr with all the variables specified in
 \code{vars}. Records with missing values in any independent variables
 will be excluded.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{cor_struct}{a string specifying the correlation structure, defaults to
+\item{cor_struct}{(\code{string})\cr specifying the covariance structure, defaults to
 \code{"unstructured"}. See the details.}
 
-\item{weights_emmeans}{argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
+\item{weights_emmeans}{(\code{string})\cr argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, \code{"proportional"} by default.}
 
 \item{averages_emmeans}{(\code{list})\cr optional named list of visit levels which should be averaged
 and reported along side the single visits.}
 
-\item{optimizer}{a string specifying the optimization algorithm which should be used. By default, "automatic"
-will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
-is chosen and does not give a valid result, an error will occur.}
+\item{optimizer}{(\code{string})\cr specifying the optimization algorithm which should be used. By default,
+\code{"automatic"} will (if necessary) try all possible optimization algorithms and choose the best result.
+If another algorithm is chosen and does not give a valid result, an error will occur.}
 
-\item{parallel}{flag that controls whether "automatic" optimizer search can use available free cores on the
+\item{parallel}{(\code{flag})\cr controls whether \code{"automatic"} optimizer search can use available free cores on the
 machine (not default).}
 }
 \value{
 A \code{tern_mmrm} object which is a list with MMRM results:
-\describe{
-\item{fit}{The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
-contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
-\item{cov_estimate}{The matrix with the covariance matrix estimate.}
-\item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
-\item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
-\item{vars}{The variable list.}
-\item{labels}{Corresponding list with variable labels extracted from \code{data}.}
-\item{ref_level}{The reference level for the arm variable, which is always the first level.}
-\item{conf_level}{The confidence level which was used to construct the confidence intervals.}
+\itemize{
+\item \code{fit}: The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
+contains the finally used optimization algorithm, which can be useful for refitting the model
+later on.
+\item \code{cov_estimate}: The matrix with the covariance matrix estimate.
+\item \code{diagnostics}: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
+\item \code{lsmeans}: This is a list with data frames \code{estimates} and \code{contrasts}.
+\item \code{vars}: The variable list.
+\item \code{labels}: Corresponding list with variable labels extracted from \code{data}.
+\item \code{ref_level}: The reference level for the arm variable, which is always the first level.
+\item \code{conf_level}: The confidence level which was used to construct the \code{lsmeans} confidence intervals.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Does the \code{MMRM} analysis. Multiple other functions can be called on the result to produce
 tables and graphs.
 }
 \details{
-Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
-match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
+Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, and they numerically
+match the results obtained in SAS.
 
-For the correlation structure (\code{cor_struct}), the user can choose among the following options, sorted
-in descending number of variance parameters:
-\describe{
-\item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
+For the covariance structure (\code{cor_struct}), the user can choose among the following options.
+\itemize{
+\item \code{unstructured}: Unstructured covariance matrix. This is the most flexible choice and default.
 If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
-Note: the current actual implementation uses one more variance parameter, which does not have any
-effect of the results. Therefore we report here the actually relevant number of parameters.}
-\item{random-quadratic}{Random quadratic spline for the random effects of the time variable.
-7 variance parameters are used.}
-\item{random-slope}{Random slope for the random effects of the time variable. 4 variance parameters are used.}
-\item{compound-symmetry}{Constant correlation between visits. 2 variance parameters are used.}
+\item \code{toeplitz}: Heterogeneous Toeplitz covariance matrix,
+which uses \code{2 * T - 1} variance parameters.
+\item \code{ad}: Heterogeneous Ante-Dependence covariance matrix,
+which uses \code{2 * T - 1} variance parameters.
+\item \code{ar1h}: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+which uses \code{T + 1} variance parameters.
+\item \code{ar1}: Homogeneous Auto-Regressive (order 1) covariance matrix,
+which uses 2 variance parameters.
 }
 
-For the \code{optimizer}, the user can choose among the following alternatives to the recommended "automatic":
-\describe{
-\item{nloptwrap_neldermead}{\code{NLopt} version of the Nelder-Mead algorithm (via package \code{nloptr})}
-\item{nloptwrap_bobyqa}{\code{NLopt} version of the BOBYQA algorithm (via package \code{nloptr})}
-\item{bobyqa}{BOBYQA algorithm (via package \code{minqa})}
-\item{nlminbwrap}{nlminb algorithm (wrapper for \code{\link[stats]{nlminb})}}
-\item{neldermead}{\code{lme4} version of the Nelder-Mead algorithm with box constraints (via package \code{lme4})}
-\item{nmkbw}{Nelder-Mead algorithm (via package \code{dfoptim})}
-\item{optimx_lbfgsb}{L-BFGS-B algorithm (via package \code{optimx})}
-}
-}
-\note{
-The ordering of the input data sets can lead to slightly different numerical results or
-different convergence behavior. This is a known observation with the used package
-\code{lme4}. However, once convergence is achieved, the results are reliable up to
-numerical precision.
+For the \code{optimizer}, the user can choose among alternatives to the recommended \code{"automatic"},
+please see \code{\link[mmrm:refit_multiple_optimizers]{mmrm::refit_multiple_optimizers()}} for details. Usually it should not be necessary
+to use a specific optimizer and the \code{"automatic"} setting should be kept.
 }
 \examples{
 library(dplyr)

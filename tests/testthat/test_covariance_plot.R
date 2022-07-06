@@ -1,3 +1,20 @@
+test_that("h_get_timepoint_vars works in simple example", {
+  vcov_matrix <- matrix(
+    c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
+    nrow = 4, ncol = 4,
+    dimnames = list(
+      c("VIS1", "VIS2", "VIS3", "VIS4"),
+      c("VIS1", "VIS2", "VIS3", "VIS4")
+    )
+  )
+  result <- expect_silent(h_get_timepoint_vars(vcov_matrix, string = "VIS"))
+  expected <- list(
+    row_time = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
+    col_time = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
+  )
+  expect_identical(result, expected)
+})
+
 test_that("h_get_timepoint_vars works as expected with string specified", {
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")

@@ -1,10 +1,14 @@
 #' Building Model Formula
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This builds the model formula which is used inside [fit_mmrm()] and provided
+#' to [mmrm::mmrm()] internally. It can be instructive to look at the resulting
+#' formula directly sometimes.
 #'
 #' @param vars (`list`)\cr variables to use in the model.
 #' @param cor_struct (`string`)\cr specify the covariance structure to use.
-#' @return Formula to use in [h_mmrm_tmb()].
+#' @return Formula to use in [mmrm::mmrm()].
 #' @export
 #'
 #' @examples
@@ -12,16 +16,16 @@
 #'   response = "AVAL", covariates = c("RACE", "SEX"),
 #'   id = "USUBJID", arm = "ARMCD", visit = "AVISIT"
 #' )
-#' h_build_formula(vars, "compound-symmetry")
-#' h_build_formula(vars)
-h_build_formula <- function(vars,
-                            cor_struct = c(
-                              "unstructured",
-                              "toeplitz",
-                              "auto-regressive",
-                              "compound-symmetry",
-                              "ante-dependence"
-                            )) {
+#' build_formula(vars, "auto-regressive")
+#' build_formula(vars)
+build_formula <- function(vars,
+                          cor_struct = c(
+                            "unstructured",
+                            "heterogeneous toeplitz",
+                            "auto-regressive",
+                            "heterogeneous auto-regressive",
+                            "heterogeneous ante-dependence"
+                          )) {
   assert_list(vars)
   cor_struct <- match.arg(cor_struct)
   covariates_part <- paste(
@@ -39,10 +43,10 @@ h_build_formula <- function(vars,
   }
   random_effects_fun <- switch(cor_struct,
     "unstructured" = "us",
-    "toeplitz" = "toep",
+    "heterogeneous toeplitz" = "toep",
     "auto-regressive" = "ar1",
-    "compound-symmetry" = "cs",
-    "ante-dependence" = "ad"
+    "heterogeneous auto-regressive" = "ar1h",
+    "heterogeneous ante-dependence" = "ad"
   )
   random_effects_part <- paste0(
     random_effects_fun, "(", vars$visit, " | ", vars$id, ")"
