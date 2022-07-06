@@ -7,8 +7,7 @@
 #' @return A list with the REML criterion, the AIC, AICc and BIC.
 #'
 #' @keywords internal
-#'
-get_diagnostics <- function(fit) {
+h_get_diagnostics <- function(fit) {
   assert_class(fit, "mmrm")
   assert_true(fit$reml)
 
@@ -23,68 +22,70 @@ get_diagnostics <- function(fit) {
 
 #' `MMRM` Analysis
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Does the `MMRM` analysis. Multiple other functions can be called on the result to produce
 #' tables and graphs.
 #'
 #' @param vars (named `list` of `string` or `character`)\cr specifying the variables in the `MMRM`.
 #'   The following elements need to be included as character vectors and match corresponding columns
-#'   in \code{data}:
-#'   \describe{
-#'   \item{response}{the response variable}
-#'   \item{covariates}{the additional covariate terms (might also include interactions)}
-#'   \item{id}{the subject ID variable}
-#'   \item{arm}{the treatment group variable (factor)}
-#'   \item{visit}{the visit variable (factor)}
-#'   }
-#'   Note that the main effects and interaction of `arm` and `visit` are by default included in the model.
-#' @param data a \code{data.frame} with all the variables specified in
-#'   \code{vars}. Records with missing values in any independent variables
+#'   in `data`:
+#'
+#'   - `response`: the response variable.
+#'   - `covariates`: the additional covariate terms (might also include interactions).
+#'   - `id`: the subject ID variable.
+#'   - `arm`: the treatment group variable (factor).
+#'   - `visit`: the visit variable (factor).
+#'
+#'   Note that the main effects and interaction of `arm` and `visit` are by default
+#'   included in the model.
+#' @param data (`data.frame`)\cr with all the variables specified in
+#'   `vars`. Records with missing values in any independent variables
 #'   will be excluded.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
-#' @param cor_struct a string specifying the covariance structure, defaults to
-#'   \code{"unstructured"}. See the details.
+#' @param cor_struct (`string`)\cr specifying the covariance structure, defaults to
+#'   `"unstructured"`. See the details.
 #' @param averages_emmeans (`list`)\cr optional named list of visit levels which should be averaged
 #'   and reported along side the single visits.
-#' @param weights_emmeans argument from [emmeans::emmeans()], "proportional" by default.
-#' @param optimizer a string specifying the optimization algorithm which should be used. By default, "automatic"
-#'   will (if necessary) try all possible optimization algorithms and choose the best result. If another algorithm
-#'   is chosen and does not give a valid result, an error will occur.
-#' @param parallel flag that controls whether "automatic" optimizer search can use available free cores on the
+#' @param weights_emmeans (`string`)\cr argument from [emmeans::emmeans()], `"proportional"` by default.
+#' @param optimizer (`string`)\cr specifying the optimization algorithm which should be used. By default,
+#'   `"automatic"` will (if necessary) try all possible optimization algorithms and choose the best result.
+#'   If another algorithm is chosen and does not give a valid result, an error will occur.
+#' @param parallel (`flag`)\cr controls whether `"automatic"` optimizer search can use available free cores on the
 #'   machine (not default).
 #'
-#' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, because they
-#'   match the results obtained in SAS (confirmed for unstructured and compound symmetry correlation structures).
+#' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, and they numerically
+#'   match the results obtained in SAS.
 #'
-#'   For the covariance structure (\code{cor_struct}), the user can choose among the following options.
-#'   \describe{
-#'   \item{unstructured}{Unstructured covariance matrix. This is the most flexible choice and default.
-#'      If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.}
-#'   \item{toeplitz}{Heterogeneous Toeplitz covariance matrix,
-#'     which uses \code{2 * T - 1} variance parameters.}
-#'   \item{ad}{Heterogeneous Ante-Dependence covariance matrix,
-#'     which uses \code{2 * T - 1} variance parameters.}
-#'   \item{ar1h}{Heterogeneous Auto-Regressive (order 1) covariance matrix,
-#'     which uses \code{T + 1} variance parameters.}
-#'   \item{ar1}{Homogeneous Auto-Regressive (order 1) covariance matrix,
-#'     which uses 2 variance parameters.}
-#'   }
+#'   For the covariance structure (`cor_struct`), the user can choose among the following options.
 #'
-#'   For the \code{optimizer}, the user can choose among alternatives to the recommended "automatic",
-#'   please see `?mmrm::refit_multiple_optimizers` for details. Usually it should not be necessary
-#'   to use a specific optimizer and the "automatic" setting should be kept.
+#'   - `unstructured`: Unstructured covariance matrix. This is the most flexible choice and default.
+#'        If there are `T` visits, then `T * (T+1) / 2` variance parameters are used.
+#'   - `toeplitz`: Heterogeneous Toeplitz covariance matrix,
+#'        which uses `2 * T - 1` variance parameters.
+#'   - `ad`: Heterogeneous Ante-Dependence covariance matrix,
+#'        which uses `2 * T - 1` variance parameters.
+#'   - `ar1h`: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+#'        which uses `T + 1` variance parameters.
+#'   - `ar1`: Homogeneous Auto-Regressive (order 1) covariance matrix,
+#'        which uses 2 variance parameters.
 #'
-#' @return A \code{tern_mmrm} object which is a list with MMRM results:
-#' \describe{
-#'   \item{fit}{The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
-#'     contains the finally used optimization algorithm, which can be useful for refitting the model later on.}
-#'   \item{cov_estimate}{The matrix with the covariance matrix estimate.}
-#'   \item{diagnostics}{A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).}
-#'   \item{lsmeans}{This is a list with data frames \code{estimates} and \code{contrasts}.}
-#'   \item{vars}{The variable list.}
-#'   \item{labels}{Corresponding list with variable labels extracted from \code{data}.}
-#'   \item{ref_level}{The reference level for the arm variable, which is always the first level.}
-#'   \item{conf_level}{The confidence level which was used to construct the confidence intervals.}
-#' }
+#'   For the `optimizer`, the user can choose among alternatives to the recommended `"automatic"`,
+#'   please see [mmrm::refit_multiple_optimizers()] for details. Usually it should not be necessary
+#'   to use a specific optimizer and the `"automatic"` setting should be kept.
+#'
+#' @return A `tern_mmrm` object which is a list with MMRM results:
+#'
+#'   - `fit`: The `mmrm` object which was fitted to the data. Note that the attribute `optimizer`
+#'       contains the finally used optimization algorithm, which can be useful for refitting the model
+#'       later on.
+#'   - `cov_estimate`: The matrix with the covariance matrix estimate.
+#'   - `diagnostics`: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
+#'   - `lsmeans`: This is a list with data frames `estimates` and `contrasts`.
+#'   - `vars`: The variable list.
+#'   - `labels`: Corresponding list with variable labels extracted from `data`.
+#'   - `ref_level`: The reference level for the arm variable, which is always the first level.
+#'   - `conf_level`: The confidence level which was used to construct the `lsmeans` confidence intervals.
 #'
 #' @export
 #'
@@ -122,9 +123,9 @@ fit_mmrm <- function(vars = list(
                      averages_emmeans = list(),
                      optimizer = "automatic",
                      parallel = FALSE) {
-  assert_data(vars, data)
+  h_assert_data(vars, data)
   labels <- h_labels(vars, data)
-  formula <- h_build_formula(vars, cor_struct)
+  formula <- build_formula(vars, cor_struct)
 
   fit <- mmrm::mmrm(
     formula = formula,
@@ -145,7 +146,7 @@ fit_mmrm <- function(vars = list(
   results <- list(
     fit = fit,
     cov_estimate = mmrm::VarCorr(fit),
-    diagnostics = get_diagnostics(fit),
+    diagnostics = h_get_diagnostics(fit),
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,

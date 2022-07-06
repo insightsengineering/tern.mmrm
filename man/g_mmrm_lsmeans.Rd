@@ -31,9 +31,11 @@ Note "contrasts" option is not applicable to model summaries excluding an arm va
 LS means vs. control be displayed (not default)?}
 }
 \value{
-a \code{ggplot2} plot
+A \code{ggplot2} plot.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function summarizes adjusted \code{lsmeans} and standard error, as well as conducts
 comparisons between groups' adjusted \code{lsmeans}, where the first level of the group
 is the reference level.
@@ -42,13 +44,12 @@ is the reference level.
 If variable labels are available in the original data set, then these are used. Otherwise
 the variable names themselves are used for annotating the plot.
 
-Contrast plot is not going to be returned if treatment is not
-considered in the \code{tern_mmrm} object considered in the \code{object} argument,
-no matter if \code{select} argument contains \code{contrasts} value.
+The contrast plot is not going to be returned if treatment is not
+considered in the \code{tern_mmrm} object input,
+no matter if \code{select} argument contains the \code{contrasts} value.
 }
 \examples{
 library(dplyr)
-library(rtables)
 
 mmrm_results <- fit_mmrm(
   vars = list(

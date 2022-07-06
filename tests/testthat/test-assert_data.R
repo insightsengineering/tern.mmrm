@@ -95,19 +95,19 @@ test_that("h_assert_id_var works as expected", {
   expect_error(h_assert_visit_var(vars, data4))
 })
 
-# assert_data ----
+# h_assert_data ----
 
-test_that("assert_data passes as expected", {
+test_that("h_assert_data passes as expected", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP")
   data <- data.frame(
     MYID = as.character(c(1, 1, 2, 2, 3, 3)),
     AVISIT = factor(c(1, 2, 1, 2, 1, 2)),
     RSP = c(25.3245, 234.34, 5.1, 35.2, 24.24, 346.32)
   )
-  expect_silent(assert_data(vars, data))
+  expect_silent(h_assert_data(vars, data))
 })
 
-test_that("assert_data does not look at rows with incomplete regressors for checking duplicates", {
+test_that("h_assert_data does not look at rows with incomplete regressors for checking duplicates", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", covariates = "BLA")
   data <- data.frame(
     MYID = factor(c(1, 1, 2, 2, 3, 3)),
@@ -115,10 +115,10 @@ test_that("assert_data does not look at rows with incomplete regressors for chec
     BLA = c(1, 1, 1, 1, 1, NA), # But regressor is missing there.
     RSP = c(25.3245, 234.34, 5.1, 35.2, 24.24, 346.32)
   )
-  expect_silent(assert_data(vars, data))
+  expect_silent(h_assert_data(vars, data))
 })
 
-test_that("assert_data fails when less than 5 rows in complete data set without arm", {
+test_that("h_assert_data fails when less than 5 rows in complete data set without arm", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", covariates = "BLA")
   # Only 4 rows with complete data.
   data <- data.frame(
@@ -128,12 +128,12 @@ test_that("assert_data fails when less than 5 rows in complete data set without 
     RSP = c(25.3245, 234.34, 5.1, NA, 24.24, 346.32)
   )
   expect_error(
-    assert_data(vars, data),
+    h_assert_data(vars, data),
     "Must have at least 5 rows, but has 4 rows"
   )
 })
 
-test_that("assert_data fails when less than 5 rows in complete data set per arm", {
+test_that("h_assert_data fails when less than 5 rows in complete data set per arm", {
   vars <- list(visit = "AVISIT", id = "MYID", response = "RSP", arm = "TRT")
   # Only 4 rows with complete data for TRT 1.
   data <- data.frame(
@@ -142,10 +142,10 @@ test_that("assert_data fails when less than 5 rows in complete data set per arm"
     TRT = factor(c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2)),
     RSP = c(25.3245, 234.34, 5.1, NA, 24.24, 346.32, 1.2, 1.3, 1.4, 1.5)
   )
-  expect_error(assert_data(vars, data))
+  expect_error(h_assert_data(vars, data))
 })
 
-test_that("assert_data works with interaction terms in `covariates`", {
+test_that("h_assert_data works with interaction terms in `covariates`", {
   vars <- list(
     response = "FEV1",
     covariates = c("ARMCD*FEV1_BL", "SEX", "FEV1_BL:ARMCD"),
@@ -153,10 +153,10 @@ test_that("assert_data works with interaction terms in `covariates`", {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  expect_silent(assert_data(vars, mmrm_test_data))
+  expect_silent(h_assert_data(vars, mmrm_test_data))
 })
 
-test_that("assert_data works when there are missing values", {
+test_that("h_assert_data works when there are missing values", {
   set.seed(123)
   data <- mmrm_test_data %>%
     dplyr::mutate(
@@ -181,10 +181,10 @@ test_that("assert_data works when there are missing values", {
     arm = "ARMCD",
     visit = "AVISIT"
   )
-  expect_silent(assert_data(vars, data))
+  expect_silent(h_assert_data(vars, data))
 })
 
-test_that("assert_data fails if a variable is missing", {
+test_that("h_assert_data fails if a variable is missing", {
   full_vars <- list(
     response = "AVAL",
     id = "USUBJID",
@@ -194,11 +194,11 @@ test_that("assert_data fails if a variable is missing", {
   for (var in names(full_vars)) {
     incomplete_vars <- full_vars
     incomplete_vars[[var]] <- NULL
-    expect_error(assert_data(incomplete_vars, mmrm_test_data))
+    expect_error(h_assert_data(incomplete_vars, mmrm_test_data))
   }
 })
 
-test_that("assert_data fails if a variable is not included in `data`", {
+test_that("h_assert_data fails if a variable is not included in `data`", {
   vars <- list(
     response = "AVAL",
     id = "USUBJID",
@@ -210,6 +210,6 @@ test_that("assert_data fails if a variable is not included in `data`", {
     var_name <- vars[[var]]
     incomplete_data <- mmrm_test_data
     incomplete_data[[var_name]] <- NULL
-    expect_error(assert_data(vars, mmrm_test_data))
+    expect_error(h_assert_data(vars, mmrm_test_data))
   }
 })

@@ -31,14 +31,16 @@ h_average_visit_contrast_specs(specs, averages)
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
 in \code{data}:
-\describe{
-\item{response}{the response variable}
-\item{covariates}{the additional covariate terms (might also include interactions)}
-\item{id}{the subject ID variable}
-\item{arm}{the treatment group variable (factor)}
-\item{visit}{the visit variable (factor)}
+\itemize{
+\item \code{response}: the response variable.
+\item \code{covariates}: the additional covariate terms (might also include interactions).
+\item \code{id}: the subject ID variable.
+\item \code{arm}: the treatment group variable (factor).
+\item \code{visit}: the visit variable (factor).
 }
-Note that the main effects and interaction of \code{arm} and \code{visit} are by default included in the model.}
+
+Note that the main effects and interaction of \code{arm} and \code{visit} are by default
+included in the model.}
 
 \item{weights}{(\code{string})\cr argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}, "proportional" by default.}
 

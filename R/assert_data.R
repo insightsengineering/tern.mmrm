@@ -1,9 +1,4 @@
-#' @include utils.R
-NULL
-
 #' Assertions for Datasets
-#'
-#' @description `r lifecycle::badge("experimental")`
 #'
 #' We provide assertion functions to check the input dataset.
 #'
@@ -12,11 +7,11 @@ NULL
 #'
 #' @return Nothing, only fails with an error if assertion does not hold.
 #'
-#' @name assert_data
+#' @name h_assert_data
+#' @keywords internal
 NULL
 
-#' @describeIn assert_data asserts single record per patient and visit.
-#' @export
+#' @describeIn h_assert_data asserts single record per patient and visit.
 h_assert_one_rec_pt_visit <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
@@ -42,8 +37,7 @@ h_assert_one_rec_pt_visit <- function(vars, data) {
   }
 }
 
-#' @describeIn assert_data assert numeric response variable.
-#' @export
+#' @describeIn h_assert_data assert numeric response variable.
 h_assert_rsp_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$response)
@@ -53,8 +47,7 @@ h_assert_rsp_var <- function(vars, data) {
   assert_numeric(response_values)
 }
 
-#' @describeIn assert_data assert factor visit variable.
-#' @export
+#' @describeIn h_assert_data assert factor visit variable.
 h_assert_visit_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$visit)
@@ -64,8 +57,7 @@ h_assert_visit_var <- function(vars, data) {
   assert_factor(visit_values)
 }
 
-#' @describeIn assert_data assert subject ID variable.
-#' @export
+#' @describeIn h_assert_data assert subject ID variable.
 h_assert_id_var <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$id)
@@ -75,9 +67,8 @@ h_assert_id_var <- function(vars, data) {
   assert_true(is.factor(id_values) || is.character(id_values))
 }
 
-#' @describeIn assert_data high-level assertion function to check the dataset.
-#' @export
-assert_data <- function(vars, data) {
+#' @describeIn h_assert_data high-level assertion function to check the dataset.
+h_assert_data <- function(vars, data) {
   assert_list(vars)
   assert_string(vars$arm, null.ok = TRUE)
   assert_string(vars$visit)

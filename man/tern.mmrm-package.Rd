@@ -24,6 +24,7 @@ Authors:
 \itemize{
   \item Godwin Yung \email{yungg@gene.com}
   \item Francois Collin
+  \item Julia Dedic \email{julia.dedic@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Joe Zhu \email{joe.zhu@roche.com}
 }

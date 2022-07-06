@@ -14,32 +14,33 @@ g_mmrm_diagnostic(
 \item{object}{(\code{tern_mmrm})\cr model result produced by \code{\link[=fit_mmrm]{fit_mmrm()}}.}
 
 \item{type}{(\code{string})\cr specifying the type of diagnostic plot to be produced:
-\describe{
-\item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
-structure in the residuals that might be captured by adding additional covariates to the model.}
-\item{q-q-residual}{A Q-Q plot for the residuals (i.e. sorted standardized residuals vs. normal quantiles),
-grouped by visits. Observations with an absolute standardized residual above \code{z_threshold} will be
-labeled.}
+\itemize{
+\item \code{fit-residual}: A fitted vs residuals plot, grouped by visits.
+This allows to see if there is remaining
+structure in the residuals that might be captured by adding additional
+covariates to the model.
+\item \code{q-q-residual}: A Q-Q plot for the residuals (i.e. sorted standardized residuals
+vs. normal quantiles), grouped by visits. Observations with an absolute
+standardized residual above \code{z_threshold} will be labeled.
 }}
 
-\item{z_threshold}{(\code{numeric})\cr optional number indicating the normal quantile threshold for the Q-Q plot.}
+\item{z_threshold}{(\code{numeric})\cr optional number indicating the normal quantile threshold
+for the Q-Q plot.}
 }
 \value{
 A \code{ggplot2} plot.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function produces diagnostic plots.
 }
 \details{
-Here we use marginal fitted values and residuals. That is, only the fixed effects are used
-to estimate fitted values, and the difference of those fitted values vs. the observed data are
-the residuals. This is in line with the \code{MMRM} philosophy where random effects are only used to
-model the marginal residual distribution.
+Here we use marginal fitted values and residuals. That is, we estimate fitted values,
+and the difference of those fitted values vs. the observed data are
+the residuals.
 }
 \examples{
-\dontrun{
-library(dplyr)
-
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -54,7 +55,6 @@ mmrm_results <- fit_mmrm(
 )
 g_mmrm_diagnostic(mmrm_results)
 g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
-}
 }
 \seealso{
 \code{\link[=g_mmrm_lsmeans]{g_mmrm_lsmeans()}} for plotting the least-squares means and contrasts.

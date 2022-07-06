@@ -80,6 +80,8 @@ to avoid warnings from \code{rtables}.}
 diagnostic statistics tables.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 These functions can be used to produce tables from a fitted \code{MMRM} produced with
 \code{\link[=fit_mmrm]{fit_mmrm()}}.
 }
@@ -152,7 +154,11 @@ basic_table() \%>\%
   split_cols_by("ARMCD", ref_group = result$ref_level) \%>\%
   add_colcounts() \%>\%
   split_rows_by("AVISIT") \%>\%
-  summarize_lsmeans(show_relative = "increase") \%>\%
+  summarize_lsmeans(
+    .stats = c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci"),
+    .labels = c(adj_mean_se = "Adj. LS Mean (Std. Error)"),
+    .formats = c(adj_mean_se = sprintf_format("\%.1f (\%.2f)"))
+  ) \%>\%
   build_table(
     df = broom::tidy(result),
     alt_counts_df = dat_adsl

@@ -1,13 +1,13 @@
 library(dplyr)
 
-# get_diagnostics ----
+# h_get_diagnostics ----
 
-test_that("get_diagnostics works as expected", {
+test_that("h_get_diagnostics works as expected", {
   fit <- mmrm::mmrm(
     formula = FEV1 ~ us(AVISIT | USUBJID),
     data = mmrm_test_data
   )
-  result <- get_diagnostics(fit)
+  result <- h_get_diagnostics(fit)
 
   expected <- list(
     "REML criterion" = 3700.9,
