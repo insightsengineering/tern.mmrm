@@ -39,7 +39,6 @@ reference:
       - h_mmrm_cov
       - h_mmrm_diagnostic
       - h_mmrm_fixed
-      - h_get_timepoint_vars
 
   - title: Model Specific Functions
     desc: these functions help with fitting or extracting results from specific models

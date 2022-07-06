@@ -19,7 +19,7 @@ This function returns a list with of two sets of numbers:
 part of \code{vcov_matrix}.
 }
 \description{
-get the inputted symmetric matrices row and column labels as numeric time points
+Get the inputted symmetric matrices row and column labels as numeric time points.
 }
 \details{
 The default \code{string} value is \code{NULL}, which assumes that the names
@@ -38,3 +38,4 @@ vcov_matrix <- matrix(
 )
 h_get_timepoint_vars(vcov_matrix, string = "VIS")
 }
+\keyword{internal}

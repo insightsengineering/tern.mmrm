@@ -1,6 +1,6 @@
 #' Helpers for Covariance Plot
 #'
-#' @description get the inputted symmetric matrices row and column labels as numeric time points
+#' Get the inputted symmetric matrices row and column labels as numeric time points.
 #'
 #' @param vcov_matrix (`matrix`)\cr symmetric covariance matrix with identical
 #'   row and column names.
@@ -15,7 +15,7 @@
 #'   value. If a `string` is specified, this value should appear in the names
 #'   of `vcov_matrix`.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' vcov_matrix <- matrix(
