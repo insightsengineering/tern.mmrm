@@ -17,6 +17,8 @@ NULL
 
 #' Example dataset for `tern.mmrm` package.
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Measurements of FEV1 (forced expired volume in one second) is a measure of how quickly the lungs can be emptied.
 #' Low levels of FEV1 may indicate chronic obstructive pulmonary disease (COPD).
 #' @format A `tibble` with 800 rows and 7 variables:

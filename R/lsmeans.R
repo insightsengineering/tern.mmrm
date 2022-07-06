@@ -267,8 +267,7 @@ h_average_visit_contrast_specs <- function(specs,
 #' @param weights (`string`)\cr type of weights to be used for the least square means,
 #'   see [emmeans::emmeans()] for details.
 #'
-#' @keywords internal
-#'
+#' @export
 get_mmrm_lsmeans <- function(fit,
                              vars,
                              conf_level,

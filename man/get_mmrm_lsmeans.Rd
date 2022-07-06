@@ -36,4 +36,3 @@ and reported along side the single visits.}
 
 Extracts the least square means from an \code{MMRM} fit.
 }
-\keyword{internal}

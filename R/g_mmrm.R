@@ -1,13 +1,3 @@
-#' `MMRM` Plots
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This summarizes available plotting functions for `MMRM`.
-#'
-#' @seealso [g_mmrm_diagnostic], [g_mmrm_lsmeans]
-#' @name g_mmrm
-NULL
-
 #' Diagnostic Plots for `MMRM`
 #'
 #' @description `r lifecycle::badge("stable")`
