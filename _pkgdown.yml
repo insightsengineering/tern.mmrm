@@ -36,6 +36,7 @@ reference:
     desc: these functions are useful to help definining the analysis
     contents:
       - build_formula
+      - get_mmrm_lsmeans
       - h_mmrm_cov
       - h_mmrm_diagnostic
       - h_mmrm_fixed

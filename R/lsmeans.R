@@ -13,14 +13,12 @@
 #'
 #' @name lsmeans_helpers
 #' @keywords internal
-#'
 NULL
 
 #' @describeIn lsmeans_helpers returns a list with
 #'   `object` (`emmGrid` object containing `emmeans` results) and `grid`
 #'   (`data.frame` containing the potential arm and the visit variables
 #'   together with the sample size `n` for each combination).
-#' @export
 h_get_emmeans_res <- function(fit, vars, weights) {
   assert_class(fit, "mmrm")
   data_complete <- stats::model.frame(fit)
@@ -47,7 +45,6 @@ h_get_emmeans_res <- function(fit, vars, weights) {
 }
 
 #' @describeIn lsmeans_helpers constructs average of visits specifications.
-#' @export
 h_get_average_visit_specs <- function(emmeans_res,
                                       vars,
                                       averages) {
@@ -98,7 +95,6 @@ h_get_average_visit_specs <- function(emmeans_res,
 #' @describeIn lsmeans_helpers estimates least square means as a `data.frame`
 #'   given specifications.
 #' @param tests (`flag`)\cr whether to add test results to the estimates.
-#' @export
 h_get_spec_visit_estimates <- function(emmeans_res,
                                        specs,
                                        conf_level,
@@ -132,7 +128,6 @@ h_get_spec_visit_estimates <- function(emmeans_res,
 }
 
 #' @describeIn lsmeans_helpers estimates least square means for single visits.
-#' @export
 h_get_single_visit_estimates <- function(emmeans_res,
                                          conf_level) {
   assert_list(emmeans_res)
@@ -157,7 +152,6 @@ h_get_single_visit_estimates <- function(emmeans_res,
 #' @describeIn lsmeans_helpers constructs `data.frame` with
 #'   relative reduction vs. reference arm based on single visit estimates.
 #' @param estimates (`data.frame`)\cr single visit least square mean estimates.
-#' @export
 h_get_relative_reduc_df <- function(estimates,
                                     vars) {
   h_assert_data_frame(estimates)
@@ -180,7 +174,6 @@ h_get_relative_reduc_df <- function(estimates,
 }
 
 #' @describeIn lsmeans_helpers constructs single visit contrast specifications.
-#' @export
 h_single_visit_contrast_specs <- function(emmeans_res,
                                           vars) {
   assert_list(emmeans_res)
@@ -224,7 +217,6 @@ h_single_visit_contrast_specs <- function(emmeans_res,
 
 #' @describeIn lsmeans_helpers constructs average visits contrast specifications,
 #'   given the `specs` for single visit contrasts and the averages required.
-#' @export
 h_average_visit_contrast_specs <- function(specs,
                                            averages) {
   arm_visit_grid <- specs$grid
@@ -264,9 +256,11 @@ h_average_visit_contrast_specs <- function(specs,
 
 #' Extract Least Square Means from `MMRM`
 #'
-#' Helper function to extract the least square means from an `MMRM` fit.
+#' @description `r lifecycle::badge("stable")`
 #'
-#' @param fit result of [fit_mmrm()].
+#' Extracts the least square means from an `MMRM` fit.
+#'
+#' @param fit (`mmrm`)\cr result of [mmrm::mmrm()].
 #' @inheritParams fit_mmrm
 #' @param averages (`list`)\cr named list of visit levels which should be averaged
 #'   and reported along side the single visits.

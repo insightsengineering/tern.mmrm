@@ -4,6 +4,8 @@
 \alias{g_mmrm}
 \title{\code{MMRM} Plots}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This summarizes available plotting functions for \code{MMRM}.
 }
 \seealso{

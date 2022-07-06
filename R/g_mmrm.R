@@ -1,5 +1,7 @@
 #' `MMRM` Plots
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This summarizes available plotting functions for `MMRM`.
 #'
 #' @seealso [g_mmrm_diagnostic], [g_mmrm_lsmeans]
@@ -8,34 +10,35 @@ NULL
 
 #' Diagnostic Plots for `MMRM`
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function produces diagnostic plots.
 #'
 #' @param object (`tern_mmrm`)\cr model result produced by [fit_mmrm()].
 #' @param type (`string`)\cr specifying the type of diagnostic plot to be produced:
-#'   \describe{
-#'     \item{fit-residual}{A fitted vs residuals plot, grouped by visits. This allows to see if there is remaining
-#'       structure in the residuals that might be captured by adding additional covariates to the model.}
-#'     \item{q-q-residual}{A Q-Q plot for the residuals (i.e. sorted standardized residuals vs. normal quantiles),
-#'       grouped by visits. Observations with an absolute standardized residual above `z_threshold` will be
-#'       labeled.}
-#'   }
-#' @param z_threshold (`numeric`)\cr optional number indicating the normal quantile threshold for the Q-Q plot.
+#'
+#'   - `fit-residual`: A fitted vs residuals plot, grouped by visits.
+#'       This allows to see if there is remaining
+#'       structure in the residuals that might be captured by adding additional
+#'       covariates to the model.
+#'   - `q-q-residual`: A Q-Q plot for the residuals (i.e. sorted standardized residuals
+#'       vs. normal quantiles), grouped by visits. Observations with an absolute
+#'       standardized residual above `z_threshold` will be labeled.
+#'
+#' @param z_threshold (`numeric`)\cr optional number indicating the normal quantile threshold
+#'   for the Q-Q plot.
 #'
 #' @return A `ggplot2` plot.
 #'
-#' @details Here we use marginal fitted values and residuals. That is, only the fixed effects are used
-#'   to estimate fitted values, and the difference of those fitted values vs. the observed data are
-#'   the residuals. This is in line with the `MMRM` philosophy where random effects are only used to
-#'   model the marginal residual distribution.
+#' @details Here we use marginal fitted values and residuals. That is, we estimate fitted values,
+#'   and the difference of those fitted values vs. the observed data are
+#'   the residuals.
 #'
 #' @export
 #'
 #' @seealso [g_mmrm_lsmeans()] for plotting the least-squares means and contrasts.
 #'
 #' @examples
-#' \dontrun{
-#' library(dplyr)
-#'
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",
@@ -50,11 +53,10 @@ NULL
 #' )
 #' g_mmrm_diagnostic(mmrm_results)
 #' g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
-#' }
 g_mmrm_diagnostic <- function(object,
                               type = c("fit-residual", "q-q-residual"),
                               z_threshold = NULL) {
-  stopifnot(inherits(object, "tern_mmrm"))
+  assert_class(object, "tern_mmrm")
   type <- match.arg(type)
   stopifnot(is.null(z_threshold) || (is.numeric(z_threshold) && z_threshold > 0))
 
@@ -66,7 +68,8 @@ g_mmrm_diagnostic <- function(object,
 
   result <- if (type == "fit-residual") {
     amended_data_smooth <- suppressWarnings(tryCatch(
-      expr = { # nolint
+      expr = {
+        # nolint
         tern::get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
       },
       error = function(msg) {
@@ -151,6 +154,8 @@ g_mmrm_diagnostic <- function(object,
 
 #' Plot LS means for MMRM
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function summarizes adjusted `lsmeans` and standard error, as well as conducts
 #' comparisons between groups' adjusted `lsmeans`, where the first level of the group
 #' is the reference level.
@@ -162,21 +167,21 @@ g_mmrm_diagnostic <- function(object,
 #' @param ylab (`string`)\cr with the y axis label.
 #' @param width (`numeric`)\cr width of the error bars.
 #' @param show_pval (`flag`)\cr should the p-values for the differences of
-#' LS means vs. control be displayed (not default)?
+#'   LS means vs. control be displayed (not default)?
 #'
-#' @return a `ggplot2` plot
+#' @return A `ggplot2` plot.
 #'
 #' @details If variable labels are available in the original data set, then these are used. Otherwise
 #'   the variable names themselves are used for annotating the plot.
-#' @details Contrast plot is not going to be returned if treatment is not
-#'   considered in the `tern_mmrm` object considered in the `object` argument,
-#'   no matter if `select` argument contains `contrasts` value.
+#'
+#'   The contrast plot is not going to be returned if treatment is not
+#'   considered in the `tern_mmrm` object input,
+#'   no matter if `select` argument contains the `contrasts` value.
 #'
 #' @export
 #'
 #' @examples
 #' library(dplyr)
-#' library(rtables)
 #'
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
@@ -246,7 +251,7 @@ g_mmrm_lsmeans <-
            ylab = paste0("Estimates with ", round(object$conf_level * 100), "% CIs"),
            width = 0.6,
            show_pval = TRUE) {
-    stopifnot(inherits(object, "tern_mmrm"))
+    assert_class(object, "tern_mmrm")
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
       select <- "estimates"

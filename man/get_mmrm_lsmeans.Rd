@@ -7,7 +7,7 @@
 get_mmrm_lsmeans(fit, vars, conf_level, weights, averages = list())
 }
 \arguments{
-\item{fit}{result of \code{\link[=fit_mmrm]{fit_mmrm()}}.}
+\item{fit}{(\code{mmrm})\cr result of \code{\link[mmrm:mmrm]{mmrm::mmrm()}}.}
 
 \item{vars}{(named \code{list} of \code{string} or \code{character})\cr specifying the variables in the \code{MMRM}.
 The following elements need to be included as character vectors and match corresponding columns
@@ -32,6 +32,8 @@ see \code{\link[emmeans:emmeans]{emmeans::emmeans()}} for details.}
 and reported along side the single visits.}
 }
 \description{
-Helper function to extract the least square means from an \code{MMRM} fit.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Extracts the least square means from an \code{MMRM} fit.
 }
 \keyword{internal}
