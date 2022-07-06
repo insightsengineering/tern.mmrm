@@ -6,14 +6,14 @@
 \title{Example dataset for \code{tern.mmrm} package.}
 \format{
 A \code{tibble} with 800 rows and 7 variables:
-\describe{
-\item{\code{USUBJID}}{price, in US dollars}
-\item{\code{AVISIT}}{visit number}
-\item{\code{ARMCD}}{treatment, \code{TRT} or \code{PBO}}
-\item{\code{RACE}}{3-category race}
-\item{\code{SEX}}{sex}
-\item{\code{FEV1_BL}}{FEV1 at baseline (\%)}
-\item{\code{FEV1}}{FEV1 at study visits}
+\itemize{
+\item \code{USUBJID}: price, in US dollars.
+\item \code{AVISIT}: visit number.
+\item \code{ARMCD}: treatment, \code{TRT} or \code{PBO}.
+\item \code{RACE}: 3-category race.
+\item \code{SEX}: sex.
+\item \code{FEV1_BL}: FEV1 at baseline (\%).
+\item \code{FEV1}: FEV1 at study visits.
 }
 }
 \usage{

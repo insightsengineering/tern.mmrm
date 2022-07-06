@@ -1,11 +1,9 @@
 #' Extraction of Covariate Parts from Character Vector
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' @param covariates (`character`)\cr specification in the usual way, see examples.
 #'
 #' @return Character vector of the covariates involved in `covariates` specification.
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' h_get_covariate_parts(NULL)

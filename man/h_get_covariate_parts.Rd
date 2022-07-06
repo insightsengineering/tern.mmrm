@@ -13,10 +13,11 @@ h_get_covariate_parts(covariates)
 Character vector of the covariates involved in \code{covariates} specification.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Extraction of Covariate Parts from Character Vector
 }
 \examples{
 h_get_covariate_parts(NULL)
 h_get_covariate_parts("VISIT:ARM")
 h_get_covariate_parts(c("VISIT:ARM", "COUNTRY"))
 }
+\keyword{internal}

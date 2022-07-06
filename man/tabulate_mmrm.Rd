@@ -80,6 +80,8 @@ to avoid warnings from \code{rtables}.}
 diagnostic statistics tables.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 These functions can be used to produce tables from a fitted \code{MMRM} produced with
 \code{\link[=fit_mmrm]{fit_mmrm()}}.
 }
