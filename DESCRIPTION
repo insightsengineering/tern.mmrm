@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
-Version: 0.1.9.9012
+Version: 0.1.9.9013
 Date: 2022-06-09
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
@@ -41,6 +41,8 @@ Suggests:
     testthat (>= 3.1)
 VignetteBuilder:
     knitr
+Remotes:
+    insightsengineering/tern@*release
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
