@@ -42,7 +42,8 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    insightsengineering/tern@*release
+    insightsengineering/tern@*release,
+    openpharma/mmrm
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
