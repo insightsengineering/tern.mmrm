@@ -57,7 +57,7 @@ test_that("h_vectorization works as expected with string specified", {
   result <- h_vectorization(vcov_matrix, string = "VIS")
   expected <- data.frame(
     Vect = c(49, 12, 23),
-    time_point_distribution = c(0, 0, 0),
+    time_point_distribution = c(0, 1, 0),
     lag = c(0, 0, 0),
     rank_row = c(1, 1, 2),
     rank_col = c(1, 1, 2)
@@ -77,7 +77,7 @@ test_that("h_vectorization works as expected when string not specified", {
   result <- h_vectorization(vcov_matrix)
   expected <- data.frame(
     Vect = c(49, 12, 23),
-    time_point_distribution = c(0, 0, 0),
+    time_point_distribution = c(0, 1, 0),
     lag = c(0, 0, 0),
     rank_row = c(1, 1, 2),
     rank_col = c(1, 1, 2)
