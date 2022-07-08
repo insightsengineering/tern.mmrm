@@ -89,5 +89,4 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
   that the columns and rows of your input matrix are named as expected")
   }
   vect <- data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
-  return(vect)
 }
