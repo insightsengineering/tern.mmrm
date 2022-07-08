@@ -60,7 +60,7 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #' the names or are part of the matrix column/row names.
 #'
 #' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
-#' @return This function returns a data frame with the upper-diagonal elements or a covariance or correlation
+#' @return A data frame with the upper-diagonal elements or a covariance or correlation
 #' matrix. In the context of repeated measures, this matrix contains the association between pairs
 #' of measurements taken at different time points.
 #'
