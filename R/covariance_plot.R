@@ -54,6 +54,7 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
+
 #' @description This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
 #' and obtains the lag and time distance between pairs of observations if the time values are part of
 #' the names or are part of the matrix column/row names.
