@@ -1,4 +1,6 @@
-#' Helpers for Covariance Plot
+#' Time points helper for Covariance Plot
+#'
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Get the inputted symmetric matrices row and column labels as numeric time points.
 #'
@@ -55,6 +57,8 @@ h_get_timepoint_vars <- function(vcov_matrix,
   )
 }
 
+#' Vectorization helper for Covariance Plot
+#'
 #' @description This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
 #' and obtains the lag and time distance between pairs of observations if the time values are part of
 #' the names or are part of the matrix column/row names.
@@ -62,7 +66,9 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
 #' @return A data frame with the upper-diagonal elements or a covariance or correlation
 #' matrix. In the context of repeated measures, this matrix contains the association between pairs
-#' of measurements taken at different time points.
+#' of measurements taken at different time points. It contains the following columns: a column
+#' with the upper-diagonal elements of vcov_matrix, the difference between column time
+#' and row time, the lag and the row and column ranks.
 #'
 #' @examples
 #' vcov_matrix <- matrix(
@@ -80,7 +86,7 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
   diag <- upper.tri(vcov_matrix, diag = T)
   vect <- vcov_matrix[diag]
   timepoints <- h_get_timepoint_vars(vcov_matrix, string)
-  time_point_distribution <- timepoints$row_time - timepoints$row_time
+  time_point_distribution <- timepoints$col_time - timepoints$row_time
   rank_row <- as.numeric(as.factor(timepoints$row_time))
   rank_col <- as.numeric(as.factor(timepoints$row_time))
   lag <- rank_col - rank_row

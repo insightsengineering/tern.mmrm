@@ -2,7 +2,7 @@
 % Please edit documentation in R/covariance_plot.R
 \name{h_get_timepoint_vars}
 \alias{h_get_timepoint_vars}
-\title{Helpers for Covariance Plot}
+\title{Time points helper for Covariance Plot}
 \usage{
 h_get_timepoint_vars(vcov_matrix, string = NULL)
 }
@@ -19,6 +19,8 @@ This function returns a list with of two sets of numbers:
 part of \code{vcov_matrix}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Get the inputted symmetric matrices row and column labels as numeric time points.
 }
 \details{
