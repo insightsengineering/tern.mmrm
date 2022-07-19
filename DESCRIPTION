@@ -27,7 +27,7 @@ Imports:
     ggplot2,
     lifecycle,
     magrittr,
-    mmrm (>= 0.0.0.9006),
+    mmrm (>= 0.0.0.9011),
     rlang,
     rtables (>= 0.5.1),
     stats
@@ -49,7 +49,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Collate:
     'utils.R'
     'assert_data.R'

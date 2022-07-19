@@ -20,6 +20,8 @@ test_that("h_get_diagnostics works as expected", {
 
 # fit_mmrm ----
 
+## parallelization ----
+
 test_that("fit_mmrm works with parallelization", {
   expect_silent(result <- fit_mmrm(
     vars = list(
@@ -34,6 +36,8 @@ test_that("fit_mmrm works with parallelization", {
     parallel = TRUE
   ))
 })
+
+## character ID ----
 
 test_that("fit_mmrm works with character ID variable", {
   dat <- mmrm_test_data
@@ -69,7 +73,8 @@ get_version <- function(version = c("A", "B")) {
   set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
   mmrm_test_data %>%
     droplevels() %>%
-    { # nolint
+    {
+      # nolint
       if (version == "B") {
         dplyr::mutate(
           .,
@@ -92,6 +97,8 @@ get_version <- function(version = c("A", "B")) {
       }
     }
 }
+
+## unstructured numbers ----
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
   dat <- get_version(version = "A")
@@ -238,6 +245,8 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
     ignore_attr = TRUE
   )
 })
+
+## missing data ----
 
 test_that("fit_mmrm works also with missing data", {
   dat <- get_version(version = "B")
@@ -394,6 +403,32 @@ test_that("fit_mmrm works also with missing data", {
   )
 })
 
+## singular fit ----
+
+test_that("fit_mmrm works also with rank deficient model matrix", {
+  dat <- get_version(version = "A")
+  dat$SEX2 <- dat$SEX # nolint
+
+  # We get a message on the nesting structure but that is ok.
+  expect_message(mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("FEV1_BL", "SEX", "SEX2"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = dat,
+    cor_struct = "unstructured",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  ))
+
+  mmrm_results$fit
+})
+
+## different cov structures ----
+
 test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
   mmrm_results <- fit_mmrm(
     vars = list(
@@ -456,6 +491,40 @@ test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix",
     ),
     data = mmrm_test_data,
     cor_struct = "heterogeneous ante-dependence",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous compound symmetry",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with homogeneous compound symmetry covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "compound symmetry",
     weights_emmeans = "equal",
     optimizer = "automatic"
   )

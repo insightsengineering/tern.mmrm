@@ -6,6 +6,9 @@
   now available compared to before.
 * Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
+* Added option `accept_singular` to `fit_mmrm()` which allows to estimate
+  rank-deficient models (similar as `lm()` and `gls()` do) by omitting singular
+  coefficients.
 
 # tern.mmrm 0.1.1
 
