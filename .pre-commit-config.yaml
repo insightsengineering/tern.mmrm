@@ -16,19 +16,20 @@ repos:
         name: Regenerate package documentation
         additional_dependencies:
         - insightsengineering/nestcolor
-        -    insightsengineering/tern
-        -    checkmate
-        -    dplyr
-        -    emmeans
-        -    formatters
-        -    generics
-        -    ggplot2
-        -    magrittr
-        -    openpharma/mmrm
-        -    parallel
-        -    rlang
-        -    rtables
-        -    stats
+        - insightsengineering/tern
+        - checkmate
+        - dplyr
+        - emmeans
+        - formatters
+        - generics
+        - ggplot2
+        - magrittr
+        - openpharma/mmrm
+        - parallel
+        - rlang
+        - rtables
+        - stats
+        - vdiffr
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -73,19 +74,20 @@ repos:
           )$
         additional_dependencies:
         - insightsengineering/nestcolor
-        -    insightsengineering/tern
-        -    checkmate
-        -    dplyr
-        -    emmeans
-        -    formatters
-        -    generics
-        -    ggplot2
-        -    magrittr
-        -    openpharma/mmrm
-        -    parallel
-        -    rlang
-        -    rtables
-        -    stats
+        - insightsengineering/tern
+        - checkmate
+        - dplyr
+        - emmeans
+        - formatters
+        - generics
+        - ggplot2
+        - magrittr
+        - openpharma/mmrm
+        - parallel
+        - rlang
+        - rtables
+        - stats
+        - vdiffr
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >

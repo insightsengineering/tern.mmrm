@@ -63,25 +63,25 @@ Helpers for Processing Least Square Means
 }
 \section{Functions}{
 \itemize{
-\item \code{h_get_emmeans_res()}: returns a list with
+\item \code{h_get_emmeans_res}: returns a list with
 \code{object} (\code{emmGrid} object containing \code{emmeans} results) and \code{grid}
 (\code{data.frame} containing the potential arm and the visit variables
 together with the sample size \code{n} for each combination).
 
-\item \code{h_get_average_visit_specs()}: constructs average of visits specifications.
+\item \code{h_get_average_visit_specs}: constructs average of visits specifications.
 
-\item \code{h_get_spec_visit_estimates()}: estimates least square means as a \code{data.frame}
+\item \code{h_get_spec_visit_estimates}: estimates least square means as a \code{data.frame}
 given specifications.
 
-\item \code{h_get_single_visit_estimates()}: estimates least square means for single visits.
+\item \code{h_get_single_visit_estimates}: estimates least square means for single visits.
 
-\item \code{h_get_relative_reduc_df()}: constructs \code{data.frame} with
+\item \code{h_get_relative_reduc_df}: constructs \code{data.frame} with
 relative reduction vs. reference arm based on single visit estimates.
 
-\item \code{h_single_visit_contrast_specs()}: constructs single visit contrast specifications.
+\item \code{h_single_visit_contrast_specs}: constructs single visit contrast specifications.
 
-\item \code{h_average_visit_contrast_specs()}: constructs average visits contrast specifications,
+\item \code{h_average_visit_contrast_specs}: constructs average visits contrast specifications,
 given the \code{specs} for single visit contrasts and the averages required.
-
 }}
+
 \keyword{internal}
