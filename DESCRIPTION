@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
-Version: 0.1.9.9014
+Version: 0.1.9.9015
 Date: 2022-06-09
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
@@ -38,7 +38,8 @@ Suggests:
     maditr,
     Matrix,
     rmarkdown,
-    testthat (>= 3.1)
+    testthat (>= 3.1),
+    vdiffr
 VignetteBuilder:
     knitr
 Remotes:

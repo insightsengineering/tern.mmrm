@@ -1,4 +1,4 @@
-# tern.mmrm 0.1.9.9014
+# tern.mmrm 0.1.9.9015
 
 * Complete refactoring of the computations, which now use the new `mmrm`
   package instead of `lme4` and `lmerTest`. This increases convergence
@@ -9,6 +9,9 @@
 * Added option `accept_singular` to `fit_mmrm()` which allows to estimate
   rank-deficient models (similar as `lm()` and `gls()` do) by omitting singular
   coefficients.
+* Added options `show_lines`, `xlab` and `constant_baseline` to `g_mmrm_lsmeans()`
+  which offer addition of lines connecting the estimates, x axis label configuration
+  and optional constant baseline estimates for the LS means plots.
 
 # tern.mmrm 0.1.1
 
