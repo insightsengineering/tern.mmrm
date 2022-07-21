@@ -10,9 +10,12 @@ g_mmrm_lsmeans(
   titles = c(estimates = paste("Adjusted mean of", object$labels$response,
     "by treatment at visits"), contrasts = paste0("Differences of ",
     object$labels$response, " adjusted means vs. control ('", object$ref_level, "')")),
+  xlab = object$labels$visit,
   ylab = paste0("Estimates with ", round(object$conf_level * 100), "\% CIs"),
   width = 0.6,
-  show_pval = TRUE
+  show_pval = TRUE,
+  show_lines = FALSE,
+  constant_baseline = NULL
 )
 }
 \arguments{
@@ -23,12 +26,21 @@ Note "contrasts" option is not applicable to model summaries excluding an arm va
 
 \item{titles}{(\code{character})\cr with elements \code{estimates} and \code{contrasts} containing the plot titles.}
 
-\item{ylab}{(\code{string})\cr with the y axis label.}
+\item{xlab}{(\code{string})\cr the x axis label.}
+
+\item{ylab}{(\code{string})\cr the y axis label.}
 
 \item{width}{(\code{numeric})\cr width of the error bars.}
 
 \item{show_pval}{(\code{flag})\cr should the p-values for the differences of
 LS means vs. control be displayed (not default)?}
+
+\item{show_lines}{(\code{flag})\cr should the visit estimates be connected by lines (not default)?}
+
+\item{constant_baseline}{(named \code{number} or \code{NULL})\cr optional constant baseline for the
+LS mean estimates. If specified then needs to be a named \code{number}, and the name will be used to
+label the corresponding baseline visit. The differences of LS means will always be 0 at this
+baseline visit.}
 }
 \value{
 A \code{ggplot2} plot.
@@ -63,13 +75,19 @@ mmrm_results <- fit_mmrm(
   cor_struct = "unstructured",
   weights_emmeans = "equal"
 )
-g_mmrm_lsmeans(mmrm_results)
-g_mmrm_lsmeans(mmrm_results, select = "estimates")
+g_mmrm_lsmeans(mmrm_results, constant_baseline = c(BSL = 0))
+g_mmrm_lsmeans(
+  mmrm_results,
+  select = "estimates",
+  show_lines = TRUE,
+  xlab = "Visit"
+)
 g_mmrm_lsmeans(
   mmrm_results,
   select = "contrasts",
   titles = c(contrasts = "Contrasts of FKSI-FWB means"),
   show_pval = TRUE,
+  show_lines = TRUE,
   width = 0.8
 )
 
@@ -105,6 +123,7 @@ g_mmrm_lsmeans(
   select = c("estimates"),
   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
   show_pval = TRUE,
-  width = 0.8
+  width = 0.8,
+  show_lines = TRUE
 )
 }

@@ -1,6 +1,7 @@
 pkg_name <- "tern.mmrm"
 if (requireNamespace("testthat", quietly = TRUE)) {
   library(testthat)
+  library(vdiffr)
   is_on_ci <- isTRUE(as.logical(Sys.getenv("CI")))
   if (is_on_ci) {
     reporter <- MultiReporter$new(list(

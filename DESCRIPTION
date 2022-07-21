@@ -38,7 +38,8 @@ Suggests:
     maditr,
     Matrix,
     rmarkdown,
-    testthat (>= 3.1)
+    testthat (>= 3.1),
+    vdiffr
 VignetteBuilder:
     knitr
 Remotes:
