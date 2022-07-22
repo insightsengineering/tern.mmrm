@@ -71,10 +71,10 @@ test_that("fit_mmrm works with character ID variable", {
 get_version <- function(version = c("A", "B")) {
   version <- match.arg(version)
   set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
+  # nolint start
   mmrm_test_data %>%
     droplevels() %>%
     {
-      # nolint
       if (version == "B") {
         dplyr::mutate(
           .,
@@ -96,6 +96,7 @@ get_version <- function(version = c("A", "B")) {
         .
       }
     }
+  # nolint end
 }
 
 ## unstructured numbers ----
