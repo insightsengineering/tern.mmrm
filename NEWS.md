@@ -6,6 +6,9 @@
   now available compared to before.
 * Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
+* Added option `accept_singular` to `fit_mmrm()` which allows to estimate
+  rank-deficient models (similar as `lm()` and `gls()` do) by omitting singular
+  coefficients.
 * Added options `show_lines`, `xlab` and `constant_baseline` to `g_mmrm_lsmeans()`
   which offer addition of lines connecting the estimates, x axis label configuration
   and optional constant baseline estimates for the LS means plots.

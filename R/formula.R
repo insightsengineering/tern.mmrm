@@ -24,7 +24,9 @@ build_formula <- function(vars,
                             "heterogeneous toeplitz",
                             "auto-regressive",
                             "heterogeneous auto-regressive",
-                            "heterogeneous ante-dependence"
+                            "heterogeneous ante-dependence",
+                            "compound symmetry",
+                            "heterogeneous compound symmetry"
                           )) {
   assert_list(vars)
   cor_struct <- match.arg(cor_struct)
@@ -46,7 +48,9 @@ build_formula <- function(vars,
     "heterogeneous toeplitz" = "toep",
     "auto-regressive" = "ar1",
     "heterogeneous auto-regressive" = "ar1h",
-    "heterogeneous ante-dependence" = "ad"
+    "heterogeneous ante-dependence" = "ad",
+    "compound symmetry" = "cs",
+    "heterogeneous compound symmetry" = "csh"
   )
   random_effects_part <- paste0(
     random_effects_fun, "(", vars$visit, " | ", vars$id, ")"
