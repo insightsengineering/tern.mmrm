@@ -53,6 +53,8 @@ h_get_diagnostics <- function(fit) {
 #'   If another algorithm is chosen and does not give a valid result, an error will occur.
 #' @param parallel (`flag`)\cr controls whether `"automatic"` optimizer search can use available free cores on the
 #'   machine (not default).
+#' @param accept_singular (`flag`)\cr whether singular design matrices are reduced
+#'   to full rank automatically and additional coefficient estimates will be missing.
 #'
 #' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, and they numerically
 #'   match the results obtained in SAS.
@@ -61,14 +63,18 @@ h_get_diagnostics <- function(fit) {
 #'
 #'   - `unstructured`: Unstructured covariance matrix. This is the most flexible choice and default.
 #'        If there are `T` visits, then `T * (T+1) / 2` variance parameters are used.
-#'   - `toeplitz`: Heterogeneous Toeplitz covariance matrix,
+#'   - `heterogeneous toeplitz`: Heterogeneous Toeplitz covariance matrix,
 #'        which uses `2 * T - 1` variance parameters.
-#'   - `ad`: Heterogeneous Ante-Dependence covariance matrix,
+#'   - `heterogeneous ante-dependence`: Heterogeneous Ante-Dependence covariance matrix,
 #'        which uses `2 * T - 1` variance parameters.
-#'   - `ar1h`: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+#'   - `heterogeneous auto-regressive`: Heterogeneous Auto-Regressive (order 1) covariance matrix,
 #'        which uses `T + 1` variance parameters.
-#'   - `ar1`: Homogeneous Auto-Regressive (order 1) covariance matrix,
+#'   - `auto-regressive`: Homogeneous Auto-Regressive (order 1) covariance matrix,
 #'        which uses 2 variance parameters.
+#'   - `heterogeneous compound symmetry`: Heterogeneous Compound Symmetry covariance matrix, which uses
+#'        `T + 1` variance parameters.
+#'   - `compound symmetry`: Homogeneous Compound Symmetry covariance matrix, which uses 2
+#'        variance parameters.
 #'
 #'   For the `optimizer`, the user can choose among alternatives to the recommended `"automatic"`,
 #'   please see [mmrm::refit_multiple_optimizers()] for details. Usually it should not be necessary
@@ -122,7 +128,8 @@ fit_mmrm <- function(vars = list(
                      weights_emmeans = "proportional",
                      averages_emmeans = list(),
                      optimizer = "automatic",
-                     parallel = FALSE) {
+                     parallel = FALSE,
+                     accept_singular = TRUE) {
   h_assert_data(vars, data)
   labels <- h_labels(vars, data)
   formula <- build_formula(vars, cor_struct)
@@ -132,7 +139,8 @@ fit_mmrm <- function(vars = list(
     data = data,
     reml = TRUE,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, mmrm::h_free_cores(), 1L)
+    n_cores = ifelse(parallel, mmrm::h_free_cores(), 1L),
+    accept_singular = accept_singular
   )
 
   lsmeans <- get_mmrm_lsmeans(

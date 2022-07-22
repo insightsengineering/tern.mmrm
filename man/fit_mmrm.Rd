@@ -13,7 +13,8 @@ fit_mmrm(
   weights_emmeans = "proportional",
   averages_emmeans = list(),
   optimizer = "automatic",
-  parallel = FALSE
+  parallel = FALSE,
+  accept_singular = TRUE
 )
 }
 \arguments{
@@ -51,6 +52,9 @@ If another algorithm is chosen and does not give a valid result, an error will o
 
 \item{parallel}{(\code{flag})\cr controls whether \code{"automatic"} optimizer search can use available free cores on the
 machine (not default).}
+
+\item{accept_singular}{(\code{flag})\cr whether singular design matrices are reduced
+to full rank automatically and additional coefficient estimates will be missing.}
 }
 \value{
 A \code{tern_mmrm} object which is a list with MMRM results:
@@ -81,14 +85,18 @@ For the covariance structure (\code{cor_struct}), the user can choose among the 
 \itemize{
 \item \code{unstructured}: Unstructured covariance matrix. This is the most flexible choice and default.
 If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
-\item \code{toeplitz}: Heterogeneous Toeplitz covariance matrix,
+\item \verb{heterogeneous toeplitz}: Heterogeneous Toeplitz covariance matrix,
 which uses \code{2 * T - 1} variance parameters.
-\item \code{ad}: Heterogeneous Ante-Dependence covariance matrix,
+\item \verb{heterogeneous ante-dependence}: Heterogeneous Ante-Dependence covariance matrix,
 which uses \code{2 * T - 1} variance parameters.
-\item \code{ar1h}: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+\item \verb{heterogeneous auto-regressive}: Heterogeneous Auto-Regressive (order 1) covariance matrix,
 which uses \code{T + 1} variance parameters.
-\item \code{ar1}: Homogeneous Auto-Regressive (order 1) covariance matrix,
+\item \code{auto-regressive}: Homogeneous Auto-Regressive (order 1) covariance matrix,
 which uses 2 variance parameters.
+\item \verb{heterogeneous compound symmetry}: Heterogeneous Compound Symmetry covariance matrix, which uses
+\code{T + 1} variance parameters.
+\item \verb{compound symmetry}: Homogeneous Compound Symmetry covariance matrix, which uses 2
+variance parameters.
 }
 
 For the \code{optimizer}, the user can choose among alternatives to the recommended \code{"automatic"},
