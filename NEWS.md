@@ -1,4 +1,4 @@
-# tern.mmrm 0.1.9.9014
+# tern.mmrm 0.1.9.9015
 
 * Complete refactoring of the computations, which now use the new `mmrm`
   package instead of `lme4` and `lmerTest`. This increases convergence
@@ -6,6 +6,9 @@
   now available compared to before.
 * Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
+* Added options `show_lines`, `xlab` and `constant_baseline` to `g_mmrm_lsmeans()`
+  which offer addition of lines connecting the estimates, x axis label configuration
+  and optional constant baseline estimates for the LS means plots.
 
 # tern.mmrm 0.1.1
 

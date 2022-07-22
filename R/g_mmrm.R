@@ -154,10 +154,16 @@ g_mmrm_diagnostic <- function(object,
 #' @param select (`character`)\cr to select one or both of "estimates" and "contrasts" plots.
 #' Note "contrasts" option is not applicable to model summaries excluding an arm variable.
 #' @param titles (`character`)\cr with elements `estimates` and `contrasts` containing the plot titles.
-#' @param ylab (`string`)\cr with the y axis label.
+#' @param xlab (`string`)\cr the x axis label.
+#' @param ylab (`string`)\cr the y axis label.
 #' @param width (`numeric`)\cr width of the error bars.
 #' @param show_pval (`flag`)\cr should the p-values for the differences of
 #'   LS means vs. control be displayed (not default)?
+#' @param show_lines (`flag`)\cr should the visit estimates be connected by lines (not default)?
+#' @param constant_baseline (named `number` or `NULL`)\cr optional constant baseline for the
+#'   LS mean estimates. If specified then needs to be a named `number`, and the name will be used to
+#'   label the corresponding baseline visit. The differences of LS means will always be 0 at this
+#'   baseline visit.
 #'
 #' @return A `ggplot2` plot.
 #'
@@ -185,13 +191,19 @@ g_mmrm_diagnostic <- function(object,
 #'   cor_struct = "unstructured",
 #'   weights_emmeans = "equal"
 #' )
-#' g_mmrm_lsmeans(mmrm_results)
-#' g_mmrm_lsmeans(mmrm_results, select = "estimates")
+#' g_mmrm_lsmeans(mmrm_results, constant_baseline = c(BSL = 0))
+#' g_mmrm_lsmeans(
+#'   mmrm_results,
+#'   select = "estimates",
+#'   show_lines = TRUE,
+#'   xlab = "Visit"
+#' )
 #' g_mmrm_lsmeans(
 #'   mmrm_results,
 #'   select = "contrasts",
 #'   titles = c(contrasts = "Contrasts of FKSI-FWB means"),
 #'   show_pval = TRUE,
+#'   show_lines = TRUE,
 #'   width = 0.8
 #' )
 #'
@@ -227,7 +239,8 @@ g_mmrm_diagnostic <- function(object,
 #'   select = c("estimates"),
 #'   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
 #'   show_pval = TRUE,
-#'   width = 0.8
+#'   width = 0.8,
+#'   show_lines = TRUE
 #' )
 g_mmrm_lsmeans <-
   function(object,
@@ -238,9 +251,12 @@ g_mmrm_lsmeans <-
                "Differences of ", object$labels$response, " adjusted means vs. control ('", object$ref_level, "')"
              )
            ),
+           xlab = object$labels$visit,
            ylab = paste0("Estimates with ", round(object$conf_level * 100), "% CIs"),
            width = 0.6,
-           show_pval = TRUE) {
+           show_pval = TRUE,
+           show_lines = FALSE,
+           constant_baseline = NULL) {
     assert_class(object, "tern_mmrm")
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
@@ -253,13 +269,18 @@ g_mmrm_lsmeans <-
     } else {
       arms <- TRUE
     }
-    stopifnot(is.character(titles), all(select %in% names(titles)))
-    stopifnot(is.character(ylab), identical(length(ylab), 1L))
-    stopifnot(is.numeric(width), identical(length(width), 1L))
-    stopifnot(is.logical(show_pval), identical(length(show_pval), 1L))
+    assert_character(titles)
+    assert_subset(select, names(titles))
+    assert_string(xlab)
+    assert_string(ylab)
+    assert_number(width)
+    assert_flag(show_pval)
     if (isFALSE(arms)) {
       stopifnot(sum(duplicated(object$lsmeans$estimates$AVISIT)) == 0L)
     }
+    assert_flag(show_lines)
+    assert_number(constant_baseline, null.ok = TRUE)
+    incl_const_baseline <- !is.null(constant_baseline)
 
     # Get relevant subsets of the estimates and contrasts data frames.
     v <- object$vars
@@ -269,6 +290,54 @@ g_mmrm_lsmeans <-
       contrasts[[v$arm]] <- factor(contrasts[[v$arm]], levels = levels(estimates[[v$arm]]))
     } else {
       estimates <- object$lsmeans$estimates[, c(v$visit, "estimate", "lower_cl", "upper_cl")]
+    }
+
+    # Optionally add constant baseline estimates and 0 contrasts.
+    if (incl_const_baseline) {
+      baseline_visit <- names(constant_baseline)
+      assert_string(baseline_visit, min.chars = 1L)
+      assert_false(baseline_visit %in% levels(estimates[[v$visit]]))
+      new_visit_levels <- c(baseline_visit, levels(estimates[[v$visit]]))
+
+      baseline_est_row <- data.frame(
+        visit = baseline_visit,
+        estimate = constant_baseline,
+        lower_cl = constant_baseline,
+        upper_cl = constant_baseline,
+        row.names = NULL
+      )
+      names(baseline_est_row)[1] <- v$visit
+
+      if (arms) {
+        baseline_cont_row <- data.frame(
+          visit = baseline_visit,
+          estimate = 0,
+          lower_cl = 0,
+          upper_cl = 0,
+          p_value = 1,
+          row.names = NULL
+        )
+        names(baseline_cont_row)[1] <- v$visit
+
+        arm_lvls <- levels(estimates[[v$arm]])
+        arm_levels_factor <- factor(arm_lvls, levels = arm_lvls)
+        baseline_estimates <- cbind(
+          arm_levels_factor,
+          baseline_est_row[rep(1L, length(arm_levels_factor)), ]
+        )
+        baseline_contrasts <- cbind(
+          arm_levels_factor[-1L], # without the reference.
+          baseline_cont_row[rep(1L, length(arm_levels_factor) - 1), ]
+        )
+        names(baseline_estimates)[1] <- names(baseline_contrasts)[1] <- v$arm
+
+        contrasts <- rbind(baseline_contrasts, contrasts)
+        contrasts[[v$visit]] <- factor(contrasts[[v$visit]], levels = new_visit_levels)
+      } else {
+        baseline_estimates <- baseline_est_row
+      }
+      estimates <- rbind(baseline_estimates, estimates)
+      estimates[[v$visit]] <- factor(estimates[[v$visit]], levels = new_visit_levels)
     }
     estimates$p_value <- NA
 
@@ -304,13 +373,17 @@ g_mmrm_lsmeans <-
         drop = FALSE # To ensure same colors for only contrasts plot.
       ) +
       ggplot2::ylab(ylab) +
-      ggplot2::xlab(object$labels$visit) +
+      ggplot2::xlab(xlab) +
       ggplot2::facet_wrap(
         ~type,
         nrow = length(select),
         scales = "free_y", # Since estimates and contrasts need to have different y scales.
         labeller = ggplot2::as_labeller(titles)
       )
+    if (show_lines) {
+      result <- result +
+        ggplot2::geom_line(position = pd)
+    }
     if ("contrasts" %in% select) {
       result <- result +
         ggplot2::geom_hline(
