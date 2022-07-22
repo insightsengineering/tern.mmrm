@@ -80,6 +80,7 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #'   )
 #' )
 #' h_vectorization(vcov_matrix, string = "VIS")
+#' @keywords internal
 h_vectorization <- function(vcov_matrix, string = NULL) {
   assert_matrix(vcov_matrix)
   assert_true(isSymmetric(vcov_matrix))

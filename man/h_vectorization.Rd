@@ -32,3 +32,4 @@ vcov_matrix <- matrix(
 )
 h_vectorization(vcov_matrix, string = "VIS")
 }
+\keyword{internal}
