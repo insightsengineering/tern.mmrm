@@ -1,4 +1,4 @@
-# tern.mmrm 0.1.9.9015
+# tern.mmrm 0.1.9.9016
 
 * Complete refactoring of the computations, which now use the new `mmrm`
   package instead of `lme4` and `lmerTest`. This increases convergence
