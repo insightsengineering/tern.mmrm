@@ -94,8 +94,16 @@ See the code changes in this pull request.
 
 We will need to figure out here how to calculate the LS means for a specified
 subgroup.
+Maybe we can use something along the lines of
+
+```{r, eval = FALSE}
+emmeans(fit, ..., specs = c(vars$visit, vars$arm), by = "subgroup_var") |>
+  contrast(...)
+```
+
 One additional challenge is when an average of visits is requested instead of
 a single visit.
+Maybe the helper functions from `get_mmrm_lsmeans()` can be reused here.
 
 ## Formatted analysis function
 
