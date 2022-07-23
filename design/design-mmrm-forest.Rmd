@@ -1,0 +1,102 @@
+---
+title: "Design for MMRM forest plot"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Objective
+
+We would like to create a forest plot for the LS means estimated difference
+at a specific visit (chosen by the user) across different subgroups created
+by different baseline variables. This is FSTG03 "Forest Plot for Adjusted Means"
+in the GDSR.
+
+## Details
+
+We will follow the FSTG01 layout example from GDSR, with the following
+modifications:
+
+- We note that only one MMRM is fitted and then the LS means are extracted
+  from this single MMRM fit: "Calculate least squares means for each subgroup
+  and estimate the mean difference (Treatment minus Control),
+  including 95% confidence interval, from an MMRM analysis [...]"
+- We replace the column heading "Subgroup" with "Baseline Risk Factor"
+- We remove the "Category" column and display the Category headings directly
+  underneath the Baseline Risk Factor heading, as in FSTG01.
+- Also, we replace the first row heading, "Overall", with "All Patients",
+  consistent with FSTG01.
+- By default we present the following summary statistics:
+  - total N
+  - Control n and mean
+  - Treatment n and mean
+  - mean difference
+  - 95% CI for mean difference
+- By default plot using constant-sized symbols for the point estimates of the
+  differences.  Proportionally sized symbols can be used optionally
+  (e.g., size proportional to the total sample size for a subgroup).
+- We also allow the option for presenting p-value for each mean difference to the
+  right of the 95% CI.
+  Note that this is not encouraged, as statistically it does not make
+  a lot of sense in most situations - especially since the confidence intervals
+  already show whether the p-value is below 5% or not.
+
+## Idea
+
+We could maybe have a workflow as follows, where we try to stay close
+to what we did for the survival and binary response forest plots:
+
+```{r, eval = FALSE}
+fit <- fit_mmrm(...)
+subgroups <- extract_mmrm_subgroups(
+  fit,
+  visit = "VIS4",
+  subgroups = c("AGEGRP", "REGION", "SEVERITY"),
+  groups_lists = list(SEVERITY = list(
+    "<= Q1" = c("Q0", "Q1"),
+    "> Q1 to <= Q3" = c("Q2", "Q3"),
+    "> Q3" = c("Q4", "Q5")
+  )),
+  weights = fit$weights,
+  conf_level = fit$conf_level,
+  label_all = "All Patients"
+)
+basic_table() %>%
+  tabulate_mmrm_subgroups(
+    subgroups,
+    vars = c("n_tot", "n", "mean", "diff", "ci", "pval")
+  )
+```
+
+Note:
+- The `fit` already contains LS mean estimates, however we will need to derive new
+  ones again for the subgroups.
+- `visit` needs to reference one specific visit.
+- We should save the `averages_emmeans` list in the object such that `visit` can
+  reference this as a simple string without needing a list specification again.
+- We should add the `weights_emmeans` chosen for LS means in the object.
+- The subgroup variables already need to be factors.
+- `groups_lists` helps to group factor levels further as needed (can also overlap).
+- The tabulation function should then be relatively similar to the ones for survival
+  and binary outcome.
+
+# Prototypes
+
+## Adjustments to `fit_mmrm`
+
+See the code changes in this pull request.
+
+## Extraction function
+
+We will need to figure out here how to calculate the LS means for a specified
+subgroup.
+One additional challenge is when an average of visits is requested instead of
+a single visit.
+
+## Formatted analysis function
+
+## Table creating function
