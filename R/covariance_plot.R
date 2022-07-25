@@ -68,16 +68,6 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #' with the upper-diagonal elements of vcov_matrix, the difference between column time
 #' and row time, the lag and the row and column ranks.
 #'
-#' @examples
-#' vcov_matrix <- matrix(
-#'   c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
-#'   nrow = 4, ncol = 4,
-#'   dimnames = list(
-#'     c("VIS1", "VIS2", "VIS3", "VIS4"),
-#'     c("VIS1", "VIS2", "VIS3", "VIS4")
-#'   )
-#' )
-#' h_vectorization(vcov_matrix, string = "VIS")
 #' @keywords internal
 h_vectorization <- function(vcov_matrix, string = NULL) {
   assert_matrix(vcov_matrix)
