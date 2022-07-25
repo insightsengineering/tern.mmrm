@@ -54,3 +54,36 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
+#' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
+#' needs to be vectorized and lag or time distances computed
+#' @param  vcov_dataframe (`data frame`}\cr name of the data frame created by h_vectorization.
+#' @param {x_var} (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance respectively. The default value is "lag".
+#' @param legend_position (`string`)\cr denoting where the legend should be shown. Option are c("topright","topleft","bottomright","bottomleft"). Default #' value #' is "topright"
+#' @examples
+#' g_covariance(vcov_dataframe = h_vectorization(vcov_matrix = cholest.cov), x_var = "time_point_distribution")
+g_covariance <- function(vcov_dataframe, x_var = c("lag", "time_point_distribution"), ylab = "",
+                         xlab = NULL, col = tre_col, pch = NULL, lty = NULL, cex = 2,
+                         legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
+  tre_col <- c(
+    "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
+    "#00ff00", "brown"
+  )
+  x_var <- match.arg(x_var)
+  if (x_var == "lag" & is.null(xlab)) {
+    xlab <- "Lag"
+  }
+  if (x_var == "time_point_distribution" & is.null(xlab)) {
+    xlab <- "Distance (time units) btw measurements"
+  }
+  n_col <- length(unique(vcov_dataframe$lag))
+  ntp <- 1:max(vcov_dataframe$rank_row)
+  if (length(col) < n_col) col <- rep(col, n_col)
+  if (is.null(pch)) pch <- ntp
+  if (is.null(lty)) lty <- ntp
+  legend_position <- match.arg(legend_position)
+  vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
+  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = rank_row, group = rank_row)) +
+    geom_point() +
+    geom_line() +
+    labs(colour = "From time:", x = xlab, y = ylab)
+}
