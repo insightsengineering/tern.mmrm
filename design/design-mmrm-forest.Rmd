@@ -86,6 +86,24 @@ Note:
 
 # Prototypes
 
+```{r}
+mmrm_results <- fit_mmrm(
+  vars = list(
+    response = "FEV1",
+    covariates = c("RACE", "SEX"),
+    id = "USUBJID",
+    arm = "ARMCD",
+    visit = "AVISIT"
+  ),
+  data = mmrm_test_data,
+  cor_struct = "unstructured",
+  weights_emmeans = "equal",
+  averages_emmeans = list(
+    "VIS1+2" = c("VIS1", "VIS2")
+  )
+)
+```
+
 ## Adjustments to `fit_mmrm`
 
 See the code changes in this pull request.
@@ -104,6 +122,41 @@ emmeans(fit, ..., specs = c(vars$visit, vars$arm), by = "subgroup_var") |>
 One additional challenge is when an average of visits is requested instead of
 a single visit.
 Maybe the helper functions from `get_mmrm_lsmeans()` can be reused here.
+
+### Simplest case
+
+Let's start with the simplest case, where we have a simple factor variable
+defining the subgroups (say `RACE`) and we want to look at one specific visit
+(say `VIS2`).
+
+```{r}
+fit <- mmrm_results$fit
+vars <- mmrm_results$vars
+wgts <- attr(mmrm_results$lsmeans, "weights")
+
+library(emmeans)
+emm_grid <- emmeans(
+  fit,
+  specs = c(vars$visit, vars$arm),
+  by = "RACE",
+  weights = wgts
+)
+emm_grid
+```
+
+Now it is convenient that we can zoom into a specific visit:
+
+```{r}
+emm_grid_at_visit <- subset(emm_grid, AVISIT == "VIS2")
+emm_grid_at_visit
+```
+
+Now we can do the arm comparisons:
+
+```{r}
+contrast(emm_grid_at_visit, ~ ARMCD | RACE)
+```
+
 
 ## Formatted analysis function
 
