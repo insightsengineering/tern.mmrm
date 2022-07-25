@@ -2,7 +2,7 @@
 % Please edit documentation in R/covariance_plot.R
 \name{h_get_timepoint_vars}
 \alias{h_get_timepoint_vars}
-\title{Helpers for Covariance Plot}
+\title{Time points helper for Covariance Plot}
 \usage{
 h_get_timepoint_vars(vcov_matrix, string = NULL)
 }

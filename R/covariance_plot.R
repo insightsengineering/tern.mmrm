@@ -1,4 +1,4 @@
-#' Helpers for Covariance Plot
+#' Time points helper for Covariance Plot
 #'
 #' Get the inputted symmetric matrices row and column labels as numeric time points.
 #'
@@ -54,36 +54,34 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
-#' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
-#' needs to be vectorized and lag or time distances computed
-#' @param  vcov_dataframe (`data frame`}\cr name of the data frame created by h_vectorization.
-#' @param {x_var} (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance respectively. The default value is "lag".
-#' @param legend_position (`string`)\cr denoting where the legend should be shown. Option are c("topright","topleft","bottomright","bottomleft"). Default #' value #' is "topright"
-#' @examples
-#' g_covariance(vcov_dataframe = h_vectorization(vcov_matrix = cholest.cov), x_var = "time_point_distribution")
-g_covariance <- function(vcov_dataframe, x_var = c("lag", "time_point_distribution"), ylab = "",
-                         xlab = NULL, col = tre_col, pch = NULL, lty = NULL, cex = 2,
-                         legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
-  tre_col <- c(
-    "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-    "#00ff00", "brown"
-  )
-  x_var <- match.arg(x_var)
-  if (x_var == "lag" & is.null(xlab)) {
-    xlab <- "Lag"
+#' Vectorization helper for Covariance Plot
+#'
+#' This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
+#' and obtains the lag and time distance between pairs of observations if the time values are part of
+#' the names or are part of the matrix column/row names.
+#'
+#' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @return A data frame with the upper-diagonal elements or a covariance or correlation
+#' matrix. In the context of repeated measures, this matrix contains the association between pairs
+#' of measurements taken at different time points. It contains the following columns: a column
+#' with the upper-diagonal elements of vcov_matrix, the difference between column time
+#' and row time, the lag and the row and column ranks.
+#'
+#' @keywords internal
+h_vectorization <- function(vcov_matrix, string = NULL) {
+  assert_matrix(vcov_matrix)
+  assert_true(isSymmetric(vcov_matrix))
+  diag <- upper.tri(vcov_matrix, diag = T)
+  vect <- vcov_matrix[diag]
+  timepoints <- h_get_timepoint_vars(vcov_matrix, string)
+  time_point_distribution <- timepoints$col_time - timepoints$row_time
+  rank_row <- as.numeric(as.factor(timepoints$row_time))
+  rank_col <- as.numeric(as.factor(timepoints$row_time))
+  lag <- rank_col - rank_row
+  if (any(is.na(lag)) | any(is.na(time_point_distribution))) {
+    warning("Verify you have used the string argument correctly or
+  that the columns and rows of your input matrix are named as expected")
   }
-  if (x_var == "time_point_distribution" & is.null(xlab)) {
-    xlab <- "Distance (time units) btw measurements"
-  }
-  n_col <- length(unique(vcov_dataframe$lag))
-  ntp <- 1:max(vcov_dataframe$rank_row)
-  if (length(col) < n_col) col <- rep(col, n_col)
-  if (is.null(pch)) pch <- ntp
-  if (is.null(lty)) lty <- ntp
-  legend_position <- match.arg(legend_position)
-  vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
-  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = rank_row, group = rank_row)) +
-    geom_point() +
-    geom_line() +
-    labs(colour = "From time:", x = xlab, y = ylab)
+  data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
+>>>>>>> main
 }
