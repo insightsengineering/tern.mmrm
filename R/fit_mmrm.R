@@ -88,6 +88,8 @@ h_get_diagnostics <- function(fit) {
 #'   - `cov_estimate`: The matrix with the covariance matrix estimate.
 #'   - `diagnostics`: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
 #'   - `lsmeans`: This is a list with data frames `estimates` and `contrasts`.
+#'        The attributes `averages` and `weights` save the settings used
+#'        (`averages_emmeans` and `weights_emmeans`).
 #'   - `vars`: The variable list.
 #'   - `labels`: Corresponding list with variable labels extracted from `data`.
 #'   - `ref_level`: The reference level for the arm variable, which is always the first level.

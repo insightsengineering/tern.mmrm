@@ -65,6 +65,8 @@ later on.
 \item \code{cov_estimate}: The matrix with the covariance matrix estimate.
 \item \code{diagnostics}: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
 \item \code{lsmeans}: This is a list with data frames \code{estimates} and \code{contrasts}.
+The attributes \code{averages} and \code{weights} save the settings used
+(\code{averages_emmeans} and \code{weights_emmeans}).
 \item \code{vars}: The variable list.
 \item \code{labels}: Corresponding list with variable labels extracted from \code{data}.
 \item \code{ref_level}: The reference level for the arm variable, which is always the first level.

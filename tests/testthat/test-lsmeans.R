@@ -532,6 +532,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   expect_list(result)
   expect_data_frame(result$estimates)
   expect_data_frame(result$contrasts)
+  expect_identical(attr(result, "weights"), weights)
+  expect_identical(attr(result, "averages"), averages)
 })
 
 test_that("get_mmrm_lsmeans preserves combined arm levels.", {
