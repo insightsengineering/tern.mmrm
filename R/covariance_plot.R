@@ -1,7 +1,5 @@
 #' Time points helper for Covariance Plot
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' Get the inputted symmetric matrices row and column labels as numeric time points.
 #'
 #' @param vcov_matrix (`matrix`)\cr symmetric covariance matrix with identical
