@@ -21,15 +21,4 @@ This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g.
 and obtains the lag and time distance between pairs of observations if the time values are part of
 the names or are part of the matrix column/row names.
 }
-\examples{
-vcov_matrix <- matrix(
-  c(49, 24, 12, 23, 24, 35, 11, 20, 12, 11, 24, 14, 23, 20, 14, 107),
-  nrow = 4, ncol = 4,
-  dimnames = list(
-    c("VIS1", "VIS2", "VIS3", "VIS4"),
-    c("VIS1", "VIS2", "VIS3", "VIS4")
-  )
-)
-h_vectorization(vcov_matrix, string = "VIS")
-}
 \keyword{internal}

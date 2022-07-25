@@ -19,8 +19,6 @@ This function returns a list with of two sets of numbers:
 part of \code{vcov_matrix}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Get the inputted symmetric matrices row and column labels as numeric time points.
 }
 \details{
