@@ -6,8 +6,8 @@
 \usage{
 build_formula(
   vars,
-  cor_struct = c("unstructured", "toeplitz", "heterogeneous toeplitz",
-    "auto-regressive", "heterogeneous auto-regressive", "heterogeneous ante-dependence",
+  cor_struct = c("unstructured", "toeplitz", "heterogeneous toeplitz", "auto-regressive",
+    "heterogeneous auto-regressive", "heterogeneous ante-dependence",
     "compound symmetry", "heterogeneous compound symmetry")
 )
 }
