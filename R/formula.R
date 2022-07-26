@@ -21,6 +21,7 @@
 build_formula <- function(vars,
                           cor_struct = c(
                             "unstructured",
+                            "toeplitz",
                             "heterogeneous toeplitz",
                             "auto-regressive",
                             "heterogeneous auto-regressive",
@@ -45,7 +46,8 @@ build_formula <- function(vars,
   }
   random_effects_fun <- switch(cor_struct,
     "unstructured" = "us",
-    "heterogeneous toeplitz" = "toep",
+    "toeplitz" = "toep",
+    "heterogeneous toeplitz" = "toeph",
     "auto-regressive" = "ar1",
     "heterogeneous auto-regressive" = "ar1h",
     "heterogeneous ante-dependence" = "ad",
