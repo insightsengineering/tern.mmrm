@@ -27,7 +27,7 @@ Imports:
     ggplot2,
     lifecycle,
     magrittr,
-    mmrm (>= 0.0.0.9011),
+    mmrm (>= 0.0.0.9016),
     rlang,
     rtables (>= 0.5.1),
     stats
