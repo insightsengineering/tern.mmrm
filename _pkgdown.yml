@@ -26,6 +26,7 @@ reference:
     desc: Graphs
     contents:
       - starts_with("g_mmrm")
+      - g_covariance
 
   - title: Example Data
     desc: Example Data
