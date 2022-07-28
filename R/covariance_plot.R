@@ -86,29 +86,39 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 }
 #' Function to graph covariance
 #'
-#' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Plot of covariance or correlation structures as a function of lag or time. The covariance structure
 #' needs to be vectorized and lag or time distances computed
-#' 
+#'
 #' @param vcov_matrix (`matrix`)\cr covariance matrix.
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
 #' respectively.
 #' @param legend_position (`string`)\cr denoting where the legend should be shown.
 #' @examples
 #' g_covariance(vcov_matrix, x_var = "time_point_distribution")
-g_covariance <- function(vcov_matrix, string = NULL, x_var = c("lag", "time_point_distribution"), ylab = "",
-                         xlab = NULL, col = tre_col, pch = NULL, lty = NULL, cex = 2,
+g_covariance <- function(vcov_matrix,
+                         string = NULL,
+                         x_var = c("lag", "time_point_distribution"),
+                         ylab = "",
+                         xlab = NULL,
+                         col = tre_col,
+                         pch = NULL,
+                         lty = NULL,
+                         cex = 2,
                          legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
   tre_col <- c(
     "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
     "#00ff00", "brown"
   )
   x_var <- match.arg(x_var)
-  if (x_var == "lag" & is.null(xlab)) {
+  if (x_var == "lag" & is.null(xlab)){
     xlab <- "Lag"
-  }
-  if (x_var == "time_point_distribution" & is.null(xlab)) {
+    } else if (x_var == "time_point_distribution" & is.null(xlab)){
     xlab <- "Distance (time units) btw measurements"
-  }
+    } else if (!is.null(xlab)){
+      xlab <- xlab
+    }
   vcov_dataframe <- h_vectorization(vcov_matrix, string)
   n_col <- length(unique(vcov_dataframe$lag))
   ntp <- 1:max(vcov_dataframe$rank_row)

@@ -85,7 +85,7 @@ test_that("h_vectorization works as expected when string not specified", {
   expect_identical(result, expected)
 })
 
-test_that("g_covarariance works as expected as expected", {
+test_that("g_covarariance works as expected as expected with no xlab specified", {
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -94,17 +94,19 @@ test_that("g_covarariance works as expected as expected", {
       c(1, 2)
     )
   )
-  result <- g_covariance(vcov_matrix)
-  expected_dataframe <- data.frame(
-    Vect = c(49, 12, 23),
-    time_point_distribution = c(0, 1, 0),
-    lag = c(0, 1, 0),
-    rank_row = c(1, 1, 2),
-    rank_col = c(1, 2, 2)
+  result <- expect_silent(g_covariance(vcov_matrix))
+  vdiffr::expect_doppelganger("g_covariance plot no xlab specified", result)
+})
+
+test_that("g_covarariance works as expected as expected with string specified", {
+  vcov_matrix <- matrix(
+    c(49, 12, 12, 23),
+    nrow = 2, ncol = 2,
+    dimnames = list(
+      c("VIS1", "VIS2"),
+      c("VIS1", "VIS2")
+    )
   )
-  expected <- ggplot(expected_dataframe, aes(x = lag, y = Vect, colour = rank_row, group = rank_row)) +
-    geom_point() +
-    geom_line() +
-    labs(xlab = "lag", ylab = "")
-  expect_identical(result, expected)
+  result <- expect_silent(g_covariance(vcov_matrix, string = "VIS"))
+  vdiffr::expect_doppelganger("g_covariance plot with string specified", result)
 })

@@ -19,15 +19,16 @@ g_covariance(
 )
 }
 \arguments{
-\item{vcov_matrix}{(\code{matrix})\cr name of the input symmetric matrix.}
+\item{vcov_matrix}{(\code{matrix})\cr covariance matrix.}
 
 \item{x_var}{(\code{string})\cr can be "lag" or "time_point_distribution" for lag and time distance
-respectively. The default value is "lag".}
+respectively.}
 
-\item{legend_position}{(\code{string})\cr denoting where the legend should be shown. Option
-are c("topright","topleft","bottomright","bottomleft"). Default #' value #' is "topright"}
+\item{legend_position}{(\code{string})\cr denoting where the legend should be shown.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Plot of covariance or correlation structures as a function of lag or time. The covariance structure
 needs to be vectorized and lag or time distances computed
 }
