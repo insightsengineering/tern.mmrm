@@ -33,5 +33,13 @@ Plot of covariance or correlation structures as a function of lag or time. The c
 needs to be vectorized and lag or time distances computed
 }
 \examples{
+vcov_matrix <- matrix(
+c(49, 12, 12, 23),
+nrow = 2, ncol = 2,
+dimnames = list(
+ c(1, 2),
+ c(1, 2)
+ )
+)
 g_covariance(vcov_matrix, x_var = "time_point_distribution")
 }
