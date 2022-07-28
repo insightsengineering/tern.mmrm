@@ -63,6 +63,7 @@ h_get_diagnostics <- function(fit) {
 #'
 #'   - `unstructured`: Unstructured covariance matrix. This is the most flexible choice and default.
 #'        If there are `T` visits, then `T * (T+1) / 2` variance parameters are used.
+#'   - `toeplitz`: Homogeneous Toeplitz covariance matrix, which uses `T` variance parameters.
 #'   - `heterogeneous toeplitz`: Heterogeneous Toeplitz covariance matrix,
 #'        which uses `2 * T - 1` variance parameters.
 #'   - `heterogeneous ante-dependence`: Heterogeneous Ante-Dependence covariance matrix,

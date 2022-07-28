@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: MMRM interface for tern package
-Version: 0.1.9.9016
+Version: 0.1.9.9017
 Date: 2022-06-09
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
@@ -27,7 +27,7 @@ Imports:
     ggplot2,
     lifecycle,
     magrittr,
-    mmrm (>= 0.0.0.9011),
+    mmrm (>= 0.0.0.9016),
     rlang,
     rtables (>= 0.5.1),
     stats
