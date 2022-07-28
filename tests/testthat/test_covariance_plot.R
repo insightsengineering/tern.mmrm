@@ -58,9 +58,9 @@ test_that("h_vectorization works as expected with string specified", {
   expected <- data.frame(
     Vect = c(49, 12, 23),
     time_point_distribution = c(0, 1, 0),
-    lag = c(0, 0, 0),
+    lag = c(0, 1, 0),
     rank_row = c(1, 1, 2),
-    rank_col = c(1, 1, 2)
+    rank_col = c(1, 2, 2)
   )
   expect_identical(result, expected)
 })
@@ -78,9 +78,9 @@ test_that("h_vectorization works as expected when string not specified", {
   expected <- data.frame(
     Vect = c(49, 12, 23),
     time_point_distribution = c(0, 1, 0),
-    lag = c(0, 0, 0),
+    lag = c(0, 1, 0),
     rank_row = c(1, 1, 2),
-    rank_col = c(1, 1, 2)
+    rank_col = c(1, 2, 2)
   )
   expect_identical(result, expected)
 })
