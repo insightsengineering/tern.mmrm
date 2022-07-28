@@ -113,7 +113,7 @@ g_covariance <- function(vcov_matrix,
   )
   x_var <- match.arg(x_var)
   if (is.null(xlab)) {
-    xlab <- if (x_var == "lag") "Lag" else "Distance (time units) btw measurements" 
+    xlab <- if (x_var == "lag") "Lag" else "Distance (time units) btw measurements"
   }
   vcov_dataframe <- h_vectorization(vcov_matrix, string)
   n_col <- length(unique(vcov_dataframe$lag))
