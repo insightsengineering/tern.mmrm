@@ -97,12 +97,12 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' @param legend_position (`string`)\cr denoting where the legend should be shown.
 #' @examples
 #' vcov_matrix <- matrix(
-#' c(49, 12, 12, 23),
-#' nrow = 2, ncol = 2,
-#' dimnames = list(
-#'  c(1, 2),
-#'  c(1, 2)
-#'  )
+#'   c(49, 12, 12, 23),
+#'   nrow = 2, ncol = 2,
+#'   dimnames = list(
+#'     c(1, 2),
+#'     c(1, 2)
+#'   )
 #' )
 #' g_covariance(vcov_matrix, x_var = "time_point_distribution")
 g_covariance <- function(vcov_matrix,
