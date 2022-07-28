@@ -112,13 +112,13 @@ g_covariance <- function(vcov_matrix,
     "#00ff00", "brown"
   )
   x_var <- match.arg(x_var)
-  if (x_var == "lag" & is.null(xlab)){
+  if (x_var == "lag" & is.null(xlab)) {
     xlab <- "Lag"
-    } else if (x_var == "time_point_distribution" & is.null(xlab)){
+  } else if (x_var == "time_point_distribution" & is.null(xlab)) {
     xlab <- "Distance (time units) btw measurements"
-    } else if (!is.null(xlab)){
-      xlab <- xlab
-    }
+  } else if (!is.null(xlab)) {
+    xlab <- xlab
+  }
   vcov_dataframe <- h_vectorization(vcov_matrix, string)
   n_col <- length(unique(vcov_dataframe$lag))
   ntp <- 1:max(vcov_dataframe$rank_row)
