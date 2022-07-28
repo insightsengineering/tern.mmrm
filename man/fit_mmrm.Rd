@@ -70,6 +70,7 @@ The attributes \code{averages} and \code{weights} save the settings used
 \item \code{vars}: The variable list.
 \item \code{labels}: Corresponding list with variable labels extracted from \code{data}.
 \item \code{ref_level}: The reference level for the arm variable, which is always the first level.
+\item \code{treatment_levels}: The treatment levels for the arm variable.
 \item \code{conf_level}: The confidence level which was used to construct the \code{lsmeans} confidence intervals.
 }
 }

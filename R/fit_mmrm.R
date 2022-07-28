@@ -94,6 +94,7 @@ h_get_diagnostics <- function(fit) {
 #'   - `vars`: The variable list.
 #'   - `labels`: Corresponding list with variable labels extracted from `data`.
 #'   - `ref_level`: The reference level for the arm variable, which is always the first level.
+#'   - `treatment_levels`: The treatment levels for the arm variable.
 #'   - `conf_level`: The confidence level which was used to construct the `lsmeans` confidence intervals.
 #'
 #' @export
@@ -162,6 +163,7 @@ fit_mmrm <- function(vars = list(
     vars = vars,
     labels = labels,
     ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
+    treatment_levels = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[-1],
     conf_level = conf_level
   )
   class(results) <- "tern_mmrm"

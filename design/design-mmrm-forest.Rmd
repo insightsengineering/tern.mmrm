@@ -44,6 +44,9 @@ modifications:
   Note that this is not encouraged, as statistically it does not make
   a lot of sense in most situations - especially since the confidence intervals
   already show whether the p-value is below 5% or not.
+- Note that we need exactly one treatment arm and one control arm selected for the
+  forest plot. We might have more than one treatment arm in the original dataset
+  and model fit. So we need to allow the user to select the treatment arm.
 
 ## Idea
 
@@ -108,11 +111,10 @@ mmrm_results <- fit_mmrm(
 
 See the code changes in this pull request.
 
-## Extraction function
+## LS means computations
 
 We will need to figure out here how to calculate the LS means for a specified
-subgroup.
-Maybe we can use something along the lines of
+subgroup. Maybe we can use something along the lines of
 
 ```{r, eval = FALSE}
 emmeans(fit, ..., specs = c(vars$visit, vars$arm), by = "subgroup_var") |>
@@ -154,7 +156,153 @@ emm_grid_at_visit
 Now we can do the arm comparisons:
 
 ```{r}
-contrast(emm_grid_at_visit, ~ ARMCD | RACE)
+emm_visit_contrasts <- contrast(emm_grid_at_visit, "trt.vs.ctrl", by = "RACE")
+emm_visit_contrasts
+```
+
+And we could also get this as a `data.frame`:
+
+```{r}
+as.data.frame(emm_visit_contrasts)
+```
+
+The problem here is that 1) it is not usable for the averages of visits,
+and 2) it does not work when we have (overlapping) combination of factor levels
+which we would like to group by.
+
+### Complicated case
+
+Let's look at a case where we have both of these problems. Say we want to look
+at the average `VIS1+2` and we want to use the following combination of factor
+levels (which does not make sense of course):
+
+```{r}
+group_list <- list(
+  "A" = c("Asian", "Black or African American"),
+  "B" = c("Black or African American", "White")
+)
+```
+
+Let's just look at each combination separately now, say we just look at `A`.
+We start with the general grid object and then just subset. Then we just remove
+the `RACE` variable again.
+
+```{r}
+emm_grid2 <- emmeans(
+  fit,
+  specs = c(vars$visit, vars$arm, "RACE"),
+  weights = wgts
+)
+emm_grid2 <- subset(emm_grid2, RACE %in% group_list$A)
+emm_grid3 <- emmeans(emm_grid2, specs = c(vars$visit, vars$arm))
+emm_grid3
+```
+
+Note that in the last `emmeans()` step the `weights` argument does
+not matter anymore.
+
+So now we have the LS means by visit and treatment arm for this
+specific subset of the data. What is left is just to apply the contrasting of the
+single treatment arm (ensured upstream) and the control arm, as well as the
+averaging of the relevant visits.
+
+First we can subset further also for the visit variable.
+
+```{r}
+avgs <- attr(mmrm_results$lsmeans, "averages")["VIS1+2"]
+emm_grid4 <- subset(emm_grid3, AVISIT %in% avgs[[1L]])
+```
+
+Now let's see if we can apply some of the existing helper functions to get the
+results. For this we just need to wrap it in a similar way as what
+`h_get_emmeans_res()` returns.
+
+```{r}
+emm_res <- list(
+  object = emm_grid4,
+  grid = emm_grid4@grid |> dplyr::rename(n = .wgt.) |> dplyr::mutate(n = as.integer(n))
+)
+```
+
+Now we can start.
+
+```{r}
+avg_specs <- h_get_average_visit_specs(emm_res, vars = vars, averages = avgs)
+avg_ests <- h_get_spec_visit_estimates(emm_res, avg_specs, mmrm_results$conf_level)
+conts_specs <- h_single_visit_contrast_specs(emm_res, vars)
+avg_conts_specs <- h_average_visit_contrast_specs(conts_specs, avgs)
+avg_conts <- h_get_spec_visit_estimates(emm_res, avg_conts_specs, mmrm_results$conf_level, tests = TRUE)
+```
+
+So now we have everything we needed:
+
+```{r}
+avg_ests
+avg_conts
+```
+
+One remaining question is how we can do the `subset()` operation in a function
+where we specify the variable name as a string. We can go via the `data.frame`
+detour:
+
+```{r}
+keep <- as.data.frame(emm_grid3)[["AVISIT"]] %in% avgs[[1L]]
+emm_grid4_string <- subset(emm_grid3, keep)
+identical(emm_grid4, emm_grid4_string)
+```
+
+## Extraction function
+
+Now that we understand how to calculate the LS means we can write the extraction
+function.
+
+```{r}
+# test
+fit <- mmrm_results
+visit <- "VIS1+2"
+subgroups <- c("SEX", "RACE")
+groups_lists <- list(RACE = group_list)
+treatment_arm <- fit$treatment_levels[1L]
+weights <- fit$weights
+conf_level <- fit$conf_level
+label_all <- "All Patients"
+```
+
+```{r}
+#' @param fit (`tern_mmrm`)\cr model fit.
+#' @param visit (`string`)\cr single visit or name of averages of visits (referring
+#'   to the averages specified when creating the `fit`).
+#' @param subgroups (`character`)\cr names of subgroup variables to use in the
+#'   forest plot.
+#' @inheritParams (named `list` of `list`)\cr optionally contains for each
+#'   `subgroups` variable a list, which specifies the new group levels via the
+#'   names and the levels that belong to it in the character vectors that
+#'   are elements of the list.
+#' @param treatment_arm (`string`)\cr single treatment arm to compare with the reference
+#'   arm.
+#' @param weights (`string`)\cr weights specification for the LS means.
+#' @param conf_level (`proportion`)\cr confidence level for the LS mean differences.
+#' @param label_all (`string`)\cr label for the total population analysis.
+#'
+#' @return A list with two elements:
+#'   - `estimates`: `data.frame` with columns `arm`, `n`, `lsmean`, `subgroup`,
+#'                  `var`, `var_label`, `row_type`.
+#'   - `contrasts`: `data.frame` with columns `n_tot`, `diff`, `lcl`, `ucl`,
+#'                  `pval`, `subgroup`, `var`, `var_label`, `row_type`. Note
+#'                  that this has half the number of rows as `estimates`.
+#' @export
+#'
+#' @examples
+extract_mmrm_subgroups <- function(fit,
+                                   visit,
+                                   subgroups,
+                                   groups_lists = list(),
+                                   treatment_arm = fit$treatment_levels[1L],
+                                   weights = fit$weights,
+                                   conf_level = fit$conf_level,
+                                   label_all = "All Patients") {
+
+}
 ```
 
 
