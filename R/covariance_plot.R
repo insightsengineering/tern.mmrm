@@ -92,8 +92,7 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
 #' respectively. The default value is "lag".
-#' @param legend_position (`string`)\cr denoting where the legend should be shown. Option
-#' are c("topright","topleft","bottomright","bottomleft"). Default #' value #' is "topright"
+#' @param legend_position (`string`)\cr denoting where the legend should be shown.
 #' @examples
 #' g_covariance(vcov_matrix, x_var = "time_point_distribution")
 g_covariance <- function(vcov_matrix, string = NULL, x_var = c("lag", "time_point_distribution"), ylab = "",
