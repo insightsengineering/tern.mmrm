@@ -430,6 +430,23 @@ test_that("fit_mmrm works also with rank deficient model matrix", {
 
 ## different cov structures ----
 
+test_that("fit_mmrm works with homogeneous toeplitz covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "toeplitz",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
 test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
   mmrm_results <- fit_mmrm(
     vars = list(
