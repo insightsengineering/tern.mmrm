@@ -88,6 +88,7 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #'
 #' @description Plot of covariance or correlation structures as a function of lag or time. The covariance structure
 #' needs to be vectorized and lag or time distances computed
+#' 
 #' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
 #' respectively. The default value is "lag".
