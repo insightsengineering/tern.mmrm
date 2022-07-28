@@ -85,6 +85,7 @@ For the covariance structure (\code{cor_struct}), the user can choose among the 
 \itemize{
 \item \code{unstructured}: Unstructured covariance matrix. This is the most flexible choice and default.
 If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are used.
+\item \code{toeplitz}: Homogeneous Toeplitz covariance matrix, which uses \code{T} variance parameters.
 \item \verb{heterogeneous toeplitz}: Heterogeneous Toeplitz covariance matrix,
 which uses \code{2 * T - 1} variance parameters.
 \item \verb{heterogeneous ante-dependence}: Heterogeneous Ante-Dependence covariance matrix,
