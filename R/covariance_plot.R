@@ -54,7 +54,6 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
-
 #' Vectorization helper for Covariance Plot
 #'
 #' This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
@@ -77,11 +76,59 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
   timepoints <- h_get_timepoint_vars(vcov_matrix, string)
   time_point_distribution <- timepoints$col_time - timepoints$row_time
   rank_row <- as.numeric(as.factor(timepoints$row_time))
-  rank_col <- as.numeric(as.factor(timepoints$row_time))
+  rank_col <- as.numeric(as.factor(timepoints$col_time))
   lag <- rank_col - rank_row
   if (any(is.na(lag)) | any(is.na(time_point_distribution))) {
     warning("Verify you have used the string argument correctly or
   that the columns and rows of your input matrix are named as expected")
   }
   data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
+}
+#' Function to graph covariance
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Plot of covariance or correlation structures as a function of lag or time. The covariance structure
+#' needs to be vectorized and lag or time distances computed
+#'
+#' @param vcov_matrix (`matrix`)\cr covariance matrix.
+#' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
+#' respectively.
+#' @param legend_position (`string`)\cr denoting where the legend should be shown.
+#' @examples
+#' g_covariance(vcov_matrix, x_var = "time_point_distribution")
+g_covariance <- function(vcov_matrix,
+                         string = NULL,
+                         x_var = c("lag", "time_point_distribution"),
+                         ylab = "",
+                         xlab = NULL,
+                         col = tre_col,
+                         pch = NULL,
+                         lty = NULL,
+                         cex = 2,
+                         legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
+  tre_col <- c(
+    "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
+    "#00ff00", "brown"
+  )
+  x_var <- match.arg(x_var)
+  if (x_var == "lag" & is.null(xlab)){
+    xlab <- "Lag"
+    } else if (x_var == "time_point_distribution" & is.null(xlab)){
+    xlab <- "Distance (time units) btw measurements"
+    } else if (!is.null(xlab)){
+      xlab <- xlab
+    }
+  vcov_dataframe <- h_vectorization(vcov_matrix, string)
+  n_col <- length(unique(vcov_dataframe$lag))
+  ntp <- 1:max(vcov_dataframe$rank_row)
+  if (length(col) < n_col) col <- rep(col, n_col)
+  if (is.null(pch)) pch <- ntp
+  if (is.null(lty)) lty <- ntp
+  legend_position <- match.arg(legend_position)
+  vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
+  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = rank_row, group = rank_row)) +
+    geom_point() +
+    geom_line() +
+    labs(colour = "From time:", x = xlab, y = ylab)
 }
