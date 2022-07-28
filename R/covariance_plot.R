@@ -91,7 +91,7 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' 
 #' @param vcov_matrix (`matrix`)\cr covariance matrix.
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
-#' respectively. The default value is "lag".
+#' respectively.
 #' @param legend_position (`string`)\cr denoting where the legend should be shown.
 #' @examples
 #' g_covariance(vcov_matrix, x_var = "time_point_distribution")
