@@ -60,7 +60,8 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #' and obtains the lag and time distance between pairs of observations if the time values are part of
 #' the names or are part of the matrix column/row names.
 #'
-#' @param vcov_matrix (`matrix`)\cr name of the input symmetric matrix.
+#' @inheritParams h_get_timepoint_vars
+#'
 #' @return A data frame with the upper-diagonal elements or a covariance or correlation
 #' matrix. In the context of repeated measures, this matrix contains the association between pairs
 #' of measurements taken at different time points. It contains the following columns: a column
@@ -91,10 +92,12 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' Plot of covariance or correlation structures as a function of lag or time. The covariance structure
 #' needs to be vectorized and lag or time distances computed
 #'
-#' @param vcov_matrix (`matrix`)\cr covariance matrix.
+#' @inheritParams h_get_timepoint_vars
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
 #' respectively.
-#' @param legend_position (`string`)\cr denoting where the legend should be shown.
+#' @param xlab (`string` or `NULL`)\cr x-axis label, if `NULL` then automatically
+#'   determined from `x_var`.
+#' @param ylab (`string`)\cr y-axis label.
 #' @return The `ggplot` object.
 #'
 #' @export
@@ -111,30 +114,15 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 g_covariance <- function(vcov_matrix,
                          string = NULL,
                          x_var = c("lag", "time_point_distribution"),
-                         ylab = "",
                          xlab = NULL,
-                         col = tre_col,
-                         pch = NULL,
-                         lty = NULL,
-                         cex = 2,
-                         legend_position = c("topright", "topleft", "bottomright", "bottomleft"), ...) {
-  tre_col <- c(
-    "#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-    "#00ff00", "brown"
-  )
+                         ylab = "") {
   x_var <- match.arg(x_var)
   if (is.null(xlab)) {
     xlab <- if (x_var == "lag") "Lag" else "Distance (time units) btw measurements"
   }
   vcov_dataframe <- h_vectorization(vcov_matrix, string)
-  n_col <- length(unique(vcov_dataframe$lag))
-  ntp <- 1:max(vcov_dataframe$rank_row)
-  if (length(col) < n_col) col <- rep(col, n_col)
-  if (is.null(pch)) pch <- ntp
-  if (is.null(lty)) lty <- ntp
-  legend_position <- match.arg(legend_position)
   vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
-  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = rank_row, group = rank_row)) +
+  ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = .data$rank_row, group = .data$rank_row)) +
     geom_point() +
     geom_line() +
     labs(colour = "From time:", x = xlab, y = ylab)

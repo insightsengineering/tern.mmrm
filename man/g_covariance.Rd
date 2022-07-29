@@ -8,23 +8,24 @@ g_covariance(
   vcov_matrix,
   string = NULL,
   x_var = c("lag", "time_point_distribution"),
-  ylab = "",
   xlab = NULL,
-  col = tre_col,
-  pch = NULL,
-  lty = NULL,
-  cex = 2,
-  legend_position = c("topright", "topleft", "bottomright", "bottomleft"),
-  ...
+  ylab = ""
 )
 }
 \arguments{
-\item{vcov_matrix}{(\code{matrix})\cr covariance matrix.}
+\item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
+row and column names.}
+
+\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
+the time point value, see details.}
 
 \item{x_var}{(\code{string})\cr can be "lag" or "time_point_distribution" for lag and time distance
 respectively.}
 
-\item{legend_position}{(\code{string})\cr denoting where the legend should be shown.}
+\item{xlab}{(\code{string} or \code{NULL})\cr x-axis label, if \code{NULL} then automatically
+determined from \code{x_var}.}
+
+\item{ylab}{(\code{string})\cr y-axis label.}
 }
 \value{
 The \code{ggplot} object.
