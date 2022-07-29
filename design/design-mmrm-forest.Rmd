@@ -254,7 +254,54 @@ identical(emm_grid4, emm_grid4_string)
 ## Extraction function
 
 Now that we understand how to calculate the LS means we can write the extraction
-function.
+function. We can look at the example `?extract_survival_subgroups` to see how
+approximately the result should look like to fit into the workflow:
+
+```{r}
+# Testing dataset.
+library(scda)
+library(dplyr)
+library(forcats)
+library(rtables)
+
+adtte <- synthetic_cdisc_data("latest")$adtte
+
+# Save variable labels before data processing steps.
+adtte_labels <- formatters::var_labels(adtte)
+
+adtte_f <- adtte %>%
+  filter(
+    PARAMCD == "OS",
+    ARM %in% c("B: Placebo", "A: Drug X"),
+    SEX %in% c("M", "F")
+  ) %>%
+  mutate(
+    # Reorder levels of ARM to display reference arm before treatment arm.
+    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    SEX = droplevels(SEX),
+    AVALU = as.character(AVALU),
+    is_event = CNSR == 0
+  )
+labels <- c(
+  "ARM" = adtte_labels[["ARM"]],
+  "SEX" = adtte_labels[["SEX"]],
+  "AVALU" = adtte_labels[["AVALU"]],
+  "is_event" = "Event Flag"
+)
+formatters::var_labels(adtte_f)[names(labels)] <- labels
+
+df <- extract_survival_subgroups(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM", subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f
+)
+df
+```
+
+With that in mind we can prototype the function here:
 
 ```{r}
 # test
@@ -290,9 +337,6 @@ label_all <- "All Patients"
 #'   - `contrasts`: `data.frame` with columns `n_tot`, `diff`, `lcl`, `ucl`,
 #'                  `pval`, `subgroup`, `var`, `var_label`, `row_type`. Note
 #'                  that this has half the number of rows as `estimates`.
-#' @export
-#'
-#' @examples
 extract_mmrm_subgroups <- function(fit,
                                    visit,
                                    subgroups,
