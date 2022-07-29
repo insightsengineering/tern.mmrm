@@ -95,6 +95,9 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
 #' respectively.
 #' @param legend_position (`string`)\cr denoting where the legend should be shown.
+#' @return The `ggplot` object.
+#'
+#' @export
 #' @examples
 #' vcov_matrix <- matrix(
 #'   c(49, 12, 12, 23),
