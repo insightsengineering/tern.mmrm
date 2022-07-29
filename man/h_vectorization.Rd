@@ -7,7 +7,11 @@
 h_vectorization(vcov_matrix, string = NULL)
 }
 \arguments{
-\item{vcov_matrix}{(\code{matrix})\cr name of the input symmetric matrix.}
+\item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
+row and column names.}
+
+\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
+the time point value, see details.}
 }
 \value{
 A data frame with the upper-diagonal elements or a covariance or correlation
