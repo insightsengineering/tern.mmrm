@@ -345,7 +345,19 @@ extract_mmrm_subgroups <- function(fit,
                                    weights = fit$weights,
                                    conf_level = fit$conf_level,
                                    label_all = "All Patients") {
+  # Assertions to be inserted in production.
 
+  vars <- fit$vars
+  ref_arm <- fit$ref_level
+
+  # Get overall result (all patients) - we have it already.
+  lsm_overall <- fit$lsmeans
+  est_overall <- lsm_overall$estimates
+  est_selected <- est_overall[[vars$visit]] == visit &
+    est_overall[[vars$arm]] %in% c(ref, treatment_arm)
+  est_overall <- est_overall[est_selected, ]
+
+  averages <- attr(lsm_overall, "averages")
 }
 ```
 
