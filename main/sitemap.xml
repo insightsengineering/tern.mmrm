@@ -40,6 +40,9 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_mmrm.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_covariance.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/g_mmrm_diagnostic.html</loc>
   </url>
   <url>
@@ -59,6 +62,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_timepoint_vars.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_vectorization.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/index.html</loc>
