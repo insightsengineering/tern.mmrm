@@ -81,11 +81,14 @@ Note:
 - `visit` needs to reference one specific visit.
 - We should save the `averages_emmeans` list in the object such that `visit` can
   reference this as a simple string without needing a list specification again.
-- We should add the `weights_emmeans` chosen for LS means in the object.
+- We should add the `weights_emmeans` chosen for LS means in the object. However
+  it seems like we can only estimate proportional weights. So we might assert that.
 - The subgroup variables already need to be factors.
 - `groups_lists` helps to group factor levels further as needed (can also overlap).
 - The tabulation function should then be relatively similar to the ones for survival
   and binary outcome.
+- This must also work when the subgroup variables were not used as part of the
+  covariates during the model fit.
 
 # Prototypes
 
@@ -93,7 +96,6 @@ Note:
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
-    covariates = c("RACE", "SEX"),
     id = "USUBJID",
     arm = "ARMCD",
     visit = "AVISIT"
@@ -125,54 +127,7 @@ One additional challenge is when an average of visits is requested instead of
 a single visit.
 Maybe the helper functions from `get_mmrm_lsmeans()` can be reused here.
 
-### Simplest case
-
-Let's start with the simplest case, where we have a simple factor variable
-defining the subgroups (say `RACE`) and we want to look at one specific visit
-(say `VIS2`).
-
-```{r}
-fit <- mmrm_results$fit
-vars <- mmrm_results$vars
-wgts <- attr(mmrm_results$lsmeans, "weights")
-
-library(emmeans)
-emm_grid <- emmeans(
-  fit,
-  specs = c(vars$visit, vars$arm),
-  by = "RACE",
-  weights = wgts
-)
-emm_grid
-```
-
-Now it is convenient that we can zoom into a specific visit:
-
-```{r}
-emm_grid_at_visit <- subset(emm_grid, AVISIT == "VIS2")
-emm_grid_at_visit
-```
-
-Now we can do the arm comparisons:
-
-```{r}
-emm_visit_contrasts <- contrast(emm_grid_at_visit, "trt.vs.ctrl", by = "RACE")
-emm_visit_contrasts
-```
-
-And we could also get this as a `data.frame`:
-
-```{r}
-as.data.frame(emm_visit_contrasts)
-```
-
-The problem here is that 1) it is not usable for the averages of visits,
-and 2) it does not work when we have (overlapping) combination of factor levels
-which we would like to group by.
-
-### Complicated case
-
-Let's look at a case where we have both of these problems. Say we want to look
+Say we want to look
 at the average `VIS1+2` and we want to use the following combination of factor
 levels (which does not make sense of course):
 
@@ -190,8 +145,9 @@ the `RACE` variable again.
 ```{r}
 emm_grid2 <- emmeans(
   fit,
-  specs = c(vars$visit, vars$arm, "RACE"),
-  weights = wgts
+  specs = c(vars$visit, vars$arm),
+  weights = "proportional",
+  data = mmrm_results$fit$data[1:10, ]
 )
 emm_grid2 <- subset(emm_grid2, RACE %in% group_list$A)
 emm_grid3 <- emmeans(emm_grid2, specs = c(vars$visit, vars$arm))
@@ -301,25 +257,45 @@ df <- extract_survival_subgroups(
 df
 ```
 
-With that in mind we can prototype the function here:
+With that in mind we can prototype the function here.
+We need a little helper function for the formatting.
 
 ```{r}
-# test
-fit <- mmrm_results
-visit <- "VIS1+2"
-subgroups <- c("SEX", "RACE")
-groups_lists <- list(RACE = group_list)
-treatment_arm <- fit$treatment_levels[1L]
-weights <- fit$weights
-conf_level <- fit$conf_level
-label_all <- "All Patients"
+h_mmrm_subgroups_df <- function(estimates, contrasts, subgroup, var, label, vars) {
+  is_all <- var == "ALL"
+  row_type <- if (is_all) "content" else "analysis"
+  list(
+    estimates = data.frame(
+      arm = estimates[[vars$arm]],
+      n = estimates$n,
+      lsmean = estimates$estimate,
+      subgroup = subgroup,
+      var = var,
+      var_label = label,
+      row_type = row_type
+    ),
+    contrasts = data.frame(
+      n_tot = sum(estimates$n),
+      diff = contrasts$estimate,
+      lcl = contrasts$lower_cl,
+      ucl = contrasts$upper_cl,
+      pval = contrasts$p_value,
+      subgroup = subgroup,
+      var = var,
+      var_label = label,
+      row_type = row_type
+    )
+  )
+}
 ```
+
+Here it finally comes:
 
 ```{r}
 #' @param fit (`tern_mmrm`)\cr model fit.
 #' @param visit (`string`)\cr single visit or name of averages of visits (referring
 #'   to the averages specified when creating the `fit`).
-#' @param subgroups (`character`)\cr names of subgroup variables to use in the
+#' @param subgroups (`character` or `NULL`)\cr names of subgroup variables to use in the
 #'   forest plot.
 #' @inheritParams (named `list` of `list`)\cr optionally contains for each
 #'   `subgroups` variable a list, which specifies the new group levels via the
@@ -339,7 +315,7 @@ label_all <- "All Patients"
 #'                  that this has half the number of rows as `estimates`.
 extract_mmrm_subgroups <- function(fit,
                                    visit,
-                                   subgroups,
+                                   subgroups = NULL,
                                    groups_lists = list(),
                                    treatment_arm = fit$treatment_levels[1L],
                                    weights = fit$weights,
@@ -347,20 +323,129 @@ extract_mmrm_subgroups <- function(fit,
                                    label_all = "All Patients") {
   # Assertions to be inserted in production.
 
+  # Shortcuts.
   vars <- fit$vars
   ref_arm <- fit$ref_level
+  lsm <- fit$lsmeans
+  averages <- attr(lsm, "averages")
+  is_average <- visit %in% names(averages)
 
   # Get overall result (all patients) - we have it already.
-  lsm_overall <- fit$lsmeans
-  est_overall <- lsm_overall$estimates
+
+  # Estimates.
+  est_overall <- lsm$estimates
   est_selected <- est_overall[[vars$visit]] == visit &
-    est_overall[[vars$arm]] %in% c(ref, treatment_arm)
+    est_overall[[vars$arm]] %in% c(ref_arm, treatment_arm)
   est_overall <- est_overall[est_selected, ]
 
-  averages <- attr(lsm_overall, "averages")
+  # Contrast.
+  cont_overall <- lsm$contrasts
+  cont_selected <- cont_overall[[vars$visit]] == visit &
+    cont_overall[[vars$arm]] == treatment_arm
+  cont_overall <- cont_overall[cont_selected, ]
+
+  # Early return if there are no subgroup variables.
+  result <- h_mmrm_subgroups_df(
+    estimates = est_overall,
+    contrasts = cont_overall,
+    subgroup = label_all,
+    var = "ALL",
+    label = label_all,
+    vars = vars
+  )
+  if (is.null(subgroups)) {
+    return(result)
+  }
+
+  # Now loop over the subgroup variables to calculate subgroup results.
+  subgroup_labels <- formatters::var_labels(fit$fit$data[subgroups], fill = TRUE)
+  subgroup_results <- lapply(subgroups, function(this_var) {
+    assert_factor(fit$fit$data[[this_var]])
+
+    this_emm_grid <- emmeans(
+      fit$fit,
+      specs = c(vars$visit, vars$arm, this_var),
+      weights = weights
+    )
+    this_emm_grid_df <- as.data.frame(this_emm_grid)
+    this_groups_list <- if (!is.null(groups_lists[[this_var]])) {
+      groups_lists[[this_var]]
+    } else {
+      tmp <- levels(this_emm_grid)[[this_var]]
+      stats::setNames(as.list(tmp), tmp)
+    }
+
+    this_var_results <- list()
+    for (this_group in names(this_groups_list)) {
+      # Create the emm grid for this group.
+      keep_visit <- if (is_average) {
+        this_emm_grid_df[[vars$visit]] %in% averages[[visit]]
+      } else {
+        this_emm_grid_df[[vars$visit]] == visit
+      }
+      this_levels <- this_groups_list[[this_group]]
+      keep_levels <- this_emm_grid_df[[this_var]] %in% this_levels
+      keep_rows <- keep_visit & keep_levels
+      emm_grid_for_group <- this_emm_grid[keep_rows]
+      emm_grid_for_group <- emmeans(emm_grid_for_group, specs = c(vars$visit, vars$arm))
+
+      # Derive the LS mean estimates and contrast.
+      emm_res_for_group <- list(
+        object = emm_grid_for_group,
+        grid = emm_grid_for_group@grid |> dplyr::rename(n = .wgt.) |> dplyr::mutate(n = as.integer(n))
+      )
+
+      conts_specs <- h_single_visit_contrast_specs(emm_res_for_group, vars)
+      group_res <-
+        if (is_average) {
+          avg_specs <- h_get_average_visit_specs(emm_res_for_group, vars = vars, averages = averages[visit])
+          avg_conts_specs <- h_average_visit_contrast_specs(conts_specs, averages)
+          list(
+            estimates = h_get_spec_visit_estimates(emm_res_for_group, avg_specs, conf_level),
+            contrasts = h_get_spec_visit_estimates(emm_res_for_group, avg_conts_specs, conf_level, tests = TRUE)
+          )
+        } else {
+          list(
+            estimates = h_get_single_visit_estimates(emm_res_for_group, conf_level),
+            contrasts = h_get_spec_visit_estimates(emm_res_for_group, conts_specs, conf_level, tests = TRUE)
+          )
+        }
+      this_var_results[[this_group]] <- h_mmrm_subgroups_df(
+        group_res$estimates,
+        group_res$contrasts,
+        subgroup = this_group,
+        var = this_var,
+        label = unname(subgroup_labels[this_var]),
+        vars = vars
+      )
+    }
+    this_var_results
+  })
+  results <- c(
+    result,
+    unlist(subgroup_results, recursive = FALSE)
+  )
+  list(
+    estimates = do.call(rbind, c(lapply(results, "[[", "estimates"), list(make.row.names = FALSE))),
+    contrasts = do.call(rbind, c(lapply(results, "[[", "contrasts"), list(make.row.names = FALSE)))
+  )
 }
 ```
 
+So let's try it out:
+
+```{r}
+df_mmrm <- extract_mmrm_subgroups(
+  fit = mmrm_results,
+  visit = "VIS1+2",
+  subgroups = c("SEX", "RACE"),
+  groups_lists = list(RACE = group_list)
+)
+df_mmrm
+```
+
+So we are not yet there, somehow we get the same results for the subgroups
+and the contrasts are the same everywhere.
 
 ## Formatted analysis function
 
