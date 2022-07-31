@@ -28,13 +28,13 @@ Adding Labels To Variables For Model
 }
 \section{Functions}{
 \itemize{
-\item \code{h_is_specified()}: checks if element in \code{vars} is not \code{NULL}.
+\item \code{h_is_specified}: checks if element in \code{vars} is not \code{NULL}.
 
-\item \code{h_is_specified_and_in_data()}: checks if element in vars is not NULL and exists in dataset.
+\item \code{h_is_specified_and_in_data}: checks if element in vars is not NULL and exists in dataset.
 
-\item \code{h_check_and_get_label()}: gets label for each element in vars.
+\item \code{h_check_and_get_label}: gets label for each element in vars.
 
-\item \code{h_labels()}: returns the list of variables with labels.
-
+\item \code{h_labels}: returns the list of variables with labels.
 }}
+
 \keyword{internal}
