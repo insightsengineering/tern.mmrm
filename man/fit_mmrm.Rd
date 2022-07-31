@@ -88,16 +88,17 @@ If there are \code{T} visits, then \code{T * (T+1) / 2} variance parameters are 
 \item \code{toeplitz}: Homogeneous Toeplitz covariance matrix, which uses \code{T} variance parameters.
 \item \verb{heterogeneous toeplitz}: Heterogeneous Toeplitz covariance matrix,
 which uses \code{2 * T - 1} variance parameters.
+\item \code{ante-dependence}: Homogeneous Ante-Dependence covariance matrix, which uses \code{T} variance parameters.
 \item \verb{heterogeneous ante-dependence}: Heterogeneous Ante-Dependence covariance matrix,
 which uses \code{2 * T - 1} variance parameters.
-\item \verb{heterogeneous auto-regressive}: Heterogeneous Auto-Regressive (order 1) covariance matrix,
-which uses \code{T + 1} variance parameters.
 \item \code{auto-regressive}: Homogeneous Auto-Regressive (order 1) covariance matrix,
 which uses 2 variance parameters.
-\item \verb{heterogeneous compound symmetry}: Heterogeneous Compound Symmetry covariance matrix, which uses
-\code{T + 1} variance parameters.
+\item \verb{heterogeneous auto-regressive}: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+which uses \code{T + 1} variance parameters.
 \item \verb{compound symmetry}: Homogeneous Compound Symmetry covariance matrix, which uses 2
 variance parameters.
+\item \verb{heterogeneous compound symmetry}: Heterogeneous Compound Symmetry covariance matrix, which uses
+\code{T + 1} variance parameters.
 }
 
 For the \code{optimizer}, the user can choose among alternatives to the recommended \code{"automatic"},
