@@ -66,16 +66,17 @@ h_get_diagnostics <- function(fit) {
 #'   - `toeplitz`: Homogeneous Toeplitz covariance matrix, which uses `T` variance parameters.
 #'   - `heterogeneous toeplitz`: Heterogeneous Toeplitz covariance matrix,
 #'        which uses `2 * T - 1` variance parameters.
+#'   - `ante-dependence`: Homogeneous Ante-Dependence covariance matrix, which uses `T` variance parameters.
 #'   - `heterogeneous ante-dependence`: Heterogeneous Ante-Dependence covariance matrix,
 #'        which uses `2 * T - 1` variance parameters.
-#'   - `heterogeneous auto-regressive`: Heterogeneous Auto-Regressive (order 1) covariance matrix,
-#'        which uses `T + 1` variance parameters.
 #'   - `auto-regressive`: Homogeneous Auto-Regressive (order 1) covariance matrix,
 #'        which uses 2 variance parameters.
-#'   - `heterogeneous compound symmetry`: Heterogeneous Compound Symmetry covariance matrix, which uses
-#'        `T + 1` variance parameters.
+#'   - `heterogeneous auto-regressive`: Heterogeneous Auto-Regressive (order 1) covariance matrix,
+#'        which uses `T + 1` variance parameters.
 #'   - `compound symmetry`: Homogeneous Compound Symmetry covariance matrix, which uses 2
 #'        variance parameters.
+#'   - `heterogeneous compound symmetry`: Heterogeneous Compound Symmetry covariance matrix, which uses
+#'        `T + 1` variance parameters.
 #'
 #'   For the `optimizer`, the user can choose among alternatives to the recommended `"automatic"`,
 #'   please see [mmrm::refit_multiple_optimizers()] for details. Usually it should not be necessary

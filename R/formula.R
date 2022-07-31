@@ -23,9 +23,10 @@ build_formula <- function(vars,
                             "unstructured",
                             "toeplitz",
                             "heterogeneous toeplitz",
+                            "ante-dependence",
+                            "heterogeneous ante-dependence",
                             "auto-regressive",
                             "heterogeneous auto-regressive",
-                            "heterogeneous ante-dependence",
                             "compound symmetry",
                             "heterogeneous compound symmetry"
                           )) {
@@ -48,9 +49,10 @@ build_formula <- function(vars,
     "unstructured" = "us",
     "toeplitz" = "toep",
     "heterogeneous toeplitz" = "toeph",
+    "ante-dependence" = "ad",
+    "heterogeneous ante-dependence" = "adh",
     "auto-regressive" = "ar1",
     "heterogeneous auto-regressive" = "ar1h",
-    "heterogeneous ante-dependence" = "ad",
     "compound symmetry" = "cs",
     "heterogeneous compound symmetry" = "csh"
   )

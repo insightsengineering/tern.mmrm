@@ -464,7 +464,7 @@ test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
   expect_class(mmrm_results, "tern_mmrm")
 })
 
-test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix", {
+test_that("fit_mmrm works with homogeneous ante-dependence covariance matrix", {
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -474,24 +474,7 @@ test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix",
       visit = "AVISIT"
     ),
     data = mmrm_test_data,
-    cor_struct = "heterogeneous auto-regressive",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
-  )
-  expect_class(mmrm_results, "tern_mmrm")
-})
-
-test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
-  mmrm_results <- fit_mmrm(
-    vars = list(
-      response = "FEV1",
-      covariates = c("SEX", "FEV1_BL"),
-      id = "USUBJID",
-      arm = "ARMCD",
-      visit = "AVISIT"
-    ),
-    data = mmrm_test_data,
-    cor_struct = "auto-regressive",
+    cor_struct = "ante-dependence",
     weights_emmeans = "equal",
     optimizer = "automatic"
   )
@@ -515,7 +498,7 @@ test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix",
   expect_class(mmrm_results, "tern_mmrm")
 })
 
-test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix", {
+test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -525,7 +508,24 @@ test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix
       visit = "AVISIT"
     ),
     data = mmrm_test_data,
-    cor_struct = "heterogeneous compound symmetry",
+    cor_struct = "auto-regressive",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous auto-regressive",
     weights_emmeans = "equal",
     optimizer = "automatic"
   )
@@ -543,6 +543,23 @@ test_that("fit_mmrm works with homogeneous compound symmetry covariance matrix",
     ),
     data = mmrm_test_data,
     cor_struct = "compound symmetry",
+    weights_emmeans = "equal",
+    optimizer = "automatic"
+  )
+  expect_class(mmrm_results, "tern_mmrm")
+})
+
+test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix", {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "heterogeneous compound symmetry",
     weights_emmeans = "equal",
     optimizer = "automatic"
   )

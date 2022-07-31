@@ -7,8 +7,9 @@
 build_formula(
   vars,
   cor_struct = c("unstructured", "toeplitz", "heterogeneous toeplitz",
-    "auto-regressive", "heterogeneous auto-regressive", "heterogeneous ante-dependence",
-    "compound symmetry", "heterogeneous compound symmetry")
+    "ante-dependence", "heterogeneous ante-dependence", "auto-regressive",
+    "heterogeneous auto-regressive", "compound symmetry",
+    "heterogeneous compound symmetry")
 )
 }
 \arguments{

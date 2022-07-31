@@ -18,7 +18,7 @@ in the GDSR.
 
 ## Details
 
-We will follow the FSTG01 layout example from GDSR, with the following
+We will follow the FSTG03 layout from GDSR, with the following
 modifications:
 
 - We note that only one MMRM is fitted and then the LS means are extracted
