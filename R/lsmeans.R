@@ -47,8 +47,10 @@ h_get_emmeans_res <- function(fit, vars, weights) {
 #' @describeIn lsmeans_helpers constructs average of visits specifications.
 h_get_average_visit_specs <- function(emmeans_res,
                                       vars,
-                                      averages) {
+                                      averages,
+                                      fit) {
   visit_grid <- emmeans_res$grid[[vars$visit]]
+  model_frame <- model.frame(fit, full = TRUE)
   averages_list <- list()
   visit_vec <- n_vec <- c()
   if (!is.null(vars$arm)) {
@@ -65,7 +67,9 @@ h_get_average_visit_specs <- function(emmeans_res,
     if (is.null(vars$arm)) {
       averages_list[[average_label]] <- average_coefs
       visit_vec <- c(visit_vec, average_label)
-      n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average]))
+      is_in_subset <- (model_frame[[vars$visit]] %in% visits_average)
+      this_n <- length(unique(model_frame[is_in_subset, vars$id]))
+      n_vec <- c(n_vec, this_n)
     } else {
       for (this_arm in levels(arm_grid)) {
         this_coefs <- zero_coefs
@@ -75,7 +79,10 @@ h_get_average_visit_specs <- function(emmeans_res,
         averages_list[[arm_average_label]] <- this_coefs
         arm_vec <- c(arm_vec, this_arm)
         visit_vec <- c(visit_vec, average_label)
-        n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average & which_arm]))
+        is_in_subset <- (model_frame[[vars$arm]] == this_arm) &
+          (model_frame[[vars$visit]] %in% visits_average)
+        this_n <- length(unique(model_frame[is_in_subset, vars$id]))
+        n_vec <- c(n_vec, this_n)
       }
     }
   }
@@ -280,7 +287,7 @@ get_mmrm_lsmeans <- function(fit,
   # Get least square means estimates for single visits, and possibly averaged visits.
   estimates <- h_get_single_visit_estimates(emmeans_res, conf_level)
   if (length(averages)) {
-    average_specs <- h_get_average_visit_specs(emmeans_res, vars, averages)
+    average_specs <- h_get_average_visit_specs(emmeans_res, vars, averages, fit)
     average_estimates <- h_get_spec_visit_estimates(emmeans_res, average_specs, conf_level)
     estimates <- rbind(estimates, average_estimates)
   }
