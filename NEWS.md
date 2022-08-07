@@ -12,6 +12,10 @@
 * Added options `show_lines`, `xlab` and `constant_baseline` to `g_mmrm_lsmeans()`
   which offer addition of lines connecting the estimates, x axis label configuration
   and optional constant baseline estimates for the LS means plots.
+* Added options `estimates_table`, `table_format`, `table_labels`, `table_font_size`,
+  `table_rel_height` to `g_mmrm_lsmeans` which offer the addition of LS means
+  estimates table below the LS means estimates plot, and control the appearance
+  details of it.
 
 # tern.mmrm 0.1.1
 

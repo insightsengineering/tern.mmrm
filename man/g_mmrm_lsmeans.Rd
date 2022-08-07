@@ -20,7 +20,8 @@ g_mmrm_lsmeans(
   table_format = c(n = "xx.", estimate = "xx.x", se = "xx.x", ci = "(xx.xx, xx.xx)"),
   table_labels = c(n = "n", estimate = "LS mean", se = "Std. Error", ci =
     paste0(round(object$conf_level * 100), "\% CI")),
-  table_font_size = 3
+  table_font_size = 3,
+  table_rel_height = 0.5
 )
 }
 \arguments{
@@ -59,6 +60,9 @@ labels for the statistics in the (optional) estimates table.}
 
 \item{table_font_size}{(\code{number})\cr
 controls the font size of values in the (optional) estimates table.}
+
+\item{table_rel_height}{(\code{number})\cr
+controls the relative height of the (optional) estimates table compared to the estimates plot.}
 }
 \value{
 A \code{ggplot2} plot.
@@ -138,10 +142,17 @@ g_mmrm_lsmeans(
 
 g_mmrm_lsmeans(
   mmrm_results_no_arm,
-  select = c("estimates"),
+  select = "estimates",
   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
   show_pval = TRUE,
   width = 0.8,
   show_lines = TRUE
+)
+
+g_mmrm_lsmeans(
+  mmrm_results,
+  select = "estimates",
+  titles = c(estimates = "Adjusted mean of FKSI-FWB"),
+  estimates_table = c("n", "ci")
 )
 }

@@ -22,6 +22,7 @@ Depends:
 Imports:
     checkmate,
     cowplot,
+    dplyr,
     emmeans (>= 1.6),
     formatters (>= 0.3.1),
     generics,
@@ -35,7 +36,6 @@ Imports:
     tidyr
 Suggests:
     broom,
-    dplyr,
     knitr,
     maditr,
     Matrix,

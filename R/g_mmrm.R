@@ -173,6 +173,8 @@ g_mmrm_diagnostic <- function(object,
 #'   labels for the statistics in the (optional) estimates table.
 #' @param table_font_size (`number`)\cr
 #'   controls the font size of values in the (optional) estimates table.
+#' @param table_rel_height (`number`)\cr
+#'   controls the relative height of the (optional) estimates table compared to the estimates plot.
 #'
 #' @return A `ggplot2` plot.
 #'
@@ -245,11 +247,18 @@ g_mmrm_diagnostic <- function(object,
 #'
 #' g_mmrm_lsmeans(
 #'   mmrm_results_no_arm,
-#'   select = c("estimates"),
+#'   select = "estimates",
 #'   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
 #'   show_pval = TRUE,
 #'   width = 0.8,
 #'   show_lines = TRUE
+#' )
+#'
+#' g_mmrm_lsmeans(
+#'   mmrm_results,
+#'   select = "estimates",
+#'   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
+#'   estimates_table = c("n", "ci")
 #' )
 g_mmrm_lsmeans <-
   function(object,
@@ -279,7 +288,8 @@ g_mmrm_lsmeans <-
              se = "Std. Error",
              ci = paste0(round(object$conf_level * 100), "% CI")
            ),
-           table_font_size = 3) {
+           table_font_size = 3,
+           table_rel_height = 0.5) {
     assert_class(object, "tern_mmrm")
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
@@ -304,20 +314,16 @@ g_mmrm_lsmeans <-
     assert_flag(show_lines)
     assert_number(constant_baseline, null.ok = TRUE)
     incl_const_baseline <- !is.null(constant_baseline)
-    estimates_table <- match.arg(
-      estimates_table,
-      choices = c("n", "estimate", "se", "ci"),
-      several.ok = TRUE
-    )
 
     # Get relevant subsets of the estimates and contrasts data frames.
     v <- object$vars
     if (arms) {
-      estimates <- object$lsmeans$estimates[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl")]
-      contrasts <- object$lsmeans$contrasts[, c(v$arm, v$visit, "estimate", "lower_cl", "upper_cl", "p_value")]
+      estimates <- object$lsmeans$estimates[, c(v$arm, v$visit, "estimate", "se", "n", "lower_cl", "upper_cl")]
+      contrasts <- object$lsmeans$contrasts[, c(v$arm, v$visit, "estimate", "se", "lower_cl", "upper_cl", "p_value")]
       contrasts[[v$arm]] <- factor(contrasts[[v$arm]], levels = levels(estimates[[v$arm]]))
+      contrasts$n <- NA
     } else {
-      estimates <- object$lsmeans$estimates[, c(v$visit, "estimate", "lower_cl", "upper_cl")]
+      estimates <- object$lsmeans$estimates[, c(v$visit, "estimate", "se", "n", "lower_cl", "upper_cl")]
     }
 
     # Optionally add constant baseline estimates and 0 contrasts.
@@ -330,6 +336,8 @@ g_mmrm_lsmeans <-
       baseline_est_row <- data.frame(
         visit = baseline_visit,
         estimate = constant_baseline,
+        se = 0,
+        n = NA, # Note: We don't know the number of patients at baseline from `object`.
         lower_cl = constant_baseline,
         upper_cl = constant_baseline,
         row.names = NULL
@@ -340,6 +348,8 @@ g_mmrm_lsmeans <-
         baseline_cont_row <- data.frame(
           visit = baseline_visit,
           estimate = 0,
+          se = 0,
+          n = NA,
           lower_cl = 0,
           upper_cl = 0,
           p_value = 1,
@@ -374,6 +384,7 @@ g_mmrm_lsmeans <-
     } else if (identical(select, "contrasts")) {
       cbind(contrasts, type = "contrasts")
     } else {
+      contrasts <- contrasts[, colnames(estimates)]
       rbind(
         cbind(estimates, type = "estimates"),
         cbind(contrasts, type = "contrasts")
@@ -395,7 +406,6 @@ g_mmrm_lsmeans <-
     ) +
       ggplot2::geom_errorbar(width = width, position = pd) +
       ggplot2::geom_point(position = pd) +
-      ggplot2::expand_limits(x = 0) +
       ggplot2::scale_color_discrete(
         name = if (arms) object$labels$arm else NULL,
         drop = FALSE # To ensure same colors for only contrasts plot.
@@ -447,60 +457,38 @@ g_mmrm_lsmeans <-
           ggplot2::coord_cartesian(clip = "off")
       }
     } else if (length(estimates_table) > 0) {
-      # df_grp:
-      # A tibble: 2,400 × 3
-      # Groups:   ARM, AVISIT [18]
-      # ARM       AVISIT    AVAL
-      # <fct>     <fct>    <dbl>
-      #   1 A: Drug X BASELINE  22.7
-      # 2 A: Drug X BASELINE  19.4
-      # 3 A: Drug X BASELINE  19.4
-      # 4 A: Drug X BASELINE  18.9
-      # 5 A: Drug X BASELINE  17.8
-
-      # To do: add here the estimates table below the estimates plot.
-      # Follow similar flow as given with g_lineplot example here.
-      df_stats_table <- df_grp %>%
-        dplyr::summarise(
+      estimates_table <- match.arg(
+        estimates_table,
+        choices = c("n", "estimate", "se", "ci"),
+        several.ok = TRUE
+      )
+      est_stats_tab <- NULL
+      strata_vars <- c(v$arm, v$visit)
+      for (i in seq_len(nrow(estimates))) {
+        x_list <- as.list(estimates[i, ])
+        x_list$ci <- c(x_list$lower_cl, x_list$upper_cl)
+        this_row <- cbind(
+          estimates[i, strata_vars, drop = FALSE],
           tern::h_format_row(
-            x = sfun(.data[[y]], ...)[table],
+            x = x_list[estimates_table],
             format = table_format,
             labels = table_labels
-          ),
-          .groups = "drop"
+          )
         )
-      # # A tibble: 18 × 5
-      # ARM            AVISIT        n     Mean  `Mean 95% CI`
-      # <fct>          <fct>         <chr> <chr> <chr>
-      #   1 A: Drug X      BASELINE      134   19.8  (19.07, 20.50)
-      # 2 A: Drug X      WEEK 1 DAY 8  134   19.3  (18.62, 19.98)
-      # 3 A: Drug X      WEEK 2 DAY 15 134   19.7  (18.98, 20.43)
-      # 4 A: Drug X      WEEK 3 DAY 22 134   20.1  (19.49, 20.77)
-      # 5 A: Drug X      WEEK 4 DAY 29 134   20.4  (19.57, 21.13)
-      # 6 A: Drug X      WEEK 5 DAY 36 134   20.4  (19.75, 21.09)
+        est_stats_tab <- rbind(est_stats_tab, this_row)
+      }
 
-      stats_lev <- rev(setdiff(colnames(df_stats_table), c(strata, x)))
-      # [1] "Mean 95% CI" "Mean"        "n"
+      stats_lev <- rev(setdiff(colnames(est_stats_tab), strata_vars))
 
-      df_stats_table <- df_stats_table %>%
+      est_stats_tab <- est_stats_tab %>%
         tidyr::pivot_longer(
-          cols = -dplyr::all_of(c(strata, x)),
+          cols = -dplyr::all_of(strata_vars),
           names_to = "stat",
           values_to = "value",
           names_ptypes = list(stat = factor(levels = stats_lev))
         )
-      # # A tibble: 54 × 4
-      # ARM       AVISIT        stat        value
-      # <fct>     <fct>         <fct>       <chr>
-      # 1 A: Drug X BASELINE      n           134
-      # 2 A: Drug X BASELINE      Mean        19.8
-      # 3 A: Drug X BASELINE      Mean 95% CI (19.07, 20.50)
-      # 4 A: Drug X WEEK 1 DAY 8  n           134
-      # 5 A: Drug X WEEK 1 DAY 8  Mean        19.3
-      # 6 A: Drug X WEEK 1 DAY 8  Mean 95% CI (18.62, 19.98)
 
-
-      tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes_string(x = x, y = "stat", label = "value")) +
+      tbl <- ggplot2::ggplot(est_stats_tab, ggplot2::aes_string(x = v$visit, y = "stat", label = "value")) +
         ggplot2::geom_text(size = table_font_size) +
         ggplot2::theme_bw() +
         ggplot2::theme(
@@ -510,25 +498,32 @@ g_mmrm_lsmeans <-
           axis.ticks = ggplot2::element_blank(),
           axis.title = ggplot2::element_blank(),
           axis.text.x = ggplot2::element_blank(),
-          axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
           strip.text = ggplot2::element_text(hjust = 0),
           strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
           strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
           legend.position = "none"
         )
 
-      # To do: Facet by treatment arm, if available.
-      if (!is.null(arm_var)) {
+      # Facet by treatment arm, if available.
+      if (arms) {
         tbl <- tbl + ggplot2::facet_wrap(
-          facets = arm_var,
+          facets = v$arm,
           ncol = 1
         )
       }
 
       # Align estimates plot and estimates table.
-      result <- cowplot::plot_grid(result, tbl, ncol = 1)
-
-      # To do: import cowplot
+      result <- result +
+        ggplot2::theme(
+          legend.position = "bottom"
+        )
+      result <- cowplot::plot_grid(
+        result,
+        tbl,
+        ncol = 1,
+        align = "v",
+        rel_heights = c(1, table_rel_height)
+      )
     }
     return(result)
   }
