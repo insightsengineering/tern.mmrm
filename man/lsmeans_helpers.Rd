@@ -13,7 +13,7 @@
 \usage{
 h_get_emmeans_res(fit, vars, weights)
 
-h_get_average_visit_specs(emmeans_res, vars, averages)
+h_get_average_visit_specs(emmeans_res, vars, averages, fit)
 
 h_get_spec_visit_estimates(emmeans_res, specs, conf_level, tests = FALSE)
 
