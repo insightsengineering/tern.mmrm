@@ -19,9 +19,10 @@ NULL
 #'   `object` (`emmGrid` object containing `emmeans` results) and `grid`
 #'   (`data.frame` containing the potential arm and the visit variables
 #'   together with the sample size `n` for each combination).
+#' @importFrom stats model.frame
 h_get_emmeans_res <- function(fit, vars, weights) {
   assert_class(fit, "mmrm")
-  data_complete <- stats::model.frame(fit)
+  data_complete <- model.frame(fit)
   assert_data_frame(data_complete)
   assert_list(vars)
 
