@@ -164,6 +164,15 @@ g_mmrm_diagnostic <- function(object,
 #'   LS mean estimates. If specified then needs to be a named `number`, and the name will be used to
 #'   label the corresponding baseline visit. The differences of LS means will always be 0 at this
 #'   baseline visit.
+#' @param estimates_table (`character`)\cr names of the statistics that will be displayed in the
+#'   table below the estimates plot. Note that the table will only be added when selecting only the
+#'   "estimates" plot. Available statistics are `n`, `estimate`, `se`, and `ci`.
+#' @param table_format (named `character`)\cr format patterns for descriptive statistics
+#'   used in the (optional) estimates table appended to the estimates plot.
+#' @param table_labels (named `character`)\cr
+#'   labels for the statistics in the (optional) estimates table.
+#' @param table_font_size (`number`)\cr
+#'   controls the font size of values in the (optional) estimates table.
 #'
 #' @return A `ggplot2` plot.
 #'
@@ -256,7 +265,21 @@ g_mmrm_lsmeans <-
            width = 0.6,
            show_pval = TRUE,
            show_lines = FALSE,
-           constant_baseline = NULL) {
+           constant_baseline = NULL,
+           estimates_table = character(),
+           table_format = c(
+             n = "xx.",
+             estimate = "xx.x",
+             se = "xx.x",
+             ci = "(xx.xx, xx.xx)"
+           ),
+           table_labels = c(
+             n = "n",
+             estimate = "LS mean",
+             se = "Std. Error",
+             ci = paste0(round(object$conf_level * 100), "% CI")
+           ),
+           table_font_size = 3) {
     assert_class(object, "tern_mmrm")
     select <- match.arg(select, several.ok = TRUE)
     if (is.null(object$vars$arm)) {
@@ -281,6 +304,11 @@ g_mmrm_lsmeans <-
     assert_flag(show_lines)
     assert_number(constant_baseline, null.ok = TRUE)
     incl_const_baseline <- !is.null(constant_baseline)
+    estimates_table <- match.arg(
+      estimates_table,
+      choices = c("n", "estimate", "se", "ci"),
+      several.ok = TRUE
+    )
 
     # Get relevant subsets of the estimates and contrasts data frames.
     v <- object$vars
@@ -418,6 +446,89 @@ g_mmrm_lsmeans <-
           ) +
           ggplot2::coord_cartesian(clip = "off")
       }
+    } else if (length(estimates_table) > 0) {
+      # df_grp:
+      # A tibble: 2,400 × 3
+      # Groups:   ARM, AVISIT [18]
+      # ARM       AVISIT    AVAL
+      # <fct>     <fct>    <dbl>
+      #   1 A: Drug X BASELINE  22.7
+      # 2 A: Drug X BASELINE  19.4
+      # 3 A: Drug X BASELINE  19.4
+      # 4 A: Drug X BASELINE  18.9
+      # 5 A: Drug X BASELINE  17.8
+
+      # To do: add here the estimates table below the estimates plot.
+      # Follow similar flow as given with g_lineplot example here.
+      df_stats_table <- df_grp %>%
+        dplyr::summarise(
+          tern::h_format_row(
+            x = sfun(.data[[y]], ...)[table],
+            format = table_format,
+            labels = table_labels
+          ),
+          .groups = "drop"
+        )
+      # # A tibble: 18 × 5
+      # ARM            AVISIT        n     Mean  `Mean 95% CI`
+      # <fct>          <fct>         <chr> <chr> <chr>
+      #   1 A: Drug X      BASELINE      134   19.8  (19.07, 20.50)
+      # 2 A: Drug X      WEEK 1 DAY 8  134   19.3  (18.62, 19.98)
+      # 3 A: Drug X      WEEK 2 DAY 15 134   19.7  (18.98, 20.43)
+      # 4 A: Drug X      WEEK 3 DAY 22 134   20.1  (19.49, 20.77)
+      # 5 A: Drug X      WEEK 4 DAY 29 134   20.4  (19.57, 21.13)
+      # 6 A: Drug X      WEEK 5 DAY 36 134   20.4  (19.75, 21.09)
+
+      stats_lev <- rev(setdiff(colnames(df_stats_table), c(strata, x)))
+      # [1] "Mean 95% CI" "Mean"        "n"
+
+      df_stats_table <- df_stats_table %>%
+        tidyr::pivot_longer(
+          cols = -dplyr::all_of(c(strata, x)),
+          names_to = "stat",
+          values_to = "value",
+          names_ptypes = list(stat = factor(levels = stats_lev))
+        )
+      # # A tibble: 54 × 4
+      # ARM       AVISIT        stat        value
+      # <fct>     <fct>         <fct>       <chr>
+      # 1 A: Drug X BASELINE      n           134
+      # 2 A: Drug X BASELINE      Mean        19.8
+      # 3 A: Drug X BASELINE      Mean 95% CI (19.07, 20.50)
+      # 4 A: Drug X WEEK 1 DAY 8  n           134
+      # 5 A: Drug X WEEK 1 DAY 8  Mean        19.3
+      # 6 A: Drug X WEEK 1 DAY 8  Mean 95% CI (18.62, 19.98)
+
+
+      tbl <- ggplot2::ggplot(df_stats_table, ggplot2::aes_string(x = x, y = "stat", label = "value")) +
+        ggplot2::geom_text(size = table_font_size) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(
+          panel.border = ggplot2::element_blank(),
+          panel.grid.major = ggplot2::element_blank(),
+          panel.grid.minor = ggplot2::element_blank(),
+          axis.ticks = ggplot2::element_blank(),
+          axis.title = ggplot2::element_blank(),
+          axis.text.x = ggplot2::element_blank(),
+          axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
+          strip.text = ggplot2::element_text(hjust = 0),
+          strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
+          strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
+          legend.position = "none"
+        )
+
+      # To do: Facet by treatment arm, if available.
+      if (!is.null(arm_var)) {
+        tbl <- tbl + ggplot2::facet_wrap(
+          facets = arm_var,
+          ncol = 1
+        )
+      }
+
+      # Align estimates plot and estimates table.
+      result <- cowplot::plot_grid(result, tbl, ncol = 1)
+
+      # To do: import cowplot
     }
     return(result)
   }
