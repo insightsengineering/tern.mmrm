@@ -31,15 +31,15 @@ We provide assertion functions to check the input dataset.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_assert_one_rec_pt_visit()}: asserts single record per patient and visit.
+\item \code{h_assert_one_rec_pt_visit}: asserts single record per patient and visit.
 
-\item \code{h_assert_rsp_var()}: assert numeric response variable.
+\item \code{h_assert_rsp_var}: assert numeric response variable.
 
-\item \code{h_assert_visit_var()}: assert factor visit variable.
+\item \code{h_assert_visit_var}: assert factor visit variable.
 
-\item \code{h_assert_id_var()}: assert subject ID variable.
+\item \code{h_assert_id_var}: assert subject ID variable.
 
-\item \code{h_assert_data()}: high-level assertion function to check the dataset.
-
+\item \code{h_assert_data}: high-level assertion function to check the dataset.
 }}
+
 \keyword{internal}

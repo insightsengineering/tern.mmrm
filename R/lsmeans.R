@@ -274,6 +274,8 @@ h_average_visit_contrast_specs <- function(specs,
 #'   and reported along side the single visits.
 #' @param weights (`string`)\cr type of weights to be used for the least square means,
 #'   see [emmeans::emmeans()] for details.
+#' @return A list with data frames `estimates` and `contrasts`.
+#'   The attributes `averages` and `weights` save the settings used.
 #'
 #' @export
 get_mmrm_lsmeans <- function(fit,
@@ -314,8 +316,12 @@ get_mmrm_lsmeans <- function(fit,
   )
   contrast_estimates[[vars$arm]] <- factor(contrast_estimates[[vars$arm]])
   contrast_estimates[[vars$visit]] <- factor(contrast_estimates[[vars$visit]])
-  list(
-    estimates = estimates,
-    contrasts = contrast_estimates
+  structure(
+    list(
+      estimates = estimates,
+      contrasts = contrast_estimates
+    ),
+    averages = averages,
+    weights = weights
   )
 }
