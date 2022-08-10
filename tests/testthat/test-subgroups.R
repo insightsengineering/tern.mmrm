@@ -107,7 +107,7 @@ test_that("extract_mmrm_subgroups works as expected", {
     visit = "VIS3",
     subgroups = c("RACE", "SEX")
   )
-  expect_snapshot_value(result, tolerance = 1e-2)
+  expect_snapshot_value(result, tolerance = 1e-2, style = "serialize")
 })
 
 test_that("extract_mmrm_subgroups works as expected without subgroup variables", {
@@ -115,7 +115,7 @@ test_that("extract_mmrm_subgroups works as expected without subgroup variables",
     fit = mmrm_results,
     visit = "VIS2"
   )
-  expect_snapshot_value(result, tolerance = 1e-2)
+  expect_snapshot_value(result, tolerance = 1e-2, style = "serialize")
 })
 
 test_that("extract_mmrm_subgroups works as expected with groups_lists", {
@@ -128,7 +128,7 @@ test_that("extract_mmrm_subgroups works as expected with groups_lists", {
       "B" = c("Black or African American", "White")
     ))
   )
-  expect_snapshot_value(result, tolerance = 1e-2)
+  expect_snapshot_value(result, tolerance = 1e-2, style = "serialize")
 })
 
 test_that("extract_mmrm_subgroups works when model does not work for some subgroups", {
@@ -137,7 +137,7 @@ test_that("extract_mmrm_subgroups works when model does not work for some subgro
     visit = "VIS1+2",
     subgroups = c("SEX", "EXTRA")
   ))
-  expect_snapshot_value(result, tolerance = 1e-2)
+  expect_snapshot_value(result, tolerance = 1e-2, style = "serialize")
 })
 
 # a_mmrm_subgroups ----
@@ -160,7 +160,7 @@ test_that("tabulate_mmrm_subgroups works as expected", {
   tab <- basic_table() %>%
     tabulate_mmrm_subgroups(df)
   tab_matrix <- to_string_matrix(tab)
-  expect_snapshot_value(tab_matrix)
+  expect_snapshot_value(tab_matrix, style = "serialize")
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
   vdiffr::expect_doppelganger("MMRM forest plot", function() grid::grid.draw(forest))
@@ -191,7 +191,7 @@ test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
       )
     )
   tab_matrix <- to_string_matrix(tab)
-  expect_snapshot_value(tab_matrix)
+  expect_snapshot_value(tab_matrix, style = "serialize")
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
   vdiffr::expect_doppelganger("MMRM forest plot with customizations", function() grid::grid.draw(forest))
