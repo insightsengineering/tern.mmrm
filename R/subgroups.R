@@ -1,214 +1,52 @@
----
-title: "Design for MMRM forest plot"
-output: html_document
-editor_options:
-  chunk_output_type: console
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-# Objective
-
-We would like to create a forest plot for the LS means estimated difference
-at a specific visit (chosen by the user) across different subgroups created
-by different baseline variables. This is FSTG03 "Forest Plot for Adjusted Means"
-in the GDSR.
-
-## Details
-
-We will follow the FSTG03 layout from GDSR, with the following
-modifications:
-
-- Despite the unclear wording, we see from SAS example code that for each subgroup
-  a separate MMRM model is fitted: "Calculate least squares means for each subgroup
-  and estimate the mean difference (Treatment minus Control),
-  including 95% confidence interval, from an MMRM analysis [...]"
-- We replace the column heading "Subgroup" with "Baseline Risk Factor"
-- We remove the "Category" column and display the Category headings directly
-  underneath the Baseline Risk Factor heading, as in FSTG01.
-- Also, we replace the first row heading, "Overall", with "All Patients",
-  consistent with FSTG01.
-- By default we present the following summary statistics:
-  - total N
-  - Control n and mean
-  - Treatment n and mean
-  - mean difference
-  - 95% CI for mean difference
-- By default plot using constant-sized symbols for the point estimates of the
-  differences.  Proportionally sized symbols can be used optionally
-  (e.g., size proportional to the total sample size for a subgroup).
-- We also allow the option for presenting p-value for each mean difference to the
-  right of the 95% CI.
-  Note that this is not encouraged, as statistically it does not make
-  a lot of sense in most situations - especially since the confidence intervals
-  already show whether the p-value is below 5% or not.
-- Note that we need exactly one treatment arm and one control arm selected for the
-  forest plot. We might have more than one treatment arm in the original dataset
-  and model fit. So we need to allow the user to select the treatment arm.
-
-## Idea
-
-We could maybe have a workflow as follows, where we try to stay close
-to what we did for the survival and binary response forest plots:
-
-```{r, eval = FALSE}
-fit <- fit_mmrm(...)
-subgroups <- extract_mmrm_subgroups(
-  fit,
-  visit = "VIS4",
-  subgroups = c("AGEGRP", "REGION", "SEVERITY"),
-  groups_lists = list(SEVERITY = list(
-    "<= Q1" = c("Q0", "Q1"),
-    "> Q1 to <= Q3" = c("Q2", "Q3"),
-    "> Q3" = c("Q4", "Q5")
-  )),
-  label_all = "All Patients"
-)
-basic_table() %>%
-  tabulate_mmrm_subgroups(
-    subgroups,
-    vars = c("n_tot", "n", "mean", "diff", "ci", "pval")
-  )
-```
-
-Note:
-- The `fit` already contains LS mean estimates, however we will need to derive new
-  ones again for the subgroups from separate MMRM model fits. Note that because
-  `weights` and `conf_level` are directly taken from the initial overall model fit
-  we don't need to fit the overall group again.
-- `visit` needs to reference one specific visit.
-- We should save he original `cor_struct` in the object so that we can construct
-  the subgroup call easily. Same for `parallel` and `accept_singular`.
-- We should save the `averages_emmeans` list in the object such that `visit` can
-  reference this as a simple string without needing a list specification again.
-- We should add the `weights_emmeans` chosen for LS means in the object. However
-  it seems like we can only estimate proportional weights. So we might assert that.
-- The subgroup variables already need to be factors.
-- `groups_lists` helps to group factor levels further as needed (can also overlap).
-- The tabulation function should then be relatively similar to the ones for survival
-  and binary outcome.
-- This must also work when the subgroup variables were not used as part of the
-  covariates during the model fit. This should not be a problem now.
-
-# Prototypes
-
-```{r}
-library(tern.mmrm)
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  averages_emmeans = list(
-    "VIS1+2" = c("VIS1", "VIS2")
-  )
-)
-```
-
-## Adjustments to `fit_mmrm`
-
-See the code changes in this pull request.
-
-## LS means computations
-
-This is not an issue anymore as we fit the usual MMRM model just for each subgroup
-and then just extract the relevant visit (or average of visits) result for the
-given reference and treatment arms.
-
-For the subgroup selection we must also be able to support overlapping subgroups
-via the `groups_lists` argument, e.g. for `RACE` we could define (arbitrary example):
-
-```{r}
-group_list <- list(
-  "A" = c("Asian", "Black or African American"),
-  "B" = c("Black or African American", "White")
-)
-```
-
-## Extraction function
-
-Now that we understand how to calculate the LS means we can write the extraction
-function. We can look at the example `?extract_survival_subgroups` to see how
-approximately the result should look like to fit into the workflow:
-
-```{r}
-# Testing dataset.
-library(scda)
-library(dplyr)
-library(forcats)
-library(rtables)
-
-adtte <- synthetic_cdisc_data("latest")$adtte
-
-# Save variable labels before data processing steps.
-adtte_labels <- formatters::var_labels(adtte)
-
-adtte_f <- adtte %>%
-  filter(
-    PARAMCD == "OS",
-    ARM %in% c("B: Placebo", "A: Drug X"),
-    SEX %in% c("M", "F")
-  ) %>%
-  mutate(
-    # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-    SEX = droplevels(SEX),
-    AVALU = as.character(AVALU),
-    is_event = CNSR == 0
-  )
-labels <- c(
-  "ARM" = adtte_labels[["ARM"]],
-  "SEX" = adtte_labels[["SEX"]],
-  "AVALU" = adtte_labels[["AVALU"]],
-  "is_event" = "Event Flag"
-)
-formatters::var_labels(adtte_f)[names(labels)] <- labels
-
-df <- extract_survival_subgroups(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    arm = "ARM", subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f
-)
-df
-```
-
-With that in mind we can prototype the function here.
-We need a little helper function for the formatting.
-
-```{r}
-h_mmrm_subgroups_df <- function(lsmeans,
-                                overall_fit,
-                                is_in_subset, # which rows in original data are used?
-                                visit,
-                                treatment_arm,
-                                subgroup,
-                                var,
-                                label) {
-  # Note: If `lsmeans` is `NULL` then no results are available for this subgroup
-  # and results are populated with `NA` instead.
-
+#' Helper for Extraction and Formatting of MMRM Subgroups
+#'
+#' This is an internal helper to extract the correct LS mean estimates and
+#' contrast for a specific visit and treatment arm relative to the reference
+#' arm for one MMRM subgroup.
+#'
+#' @param lsmeans (named `list` or `NULL`)\cr LS mean estimates from [fit_mmrm()]
+#'   on this subgroup.
+#' @param overall_fit (`tern_mmrm`)\cr result of [fit_mmrm()] on overall data.
+#' @param is_in_subset (`logical`)\cr specifying which row from the overall data
+#'   should be used for this subset.
+#' @param visit (`string`)\cr which visit to extract.
+#' @param treatment_arm (`string`)\cr which treatment arm to extract.
+#' @param subgroup (`string`)\cr for labeling in the resulting `data.frame`.
+#' @param var (`string`)\cr specifies which variable was used to derive the subset,
+#'   if `ALL` then this means the overall data was used.
+#' @param label (`string`)\cr variable label.
+#'
+#' @return List with `estimates` (with 2 rows) and `contrasts` (with 1 row) in the
+#'   format needed in [extract_mmrm_subgroups()].
+#' @keywords internal
+h_mmrm_subgroup_df <- function(lsmeans,
+                               overall_fit,
+                               is_in_subset,
+                               visit,
+                               treatment_arm,
+                               subgroup,
+                               var,
+                               label) {
+  assert_list(lsmeans, len = 2L, types = "data.frame", null.ok = TRUE)
   ok <- !is.null(lsmeans)
+  if (ok) assert_names(names(lsmeans), identical.to = c("estimates", "contrasts"))
+  assert_class(overall_fit, "tern_mmrm")
+  assert_logical(is_in_subset, len = nrow(overall_fit$fit$data), any.missing = FALSE)
+  assert_string(visit)
+  assert_string(treatment_arm)
+  assert_string(subgroup)
+  assert_string(var)
+  assert_string(label)
+
   v <- overall_fit$vars
   ref_arm <- overall_fit$ref_level
 
   if (ok) {
-    # Estimates.
     estimates <- lsmeans$estimates
     est_selected <- estimates[[v$visit]] == visit &
       estimates[[v$arm]] %in% c(ref_arm, treatment_arm)
     estimates <- estimates[est_selected, ]
 
-    # Contrast.
     contrasts <- lsmeans$contrasts
     cont_selected <- contrasts[[v$visit]] == visit &
       contrasts[[v$arm]] == treatment_arm
@@ -216,7 +54,7 @@ h_mmrm_subgroups_df <- function(lsmeans,
   } else {
     subset_model_frame <- stats::model.frame(
       overall_fit$fit$formula_parts$full_formula,
-      data = overall_fit$fit$data[is_in_subset, ]
+      data = overall_fit$fit$data[is_in_subset, , drop = FALSE]
     )
     averages <- attr(overall_fit$lsmeans, "averages")
     visit_selected <- if (visit %in% names(averages)) {
@@ -231,14 +69,13 @@ h_mmrm_subgroups_df <- function(lsmeans,
     n_trt <- length(unique(trt_model_frame[[v$id]]))
   }
 
-  # Format as list of two data frames.
   is_all <- var == "ALL"
   row_type <- if (is_all) "content" else "analysis"
   list(
     estimates = data.frame(
       arm = factor(c(ref_arm, treatment_arm), levels = c(ref_arm, treatment_arm)),
       n = if (ok) estimates$n else c(n_ref, n_trt),
-      lsmean = if (ok) estimates$estimate else NA,
+      lsmean = if (ok) estimates$estimate else NA_real_,
       subgroup = subgroup,
       var = var,
       var_label = label,
@@ -246,10 +83,10 @@ h_mmrm_subgroups_df <- function(lsmeans,
     ),
     contrasts = data.frame(
       n_tot = if (ok) sum(estimates$n) else (n_ref + n_trt),
-      diff = if (ok) contrasts$estimate else NA,
-      lcl = if (ok) contrasts$lower_cl else NA,
-      ucl = if (ok) contrasts$upper_cl else NA,
-      pval = if (ok) contrasts$p_value else NA,
+      diff = if (ok) contrasts$estimate else NA_real_,
+      lcl = if (ok) contrasts$lower_cl else NA_real_,
+      ucl = if (ok) contrasts$upper_cl else NA_real_,
+      pval = if (ok) contrasts$p_value else NA_real_,
       conf_level = overall_fit$conf_level,
       subgroup = subgroup,
       var = var,
@@ -258,11 +95,15 @@ h_mmrm_subgroups_df <- function(lsmeans,
     )
   )
 }
-```
 
-Here it finally comes:
-
-```{r}
+#' Extraction of MMRM Subgroup Results based on Population Model Definition
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' This prepares LS mean estimates and contrasts for a specific visit and treatment
+#' arm relative to the reference arm, along a list of subgroup variables and corresponding
+#' (grouped) factor levels.
+#'
 #' @param fit (`tern_mmrm`)\cr model fit on the total population.
 #' @param visit (`string`)\cr single visit or name of averages of visits (referring
 #'   to the averages specified when creating the `fit`).
@@ -273,34 +114,61 @@ Here it finally comes:
 #'   names and the levels that belong to it in the character vectors that
 #'   are elements of the list.
 #' @param treatment_arm (`string`)\cr single treatment arm to compare with the reference
-#'   arm.ß
+#'   arm.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #'
+#' @note If the original model `vars` include `covariates` which are used here in
+#'   `subgroups` then these are dropped from `covariates` before the corresponding
+#'   model is fitted.
+#'
 #' @return A list with two elements:
+#'
 #'   - `estimates`: `data.frame` with columns `arm`, `n`, `lsmean`, `subgroup`,
-#'                  `var`, `var_label`, `row_type`.
+#'        `var`, `var_label`, `row_type`, containing the LS means results for
+#'        the overall population and the specified subgroups.
 #'   - `contrasts`: `data.frame` with columns `n_tot`, `diff`, `lcl`, `ucl`,
-#'                  `pval`, `subgroup`, `var`, `var_label`, `row_type`. Note
-#'                  that this has half the number of rows as `estimates`.
+#'        `pval`, `subgroup`, `var`, `var_label`, `row_type`. Note
+#'        that this has half the number of rows as `estimates`.
+#'
+#' @export
+#' @examples
+#' mmrm_results <- fit_mmrm(
+#'   vars = list(
+#'     response = "FEV1",
+#'     covariates = "RACE",
+#'     id = "USUBJID",
+#'     arm = "ARMCD",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = mmrm_test_data,
+#'   cor_struct = "compound symmetry",
+#'   weights_emmeans = "equal",
+#'   averages_emmeans = list(
+#'     "VIS1+2" = c("VIS1", "VIS2")
+#'   )
+#' )
+#'
+#' extract_mmrm_subgroups(
+#'   fit = mmrm_results,
+#'   visit = "VIS3",
+#'   subgroups = c("RACE", "SEX")
+#' )
 extract_mmrm_subgroups <- function(fit,
                                    visit,
                                    subgroups = NULL,
                                    groups_lists = list(),
                                    treatment_arm = fit$treatment_levels[1L],
                                    label_all = "All Patients") {
-  # Assertions to be inserted in production.
-
-  # Shortcuts.
-  vars <- fit$vars
-  ref_arm <- fit$ref_level
-  lsm <- fit$lsmeans
-  averages <- attr(lsm, "averages")
-  mf <- stats::model.frame(fit$fit, full = TRUE)
+  assert_class(fit, "tern_mmrm")
+  assert_string(visit)
+  assert_character(subgroups, null.ok = TRUE)
+  assert_list(groups_lists)
+  assert_string(treatment_arm)
+  assert_string(label_all)
 
   # Get overall result (all patients) - we have it already.
-  # Early return if there are no subgroup variables.
-  result <- h_mmrm_subgroups_df(
-    lsmeans = lsm,
+  result <- h_mmrm_subgroup_df(
+    lsmeans = fit$lsmeans,
     overall_fit = fit,
     is_in_subset = rep(TRUE, nrow(fit$fit$data)),
     visit = visit,
@@ -313,11 +181,11 @@ extract_mmrm_subgroups <- function(fit,
     return(result)
   }
 
-  # Now loop over the subgroup variables to calculate subgroup results with
-  # separate MMRM fits.
+  # Now go over all subgroup variables and groups within them to calculate
+  # subgroup results with separate MMRM fits.
   subgroup_labels <- formatters::var_labels(fit$fit$data[subgroups], fill = TRUE)
   subgroup_results <- lapply(subgroups, function(this_var) {
-    checkmate::assert_factor(fit$fit$data[[this_var]])
+    assert_factor(fit$fit$data[[this_var]])
 
     this_groups_list <- if (!is.null(groups_lists[[this_var]])) {
       groups_lists[[this_var]]
@@ -334,9 +202,8 @@ extract_mmrm_subgroups <- function(fit,
     for (this_group in names(this_groups_list)) {
       # Create the data subset.
       this_levels <- this_groups_list[[this_group]]
-      dat <- fit$fit$data
-      is_in_subset <- dat[[this_var]] %in% this_levels
-      this_data <- dat[is_in_subset, , drop = FALSE]
+      is_in_subset <- fit$fit$data[[this_var]] %in% this_levels
+      this_data <- fit$fit$data[is_in_subset, , drop = FALSE]
 
       # Fit the corresponding model.
       this_fit <- tryCatch(
@@ -348,8 +215,8 @@ extract_mmrm_subgroups <- function(fit,
             parallel = fit$parallel,
             accept_singular = fit$accept_singular,
             optimizer = "automatic",
-            weights_emmeans = attr(lsm, "weights"),
-            averages_emmeans = attr(lsm, "averages")
+            weights_emmeans = attr(fit$lsmeans, "weights"),
+            averages_emmeans = attr(fit$lsmeans, "averages")
           )
         },
         error = function(e) {
@@ -357,7 +224,7 @@ extract_mmrm_subgroups <- function(fit,
           return(NULL)
         }
       )
-      this_var_results[[this_group]] <- h_mmrm_subgroups_df(
+      this_var_results[[this_group]] <- h_mmrm_subgroup_df(
         lsmeans = this_fit$lsmeans,
         overall_fit = fit,
         is_in_subset = is_in_subset,
@@ -379,76 +246,27 @@ extract_mmrm_subgroups <- function(fit,
     contrasts = do.call(rbind, c(lapply(results, "[[", "contrasts"), list(make.row.names = FALSE)))
   )
 }
-```
 
-So let's try it out:
-
-```{r}
-df_mmrm <- extract_mmrm_subgroups(
-  fit = mmrm_results,
-  visit = "VIS1+2",
-  subgroups = c("SEX", "RACE"),
-  groups_lists = list(RACE = group_list)
-)
-df_mmrm
-```
-
-That looks good!
-
-Note that we added a try/catch statement for the fact that one
-subgroup analysis does not converge. In that case the results should be `NA`
-but still be included in the result data frames. Let's try this out too by
-adding an artifical factor:
-
-```{r}
-dat_fail <- mmrm_test_data
-dat_fail$EXTRA <- factor(c(rep("A", 10), rep("B", nrow(dat_fail) - 10)))
-
-# Otherwise same specification here.
-mmrm_fail <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = dat_fail,
-  cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  averages_emmeans = list(
-    "VIS1+2" = c("VIS1", "VIS2")
-  )
-)
-
-# Now the forest function:
-df_fail <- extract_mmrm_subgroups(
-  fit = mmrm_fail,
-  visit = "VIS1+2",
-  subgroups = c("SEX", "RACE", "EXTRA"),
-  groups_lists = list(RACE = group_list)
-)
-df_fail
-```
-
-
-## Formatted analysis function
-
-This works very much similarly like `tern::a_survival_subgroups`.
-
-```{r}
+#' Formatted Analysis Function for MMRM Subgroups
+#'
+#' @param .formats (named `list`)\cr containing the formats for the statistics
+#'   to use in the MMRM subgroups table.
+#'
+#' @return List of formatted analysis functions to be used in
+#'   [tabulate_mmrm_subgroups()].
+#' @keywords internal
 a_mmrm_subgroups <- function(.formats) {
-  checkmate::assert_list(.formats)
-  checkmate::assert_subset(
+  assert_list(.formats)
+  assert_subset(
     names(.formats),
     c("n", "n_tot", "lsmean", "diff", "ci", "pval")
   )
-
-  afun_lst <- Map(
+  Map(
     function(stat, fmt) {
       if (stat == "ci") {
         function(df, labelstr = "", ...) {
           in_rows(
-            .list = tern:::combine_vectors(df$lcl, df$ucl),
+            .list = tern::combine_vectors(df$lcl, df$ucl),
             .labels = as.character(df$subgroup),
             .formats = fmt
           )
@@ -466,16 +284,68 @@ a_mmrm_subgroups <- function(.formats) {
     stat = names(.formats),
     fmt = .formats
   )
-
-  afun_lst
 }
-```
 
-## Table creating function
-
-This works similarly as `tern::tabulate_survival_subgroups`.
-
-```{r}
+#' Tabulation of MMRM Subgroups Results
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' This function tabulates the results from [extract_mmrm_subgroups()].
+#'
+#' @param lyt (`layout`)\cr input layout where analyses will be added to.
+#' @param df (`list`)\cr of data frames containing all analysis variables, is the
+#'   result from [extract_mmrm_subgroups()].
+#' @param vars (`character`)\cr the name of statistics to be reported among
+#'  `n_tot` (total number of patients per group),
+#'  `n` (number of patients per treatment arm and group),
+#'  `lsmean` (least square mean point estimate),
+#'  `diff` (difference of least square mean estimates between treatment and reference arm),
+#'  `ci` (confidence interval of difference) and
+#'  `pval` (p value of the `diff`, not adjusted for multiple comparisons).
+#'  Note, the statistics `n_tot`, `diff` and `ci` are required.
+#' @param .formats (named `list`)\cr containing the formats for the statistics.
+#' @param .labels (named `list`)\cr containing the labels for the statistics.
+#'
+#' @return The `rtables` object.
+#' @export
+#'
+#' @examples
+#' mmrm_results <- fit_mmrm(
+#'   vars = list(
+#'     response = "FEV1",
+#'     covariates = "RACE",
+#'     id = "USUBJID",
+#'     arm = "ARMCD",
+#'     visit = "AVISIT"
+#'   ),
+#'   data = mmrm_test_data,
+#'   cor_struct = "compound symmetry",
+#'   weights_emmeans = "equal",
+#'   averages_emmeans = list(
+#'     "VIS1+2" = c("VIS1", "VIS2")
+#'   )
+#' )
+#'
+#' df <- extract_mmrm_subgroups(
+#'   fit = mmrm_results,
+#'   visit = "VIS3",
+#'   subgroups = c("RACE", "SEX")
+#' )
+#'
+#' ## Table with default columns.
+#' basic_table() %>%
+#'   tabulate_mmrm_subgroups(df)
+#'
+#' ## Table with selected columns.
+#' tab <- basic_table() %>%
+#'   tabulate_mmrm_subgroups(
+#'     df = df,
+#'     vars = c("n_tot", "diff", "ci", "pval")
+#'   )
+#' tab
+#'
+#' ## Forest plot can be produced based on this very easily.
+#' g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
 tabulate_mmrm_subgroups <- function(lyt,
                                     df,
                                     vars = c("n_tot", "n", "lsmean", "diff", "ci"),
@@ -497,12 +367,12 @@ tabulate_mmrm_subgroups <- function(lyt,
                                     )) {
   afun_lst <- a_mmrm_subgroups(.formats = .formats)
   var_labels <- unlist(.labels)
-  checkmate::assert_subset(x = c("n_tot", "diff", "ci"), choices = vars)
+  assert_subset(x = c("n_tot", "diff", "ci"), choices = vars)
 
   colvars <- vars
   # The `lcl` variable is just a placeholder available in the analysis data,
-  # it is not acutally used in the tabulation.
-  # Variables used in the tabulation are lcl and ucl, see `a_mmrm_subgroups` for details.
+  # it is not actually used in the tabulation.
+  # Variables used in the tabulation are `lcl` and `ucl`
   colvars[colvars == "ci"] <- "lcl"
   colvars <- list(
     vars = colvars,
@@ -519,7 +389,7 @@ tabulate_mmrm_subgroups <- function(lyt,
     labels = colvars$labels[is_contrasts]
   )
 
-  # Columns from table_survtime are optional.
+  # Columns from table_estimates are optional.
   if (length(colvars_estimates$vars) > 0) {
     lyt_estimates <- split_cols_by(lyt = lyt, var = "arm")
     lyt_estimates <- split_rows_by(
@@ -561,7 +431,6 @@ tabulate_mmrm_subgroups <- function(lyt,
   }
 
   # Columns "n_tot", "diff", "ci" in table_contrasts are required.
-  # lyt_contrasts <- split_cols_by(lyt = lyt, var = "arm")
   lyt_contrasts <- split_rows_by(
     lyt = lyt,
     var = "row_type",
@@ -619,20 +488,3 @@ tabulate_mmrm_subgroups <- function(lyt,
     col_symbol_size = n_tot_id
   )
 }
-```
-
-Let's try this out.
-
-```{r}
-tab_mmrm <- basic_table() %>%
-  tabulate_mmrm_subgroups(df = df_mmrm)
-```
-
-Then we can plot it too.
-
-```{r}
-g_forest(tab_mmrm, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
-```
-
-To do: In production we can make a small wrapper `g_forest_mmrm` which sets
-meaningful defaults for the arguments of `g_forest`.

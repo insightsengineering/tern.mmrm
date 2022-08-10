@@ -8,9 +8,9 @@
 #' @keywords internal
 NULL
 
-#' @describeIn labels checks if element in `vars` is not `NULL`.
+#' @describeIn labels checks if element in `vars` is not `NULL` and not empty.
 h_is_specified <- function(x, vars) {
-  !is.null(vars[[x]])
+  !is.null(vars[[x]]) && (length(vars[[x]]) > 0)
 }
 
 #' @describeIn labels checks if element in vars is not NULL and exists in dataset.
@@ -40,7 +40,7 @@ h_labels <- function(vars,
   labels$id <- h_check_and_get_label("id", vars, data)
   labels$visit <- h_check_and_get_label("visit", vars, data)
   if (h_is_specified("arm", vars)) {
-    h_check_and_get_label("arm", vars, data)
+    labels$arm <- h_check_and_get_label("arm", vars, data)
   }
   if (h_is_specified("covariates", vars)) {
     vars$parts <- h_get_covariate_parts(vars$covariates)
