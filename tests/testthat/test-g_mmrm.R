@@ -21,6 +21,23 @@ fit_mmrm_no_arms_object <- fit_mmrm(
   cor_struct = "unstructured"
 )
 
+# g_mmrm_diagnostic ----
+
+test_that("g_mmrm_diagnostic works well with defaults", {
+  result <- expect_silent(g_mmrm_diagnostic(fit_mmrm_object))
+  vdiffr::expect_doppelganger("g_mmrm_diagnostic with defaults", result)
+})
+
+test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
+  result <- expect_silent(g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual"))
+  vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual defaults", result)
+})
+
+test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with z threshold", {
+  result <- expect_silent(g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2))
+  vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with z threshold", result)
+})
+
 # g_mmrm_lsmeans ----
 
 test_that("g_mmrm_lsmeans works well with default arguments", {
@@ -67,21 +84,21 @@ test_that("g_mmrm_lsmeans works well with constant baseline and no arms", {
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with constant baseline and no arms", result)
 })
 
-test_that("g_mmrm_lsmeans plots estimates table as expected", {
+test_that("g_mmrm_lsmeans plots stats table for estimates as expected", {
   result <- expect_silent(g_mmrm_lsmeans(
     fit_mmrm_object,
     select = "estimates",
-    estimates_table = c("n", "estimate", "ci", "se")
+    table_stats = c("n", "estimate", "ci", "se")
   ))
-  vdiffr::expect_doppelganger("g_mmrm_lsmeans with estimates table", result)
+  vdiffr::expect_doppelganger("g_mmrm_lsmeans with estimates stats table", result)
 })
 
-test_that("g_mmrm_lsmeans plots estimates table with custom settings", {
+test_that("g_mmrm_lsmeans plots estimates stats table with custom settings", {
   result <- expect_silent(g_mmrm_lsmeans(
     fit_mmrm_object,
     select = "estimates",
-    estimates_table = c("n", "estimate", "ci", "se"),
-    table_format = c(
+    table_stats = c("n", "estimate", "ci", "se"),
+    table_formats = c(
       n = "xx.xx",
       estimate = "xx.xxxx",
       se = "xx.",
@@ -96,14 +113,36 @@ test_that("g_mmrm_lsmeans plots estimates table with custom settings", {
     table_font_size = 2,
     table_rel_height = 1
   ))
-  vdiffr::expect_doppelganger("g_mmrm_lsmeans with customized estimates table", result)
+  vdiffr::expect_doppelganger("g_mmrm_lsmeans with customized estimates stats table", result)
 })
 
-test_that("g_mmrm_lsmeans plots estimates table also without arms", {
+test_that("g_mmrm_lsmeans plots estimates stats table also without arms", {
   result <- expect_silent(g_mmrm_lsmeans(
     fit_mmrm_no_arms_object,
     select = "estimates",
-    estimates_table = c("n", "se")
+    table_stats = c("n", "se")
   ))
-  vdiffr::expect_doppelganger("g_mmrm_lsmeans without arms and with estimates table", result)
+  vdiffr::expect_doppelganger("g_mmrm_lsmeans without arms and with table", result)
+})
+
+test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline", {
+  result <- expect_silent(g_mmrm_lsmeans(
+    fit_mmrm_object,
+    select = "estimates",
+    table_stats = c("n", "se"),
+    constant_baseline = c(BSL = 1),
+    n_baseline = c(TRT = 101L, PBO = 100L)
+  ))
+  vdiffr::expect_doppelganger("g_mmrm_lsmeans with table and constant baseline", result)
+})
+
+test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline and without arms", {
+  result <- expect_silent(g_mmrm_lsmeans(
+    fit_mmrm_no_arms_object,
+    select = "estimates",
+    table_stats = c("n", "se"),
+    constant_baseline = c(BSL = 1),
+    n_baseline = 150L
+  ))
+  vdiffr::expect_doppelganger("g_mmrm_lsmeans with table, baseline, no arms", result)
 })

@@ -54,19 +54,25 @@ h_get_timepoint_vars <- function(vcov_matrix,
     col_time = col_time
   )
 }
+
 #' Vectorization helper for Covariance Plot
 #'
-#' This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
-#' and obtains the lag and time distance between pairs of observations if the time values are part of
-#' the names or are part of the matrix column/row names.
+#' This function vectorizes the upper-diagonal elements of a symmetric matrix
+#' (e.g. the covariance matrix) and obtains the lag and time distance between
+#' pairs of observations if the time values are part of the names or are part of
+#' the matrix column and row names.
 #'
 #' @inheritParams h_get_timepoint_vars
 #'
-#' @return A data frame with the upper-diagonal elements or a covariance or correlation
-#' matrix. In the context of repeated measures, this matrix contains the association between pairs
-#' of measurements taken at different time points. It contains the following columns: a column
-#' with the upper-diagonal elements of vcov_matrix, the difference between column time
-#' and row time, the lag and the row and column ranks.
+#' @return A `data.frame` with the upper-diagonal elements of `vcov_matrix`.
+#'   In the context of repeated measures, this matrix contains the association between pairs
+#'   of measurements taken at different time points. It contains the following columns:
+#'
+#' - `Vect`: the upper-diagonal elements of `vcov_matrix`.
+#' - `time_diff`: the difference between column and row times.
+#' - `lag`: the lag, defined as the difference between column and row ranks.
+#' - `rank_row`: the row rank.
+#' - `rank_col`: the column rank.
 #'
 #' @keywords internal
 h_vectorization <- function(vcov_matrix, string = NULL) {
@@ -75,26 +81,30 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
   diag <- upper.tri(vcov_matrix, diag = T)
   vect <- vcov_matrix[diag]
   timepoints <- h_get_timepoint_vars(vcov_matrix, string)
-  time_point_distribution <- timepoints$col_time - timepoints$row_time
+  time_diff <- timepoints$col_time - timepoints$row_time
   rank_row <- as.numeric(as.factor(timepoints$row_time))
   rank_col <- as.numeric(as.factor(timepoints$col_time))
   lag <- rank_col - rank_row
-  if (any(is.na(lag)) | any(is.na(time_point_distribution))) {
-    warning("Verify you have used the string argument correctly or
-  that the columns and rows of your input matrix are named as expected")
+  if (any(is.na(lag)) | any(is.na(time_diff))) {
+    warning(paste(
+      "Verify you have used the string argument correctly or",
+      "that the columns and rows of your input matrix are named as expected"
+    ))
   }
-  data.frame(Vect = vect, time_point_distribution, lag, rank_row, rank_col)
+  data.frame(Vect = vect, time_diff, lag, rank_row, rank_col)
 }
-#' Function to graph covariance
+
+#' Visualization of Covariance Matrix
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Plot of covariance or correlation structures as a function of lag or time. The covariance structure
-#' needs to be vectorized and lag or time distances computed
+#' Plot of covariance (or correlation) matrix as a function of lag or time.
+#' The covariance structure is vectorized internally and lag or time distances
+#' are computed and can be used for visualization.
 #'
 #' @inheritParams h_get_timepoint_vars
-#' @param x_var (`string`)\cr can be "lag" or "time_point_distribution" for lag and time distance
-#' respectively.
+#' @param x_var (`string`)\cr can be `lag` or `time_diff` for lag
+#'   or time difference, respectively.
 #' @param xlab (`string` or `NULL`)\cr x-axis label, if `NULL` then automatically
 #'   determined from `x_var`.
 #' @param ylab (`string`)\cr y-axis label.
@@ -110,10 +120,10 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #'     c(1, 2)
 #'   )
 #' )
-#' g_covariance(vcov_matrix, x_var = "time_point_distribution")
+#' g_covariance(vcov_matrix, x_var = "time_diff")
 g_covariance <- function(vcov_matrix,
                          string = NULL,
-                         x_var = c("lag", "time_point_distribution"),
+                         x_var = c("lag", "time_diff"),
                          xlab = NULL,
                          ylab = "") {
   x_var <- match.arg(x_var)
