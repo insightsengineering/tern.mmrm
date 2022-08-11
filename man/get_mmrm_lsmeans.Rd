@@ -31,6 +31,10 @@ see \code{\link[emmeans:emmeans]{emmeans::emmeans()}} for details.}
 \item{averages}{(\code{list})\cr named list of visit levels which should be averaged
 and reported along side the single visits.}
 }
+\value{
+A list with data frames \code{estimates} and \code{contrasts}.
+The attributes \code{averages} and \code{weights} save the settings used.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

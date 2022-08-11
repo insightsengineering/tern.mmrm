@@ -90,9 +90,15 @@ h_get_diagnostics <- function(fit) {
 #'   - `cov_estimate`: The matrix with the covariance matrix estimate.
 #'   - `diagnostics`: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
 #'   - `lsmeans`: This is a list with data frames `estimates` and `contrasts`.
+#'        The attributes `averages` and `weights` save the settings used
+#'        (`averages_emmeans` and `weights_emmeans`).
 #'   - `vars`: The variable list.
 #'   - `labels`: Corresponding list with variable labels extracted from `data`.
+#'   - `cor_struct`: input.
+#'   - `parallel`: input.
+#'   - `accept_singular`: input.
 #'   - `ref_level`: The reference level for the arm variable, which is always the first level.
+#'   - `treatment_levels`: The treatment levels for the arm variable.
 #'   - `conf_level`: The confidence level which was used to construct the `lsmeans` confidence intervals.
 #'
 #' @export
@@ -160,7 +166,11 @@ fit_mmrm <- function(vars = list(
     lsmeans = lsmeans,
     vars = vars,
     labels = labels,
+    cor_struct = cor_struct,
+    parallel = parallel,
+    accept_singular = accept_singular,
     ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
+    treatment_levels = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[-1],
     conf_level = conf_level
   )
   class(results) <- "tern_mmrm"
