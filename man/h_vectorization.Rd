@@ -14,15 +14,21 @@ row and column names.}
 the time point value, see details.}
 }
 \value{
-A data frame with the upper-diagonal elements or a covariance or correlation
-matrix. In the context of repeated measures, this matrix contains the association between pairs
-of measurements taken at different time points. It contains the following columns: a column
-with the upper-diagonal elements of vcov_matrix, the difference between column time
-and row time, the lag and the row and column ranks.
+A \code{data.frame} with the upper-diagonal elements of \code{vcov_matrix}.
+In the context of repeated measures, this matrix contains the association between pairs
+of measurements taken at different time points. It contains the following columns:
+\itemize{
+\item \code{Vect}: the upper-diagonal elements of \code{vcov_matrix}.
+\item \code{time_diff}: the difference between column and row times.
+\item \code{lag}: the lag, defined as the difference between column and row ranks.
+\item \code{rank_row}: the row rank.
+\item \code{rank_col}: the column rank.
+}
 }
 \description{
-This function vectorizes the upper-diagonal elements of a symmetric matrix (e.g. the covariance matrix)
-and obtains the lag and time distance between pairs of observations if the time values are part of
-the names or are part of the matrix column/row names.
+This function vectorizes the upper-diagonal elements of a symmetric matrix
+(e.g. the covariance matrix) and obtains the lag and time distance between
+pairs of observations if the time values are part of the names or are part of
+the matrix column and row names.
 }
 \keyword{internal}

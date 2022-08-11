@@ -2,12 +2,12 @@
 % Please edit documentation in R/covariance_plot.R
 \name{g_covariance}
 \alias{g_covariance}
-\title{Function to graph covariance}
+\title{Visualization of Covariance Matrix}
 \usage{
 g_covariance(
   vcov_matrix,
   string = NULL,
-  x_var = c("lag", "time_point_distribution"),
+  x_var = c("lag", "time_diff"),
   xlab = NULL,
   ylab = ""
 )
@@ -19,8 +19,8 @@ row and column names.}
 \item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
 the time point value, see details.}
 
-\item{x_var}{(\code{string})\cr can be "lag" or "time_point_distribution" for lag and time distance
-respectively.}
+\item{x_var}{(\code{string})\cr can be \code{lag} or \code{time_diff} for lag
+or time difference, respectively.}
 
 \item{xlab}{(\code{string} or \code{NULL})\cr x-axis label, if \code{NULL} then automatically
 determined from \code{x_var}.}
@@ -33,8 +33,9 @@ The \code{ggplot} object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Plot of covariance or correlation structures as a function of lag or time. The covariance structure
-needs to be vectorized and lag or time distances computed
+Plot of covariance (or correlation) matrix as a function of lag or time.
+The covariance structure is vectorized internally and lag or time distances
+are computed and can be used for visualization.
 }
 \examples{
 vcov_matrix <- matrix(
@@ -45,5 +46,5 @@ vcov_matrix <- matrix(
     c(1, 2)
   )
 )
-g_covariance(vcov_matrix, x_var = "time_point_distribution")
+g_covariance(vcov_matrix, x_var = "time_diff")
 }

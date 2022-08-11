@@ -134,6 +134,23 @@ test_that("h_get_average_visit_specs works as expected", {
   expect_identical(result, expected)
 })
 
+test_that("h_get_average_visit_specs gives error if not all visits are correct", {
+  example <- get_lsmeans_example()
+  averages <- list(
+    "VIS4+5" = c("VIS4", "VIS5") # VIS5 is not included in data.
+  )
+  expect_error(
+    h_get_average_visit_specs(
+      emmeans_res = example$emmeans_res,
+      vars = example$vars,
+      averages = averages,
+      fit = example$fit
+    ),
+    "Must be a subset of {'VIS1','VIS2','VIS3','VIS4'}, but has additional elements {'VIS5'}",
+    fixed = TRUE
+  )
+})
+
 test_that("h_get_average_visit_specs works as expected without arm", {
   example <- get_lsmeans_example_no_arm()
   averages <- list(

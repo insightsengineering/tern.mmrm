@@ -52,7 +52,7 @@ g_mmrm_diagnostic <- function(object,
 
   model <- object$fit
   vars <- object$vars
-  amended_data <- stats::model.frame(model)
+  amended_data <- stats::model.frame(model, full = TRUE)
   amended_data$.fitted <- stats::fitted(model)
   amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
 
@@ -164,10 +164,15 @@ g_mmrm_diagnostic <- function(object,
 #'   LS mean estimates. If specified then needs to be a named `number`, and the name will be used to
 #'   label the corresponding baseline visit. The differences of LS means will always be 0 at this
 #'   baseline visit.
-#' @param estimates_table (`character`)\cr names of the statistics that will be displayed in the
+#' @param n_baseline (`int` or named `integer`)\cr optional number of patients at baseline.
+#'   Since this can be visible in the optional table below the estimates plot, and we cannot
+#'   infer this from `object` (since that is then only fit without baseline data), we need
+#'   to allow the user to specify this. If `number` then assumed constant across potential
+#'   treatment arms, otherwise one number per treatment arm can be provided.
+#' @param table_stats (`character`)\cr names of the statistics that will be displayed in the
 #'   table below the estimates plot. Note that the table will only be added when selecting only the
 #'   "estimates" plot. Available statistics are `n`, `estimate`, `se`, and `ci`.
-#' @param table_format (named `character`)\cr format patterns for descriptive statistics
+#' @param table_formats (named `character`)\cr format patterns for descriptive statistics
 #'   used in the (optional) estimates table appended to the estimates plot.
 #' @param table_labels (named `character`)\cr
 #'   labels for the statistics in the (optional) estimates table.
@@ -258,7 +263,7 @@ g_mmrm_diagnostic <- function(object,
 #'   mmrm_results,
 #'   select = "estimates",
 #'   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
-#'   estimates_table = c("n", "ci")
+#'   table_stats = c("n", "ci")
 #' )
 g_mmrm_lsmeans <-
   function(object,
@@ -275,8 +280,9 @@ g_mmrm_lsmeans <-
            show_pval = TRUE,
            show_lines = FALSE,
            constant_baseline = NULL,
-           estimates_table = character(),
-           table_format = c(
+           n_baseline = NA_integer_,
+           table_stats = character(),
+           table_formats = c(
              n = "xx.",
              estimate = "xx.x",
              se = "xx.x",
@@ -313,6 +319,7 @@ g_mmrm_lsmeans <-
     }
     assert_flag(show_lines)
     assert_number(constant_baseline, null.ok = TRUE)
+    assert_numeric(n_baseline)
     incl_const_baseline <- !is.null(constant_baseline)
 
     # Get relevant subsets of the estimates and contrasts data frames.
@@ -337,14 +344,17 @@ g_mmrm_lsmeans <-
         visit = baseline_visit,
         estimate = constant_baseline,
         se = 0,
-        n = NA, # Note: We don't know the number of patients at baseline from `object`.
+        n = n_baseline[1],
         lower_cl = constant_baseline,
         upper_cl = constant_baseline,
         row.names = NULL
       )
       names(baseline_est_row)[1] <- v$visit
 
-      if (arms) {
+      if (!arms) {
+        assert_scalar(n_baseline, na.ok = TRUE)
+        baseline_estimates <- baseline_est_row
+      } else {
         baseline_cont_row <- data.frame(
           visit = baseline_visit,
           estimate = 0,
@@ -363,6 +373,13 @@ g_mmrm_lsmeans <-
           arm_levels_factor,
           baseline_est_row[rep(1L, length(arm_levels_factor)), ]
         )
+        n_baseline_vec <- if (length(n_baseline) > 1) {
+          assert_names(names(n_baseline), permutation.of = arm_lvls)
+          n_baseline[arm_lvls]
+        } else {
+          rep(n_baseline, length = length(arm_lvls))
+        }
+        baseline_estimates$n <- n_baseline_vec
         baseline_contrasts <- cbind(
           arm_levels_factor[-1L], # without the reference.
           baseline_cont_row[rep(1L, length(arm_levels_factor) - 1), ]
@@ -371,8 +388,6 @@ g_mmrm_lsmeans <-
 
         contrasts <- rbind(baseline_contrasts, contrasts)
         contrasts[[v$visit]] <- factor(contrasts[[v$visit]], levels = new_visit_levels)
-      } else {
-        baseline_estimates <- baseline_est_row
       }
       estimates <- rbind(baseline_estimates, estimates)
       estimates[[v$visit]] <- factor(estimates[[v$visit]], levels = new_visit_levels)
@@ -456,9 +471,9 @@ g_mmrm_lsmeans <-
           ) +
           ggplot2::coord_cartesian(clip = "off")
       }
-    } else if (length(estimates_table) > 0) {
-      estimates_table <- match.arg(
-        estimates_table,
+    } else if (length(table_stats) > 0) {
+      table_stats <- match.arg(
+        table_stats,
         choices = c("n", "estimate", "se", "ci"),
         several.ok = TRUE
       )
@@ -470,8 +485,8 @@ g_mmrm_lsmeans <-
         this_row <- cbind(
           estimates[i, strata_vars, drop = FALSE],
           tern::h_format_row(
-            x = x_list[estimates_table],
-            format = table_format,
+            x = x_list[table_stats],
+            format = table_formats,
             labels = table_labels
           )
         )

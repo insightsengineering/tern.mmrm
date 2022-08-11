@@ -61,6 +61,7 @@ h_get_average_visit_specs <- function(emmeans_res,
   for (i in seq_along(averages)) {
     average_label <- names(averages)[i]
     visits_average <- averages[[i]]
+    assert_subset(visits_average, choices = levels(visit_grid))
     which_visits_in_average <- visit_grid %in% visits_average
     average_coefs <- as.integer(which_visits_in_average) / length(visits_average)
     zero_coefs <- numeric(length = length(average_coefs))
