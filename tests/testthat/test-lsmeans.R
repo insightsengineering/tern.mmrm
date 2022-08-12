@@ -146,7 +146,7 @@ test_that("h_get_average_visit_specs gives error if not all visits are correct",
       averages = averages,
       fit = example$fit
     ),
-    "Must be a subset of {'VIS1','VIS2','VIS3','VIS4'}, but has additional elements {'VIS5'}",
+    "Must be a subset of {'VIS1','VIS2','VIS3','VIS4'}",
     fixed = TRUE
   )
 })
