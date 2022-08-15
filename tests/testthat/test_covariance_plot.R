@@ -9,7 +9,7 @@ test_that("h_get_timepoint_vars works in simple example", {
       c("VIS1", "VIS2", "VIS3", "VIS4")
     )
   )
-  result <- expect_silent(h_get_timepoint_vars(vcov_matrix, string = "VIS"))
+  result <- expect_silent(h_get_timepoint_vars(vcov_matrix, time_prefix = "VIS"))
   expected <- list(
     row_time = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
     col_time = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
@@ -17,10 +17,10 @@ test_that("h_get_timepoint_vars works in simple example", {
   expect_identical(result, expected)
 })
 
-test_that("h_get_timepoint_vars works as expected with string specified", {
+test_that("h_get_timepoint_vars works as expected with time_prefix specified", {
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
-  result <- h_get_timepoint_vars(vcov_matrix = data_cov, string = "VIS")
+  result <- h_get_timepoint_vars(vcov_matrix = data_cov, time_prefix = "VIS")
   expected <- list(
     row_time = c(1, 1, 2, 1, 2, 3, 1, 2, 3, 4),
     col_time = c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4)
@@ -28,13 +28,13 @@ test_that("h_get_timepoint_vars works as expected with string specified", {
   expect_identical(result, expected)
 })
 
-test_that("h_get_timepoint_vars returns error when string not specified", {
+test_that("h_get_timepoint_vars returns error when time_prefix not specified", {
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   expect_error(h_get_timepoint_vars(vcov_matrix = data_cov))
 })
 
-test_that("h_get_timepoint_vars works as expected with string argument not needed", {
+test_that("h_get_timepoint_vars works as expected with time_prefix argument not needed", {
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   row.names(data_cov) <- c(1, 2, 3, 4)
@@ -49,7 +49,7 @@ test_that("h_get_timepoint_vars works as expected with string argument not neede
 
 # h_vectorization ----
 
-test_that("h_vectorization works as expected with string specified", {
+test_that("h_vectorization works as expected with time_prefix specified", {
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -58,7 +58,7 @@ test_that("h_vectorization works as expected with string specified", {
       c("VIS1", "VIS2")
     )
   )
-  result <- h_vectorization(vcov_matrix, string = "VIS")
+  result <- h_vectorization(vcov_matrix, time_prefix = "VIS")
   expected <- data.frame(
     Vect = c(49, 12, 23),
     time_diff = c(0, 1, 0),
@@ -69,7 +69,7 @@ test_that("h_vectorization works as expected with string specified", {
   expect_identical(result, expected)
 })
 
-test_that("h_vectorization works as expected when string not specified", {
+test_that("h_vectorization works as expected when time_prefix not specified", {
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -104,7 +104,7 @@ test_that("g_covariance works as expected as expected with defaults", {
   vdiffr::expect_doppelganger("g_covariance plot with defaults", result)
 })
 
-test_that("g_covariance works as expected as expected with string specified", {
+test_that("g_covariance works as expected as expected with time_prefix specified", {
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -113,8 +113,8 @@ test_that("g_covariance works as expected as expected with string specified", {
       c("VIS1", "VIS2")
     )
   )
-  result <- expect_silent(g_covariance(vcov_matrix, string = "VIS"))
-  vdiffr::expect_doppelganger("g_covariance plot with string specified", result)
+  result <- expect_silent(g_covariance(vcov_matrix, time_prefix = "VIS"))
+  vdiffr::expect_doppelganger("g_covariance plot with time_prefix specified", result)
 })
 
 test_that("g_covariance works as expected as expected with time difference", {
