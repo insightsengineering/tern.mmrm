@@ -101,21 +101,27 @@ h_mmrm_subgroup_df <- function(lsmeans,
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' This prepares LS mean estimates and contrasts for a specific visit and treatment
-#' arm relative to the reference arm, along a list of subgroup variables and corresponding
+#' arm relative to the reference arm, along with a list of subgroup variables and corresponding
 #' (grouped) factor levels.
 #'
 #' @param fit (`tern_mmrm`)\cr model fit on the total population.
 #' @param visit (`string`)\cr single visit or name of averages of visits (referring
 #'   to the averages specified when creating the `fit`).
 #' @param subgroups (`character` or `NULL`)\cr names of subgroup variables to use in the
-#'   forest plot.
+#'   forest plot, these need to be factors.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each
-#'   `subgroups` variable a list, which specifies the new group levels via the
-#'   names and the levels that belong to it in the character vectors that
-#'   are elements of the list.
+#'   `subgroups` variable a list, which specifies groups of factor levels, see
+#'   details.
 #' @param treatment_arm (`string`)\cr single treatment arm to compare with the reference
 #'   arm.
 #' @param label_all (`string`)\cr label for the total population analysis.
+#'
+#' @details The `groups_lists` argument is handy when you don't want to have
+#'   subgroups identical to the original levels of the factor variable. This might
+#'   be the case when you want to merge levels into a single subgroup, define
+#'   overlapping subgroups or omit levels completely. Then you insert an element into
+#'   `groups_lists` with the name of the `subgroups` variable and containing
+#'   as a named list the subgroup definitions. See the example below.
 #'
 #' @note If the original model `vars` include `covariates` which are used here in
 #'   `subgroups` then these are dropped from `covariates` before the corresponding
@@ -151,7 +157,13 @@ h_mmrm_subgroup_df <- function(lsmeans,
 #' extract_mmrm_subgroups(
 #'   fit = mmrm_results,
 #'   visit = "VIS3",
-#'   subgroups = c("RACE", "SEX")
+#'   subgroups = c("RACE", "SEX"),
+#'   groups_lists = list(
+#'     RACE = list(
+#'       A = c("Asian", "White"),
+#'       B = c("Black or African American", "White")
+#'     )
+#'   )
 #' )
 extract_mmrm_subgroups <- function(fit,
                                    visit,

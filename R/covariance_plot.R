@@ -4,22 +4,17 @@
 #'
 #' @param vcov_matrix (`matrix`)\cr symmetric covariance matrix with identical
 #'   row and column names.
-#' @param string (`string`)\cr string in the names of `vcov_matrix` that precedes
-#'   the time point value, see details.
+#' @param time_prefix (`string`)\cr string in the names of `vcov_matrix` that
+#'   precedes the time point value.
 #' @return This function returns a list with of two sets of numbers:
 #'   `row_time` and `col_time`, identifying the timepoints of the upper triangular
 #'   part of `vcov_matrix`.
 #'
-#' @details The default `string` value is `NULL`, which assumes that the names
-#'   of the input matrix don't have any character string other than time point
-#'   value. If a `string` is specified, this value should appear in the names
-#'   of `vcov_matrix`.
-#'
 #' @keywords internal
 h_get_timepoint_vars <- function(vcov_matrix,
-                                 string = NULL) {
+                                 time_prefix = NULL) {
   assert_matrix(vcov_matrix)
-  assert_string(string, null.ok = TRUE)
+  assert_string(time_prefix, null.ok = TRUE)
 
   diag <- upper.tri(vcov_matrix, diag = TRUE)
   vect <- vcov_matrix[diag]
@@ -32,7 +27,7 @@ h_get_timepoint_vars <- function(vcov_matrix,
   row_label <- split_names[seq(1, length(vect) * 2, by = 2)]
   col_label <- split_names[seq(2, length(vect) * 2, by = 2)]
 
-  if (is.null(string)) {
+  if (is.null(time_prefix)) {
     row_time <- suppressWarnings(as.numeric(row_label))
     col_time <- suppressWarnings(as.numeric(col_label))
     if (any(is.na(row_time)) || any(is.na(col_time))) {
@@ -42,11 +37,11 @@ h_get_timepoint_vars <- function(vcov_matrix,
       )
     }
   } else {
-    if (!any(grepl(string, row_label)) && !any(grepl(string, col_label))) {
+    if (!any(grepl(time_prefix, row_label)) && !any(grepl(time_prefix, col_label))) {
       stop("The `string` you entered is not part of the names of `vcov_matrix`")
     } else {
-      row_time <- as.numeric(gsub(string, "", row_label))
-      col_time <- as.numeric(gsub(string, "", col_label))
+      row_time <- as.numeric(gsub(time_prefix, "", row_label))
+      col_time <- as.numeric(gsub(time_prefix, "", col_label))
     }
   }
   list(
@@ -75,12 +70,12 @@ h_get_timepoint_vars <- function(vcov_matrix,
 #' - `rank_col`: the column rank.
 #'
 #' @keywords internal
-h_vectorization <- function(vcov_matrix, string = NULL) {
+h_vectorization <- function(vcov_matrix, time_prefix = NULL) {
   assert_matrix(vcov_matrix)
   assert_true(isSymmetric(vcov_matrix))
   diag <- upper.tri(vcov_matrix, diag = T)
   vect <- vcov_matrix[diag]
-  timepoints <- h_get_timepoint_vars(vcov_matrix, string)
+  timepoints <- h_get_timepoint_vars(vcov_matrix, time_prefix)
   time_diff <- timepoints$col_time - timepoints$row_time
   rank_row <- as.numeric(as.factor(timepoints$row_time))
   rank_col <- as.numeric(as.factor(timepoints$col_time))
@@ -110,6 +105,11 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' @param ylab (`string`)\cr y-axis label.
 #' @return The `ggplot` object.
 #'
+#' @details The default `time_prefix` value is `NULL`, which assumes that the names
+#'   of the input matrix don't have any character string other than time point
+#'   value. If a `time_prefix` is specified, this string should appear in front of
+#'   all the names in `vcov_matrix`.
+#'
 #' @export
 #' @examples
 #' vcov_matrix <- matrix(
@@ -122,7 +122,7 @@ h_vectorization <- function(vcov_matrix, string = NULL) {
 #' )
 #' g_covariance(vcov_matrix, x_var = "time_diff")
 g_covariance <- function(vcov_matrix,
-                         string = NULL,
+                         time_prefix = NULL,
                          x_var = c("lag", "time_diff"),
                          xlab = NULL,
                          ylab = "") {
@@ -130,7 +130,7 @@ g_covariance <- function(vcov_matrix,
   if (is.null(xlab)) {
     xlab <- if (x_var == "lag") "Lag" else "Distance (time units) btw measurements"
   }
-  vcov_dataframe <- h_vectorization(vcov_matrix, string)
+  vcov_dataframe <- h_vectorization(vcov_matrix, time_prefix)
   vcov_dataframe$rank_row <- as.factor(vcov_dataframe$rank_row)
   ggplot(vcov_dataframe, aes(x = .data[[x_var]], y = .data$Vect, colour = .data$rank_row, group = .data$rank_row)) +
     geom_point() +

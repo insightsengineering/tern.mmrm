@@ -4,14 +4,14 @@
 \alias{h_vectorization}
 \title{Vectorization helper for Covariance Plot}
 \usage{
-h_vectorization(vcov_matrix, string = NULL)
+h_vectorization(vcov_matrix, time_prefix = NULL)
 }
 \arguments{
 \item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
 row and column names.}
 
-\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
-the time point value, see details.}
+\item{time_prefix}{(\code{string})\cr string in the names of \code{vcov_matrix} that
+precedes the time point value.}
 }
 \value{
 A \code{data.frame} with the upper-diagonal elements of \code{vcov_matrix}.

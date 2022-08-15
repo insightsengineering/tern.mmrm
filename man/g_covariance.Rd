@@ -6,7 +6,7 @@
 \usage{
 g_covariance(
   vcov_matrix,
-  string = NULL,
+  time_prefix = NULL,
   x_var = c("lag", "time_diff"),
   xlab = NULL,
   ylab = ""
@@ -16,8 +16,8 @@ g_covariance(
 \item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
 row and column names.}
 
-\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
-the time point value, see details.}
+\item{time_prefix}{(\code{string})\cr string in the names of \code{vcov_matrix} that
+precedes the time point value.}
 
 \item{x_var}{(\code{string})\cr can be \code{lag} or \code{time_diff} for lag
 or time difference, respectively.}
@@ -36,6 +36,12 @@ The \code{ggplot} object.
 Plot of covariance (or correlation) matrix as a function of lag or time.
 The covariance structure is vectorized internally and lag or time distances
 are computed and can be used for visualization.
+}
+\details{
+The default \code{time_prefix} value is \code{NULL}, which assumes that the names
+of the input matrix don't have any character string other than time point
+value. If a \code{time_prefix} is specified, this string should appear in front of
+all the names in \code{vcov_matrix}.
 }
 \examples{
 vcov_matrix <- matrix(
