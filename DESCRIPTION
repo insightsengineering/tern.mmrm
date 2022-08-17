@@ -1,7 +1,7 @@
 Package: tern.mmrm
 Title: MMRM Interface for Tern
-Version: 0.1.9.9019.6
-Date: 2022-08-15
+Version: 0.2.0
+Date: 2022-08-16
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
     person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
@@ -18,20 +18,20 @@ URL: https://github.com/insightsengineering/tern.mmrm,
 BugReports: https://github.com/insightsengineering/tern.mmrm/issues
 Depends:
     R (>= 3.6),
-    tern (>= 0.7.8)
+    tern (>= 0.7.9)
 Imports:
     checkmate,
     cowplot,
     dplyr,
     emmeans (>= 1.6),
-    formatters (>= 0.3.1),
+    formatters (>= 0.3.3),
     generics,
     ggplot2,
     lifecycle,
     magrittr,
-    mmrm (>= 0.0.0.9019),
+    mmrm (>= 0.1.0),
     rlang,
-    rtables (>= 0.5.1),
+    rtables (>= 0.5.2),
     stats,
     tidyr
 Suggests:
