@@ -15,7 +15,14 @@ g_mmrm_lsmeans(
   width = 0.6,
   show_pval = TRUE,
   show_lines = FALSE,
-  constant_baseline = NULL
+  constant_baseline = NULL,
+  n_baseline = NA_integer_,
+  table_stats = character(),
+  table_formats = c(n = "xx.", estimate = "xx.x", se = "xx.x", ci = "(xx.xx, xx.xx)"),
+  table_labels = c(n = "n", estimate = "LS mean", se = "Std. Error", ci =
+    paste0(round(object$conf_level * 100), "\% CI")),
+  table_font_size = 3,
+  table_rel_height = 0.5
 )
 }
 \arguments{
@@ -41,6 +48,28 @@ LS means vs. control be displayed (not default)?}
 LS mean estimates. If specified then needs to be a named \code{number}, and the name will be used to
 label the corresponding baseline visit. The differences of LS means will always be 0 at this
 baseline visit.}
+
+\item{n_baseline}{(\code{int} or named \code{integer})\cr optional number of patients at baseline.
+Since this can be visible in the optional table below the estimates plot, and we cannot
+infer this from \code{object} (since that is then only fit without baseline data), we need
+to allow the user to specify this. If \code{number} then assumed constant across potential
+treatment arms, otherwise one number per treatment arm can be provided.}
+
+\item{table_stats}{(\code{character})\cr names of the statistics that will be displayed in the
+table below the estimates plot. Note that the table will only be added when selecting only the
+"estimates" plot. Available statistics are \code{n}, \code{estimate}, \code{se}, and \code{ci}.}
+
+\item{table_formats}{(named \code{character})\cr format patterns for descriptive statistics
+used in the (optional) estimates table appended to the estimates plot.}
+
+\item{table_labels}{(named \code{character})\cr
+labels for the statistics in the (optional) estimates table.}
+
+\item{table_font_size}{(\code{number})\cr
+controls the font size of values in the (optional) estimates table.}
+
+\item{table_rel_height}{(\code{number})\cr
+controls the relative height of the (optional) estimates table compared to the estimates plot.}
 }
 \value{
 A \code{ggplot2} plot.
@@ -120,10 +149,17 @@ g_mmrm_lsmeans(
 
 g_mmrm_lsmeans(
   mmrm_results_no_arm,
-  select = c("estimates"),
+  select = "estimates",
   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
   show_pval = TRUE,
   width = 0.8,
   show_lines = TRUE
+)
+
+g_mmrm_lsmeans(
+  mmrm_results,
+  select = "estimates",
+  titles = c(estimates = "Adjusted mean of FKSI-FWB"),
+  table_stats = c("n", "ci")
 )
 }

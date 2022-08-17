@@ -1,9 +1,19 @@
 # h_is_specified ----
 
 test_that("h_is_specified works as expected", {
-  vars <- list(response = "AVAL", id = "MYID", arm = "ARM", visit = "AVISIT", covariates = c("SEX", "RACE"))
-  result <- h_is_specified("arm", vars)
-  expect_true(result)
+  vars <- list(
+    response = "AVAL",
+    id = "MYID",
+    arm = "ARM",
+    visit = "AVISIT",
+    covariates = c("SEX", "RACE"),
+    bla = c(),
+    foo = character()
+  )
+  expect_true(h_is_specified("arm", vars))
+  expect_true(h_is_specified("covariates", vars))
+  expect_false(h_is_specified("bla", vars))
+  expect_false(h_is_specified("foo", vars))
 })
 
 # h_is_specified_and_in_data ----
@@ -50,17 +60,46 @@ test_that("h_labels works as expected", {
     SEX = structure(c("Female", "Female", "Female", "Male", "Male", "Male"), label = "lab4"),
     RACE = structure(c("Asian", "Asian", "Asian", "White", "Asian", "White"), label = "lab5")
   )
-  vars <- list(response = "AVAL", id = "MYID", arm = "ARM", visit = "AVISIT", covariates = c("SEX", "RACE"))
+  vars <- list(
+    response = "AVAL",
+    id = "MYID",
+    arm = "ARM",
+    visit = "AVISIT",
+    covariates = c("SEX", "RACE")
+  )
   result <- h_labels(vars, data)
   expected <- list(
-    response = "value",
-    id = "lab1",
-    visit = "lab3",
-    parts = c("lab4", "lab5")
+    response = c(AVAL = "value"),
+    id = c(MYID = "lab1"),
+    visit = c(AVISIT = "lab3"),
+    arm = c(ARM = "lab2"),
+    parts = c(SEX = "lab4", RACE = "lab5")
   )
-  names(expected$response) <- "AVAL"
-  names(expected$id) <- "MYID"
-  names(expected$visit) <- "AVISIT"
-  names(expected$parts) <- c("SEX", "RACE")
+  expect_identical(result, expected)
+})
+
+test_that("h_labels works if covariates is empty vector", {
+  data <- data.frame(
+    MYID = structure(c(1, 1, 2, 2, 3, 3), label = "lab1"),
+    ARM = structure(factor(c(1, 2, 3, 1, 2, 3)), label = "lab2"),
+    AVAL = structure(c(2, 4, 6, 8, 10, 12), label = "value"),
+    AVISIT = structure(c("W1", "W2", "W3", "W1", "W2", "W3"), label = "lab3"),
+    SEX = structure(c("Female", "Female", "Female", "Male", "Male", "Male"), label = "lab4"),
+    RACE = structure(c("Asian", "Asian", "Asian", "White", "Asian", "White"), label = "lab5")
+  )
+  vars <- list(
+    response = "AVAL",
+    id = "MYID",
+    arm = "ARM",
+    visit = "AVISIT",
+    covariates = character()
+  )
+  result <- expect_silent(h_labels(vars, data))
+  expected <- list(
+    response = c(AVAL = "value"),
+    id = c(MYID = "lab1"),
+    visit = c(AVISIT = "lab3"),
+    arm = c(ARM = "lab2")
+  )
   expect_identical(result, expected)
 })

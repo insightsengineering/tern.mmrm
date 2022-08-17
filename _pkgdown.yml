@@ -21,6 +21,8 @@ reference:
     contents:
       - fit_mmrm
       - tabulate_mmrm
+      - extract_mmrm_subgroups
+      - tabulate_mmrm_subgroups
 
   - title: Graphs
     desc: Graphs

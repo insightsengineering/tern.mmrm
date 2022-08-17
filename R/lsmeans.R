@@ -19,9 +19,10 @@ NULL
 #'   `object` (`emmGrid` object containing `emmeans` results) and `grid`
 #'   (`data.frame` containing the potential arm and the visit variables
 #'   together with the sample size `n` for each combination).
+#' @importFrom stats model.frame
 h_get_emmeans_res <- function(fit, vars, weights) {
   assert_class(fit, "mmrm")
-  data_complete <- stats::model.frame(fit)
+  data_complete <- model.frame(fit)
   assert_data_frame(data_complete)
   assert_list(vars)
 
@@ -47,8 +48,10 @@ h_get_emmeans_res <- function(fit, vars, weights) {
 #' @describeIn lsmeans_helpers constructs average of visits specifications.
 h_get_average_visit_specs <- function(emmeans_res,
                                       vars,
-                                      averages) {
+                                      averages,
+                                      fit) {
   visit_grid <- emmeans_res$grid[[vars$visit]]
+  model_frame <- model.frame(fit, full = TRUE)
   averages_list <- list()
   visit_vec <- n_vec <- c()
   if (!is.null(vars$arm)) {
@@ -58,6 +61,7 @@ h_get_average_visit_specs <- function(emmeans_res,
   for (i in seq_along(averages)) {
     average_label <- names(averages)[i]
     visits_average <- averages[[i]]
+    assert_subset(visits_average, choices = levels(visit_grid))
     which_visits_in_average <- visit_grid %in% visits_average
     average_coefs <- as.integer(which_visits_in_average) / length(visits_average)
     zero_coefs <- numeric(length = length(average_coefs))
@@ -65,7 +69,9 @@ h_get_average_visit_specs <- function(emmeans_res,
     if (is.null(vars$arm)) {
       averages_list[[average_label]] <- average_coefs
       visit_vec <- c(visit_vec, average_label)
-      n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average]))
+      is_in_subset <- (model_frame[[vars$visit]] %in% visits_average)
+      this_n <- length(unique(model_frame[is_in_subset, vars$id]))
+      n_vec <- c(n_vec, this_n)
     } else {
       for (this_arm in levels(arm_grid)) {
         this_coefs <- zero_coefs
@@ -75,7 +81,10 @@ h_get_average_visit_specs <- function(emmeans_res,
         averages_list[[arm_average_label]] <- this_coefs
         arm_vec <- c(arm_vec, this_arm)
         visit_vec <- c(visit_vec, average_label)
-        n_vec <- c(n_vec, min(emmeans_res$grid$n[which_visits_in_average & which_arm]))
+        is_in_subset <- (model_frame[[vars$arm]] == this_arm) &
+          (model_frame[[vars$visit]] %in% visits_average)
+        this_n <- length(unique(model_frame[is_in_subset, vars$id]))
+        n_vec <- c(n_vec, this_n)
       }
     }
   }
@@ -266,6 +275,8 @@ h_average_visit_contrast_specs <- function(specs,
 #'   and reported along side the single visits.
 #' @param weights (`string`)\cr type of weights to be used for the least square means,
 #'   see [emmeans::emmeans()] for details.
+#' @return A list with data frames `estimates` and `contrasts`.
+#'   The attributes `averages` and `weights` save the settings used.
 #'
 #' @export
 get_mmrm_lsmeans <- function(fit,
@@ -280,7 +291,7 @@ get_mmrm_lsmeans <- function(fit,
   # Get least square means estimates for single visits, and possibly averaged visits.
   estimates <- h_get_single_visit_estimates(emmeans_res, conf_level)
   if (length(averages)) {
-    average_specs <- h_get_average_visit_specs(emmeans_res, vars, averages)
+    average_specs <- h_get_average_visit_specs(emmeans_res, vars, averages, fit)
     average_estimates <- h_get_spec_visit_estimates(emmeans_res, average_specs, conf_level)
     estimates <- rbind(estimates, average_estimates)
   }
@@ -306,8 +317,12 @@ get_mmrm_lsmeans <- function(fit,
   )
   contrast_estimates[[vars$arm]] <- factor(contrast_estimates[[vars$arm]])
   contrast_estimates[[vars$visit]] <- factor(contrast_estimates[[vars$visit]])
-  list(
-    estimates = estimates,
-    contrasts = contrast_estimates
+  structure(
+    list(
+      estimates = estimates,
+      contrasts = contrast_estimates
+    ),
+    averages = averages,
+    weights = weights
   )
 }

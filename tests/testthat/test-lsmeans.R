@@ -75,7 +75,7 @@ test_that("h_get_emmeans_res works as expected", {
   assert_true(identical(nrow(datfull), length(fit$tmb_data$y_vector)))
   ns <- datfull %>%
     dplyr::group_by(ARMCD, AVISIT) %>%
-    dplyr::summarize(n_expected = n())
+    dplyr::summarize(n_expected = dplyr::n())
   compare_grid <- result$grid %>% dplyr::full_join(ns)
   expect_identical(compare_grid$n, compare_grid$n_expected)
 })
@@ -115,7 +115,8 @@ test_that("h_get_average_visit_specs works as expected", {
   result <- expect_silent(h_get_average_visit_specs(
     emmeans_res = example$emmeans_res,
     vars = example$vars,
-    averages = averages
+    averages = averages,
+    fit = example$fit
   ))
   expected <- list(
     coefs = list(
@@ -127,10 +128,27 @@ test_that("h_get_average_visit_specs works as expected", {
     grid = data.frame(
       ARMCD = c("PBO", "TRT", "PBO", "TRT"),
       AVISIT = c("VIS1+3", "VIS1+3", "VIS2+4", "VIS2+4"),
-      n = c(68L, 58L, 67L, 67L)
+      n = c(94L, 85L, 91L, 88L)
     )
   )
   expect_identical(result, expected)
+})
+
+test_that("h_get_average_visit_specs gives error if not all visits are correct", {
+  example <- get_lsmeans_example()
+  averages <- list(
+    "VIS4+5" = c("VIS4", "VIS5") # VIS5 is not included in data.
+  )
+  expect_error(
+    h_get_average_visit_specs(
+      emmeans_res = example$emmeans_res,
+      vars = example$vars,
+      averages = averages,
+      fit = example$fit
+    ),
+    "Must be a subset of {'VIS1','VIS2','VIS3','VIS4'}",
+    fixed = TRUE
+  )
 })
 
 test_that("h_get_average_visit_specs works as expected without arm", {
@@ -142,7 +160,8 @@ test_that("h_get_average_visit_specs works as expected without arm", {
   result <- expect_silent(h_get_average_visit_specs(
     emmeans_res = example$emmeans_res,
     vars = example$vars,
-    averages = averages
+    averages = averages,
+    fit = example$fit
   ))
   expected <- list(
     coefs = list(
@@ -151,8 +170,46 @@ test_that("h_get_average_visit_specs works as expected without arm", {
     ),
     grid = data.frame(
       AVISIT = c("VIS1+3", "VIS2+4"),
-      n = c(129L, 134L)
+      n = c(179L, 179L)
     )
+  )
+  expect_identical(result, expected)
+})
+
+test_that("h_get_average_visit_specs uses number of patients with any of the averaged visits as n", {
+  small_dat <- data.frame(
+    FEV1 = c(1, 2, 3, 4, 5, 6),
+    AVISIT = factor(c("V1", "V1", "V2", "V3", "V3", "V4")),
+    USUBJID = c("A", "B", "A", "C", "D", "A")
+  )
+  vars <- list(
+    response = "FEV1",
+    id = "USUBJID",
+    visit = "AVISIT"
+  )
+  fit <- mmrm::mmrm(
+    formula = FEV1 ~ AVISIT + ar1(AVISIT | USUBJID),
+    data = small_dat
+  )
+  emmeans_res <- h_get_emmeans_res(
+    fit = fit,
+    vars = vars,
+    weights = "proportional"
+  )
+  averages <- list(
+    "V1+3" = c("V1", "V3"),
+    "V2+4" = c("V2", "V4")
+  )
+  avg_specs <- h_get_average_visit_specs(
+    emmeans_res = emmeans_res,
+    vars = vars,
+    averages = averages,
+    fit = fit
+  )
+  result <- avg_specs$grid
+  expected <- data.frame(
+    AVISIT = c("V1+3", "V2+4"),
+    n = c(4L, 1L)
   )
   expect_identical(result, expected)
 })
@@ -532,6 +589,8 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   expect_list(result)
   expect_data_frame(result$estimates)
   expect_data_frame(result$contrasts)
+  expect_identical(attr(result, "weights"), weights)
+  expect_identical(attr(result, "averages"), averages)
 })
 
 test_that("get_mmrm_lsmeans preserves combined arm levels.", {

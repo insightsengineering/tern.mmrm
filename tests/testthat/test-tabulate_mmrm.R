@@ -502,7 +502,7 @@ test_that("summarize_lsmeans works with averages of visits as expected", {
     ),
     data = anl,
     averages_emmeans = list(
-      "W1D8 + W2D15" = c("WEEK 1 DAY 8", " WEEK 2 DAY 15"),
+      "W1D8 + W2D15" = c("WEEK 1 DAY 8", "WEEK 2 DAY 15"),
       "W3D22 + W5D36" = c("WEEK 3 DAY 22", "WEEK 5 DAY 36")
     ),
     cor_struct = "unstructured"

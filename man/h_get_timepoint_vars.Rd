@@ -4,14 +4,14 @@
 \alias{h_get_timepoint_vars}
 \title{Time points helper for Covariance Plot}
 \usage{
-h_get_timepoint_vars(vcov_matrix, string = NULL)
+h_get_timepoint_vars(vcov_matrix, time_prefix = NULL)
 }
 \arguments{
 \item{vcov_matrix}{(\code{matrix})\cr symmetric covariance matrix with identical
 row and column names.}
 
-\item{string}{(\code{string})\cr string in the names of \code{vcov_matrix} that precedes
-the time point value, see details.}
+\item{time_prefix}{(\code{string})\cr string in the names of \code{vcov_matrix} that
+precedes the time point value.}
 }
 \value{
 This function returns a list with of two sets of numbers:
@@ -20,11 +20,5 @@ part of \code{vcov_matrix}.
 }
 \description{
 Get the inputted symmetric matrices row and column labels as numeric time points.
-}
-\details{
-The default \code{string} value is \code{NULL}, which assumes that the names
-of the input matrix don't have any character string other than time point
-value. If a \code{string} is specified, this value should appear in the names
-of \code{vcov_matrix}.
 }
 \keyword{internal}

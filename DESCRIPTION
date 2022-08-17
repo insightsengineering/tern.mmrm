@@ -1,7 +1,7 @@
 Package: tern.mmrm
-Title: MMRM interface for tern package
-Version: 0.1.9.9019
-Date: 2022-06-09
+Title: MMRM Interface for Tern
+Version: 0.2.0
+Date: 2022-08-16
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
     person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
@@ -11,29 +11,32 @@ Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: MMRM interface for tern package.
+Description: MMRM interface for the tern R package.
 License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern.mmrm,
     https://insightsengineering.github.io/tern.mmrm/
 BugReports: https://github.com/insightsengineering/tern.mmrm/issues
 Depends:
     R (>= 3.6),
-    tern (>= 0.7.8)
+    tern (>= 0.7.9)
 Imports:
     checkmate,
+    cowplot,
+    dplyr,
     emmeans (>= 1.6),
-    formatters (>= 0.3.1),
+    formatters (>= 0.3.3),
     generics,
     ggplot2,
     lifecycle,
     magrittr,
-    mmrm (>= 0.0.0.9019),
+    mmrm (>= 0.1.0),
     rlang,
-    rtables (>= 0.5.1),
-    stats
+    rtables (>= 0.5.2),
+    stats,
+    tidyr
 Suggests:
     broom,
-    dplyr,
+    grid,
     knitr,
     maditr,
     Matrix,
@@ -60,5 +63,6 @@ Collate:
     'g_mmrm.R'
     'labels.R'
     'lsmeans.R'
+    'subgroups.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
