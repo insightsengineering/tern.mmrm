@@ -34,7 +34,13 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/pull_request_template.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/a_mmrm_subgroups.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/build_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/extract_mmrm_subgroups.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/fit_mmrm.html</loc>
@@ -64,6 +70,9 @@
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_get_timepoint_vars.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_mmrm_subgroup_df.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/h_vectorization.html</loc>
   </url>
   <url>
@@ -83,6 +92,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/tabulate_mmrm.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/tabulate_mmrm_subgroups.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern.mmrm/main/reference/tern.mmrm-package.html</loc>

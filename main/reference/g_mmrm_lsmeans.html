@@ -16,7 +16,7 @@ is the reference level."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.9018</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +33,6 @@ is the reference level."><!-- mathjax --><script src="https://cdnjs.cloudflare.c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/tern.mmrm/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -80,7 +74,14 @@ is the reference level.</p>
 <span>  width <span class="op">=</span> <span class="fl">0.6</span>,</span>
 <span>  show_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_lines <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  constant_baseline <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  constant_baseline <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_baseline <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
+<span>  table_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  table_formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"xx."</span>, estimate <span class="op">=</span> <span class="st">"xx.x"</span>, se <span class="op">=</span> <span class="st">"xx.x"</span>, ci <span class="op">=</span> <span class="st">"(xx.xx, xx.xx)"</span><span class="op">)</span>,</span>
+<span>  table_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, estimate <span class="op">=</span> <span class="st">"LS mean"</span>, se <span class="op">=</span> <span class="st">"Std. Error"</span>, ci <span class="op">=</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">conf_level</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>, <span class="st">"% CI"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  table_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  table_rel_height <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -125,6 +126,40 @@ LS means vs. control be displayed (not default)?</p></dd>
 LS mean estimates. If specified then needs to be a named <code>number</code>, and the name will be used to
 label the corresponding baseline visit. The differences of LS means will always be 0 at this
 baseline visit.</p></dd>
+
+
+<dt>n_baseline</dt>
+<dd><p>(<code>int</code> or named <code>integer</code>)<br> optional number of patients at baseline.
+Since this can be visible in the optional table below the estimates plot, and we cannot
+infer this from <code>object</code> (since that is then only fit without baseline data), we need
+to allow the user to specify this. If <code>number</code> then assumed constant across potential
+treatment arms, otherwise one number per treatment arm can be provided.</p></dd>
+
+
+<dt>table_stats</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that will be displayed in the
+table below the estimates plot. Note that the table will only be added when selecting only the
+"estimates" plot. Available statistics are <code>n</code>, <code>estimate</code>, <code>se</code>, and <code>ci</code>.</p></dd>
+
+
+<dt>table_formats</dt>
+<dd><p>(named <code>character</code>)<br> format patterns for descriptive statistics
+used in the (optional) estimates table appended to the estimates plot.</p></dd>
+
+
+<dt>table_labels</dt>
+<dd><p>(named <code>character</code>)<br>
+labels for the statistics in the (optional) estimates table.</p></dd>
+
+
+<dt>table_font_size</dt>
+<dd><p>(<code>number</code>)<br>
+controls the font size of values in the (optional) estimates table.</p></dd>
+
+
+<dt>table_rel_height</dt>
+<dd><p>(<code>number</code>)<br>
+controls the relative height of the (optional) estimates table compared to the estimates plot.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -208,7 +243,7 @@ no matter if <code>select</code> argument contains the <code>contrasts</code> va
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">mmrm_results_no_arm</span>,</span></span>
-<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"estimates"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="st">"estimates"</span>,</span></span>
 <span class="r-in"><span>  titles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>estimates <span class="op">=</span> <span class="st">"Adjusted mean of FKSI-FWB"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  show_pval <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  width <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
@@ -217,6 +252,14 @@ no matter if <code>select</code> argument contains the <code>contrasts</code> va
 <span class="r-msg co"><span class="r-pr">#&gt;</span> geom_path: Each group consists of only one observation. Do you need to adjust</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> the group aesthetic?</span>
 <span class="r-plt img"><img src="g_mmrm_lsmeans-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">g_mmrm_lsmeans</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">mmrm_results</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="st">"estimates"</span>,</span></span>
+<span class="r-in"><span>  titles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>estimates <span class="op">=</span> <span class="st">"Adjusted mean of FKSI-FWB"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  table_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"ci"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="g_mmrm_lsmeans-7.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
