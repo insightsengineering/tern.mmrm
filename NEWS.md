@@ -11,7 +11,7 @@
 
 * Added function `g_covariance()` which visualizes a covariance matrix, which
   can be helpful for choosing or visualizing the covariance structure in the MMRM.
-* Added option `average_emmeans` to `fit_mmrm()` which allows to estimate
+* Added option `averages_emmeans` to `fit_mmrm()` which allows to estimate
   least square means for averages of visits.
 
 ### Enhancements
