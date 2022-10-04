@@ -77,7 +77,7 @@ be computed.
 
 For a more detailed introduction to all of the features of this package, look at the introduction vignette:
 
-```{r intro-vignette, eval = FALSE}
+```r
 vignette("introduction")
 ```
 
