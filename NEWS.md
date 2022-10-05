@@ -2,10 +2,9 @@
 
 ### Breaking changes
 
-* Completed refactoring of the computations to use the new `mmrm`
-  package instead of `lme4` and `lmerTest`. This increases convergence
-  and speed substantially. Different covariance structures and optimizers are
-  therefore now available compared to before.
+* Completed refactoring of the computations to use the new `mmrm` package instead 
+  of `lme4` and `lmerTest`. This greatly increases convergence and speed. Different 
+  covariance structures and optimizers are now available compared to before.
 
 ### New features
 
@@ -17,7 +16,7 @@
 * Added option `averages_emmeans` to `fit_mmrm()` which allows estimation of 
   least square means for averages of visits.
 * Added option `accept_singular` to `fit_mmrm()` which allows estimation of 
-  rank-deficient models (similar to `lm()` and `gls()`) by omitting the columns
+  rank-deficient models (like `lm()` and `gls()`) by omitting the columns
   of singular coefficients from the design matrix.
 * Added options `show_lines` and `xlab` to `g_mmrm_lsmeans()` which allow the 
   addition of lines connecting the estimates, as well as a custom x-axis label.
