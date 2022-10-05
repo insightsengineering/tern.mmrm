@@ -2,8 +2,8 @@ pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
-  tern-mmrm: tern-mmrm.html
-last_built: 2022-10-05T08:43Z
+  introduction: introduction.html
+last_built: 2022-10-05T10:21Z
 urls:
   reference: https://insightsengineering.github.io/tern.mmrm/main/reference
   article: https://insightsengineering.github.io/tern.mmrm/main/articles
