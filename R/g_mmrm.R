@@ -54,13 +54,13 @@ g_mmrm_diagnostic <- function(object,
   vars <- object$vars
   amended_data <- stats::model.frame(model, full = TRUE)
   amended_data$.fitted <- stats::fitted(model)
-  amended_data$.resid <- amended_data[[vars$response]] - amended_data$.fitted
+  amended_data$.resids <- amended_data[[vars$response]] - amended_data$.fitted
 
   result <- if (type == "fit-residual") {
     amended_data_smooth <- suppressWarnings(tryCatch(
       expr = {
         # nolint
-        tern::get_smooths(amended_data, x = ".fitted", y = ".resid", groups = vars$visit, level = 0.95)
+        tern::get_smooths(amended_data, x = ".fitted", y = ".resids", groups = vars$visit, level = 0.95)
       },
       error = function(msg) {
         message(
@@ -71,7 +71,7 @@ g_mmrm_diagnostic <- function(object,
         )
       }
     ))
-    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resid")) +
+    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resids")) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
       ggplot2::geom_hline(yintercept = 0)
@@ -100,16 +100,17 @@ g_mmrm_diagnostic <- function(object,
       ggplot2::ylab("Residuals")
   } else if (type == "q-q-residual") {
     # We use visit specific standard deviation of marginal residuals for scaling residuals.
-    all_sigmas <- sqrt(diag(object$cov_estimate))
-    amended_data$.sigma <- all_sigmas[amended_data[[vars$visit]]]
-    amended_data$.scaled_resid <- amended_data$.resid / amended_data$.sigma
+    visit_sigmas <- sqrt(diag(object$cov_estimate))
+    weights <- if (!is.null(vars$weights)) stats::model.weights(amended_data) else 1
+    amended_data$.sigmas <- visit_sigmas[amended_data[[vars$visit]]] / sqrt(weights)
+    amended_data$.scaled_resids <- amended_data$.resids / amended_data$.sigmas
 
     # For each visit, calculate x and y coordinates of the specific Q-Q-plot.
     plot_data <- split(amended_data, amended_data[[vars$visit]]) %>%
       lapply(function(data) {
         res <- data.frame(
-          x = stats::qnorm(stats::ppoints(data$.scaled_resid)),
-          y = sort(data$.scaled_resid)
+          x = stats::qnorm(stats::ppoints(data$.scaled_resids)),
+          y = sort(data$.scaled_resids)
         )
         res[[vars$visit]] <- data[[vars$visit]] # Note that these are all the same.
         res

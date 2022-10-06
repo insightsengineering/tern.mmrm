@@ -95,6 +95,24 @@ test_that("h_assert_id_var works as expected", {
   expect_error(h_assert_visit_var(vars, data4))
 })
 
+# h_assert_weights_var ----
+
+test_that("h_assert_weights_var works as expected", {
+  vars <- list(weights = "bla")
+
+  data <- data.frame(bla = 0.001)
+  expect_silent(h_assert_weights_var(vars, data))
+
+  data2 <- data.frame(foo = 0.001)
+  expect_error(h_assert_weights_var(vars, data2))
+
+  data3 <- data.frame(bla = -0.001)
+  expect_error(h_assert_weights_var(vars, data3), "Element 1 is not >=")
+
+  data4 <- data.frame(bla = NA_real_)
+  expect_error(h_assert_weights_var(vars, data4), "Contains missing values")
+})
+
 # h_assert_data ----
 
 test_that("h_assert_data passes as expected", {

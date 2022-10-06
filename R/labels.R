@@ -46,5 +46,8 @@ h_labels <- function(vars,
     vars$parts <- h_get_covariate_parts(vars$covariates)
     labels$parts <- h_check_and_get_label("parts", vars, data)
   }
+  if (h_is_specified("weights", vars)) {
+    labels$weights <- h_check_and_get_label("weights", vars, data)
+  }
   return(labels)
 }

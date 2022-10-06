@@ -2,30 +2,31 @@
 
 ### Breaking changes
 
-* Completed refactoring of the computations to use the new `mmrm` package instead 
-  of `lme4` and `lmerTest`. This greatly increases convergence and speed. Different 
+* Completed refactoring of the computations to use the new `mmrm` package instead
+  of `lme4` and `lmerTest`. This greatly increases convergence and speed. Different
   covariance structures and optimizers are now available compared to before.
 
 ### New features
 
 * Added function `g_covariance()` to visualize a covariance matrix, which
   can be helpful for choosing or visualizing the covariance structure in the MMRM.
+* Added weights option for fitting MMRMs.
 
 ### Enhancements
 
-* Added option `averages_emmeans` to `fit_mmrm()` which allows estimation of 
+* Added option `averages_emmeans` to `fit_mmrm()` which allows estimation of
   least square means for averages of visits.
-* Added option `accept_singular` to `fit_mmrm()` which allows estimation of 
+* Added option `accept_singular` to `fit_mmrm()` which allows estimation of
   rank-deficient models (like `lm()` and `gls()`) by omitting the columns
   of singular coefficients from the design matrix.
-* Added options `show_lines` and `xlab` to `g_mmrm_lsmeans()` which allow the 
+* Added options `show_lines` and `xlab` to `g_mmrm_lsmeans()` which allow the
   addition of lines connecting the estimates, as well as a custom x-axis label.
 * Added options `table_stats`, `table_formats`, `table_labels`, `table_font_size`,
-  and `table_rel_height` to `g_mmrm_lsmeans()` which allow the addition of and 
-  configure the appearance of an LS means estimates statistics table below the LS 
+  and `table_rel_height` to `g_mmrm_lsmeans()` which allow the addition of and
+  configure the appearance of an LS means estimates statistics table below the LS
   means estimates plot.
-* Added options `constant_baseline` and `n_baseline` to `g_mmrm_lsmeans()` which 
-  allow plotting of a constant baseline value and specifying the corresponding 
+* Added options `constant_baseline` and `n_baseline` to `g_mmrm_lsmeans()` which
+  allow plotting of a constant baseline value and specifying the corresponding
   number of patients (visible in the optional table) for the LS means plots.
 
 # tern.mmrm 0.1.1

@@ -67,6 +67,16 @@ h_assert_id_var <- function(vars, data) {
   assert_true(is.factor(id_values) || is.character(id_values))
 }
 
+#' @describeIn h_assert_data assert numeric weights variable.
+h_assert_weights_var <- function(vars, data) {
+  assert_list(vars)
+  assert_string(vars$weights)
+  assert_data_frame(data)
+
+  weights_values <- data[[vars$weights]]
+  assert_numeric(weights_values, any.missing = FALSE, lower = .Machine$double.xmin)
+}
+
 #' @describeIn h_assert_data high-level assertion function to check the dataset.
 h_assert_data <- function(vars, data) {
   assert_list(vars)
@@ -98,5 +108,9 @@ h_assert_data <- function(vars, data) {
     assert_true(all(table(data_complete[[vars$arm]]) > 5))
   } else {
     assert_data_frame(data_complete, min.rows = 5L)
+  }
+
+  if (!is.null(vars$weights)) {
+    h_assert_weights_var(vars, data_complete)
   }
 }

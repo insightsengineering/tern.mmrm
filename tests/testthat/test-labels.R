@@ -103,3 +103,33 @@ test_that("h_labels works if covariates is empty vector", {
   )
   expect_identical(result, expected)
 })
+
+test_that("h_labels works as expected also with weights", {
+  data <- data.frame(
+    MYID = structure(c(1, 1, 2, 2, 3, 3), label = "lab1"),
+    ARM = structure(factor(c(1, 2, 3, 1, 2, 3)), label = "lab2"),
+    AVAL = structure(c(2, 4, 6, 8, 10, 12), label = "value"),
+    WEIGHTS = structure(c(1, 2, 3, 4, 5, 6), label = "weighting"),
+    AVISIT = structure(c("W1", "W2", "W3", "W1", "W2", "W3"), label = "lab3"),
+    SEX = structure(c("Female", "Female", "Female", "Male", "Male", "Male"), label = "lab4"),
+    RACE = structure(c("Asian", "Asian", "Asian", "White", "Asian", "White"), label = "lab5")
+  )
+  vars <- list(
+    response = "AVAL",
+    id = "MYID",
+    arm = "ARM",
+    visit = "AVISIT",
+    covariates = c("SEX", "RACE"),
+    weights = "WEIGHTS"
+  )
+  result <- h_labels(vars, data)
+  expected <- list(
+    response = c(AVAL = "value"),
+    id = c(MYID = "lab1"),
+    visit = c(AVISIT = "lab3"),
+    arm = c(ARM = "lab2"),
+    parts = c(SEX = "lab4", RACE = "lab5"),
+    weights = c(WEIGHTS = "weighting")
+  )
+  expect_identical(result, expected)
+})
