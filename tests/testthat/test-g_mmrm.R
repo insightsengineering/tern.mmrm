@@ -38,6 +38,29 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with z threshold"
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with z threshold", result)
 })
 
+test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
+  dat <- get_version(version = "A")
+
+  set.seed(123, kind = "Wichmann-Hill")
+  dat$w <- rexp(n = nrow(dat))
+
+  mmrm_results <- expect_silent(fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = "SEX",
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT",
+      weights = "w"
+    ),
+    data = dat,
+    cor_struct = "unstructured"
+  ))
+
+  result <- expect_silent(g_mmrm_diagnostic(mmrm_results, type = "q-q-residual"))
+  vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with weighted MMRM", result)
+})
+
 # g_mmrm_lsmeans ----
 
 test_that("g_mmrm_lsmeans works well with default arguments", {

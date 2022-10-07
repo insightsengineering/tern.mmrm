@@ -6,6 +6,7 @@
 \alias{h_assert_rsp_var}
 \alias{h_assert_visit_var}
 \alias{h_assert_id_var}
+\alias{h_assert_weights_var}
 \title{Assertions for Datasets}
 \usage{
 h_assert_one_rec_pt_visit(vars, data)
@@ -15,6 +16,8 @@ h_assert_rsp_var(vars, data)
 h_assert_visit_var(vars, data)
 
 h_assert_id_var(vars, data)
+
+h_assert_weights_var(vars, data)
 
 h_assert_data(vars, data)
 }
@@ -38,6 +41,8 @@ We provide assertion functions to check the input dataset.
 \item \code{h_assert_visit_var()}: assert factor visit variable.
 
 \item \code{h_assert_id_var()}: assert subject ID variable.
+
+\item \code{h_assert_weights_var()}: assert numeric weights variable.
 
 \item \code{h_assert_data()}: high-level assertion function to check the dataset.
 

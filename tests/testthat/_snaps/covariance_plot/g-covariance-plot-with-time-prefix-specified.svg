@@ -63,6 +63,6 @@
 <line x1='663.69' y1='300.25' x2='677.51' y2='300.25' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt;' />
 <text x='684.72' y='286.00' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text x='684.72' y='303.28' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>2</text>
-<text x='32.79' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='222.35px' lengthAdjust='spacingAndGlyphs'>g_covariance plot with string specified</text>
+<text x='32.79' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='254.63px' lengthAdjust='spacingAndGlyphs'>g_covariance plot with time_prefix specified</text>
 </g>
 </svg>

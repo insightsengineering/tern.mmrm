@@ -36,6 +36,7 @@ h_get_diagnostics <- function(fit) {
 #'   - `id`: the subject ID variable.
 #'   - `arm`: the treatment group variable (factor).
 #'   - `visit`: the visit variable (factor).
+#'   - `weights`: optional weights variable (if `NULL` or omitted then no weights will be used).
 #'
 #'   Note that the main effects and interaction of `arm` and `visit` are by default
 #'   included in the model.
@@ -141,10 +142,12 @@ fit_mmrm <- function(vars = list(
   h_assert_data(vars, data)
   labels <- h_labels(vars, data)
   formula <- build_formula(vars, cor_struct)
+  weights <- if (!is.null(vars$weights)) data[[vars$weights]] else NULL
 
   fit <- mmrm::mmrm(
     formula = formula,
     data = data,
+    weights = weights,
     reml = TRUE,
     optimizer = optimizer,
     n_cores = ifelse(parallel, mmrm::h_free_cores(), 1L),

@@ -37,6 +37,7 @@ in \code{data}:
 \item \code{id}: the subject ID variable.
 \item \code{arm}: the treatment group variable (factor).
 \item \code{visit}: the visit variable (factor).
+\item \code{weights}: optional weights variable (if \code{NULL} or omitted then no weights will be used).
 }
 
 Note that the main effects and interaction of \code{arm} and \code{visit} are by default

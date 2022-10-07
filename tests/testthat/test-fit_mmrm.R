@@ -67,38 +67,6 @@ test_that("fit_mmrm works with character ID variable", {
   expect_identical(coef(result$fit), coef(expected$fit))
 })
 
-# Produces different versions of mmrm_test_data.
-get_version <- function(version = c("A", "B")) {
-  version <- match.arg(version)
-  set.seed(123, kind = "Mersenne-Twister") # Because of `sample` below.
-  # nolint start
-  mmrm_test_data %>%
-    droplevels() %>%
-    {
-      if (version == "B") {
-        dplyr::mutate(
-          .,
-          # Introduce extra missing response variable values.
-          FEV1 = ifelse(
-            sample(c(TRUE, FALSE), size = length(FEV1), replace = TRUE, prob = c(0.1, 0.9)),
-            NA,
-            FEV1
-          ),
-          # And also covariate values.
-          FEV1_BL = ifelse(
-            sample(c(TRUE, FALSE), size = length(FEV1_BL), replace = TRUE, prob = c(0.1, 0.9)),
-            NA,
-            FEV1_BL
-          )
-        )
-      } else {
-        # No further changes in version A.
-        .
-      }
-    }
-  # nolint end
-}
-
 ## unstructured numbers ----
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
@@ -426,6 +394,35 @@ test_that("fit_mmrm works also with rank deficient model matrix", {
   ))
 
   mmrm_results$fit
+})
+
+## weights ----
+
+test_that("fit_mmrm works also with weights", {
+  dat <- get_version(version = "A")
+
+  set.seed(123, kind = "Wichmann-Hill")
+  dat$w <- rexp(n = nrow(dat))
+
+  mmrm_results <- expect_silent(fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = "SEX",
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT",
+      weights = "w"
+    ),
+    data = dat,
+    cor_struct = "unstructured"
+  ))
+
+  # Confirm that weights were used in the actual fitting process.
+  expect_equal(
+    mmrm_results$fit$weights,
+    dat$w,
+    ignore_attr = TRUE
+  )
 })
 
 ## different cov structures ----
