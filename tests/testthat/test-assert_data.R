@@ -104,7 +104,7 @@ test_that("h_assert_weights_var works as expected", {
   expect_silent(h_assert_weights_var(vars, data))
 
   data2 <- data.frame(foo = 0.001)
-  expect_error(h_assert_weights_var(vars, data2))
+  expect_error(h_assert_weights_var(vars, data2), "Must be of type 'numeric'")
 
   data3 <- data.frame(bla = -0.001)
   expect_error(h_assert_weights_var(vars, data3), "Element 1 is not >=")

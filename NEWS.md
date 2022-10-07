@@ -10,12 +10,12 @@
 
 * Added function `g_covariance()` to visualize a covariance matrix, which
   can be helpful for choosing or visualizing the covariance structure in the MMRM.
+* Added option `averages_emmeans` to `fit_mmrm()` which allows estimation of
+  least square means for averages of visits.
 * Added weights option for fitting MMRMs.
 
 ### Enhancements
 
-* Added option `averages_emmeans` to `fit_mmrm()` which allows estimation of
-  least square means for averages of visits.
 * Added option `accept_singular` to `fit_mmrm()` which allows estimation of
   rank-deficient models (like `lm()` and `gls()`) by omitting the columns
   of singular coefficients from the design matrix.
