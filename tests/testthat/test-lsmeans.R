@@ -177,6 +177,8 @@ test_that("h_get_average_visit_specs works as expected without arm", {
 })
 
 test_that("h_get_average_visit_specs uses number of patients with any of the averaged visits as n", {
+  skip_on_ci()
+
   small_dat <- data.frame(
     FEV1 = c(1, 2, 3, 4, 5, 6),
     AVISIT = factor(c("V1", "V1", "V2", "V3", "V3", "V4")),
