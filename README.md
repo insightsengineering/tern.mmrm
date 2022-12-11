@@ -19,9 +19,6 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/tern.mmrm?color=red\&label=open%20issues)](https://github.com/insightsengineering/tern.mmrm/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-
 ## Overview
 
 `tern.mmrm` provides an interface for mixed model repeated measures (MMRM) within the
