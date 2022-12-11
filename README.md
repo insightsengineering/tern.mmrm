@@ -1,10 +1,23 @@
 # tern.mmrm
 
 <!-- start badges -->
-[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/tern.mmrm/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern.mmrm/_xml_coverage_reports/data/main/coverage.xml)
-<!-- end badges -->
+[![Check 🛠](https://github.com/insightsengineering/tern.mmrm/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/tern.mmrm/actions/workflows/check.yaml)
+[![Docs 📚](https://github.com/insightsengineering/tern.mmrm/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/tern.mmrm/)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern.mmrm/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern.mmrm/_xml_coverage_reports/data/main/coverage.xml)
 
+![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern.mmrm?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/tern.mmrm?style=social)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/tern.mmrm)
+![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/tern.mmrm)
+![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/tern.mmrm)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/tern.mmrm)
+![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/tern.mmrm)
+![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/tern.mmrm)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Current Version](https://img.shields.io/github/r-package/v/insightsengineering/tern.mmrm/main?color=purple\&label=package%20version)](https://github.com/insightsengineering/tern.mmrm/tree/main)
+[![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/tern.mmrm?color=red\&label=open%20issues)](https://github.com/insightsengineering/tern.mmrm/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+<!-- end badges -->
 
 ## Overview
 
