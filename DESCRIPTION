@@ -30,6 +30,7 @@ Imports:
     lifecycle,
     magrittr,
     mmrm (>= 0.1.0),
+    parallelly,
     rlang,
     rtables (>= 0.5.2),
     stats,

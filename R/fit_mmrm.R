@@ -150,7 +150,7 @@ fit_mmrm <- function(vars = list(
     weights = weights,
     reml = TRUE,
     optimizer = optimizer,
-    n_cores = ifelse(parallel, mmrm::free_cores(), 1L),
+    n_cores = ifelse(parallel, parallelly::availableCores(omit = 1L), 1L),
     accept_singular = accept_singular
   )
 
