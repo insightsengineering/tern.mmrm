@@ -1,5 +1,13 @@
 # tern.mmrm 0.2.1.9004
 
+### Miscellaneous
+
+* Adapt to new version of the `mmrm` package, in particular `parallelly` is 
+  now used to handle determination of available cores.
+
+* The optimizer interface is different now: For choosing automatically the right
+  optimizer specify now `optimizer = NULL` in `fit_mmrm`.
+
 # tern.mmrm 0.2.1
 
 ### Breaking changes
