@@ -71,25 +71,25 @@ g_mmrm_diagnostic <- function(object,
         )
       }
     ))
-    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes_string(x = ".fitted", y = ".resids")) +
+    tmp <- ggplot2::ggplot(amended_data, ggplot2::aes(x = .fitted, y = .resids)) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::facet_grid(stats::as.formula(paste(". ~", vars$visit)), scales = "free_x") +
       ggplot2::geom_hline(yintercept = 0)
     if (!is.null(amended_data_smooth)) {
       tmp <- tmp + ggplot2::geom_line(
         data = amended_data_smooth,
-        ggplot2::aes_string(x = "x", y = "y", group = vars$visit),
+        ggplot2::aes(x = x, y = y, group = !!sym(vars$visit)),
         color = "red",
-        size = 1.4
+        linewidth = 1.4
       ) +
         ggplot2::geom_ribbon(
           data = amended_data_smooth,
-          ggplot2::aes_string(
-            x = "x",
+          ggplot2::aes(
+            x = x,
             y = NULL,
-            ymin = "ylow",
-            ymax = "yhigh",
-            group = vars$visit
+            ymin = ylow,
+            ymax = yhigh,
+            group = !!sym(vars$visit)
           ),
           alpha = 0.4,
           color = "light grey"
@@ -116,7 +116,7 @@ g_mmrm_diagnostic <- function(object,
         res
       }) %>%
       do.call(what = rbind)
-    tmp <- ggplot2::ggplot(plot_data, ggplot2::aes_string(x = "x", y = "y")) +
+    tmp <- ggplot2::ggplot(plot_data, ggplot2::aes(x = x, y = y)) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::xlab("Standard normal quantiles") +
       ggplot2::ylab("Standardized residuals") +
@@ -131,7 +131,7 @@ g_mmrm_diagnostic <- function(object,
       )
       tmp <- tmp +
         ggplot2::geom_text(
-          ggplot2::aes_string(x = "x", y = "y", label = "label"),
+          ggplot2::aes(x = x, y = y, label = label),
           data = label_data,
           hjust = "inward",
           size = 2
@@ -409,17 +409,25 @@ g_mmrm_lsmeans <-
 
     pd <- ggplot2::position_dodge2(width, preserve = "total", padding = .2)
 
-    result <- ggplot2::ggplot(
-      plot_data,
-      ggplot2::aes_string(
-        x = v$visit,
-        y = "estimate",
-        colour = if (arms) v$arm else NULL,
-        group = if (arms) v$arm else NULL,
-        ymin = "lower_cl",
-        ymax = "upper_cl"
+    aes_choice <- if (arms) {
+      ggplot2::aes(
+        x = !!sym(v$visit),
+        y = estimate,
+        colour = !!sym(v$arm),
+        group = !!sym(v$arm),
+        ymin = lower_cl,
+        ymax = upper_cl
       )
-    ) +
+    } else {
+      ggplot2::aes(
+        x = !!sym(v$visit),
+        y = estimate,
+        ymin = lower_cl,
+        ymax = upper_cl
+      )
+    }
+
+    result <- ggplot2::ggplot(plot_data, aes_choice) +
       ggplot2::geom_errorbar(width = width, position = pd) +
       ggplot2::geom_point(position = pd) +
       ggplot2::scale_color_discrete(
@@ -442,7 +450,7 @@ g_mmrm_lsmeans <-
       result <- result +
         ggplot2::geom_hline(
           data = data.frame(type = "contrasts", height = 0),
-          ggplot2::aes_string(yintercept = "height"),
+          ggplot2::aes(yintercept = height),
           colour = "black"
         )
       if (show_pval) {
@@ -466,7 +474,7 @@ g_mmrm_lsmeans <-
         result <- result +
           ggplot2::geom_text(
             data = pval_data,
-            mapping = ggplot2::aes_string(y = "y_pval", vjust = "vjust", label = "label"),
+            mapping = ggplot2::aes(y = y_pval, vjust = vjust, label = label),
             position = pd,
             show.legend = FALSE
           ) +
@@ -504,7 +512,7 @@ g_mmrm_lsmeans <-
           names_ptypes = list(stat = factor(levels = stats_lev))
         )
 
-      tbl <- ggplot2::ggplot(est_stats_tab, ggplot2::aes_string(x = v$visit, y = "stat", label = "value")) +
+      tbl <- ggplot2::ggplot(est_stats_tab, ggplot2::aes(x = !!sym(v$visit), y = stat, label = value)) +
         ggplot2::geom_text(size = table_font_size) +
         ggplot2::theme_bw() +
         ggplot2::theme(
