@@ -12,7 +12,7 @@ fit_mmrm(
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
   averages_emmeans = list(),
-  optimizer = "automatic",
+  optimizer = NULL,
   parallel = FALSE,
   accept_singular = TRUE
 )
@@ -47,11 +47,11 @@ will be excluded.}
 \item{averages_emmeans}{(\code{list})\cr optional named list of visit levels which should be averaged
 and reported along side the single visits.}
 
-\item{optimizer}{(\code{string})\cr specifying the optimization algorithm which should be used. By default,
-\code{"automatic"} will (if necessary) try all possible optimization algorithms and choose the best result.
+\item{optimizer}{(\code{string} or \code{NULL})\cr specifying the optimization algorithm which should be used.
+The default \code{NULL} will (if necessary) try all possible optimization algorithms and choose the best result.
 If another algorithm is chosen and does not give a valid result, an error will occur.}
 
-\item{parallel}{(\code{flag})\cr controls whether \code{"automatic"} optimizer search can use available free cores on the
+\item{parallel}{(\code{flag})\cr controls whether the optimizer search can use available free cores on the
 machine (not default).}
 
 \item{accept_singular}{(\code{flag})\cr whether singular design matrices are reduced
@@ -108,9 +108,9 @@ variance parameters.
 \code{T + 1} variance parameters.
 }
 
-For the \code{optimizer}, the user can choose among alternatives to the recommended \code{"automatic"},
-please see \code{\link[mmrm:refit_multiple_optimizers]{mmrm::refit_multiple_optimizers()}} for details. Usually it should not be necessary
-to use a specific optimizer and the \code{"automatic"} setting should be kept.
+For the \code{optimizer}, the user can choose among alternative optimizers,
+please see \code{\link[mmrm:h_get_optimizers]{mmrm::h_get_optimizers()}} for details. Usually it should not be necessary
+to use a specific optimizer and the default setting should be kept.
 }
 \examples{
 library(dplyr)

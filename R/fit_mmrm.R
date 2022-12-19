@@ -49,10 +49,10 @@ h_get_diagnostics <- function(fit) {
 #' @param averages_emmeans (`list`)\cr optional named list of visit levels which should be averaged
 #'   and reported along side the single visits.
 #' @param weights_emmeans (`string`)\cr argument from [emmeans::emmeans()], `"proportional"` by default.
-#' @param optimizer (`string`)\cr specifying the optimization algorithm which should be used. By default,
-#'   `"automatic"` will (if necessary) try all possible optimization algorithms and choose the best result.
+#' @param optimizer (`string` or `NULL`)\cr specifying the optimization algorithm which should be used.
+#'   The default `NULL` will (if necessary) try all possible optimization algorithms and choose the best result.
 #'   If another algorithm is chosen and does not give a valid result, an error will occur.
-#' @param parallel (`flag`)\cr controls whether `"automatic"` optimizer search can use available free cores on the
+#' @param parallel (`flag`)\cr controls whether the optimizer search can use available free cores on the
 #'   machine (not default).
 #' @param accept_singular (`flag`)\cr whether singular design matrices are reduced
 #'   to full rank automatically and additional coefficient estimates will be missing.
@@ -79,9 +79,9 @@ h_get_diagnostics <- function(fit) {
 #'   - `heterogeneous compound symmetry`: Heterogeneous Compound Symmetry covariance matrix, which uses
 #'        `T + 1` variance parameters.
 #'
-#'   For the `optimizer`, the user can choose among alternatives to the recommended `"automatic"`,
-#'   please see [mmrm::refit_multiple_optimizers()] for details. Usually it should not be necessary
-#'   to use a specific optimizer and the `"automatic"` setting should be kept.
+#'   For the `optimizer`, the user can choose among alternative optimizers,
+#'   please see [mmrm::h_get_optimizers()] for details. Usually it should not be necessary
+#'   to use a specific optimizer and the default setting should be kept.
 #'
 #' @return A `tern_mmrm` object which is a list with MMRM results:
 #'
@@ -136,7 +136,7 @@ fit_mmrm <- function(vars = list(
                      cor_struct = "unstructured",
                      weights_emmeans = "proportional",
                      averages_emmeans = list(),
-                     optimizer = "automatic",
+                     optimizer = NULL,
                      parallel = FALSE,
                      accept_singular = TRUE) {
   h_assert_data(vars, data)
@@ -144,15 +144,18 @@ fit_mmrm <- function(vars = list(
   formula <- build_formula(vars, cor_struct)
   weights <- if (!is.null(vars$weights)) data[[vars$weights]] else NULL
 
-  fit <- mmrm::mmrm(
+  mmrm_args <- list(
     formula = formula,
     data = data,
     weights = weights,
     reml = TRUE,
-    optimizer = optimizer,
     n_cores = ifelse(parallel, parallelly::availableCores(omit = 1L), 1L),
     accept_singular = accept_singular
   )
+  if (!is.null(optimizer)) {
+    mmrm_args$optimizer <- optimizer
+  }
+  fit <- do.call(mmrm::mmrm, mmrm_args)
 
   lsmeans <- get_mmrm_lsmeans(
     fit = fit,

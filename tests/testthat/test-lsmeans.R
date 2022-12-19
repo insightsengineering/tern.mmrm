@@ -7,8 +7,7 @@ get_lsmeans_example <- function() {
   )
   fit <- mmrm::mmrm(
     formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
-    data = mmrm_test_data,
-    optimizer = "automatic"
+    data = mmrm_test_data
   )
   emmeans_res <- h_get_emmeans_res(
     fit = fit,
@@ -56,8 +55,7 @@ test_that("h_get_emmeans_res works as expected", {
   )
   fit <- mmrm::mmrm(
     formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
-    data = mmrm_test_data,
-    optimizer = "automatic"
+    data = mmrm_test_data
   )
   weights <- "proportional"
   result <- expect_silent(h_get_emmeans_res(
@@ -572,8 +570,7 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
   )
   fit <- mmrm::mmrm(
     formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
-    data = mmrm_test_data,
-    optimizer = "automatic"
+    data = mmrm_test_data
   )
   conf_level <- 0.95
   weights <- "proportional"
@@ -604,8 +601,7 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
   )
   fit <- mmrm::mmrm(
     formula = FEV1 ~ ARMCD * AVISIT + us(AVISIT | USUBJID),
-    data = mmrm_test_data,
-    optimizer = "automatic"
+    data = mmrm_test_data
   )
   result <- get_mmrm_lsmeans(
     fit = fit,

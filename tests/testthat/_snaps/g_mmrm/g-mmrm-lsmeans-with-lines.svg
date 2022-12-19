@@ -79,28 +79,10 @@
 <polyline points='100.23,520.10 250.09,474.43 399.95,422.50 549.82,378.03 ' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt;' />
 <polyline points='145.19,484.48 295.05,439.20 444.91,393.42 594.77,336.52 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt;' />
 <rect x='32.79' y='303.34' width='629.42' height='241.77' style='stroke-width: 1.07; stroke: #333333;' />
-</g>
-<defs>
-  <clipPath id='cpMzIuNzl8NjYyLjIxfDI4Ni42OXwzMDMuMzQ='>
-    <rect x='32.79' y='286.69' width='629.42' height='16.65' />
-  </clipPath>
-</defs>
-<g clip-path='url(#cpMzIuNzl8NjYyLjIxfDI4Ni42OXwzMDMuMzQ=)'>
 <rect x='32.79' y='286.69' width='629.42' height='16.65' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
 <text x='347.50' y='298.04' text-anchor='middle' style='font-size: 8.80px; fill: #1A1A1A; font-family: sans;' textLength='176.11px' lengthAdjust='spacingAndGlyphs'>Adjusted mean of FEV1 by treatment at visits</text>
-</g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-</g>
-<defs>
-  <clipPath id='cpMzIuNzl8NjYyLjIxfDIyLjc4fDM5LjQz'>
-    <rect x='32.79' y='22.78' width='629.42' height='16.65' />
-  </clipPath>
-</defs>
-<g clip-path='url(#cpMzIuNzl8NjYyLjIxfDIyLjc4fDM5LjQz)'>
 <rect x='32.79' y='22.78' width='629.42' height='16.65' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
 <text x='347.50' y='34.14' text-anchor='middle' style='font-size: 8.80px; fill: #1A1A1A; font-family: sans;' textLength='216.15px' lengthAdjust='spacingAndGlyphs'>Differences of FEV1 adjusted means vs. control ('PBO')</text>
-</g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='122.71,547.85 122.71,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='272.57,547.85 272.57,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='422.43,547.85 422.43,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />

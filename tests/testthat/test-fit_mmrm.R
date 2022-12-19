@@ -82,8 +82,7 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
     ),
     data = dat,
     cor_struct = "unstructured",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
 
   # Compare vs. SAS results calculated with the following statements:
@@ -234,8 +233,7 @@ test_that("fit_mmrm works also with missing data", {
     ),
     data = dat,
     cor_struct = "unstructured",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
 
   # Compare vs. SAS results calculated with the following statements:
@@ -389,8 +387,7 @@ test_that("fit_mmrm works also with rank deficient model matrix", {
     ),
     data = dat,
     cor_struct = "unstructured",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   ))
 
   mmrm_results$fit
@@ -438,8 +435,7 @@ test_that("fit_mmrm works with homogeneous toeplitz covariance matrix", {
     ),
     data = mmrm_test_data,
     cor_struct = "toeplitz",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -455,8 +451,7 @@ test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
     ),
     data = mmrm_test_data,
     cor_struct = "heterogeneous toeplitz",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -472,8 +467,7 @@ test_that("fit_mmrm works with homogeneous ante-dependence covariance matrix", {
     ),
     data = mmrm_test_data,
     cor_struct = "ante-dependence",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -489,8 +483,7 @@ test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix",
     ),
     data = mmrm_test_data,
     cor_struct = "heterogeneous ante-dependence",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -506,8 +499,7 @@ test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
     ),
     data = mmrm_test_data,
     cor_struct = "auto-regressive",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -523,8 +515,7 @@ test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix",
     ),
     data = mmrm_test_data,
     cor_struct = "heterogeneous auto-regressive",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -540,8 +531,7 @@ test_that("fit_mmrm works with homogeneous compound symmetry covariance matrix",
     ),
     data = mmrm_test_data,
     cor_struct = "compound symmetry",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })
@@ -557,8 +547,7 @@ test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix
     ),
     data = mmrm_test_data,
     cor_struct = "heterogeneous compound symmetry",
-    weights_emmeans = "equal",
-    optimizer = "automatic"
+    weights_emmeans = "equal"
   )
   expect_class(mmrm_results, "tern_mmrm")
 })

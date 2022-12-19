@@ -226,7 +226,6 @@ extract_mmrm_subgroups <- function(fit,
             cor_struct = fit$cor_struct,
             parallel = fit$parallel,
             accept_singular = fit$accept_singular,
-            optimizer = "automatic",
             weights_emmeans = attr(fit$lsmeans, "weights"),
             averages_emmeans = attr(fit$lsmeans, "averages")
           )

@@ -14,8 +14,7 @@ mmrm_results <- fit_mmrm(
   ),
   data = mmrm_test_data,
   cor_struct = "unstructured",
-  weights_emmeans = "proportional",
-  optimizer = "automatic"
+  weights_emmeans = "proportional"
 )
 
 testthat::test_that("LS means table is produced correctly", {
