@@ -37,6 +37,45 @@ test_that("fit_mmrm works with parallelization", {
   ))
 })
 
+## optimizer ----
+
+test_that("fit_mmrm can specify multiple optimizers to try", {
+  result <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
+    optimizer = c("nlminb", "CG")
+  )
+  expect_true(attr(result$fit, "converged"))
+  expect_identical(result$additional$optimizer, c("nlminb", "CG"))
+})
+
+## method ----
+
+test_that("fit_mmrm can specify adjustment method", {
+  result <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
+    method = "Kenward-Roger"
+  )
+  expect_true(attr(result$fit, "converged"))
+  expect_identical(result$additional$method, "Kenward-Roger")
+  expect_identical(mmrm::component(result$fit, "method"), "Kenward-Roger")
+})
+
 ## character ID ----
 
 test_that("fit_mmrm works with character ID variable", {

@@ -49,16 +49,13 @@ h_get_diagnostics <- function(fit) {
 #' @param averages_emmeans (`list`)\cr optional named list of visit levels which should be averaged
 #'   and reported along side the single visits.
 #' @param weights_emmeans (`string`)\cr argument from [emmeans::emmeans()], `"proportional"` by default.
-#' @param optimizer (`string` or `NULL`)\cr specifying the optimization algorithm which should be used.
-#'   The default `NULL` will (if necessary) try all possible optimization algorithms and choose the best result.
-#'   If another algorithm is chosen and does not give a valid result, an error will occur.
 #' @param parallel (`flag`)\cr controls whether the optimizer search can use available free cores on the
 #'   machine (not default).
-#' @param accept_singular (`flag`)\cr whether singular design matrices are reduced
-#'   to full rank automatically and additional coefficient estimates will be missing.
+#' @param ... additional arguments for [mmrm::mmrm()], in particular `optimizer` and `accept_singular`
+#'   are still supported.
 #'
-#' @details Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, and they numerically
-#'   match the results obtained in SAS.
+#' @details Both Satterthwaite and Kenward-Roger adjustment is supported via the `method` argument
+#'   passed to [mmrm::mmrm()], and they numerically match the results obtained in SAS.
 #'
 #'   For the covariance structure (`cor_struct`), the user can choose among the following options.
 #'
@@ -79,10 +76,6 @@ h_get_diagnostics <- function(fit) {
 #'   - `heterogeneous compound symmetry`: Heterogeneous Compound Symmetry covariance matrix, which uses
 #'        `T + 1` variance parameters.
 #'
-#'   For the `optimizer`, the user can choose among alternative optimizers,
-#'   please see [mmrm::h_get_optimizers()] for details. Usually it should not be necessary
-#'   to use a specific optimizer and the default setting should be kept.
-#'
 #' @return A `tern_mmrm` object which is a list with MMRM results:
 #'
 #'   - `fit`: The `mmrm` object which was fitted to the data. Note that the attribute `optimizer`
@@ -97,10 +90,10 @@ h_get_diagnostics <- function(fit) {
 #'   - `labels`: Corresponding list with variable labels extracted from `data`.
 #'   - `cor_struct`: input.
 #'   - `parallel`: input.
-#'   - `accept_singular`: input.
 #'   - `ref_level`: The reference level for the arm variable, which is always the first level.
 #'   - `treatment_levels`: The treatment levels for the arm variable.
 #'   - `conf_level`: The confidence level which was used to construct the `lsmeans` confidence intervals.
+#'   - `additional`: List with any additional inputs passed via `...`
 #'
 #' @export
 #'
@@ -136,26 +129,21 @@ fit_mmrm <- function(vars = list(
                      cor_struct = "unstructured",
                      weights_emmeans = "proportional",
                      averages_emmeans = list(),
-                     optimizer = NULL,
                      parallel = FALSE,
-                     accept_singular = TRUE) {
+                     ...) {
   h_assert_data(vars, data)
   labels <- h_labels(vars, data)
   formula <- build_formula(vars, cor_struct)
   weights <- if (!is.null(vars$weights)) data[[vars$weights]] else NULL
 
-  mmrm_args <- list(
+  fit <- mmrm::mmrm(
     formula = formula,
     data = data,
     weights = weights,
     reml = TRUE,
     n_cores = ifelse(parallel, parallelly::availableCores(omit = 1L), 1L),
-    accept_singular = accept_singular
+    ...
   )
-  if (!is.null(optimizer)) {
-    mmrm_args$optimizer <- optimizer
-  }
-  fit <- do.call(mmrm::mmrm, mmrm_args)
 
   lsmeans <- get_mmrm_lsmeans(
     fit = fit,
@@ -174,10 +162,10 @@ fit_mmrm <- function(vars = list(
     labels = labels,
     cor_struct = cor_struct,
     parallel = parallel,
-    accept_singular = accept_singular,
     ref_level = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[1],
     treatment_levels = if (is.null(vars$arm)) NULL else levels(data[[vars$arm]])[-1],
-    conf_level = conf_level
+    conf_level = conf_level,
+    additional = list(...)
   )
   class(results) <- "tern_mmrm"
   return(results)
