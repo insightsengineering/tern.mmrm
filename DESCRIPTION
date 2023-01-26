@@ -1,7 +1,7 @@
 Package: tern.mmrm
 Title: MMRM Interface for Tern
-Version: 0.2.2
-Date: 2022-12-20
+Version: 0.2.2.9000
+Date: 2023-01-26
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
     person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
