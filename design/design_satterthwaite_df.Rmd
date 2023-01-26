@@ -62,8 +62,7 @@ mmrm_results <- fit_mmrm(
   ),
   data = adqs_f,
   cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  optimizer = "automatic" # need an optimizer here for model to converge
+  weights_emmeans = "equal"
 )
 
 df <- tidy(mmrm_results)

@@ -12,9 +12,8 @@ fit_mmrm(
   cor_struct = "unstructured",
   weights_emmeans = "proportional",
   averages_emmeans = list(),
-  optimizer = "automatic",
   parallel = FALSE,
-  accept_singular = TRUE
+  ...
 )
 }
 \arguments{
@@ -47,15 +46,11 @@ will be excluded.}
 \item{averages_emmeans}{(\code{list})\cr optional named list of visit levels which should be averaged
 and reported along side the single visits.}
 
-\item{optimizer}{(\code{string})\cr specifying the optimization algorithm which should be used. By default,
-\code{"automatic"} will (if necessary) try all possible optimization algorithms and choose the best result.
-If another algorithm is chosen and does not give a valid result, an error will occur.}
-
-\item{parallel}{(\code{flag})\cr controls whether \code{"automatic"} optimizer search can use available free cores on the
+\item{parallel}{(\code{flag})\cr controls whether the optimizer search can use available free cores on the
 machine (not default).}
 
-\item{accept_singular}{(\code{flag})\cr whether singular design matrices are reduced
-to full rank automatically and additional coefficient estimates will be missing.}
+\item{...}{additional arguments for \code{\link[mmrm:mmrm]{mmrm::mmrm()}}, in particular \code{optimizer} and \code{accept_singular}
+are still supported.}
 }
 \value{
 A \code{tern_mmrm} object which is a list with MMRM results:
@@ -72,10 +67,10 @@ The attributes \code{averages} and \code{weights} save the settings used
 \item \code{labels}: Corresponding list with variable labels extracted from \code{data}.
 \item \code{cor_struct}: input.
 \item \code{parallel}: input.
-\item \code{accept_singular}: input.
 \item \code{ref_level}: The reference level for the arm variable, which is always the first level.
 \item \code{treatment_levels}: The treatment levels for the arm variable.
 \item \code{conf_level}: The confidence level which was used to construct the \code{lsmeans} confidence intervals.
+\item \code{additional}: List with any additional inputs passed via \code{...}
 }
 }
 \description{
@@ -85,8 +80,8 @@ Does the \code{MMRM} analysis. Multiple other functions can be called on the res
 tables and graphs.
 }
 \details{
-Only Satterthwaite adjusted degrees of freedom (d.f.) are supported, and they numerically
-match the results obtained in SAS.
+Both Satterthwaite and Kenward-Roger adjustment is supported via the \code{method} argument
+passed to \code{\link[mmrm:mmrm]{mmrm::mmrm()}}, and they numerically match the results obtained in SAS.
 
 For the covariance structure (\code{cor_struct}), the user can choose among the following options.
 \itemize{
@@ -107,10 +102,6 @@ variance parameters.
 \item \verb{heterogeneous compound symmetry}: Heterogeneous Compound Symmetry covariance matrix, which uses
 \code{T + 1} variance parameters.
 }
-
-For the \code{optimizer}, the user can choose among alternatives to the recommended \code{"automatic"},
-please see \code{\link[mmrm:refit_multiple_optimizers]{mmrm::refit_multiple_optimizers()}} for details. Usually it should not be necessary
-to use a specific optimizer and the \code{"automatic"} setting should be kept.
 }
 \examples{
 library(dplyr)

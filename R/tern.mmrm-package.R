@@ -13,6 +13,7 @@
 #' @importFrom lifecycle deprecated
 #' @importFrom magrittr %>%
 #' @importFrom mmrm df_1d
+#' @importFrom parallelly as.cluster
 #' @importFrom rlang .data :=
 #' @importFrom tern f_conf_level
 NULL

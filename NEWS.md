@@ -1,4 +1,22 @@
-# tern.mmrm 0.2.1.9004
+# tern.mmrm 0.2.2
+
+Adapt to version 0.2.2 of the `mmrm` package.
+
+### New features
+
+* Any additional arguments can be passed now via `...` to `mmrm::mmrm` when
+  calling `fit_mmrm`. In particular, the `method` argument allows to choose
+  Kenward-Roger adjustment of degrees of freedom and coefficients covariance
+  matrix.
+
+### Breaking changes
+
+* The optimizer interface is different now: For choosing automatically the right
+  optimizer, just omit the `optimizer` argument when calling `fit_mmrm`.
+  
+### Miscellaneous
+
+* `parallelly` is now used internally to handle the determination of available cores.
 
 # tern.mmrm 0.2.1
 

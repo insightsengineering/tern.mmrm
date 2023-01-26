@@ -218,18 +218,20 @@ extract_mmrm_subgroups <- function(fit,
       this_data <- fit$fit$data[is_in_subset, , drop = FALSE]
 
       # Fit the corresponding model.
+      args_fit_mmrm <- c(
+        list(
+          vars = this_vars,
+          data = this_data,
+          cor_struct = fit$cor_struct,
+          parallel = fit$parallel,
+          weights_emmeans = attr(fit$lsmeans, "weights"),
+          averages_emmeans = attr(fit$lsmeans, "averages")
+        ),
+        fit$additional
+      )
       this_fit <- tryCatch(
         expr = {
-          fit_mmrm(
-            vars = this_vars,
-            data = this_data,
-            cor_struct = fit$cor_struct,
-            parallel = fit$parallel,
-            accept_singular = fit$accept_singular,
-            optimizer = "automatic",
-            weights_emmeans = attr(fit$lsmeans, "weights"),
-            averages_emmeans = attr(fit$lsmeans, "averages")
-          )
+          do.call(fit_mmrm, args_fit_mmrm)
         },
         error = function(e) {
           message(paste(e, "\n"))

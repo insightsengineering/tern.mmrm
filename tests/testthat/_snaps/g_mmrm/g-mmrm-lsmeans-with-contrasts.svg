@@ -42,17 +42,8 @@
 <text x='420.57' y='428.31' text-anchor='middle' style='font-size: 11.04px; fill: #00BFC4; font-family: sans;' textLength='40.22px' lengthAdjust='spacingAndGlyphs'>&lt;0.0001</text>
 <text x='571.60' y='466.52' text-anchor='middle' style='font-size: 11.04px; fill: #00BFC4; font-family: sans;' textLength='33.77px' lengthAdjust='spacingAndGlyphs'>0.0099</text>
 <rect x='27.90' y='39.43' width='634.31' height='505.68' style='stroke-width: 1.07; stroke: #333333;' />
-</g>
-<defs>
-  <clipPath id='cpMjcuOTB8NjYyLjIxfDIyLjc4fDM5LjQz'>
-    <rect x='27.90' y='22.78' width='634.31' height='16.65' />
-  </clipPath>
-</defs>
-<g clip-path='url(#cpMjcuOTB8NjYyLjIxfDIyLjc4fDM5LjQz)'>
 <rect x='27.90' y='22.78' width='634.31' height='16.65' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
 <text x='345.06' y='34.14' text-anchor='middle' style='font-size: 8.80px; fill: #1A1A1A; font-family: sans;' textLength='216.15px' lengthAdjust='spacingAndGlyphs'>Differences of FEV1 adjusted means vs. control ('PBO')</text>
-</g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <polyline points='118.52,547.85 118.52,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='269.54,547.85 269.54,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='420.57,547.85 420.57,545.11 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
