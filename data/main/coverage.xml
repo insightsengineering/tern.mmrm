@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.989090909090909" branch-rate="0" lines-covered="1088" lines-valid="1100" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-02-22 20:14:59">
-  <sources/>
+<!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
+<coverage line-rate="0.989090909090909" branch-rate="0" lines-covered="1088" lines-valid="1100" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-09 10:11:06">
+  <sources>
+    <source>/__w/tern.mmrm/tern.mmrm/tern.mmrm</source>
+  </sources>
   <packages>
     <package name="tern.mmrm" line-rate="0.989090909090909" branch-rate="0" complexity="0">
       <classes>
         <class name="assert_data.R" filename="R/assert_data.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_assert_one_rec_pt_visit" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_one_rec_pt_visit" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="16" hits="62" branch="false"/>
                 <line number="17" hits="62" branch="false"/>
@@ -29,7 +32,7 @@
                 <line number="36" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="h_assert_rsp_var" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_rsp_var" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="42" hits="60" branch="false"/>
                 <line number="43" hits="60" branch="false"/>
@@ -38,7 +41,7 @@
                 <line number="47" hits="60" branch="false"/>
               </lines>
             </method>
-            <method name="h_assert_visit_var" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_visit_var" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="52" hits="61" branch="false"/>
                 <line number="53" hits="61" branch="false"/>
@@ -47,7 +50,7 @@
                 <line number="57" hits="60" branch="false"/>
               </lines>
             </method>
-            <method name="h_assert_id_var" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_id_var" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="62" hits="60" branch="false"/>
                 <line number="63" hits="60" branch="false"/>
@@ -56,7 +59,7 @@
                 <line number="67" hits="60" branch="false"/>
               </lines>
             </method>
-            <method name="h_assert_weights_var" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_weights_var" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="72" hits="6" branch="false"/>
                 <line number="73" hits="6" branch="false"/>
@@ -65,7 +68,7 @@
                 <line number="77" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="h_assert_data" signature="" line-rate="1" branch-rate="0">
+            <method name="h_assert_data" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="82" hits="64" branch="false"/>
                 <line number="83" hits="64" branch="false"/>
@@ -162,7 +165,7 @@
         </class>
         <class name="covariance_plot.R" filename="R/covariance_plot.R" line-rate="0.903846153846154" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_get_timepoint_vars" signature="" line-rate="0.964285714285714" branch-rate="0">
+            <method name="h_get_timepoint_vars" signature="" line-rate="0.964285714285714" branch-rate="0" complexity="0">
               <lines>
                 <line number="16" hits="9" branch="false"/>
                 <line number="17" hits="9" branch="false"/>
@@ -194,7 +197,7 @@
                 <line number="50" hits="8" branch="false"/>
               </lines>
             </method>
-            <method name="h_vectorization" signature="" line-rate="0.733333333333333" branch-rate="0">
+            <method name="h_vectorization" signature="" line-rate="0.733333333333333" branch-rate="0" complexity="0">
               <lines>
                 <line number="74" hits="5" branch="false"/>
                 <line number="75" hits="5" branch="false"/>
@@ -213,7 +216,7 @@
                 <line number="89" hits="5" branch="false"/>
               </lines>
             </method>
-            <method name="g_covariance" signature="" line-rate="1" branch-rate="0">
+            <method name="g_covariance" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="129" hits="3" branch="false"/>
                 <line number="130" hits="3" branch="false"/>
@@ -284,7 +287,7 @@
         </class>
         <class name="fit_mmrm.R" filename="R/fit_mmrm.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_get_diagnostics" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_diagnostics" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="11" hits="51" branch="false"/>
                 <line number="12" hits="51" branch="false"/>
@@ -297,7 +300,7 @@
                 <line number="20" hits="51" branch="false"/>
               </lines>
             </method>
-            <method name="fit_mmrm" signature="" line-rate="1" branch-rate="0">
+            <method name="fit_mmrm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="134" hits="51" branch="false"/>
                 <line number="135" hits="50" branch="false"/>
@@ -386,7 +389,7 @@
         </class>
         <class name="formula.R" filename="R/formula.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="build_formula" signature="" line-rate="1" branch-rate="0">
+            <method name="build_formula" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="33" hits="54" branch="false"/>
                 <line number="34" hits="54" branch="false"/>
@@ -486,7 +489,7 @@
         </class>
         <class name="g_mmrm.R" filename="R/g_mmrm.R" line-rate="0.977848101265823" branch-rate="0" complexity="0">
           <methods>
-            <method name="g_mmrm_diagnostic" signature="" line-rate="0.932584269662921" branch-rate="0">
+            <method name="g_mmrm_diagnostic" signature="" line-rate="0.932584269662921" branch-rate="0" complexity="0">
               <lines>
                 <line number="49" hits="4" branch="false"/>
                 <line number="50" hits="4" branch="false"/>
@@ -579,7 +582,7 @@
                 <line number="143" hits="4" branch="false"/>
               </lines>
             </method>
-            <method name="g_mmrm_lsmeans" signature="" line-rate="0.995594713656388" branch-rate="0">
+            <method name="g_mmrm_lsmeans" signature="" line-rate="0.995594713656388" branch-rate="0" complexity="0">
               <lines>
                 <line number="300" hits="12" branch="false"/>
                 <line number="301" hits="12" branch="false"/>
@@ -1132,17 +1135,17 @@
         </class>
         <class name="labels.R" filename="R/labels.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_is_specified" signature="" line-rate="1" branch-rate="0">
+            <method name="h_is_specified" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="13" hits="428" branch="false"/>
               </lines>
             </method>
-            <method name="h_is_specified_and_in_data" signature="" line-rate="1" branch-rate="0">
+            <method name="h_is_specified_and_in_data" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="18" hits="265" branch="false"/>
               </lines>
             </method>
-            <method name="h_check_and_get_label" signature="" line-rate="1" branch-rate="0">
+            <method name="h_check_and_get_label" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="23" hits="264" branch="false"/>
                 <line number="24" hits="264" branch="false"/>
@@ -1153,7 +1156,7 @@
                 <line number="30" hits="264" branch="false"/>
               </lines>
             </method>
-            <method name="h_labels" signature="" line-rate="1" branch-rate="0">
+            <method name="h_labels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="36" hits="53" branch="false"/>
                 <line number="37" hits="53" branch="false"/>
@@ -1200,7 +1203,7 @@
         </class>
         <class name="lsmeans.R" filename="R/lsmeans.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_get_emmeans_res" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_emmeans_res" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="24" hits="66" branch="false"/>
                 <line number="25" hits="66" branch="false"/>
@@ -1222,7 +1225,7 @@
                 <line number="45" hits="66" branch="false"/>
               </lines>
             </method>
-            <method name="h_get_average_visit_specs" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_average_visit_specs" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="53" hits="24" branch="false"/>
                 <line number="54" hits="24" branch="false"/>
@@ -1267,7 +1270,7 @@
                 <line number="101" hits="23" branch="false"/>
               </lines>
             </method>
-            <method name="h_get_spec_visit_estimates" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_spec_visit_estimates" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="111" hits="92" branch="false"/>
                 <line number="112" hits="92" branch="false"/>
@@ -1295,7 +1298,7 @@
                 <line number="136" hits="92" branch="false"/>
               </lines>
             </method>
-            <method name="h_get_single_visit_estimates" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_single_visit_estimates" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="142" hits="56" branch="false"/>
                 <line number="143" hits="56" branch="false"/>
@@ -1313,7 +1316,7 @@
                 <line number="156" hits="56" branch="false"/>
               </lines>
             </method>
-            <method name="h_get_relative_reduc_df" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_relative_reduc_df" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="166" hits="49" branch="false"/>
                 <line number="167" hits="49" branch="false"/>
@@ -1333,7 +1336,7 @@
                 <line number="182" hits="49" branch="false"/>
               </lines>
             </method>
-            <method name="h_single_visit_contrast_specs" signature="" line-rate="1" branch-rate="0">
+            <method name="h_single_visit_contrast_specs" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="188" hits="50" branch="false"/>
                 <line number="189" hits="50" branch="false"/>
@@ -1368,7 +1371,7 @@
                 <line number="224" hits="50" branch="false"/>
               </lines>
             </method>
-            <method name="h_average_visit_contrast_specs" signature="" line-rate="1" branch-rate="0">
+            <method name="h_average_visit_contrast_specs" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="231" hits="22" branch="false"/>
                 <line number="232" hits="22" branch="false"/>
@@ -1399,7 +1402,7 @@
                 <line number="261" hits="22" branch="false"/>
               </lines>
             </method>
-            <method name="get_mmrm_lsmeans" signature="" line-rate="1" branch-rate="0">
+            <method name="get_mmrm_lsmeans" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="287" hits="53" branch="false"/>
                 <line number="288" hits="53" branch="false"/>
@@ -1648,7 +1651,7 @@
         </class>
         <class name="subgroups.R" filename="R/subgroups.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_mmrm_subgroup_df" signature="" line-rate="1" branch-rate="0">
+            <method name="h_mmrm_subgroup_df" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="30" hits="26" branch="false"/>
                 <line number="31" hits="26" branch="false"/>
@@ -1713,7 +1716,7 @@
                 <line number="96" hits="26" branch="false"/>
               </lines>
             </method>
-            <method name="extract_mmrm_subgroups" signature="" line-rate="1" branch-rate="0">
+            <method name="extract_mmrm_subgroups" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="174" hits="6" branch="false"/>
                 <line number="175" hits="6" branch="false"/>
@@ -1792,7 +1795,7 @@
                 <line number="261" hits="5" branch="false"/>
               </lines>
             </method>
-            <method name="a_mmrm_subgroups" signature="" line-rate="1" branch-rate="0">
+            <method name="a_mmrm_subgroups" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="273" hits="3" branch="false"/>
                 <line number="274" hits="3" branch="false"/>
@@ -1824,7 +1827,7 @@
                 <line number="300" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="tabulate_mmrm_subgroups" signature="" line-rate="1" branch-rate="0">
+            <method name="tabulate_mmrm_subgroups" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="382" hits="2" branch="false"/>
                 <line number="383" hits="2" branch="false"/>
@@ -2200,7 +2203,7 @@
         </class>
         <class name="tabulate_mmrm.R" filename="R/tabulate_mmrm.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="as.rtable.tern_mmrm" signature="" line-rate="1" branch-rate="0">
+            <method name="as.rtable.tern_mmrm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="57" hits="6" branch="false"/>
                 <line number="58" hits="6" branch="false"/>
@@ -2209,7 +2212,7 @@
                 <line number="61" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="h_mmrm_fixed" signature="" line-rate="1" branch-rate="0">
+            <method name="h_mmrm_fixed" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="69" hits="3" branch="false"/>
                 <line number="70" hits="3" branch="false"/>
@@ -2220,13 +2223,13 @@
                 <line number="75" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="h_mmrm_cov" signature="" line-rate="1" branch-rate="0">
+            <method name="h_mmrm_cov" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="81" hits="3" branch="false"/>
                 <line number="82" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="h_mmrm_diagnostic" signature="" line-rate="1" branch-rate="0">
+            <method name="h_mmrm_diagnostic" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="88" hits="3" branch="false"/>
                 <line number="89" hits="3" branch="false"/>
@@ -2243,7 +2246,7 @@
                 <line number="100" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="tidy.tern_mmrm" signature="" line-rate="1" branch-rate="0">
+            <method name="tidy.tern_mmrm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="116" hits="9" branch="false"/>
                 <line number="117" hits="9" branch="false"/>
@@ -2267,7 +2270,7 @@
                 <line number="135" hits="9" branch="false"/>
               </lines>
             </method>
-            <method name="s_mmrm_lsmeans" signature="" line-rate="1" branch-rate="0">
+            <method name="s_mmrm_lsmeans" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="148" hits="2" branch="false"/>
                 <line number="149" hits="2" branch="false"/>
@@ -2288,7 +2291,7 @@
                 <line number="164" hits="2" branch="false"/>
               </lines>
             </method>
-            <method name="s_mmrm_lsmeans_single" signature="" line-rate="1" branch-rate="0">
+            <method name="s_mmrm_lsmeans_single" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="202" hits="1" branch="false"/>
                 <line number="203" hits="1" branch="false"/>
@@ -2297,7 +2300,7 @@
                 <line number="206" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="summarize_lsmeans" signature="" line-rate="1" branch-rate="0">
+            <method name="summarize_lsmeans" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="273" hits="4" branch="false"/>
                 <line number="274" hits="4" branch="false"/>
@@ -2404,7 +2407,7 @@
         </class>
         <class name="utils.R" filename="R/utils.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
-            <method name="h_get_covariate_parts" signature="" line-rate="1" branch-rate="0">
+            <method name="h_get_covariate_parts" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="8" hits="119" branch="false"/>
                 <line number="9" hits="119" branch="false"/>
