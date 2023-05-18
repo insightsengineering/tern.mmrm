@@ -52,7 +52,7 @@ g_mmrm_diagnostic <- function(object,
 
   model <- object$fit
   vars <- object$vars
-  amended_data <- stats::model.frame(model, full = TRUE)
+  amended_data <- stats::model.frame(model, exclude = TRUE)
   amended_data$.fitted <- stats::fitted(model)
   amended_data$.resids <- amended_data[[vars$response]] - amended_data$.fitted
 

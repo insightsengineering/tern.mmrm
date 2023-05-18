@@ -295,7 +295,7 @@ extract_mmrm_subgroups <- function(fit,
   ref_arm <- fit$ref_level
   lsm <- fit$lsmeans
   averages <- attr(lsm, "averages")
-  mf <- stats::model.frame(fit$fit, full = TRUE)
+  mf <- stats::model.frame(fit$fit, exclude = TRUE)
 
   # Get overall result (all patients) - we have it already.
   # Early return if there are no subgroup variables.
