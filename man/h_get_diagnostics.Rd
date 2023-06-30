@@ -10,7 +10,7 @@ h_get_diagnostics(fit)
 \item{fit}{(\code{mmrm})\cr object fit with \code{\link[mmrm:mmrm]{mmrm::mmrm()}}.}
 }
 \value{
-A list with the REML criterion, the AIC, AICc and BIC.
+A list with the \code{REML} criterion, the \code{AIC}, \code{AICc} and \code{BIC}.
 }
 \description{
 Compute the model diagnostic statistics for a linear mixed model fit.

@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 Mixed effect Models with Repeated Measures (MMRM) are often used as the primary analysis of continuous longitudinal endpoints in clinical trials. In this setting, an MMRM is a specific linear mixed effects model that includes as fixed effects the variables: treatment arm, categorical visit, treatment by visit interaction, and other covariates for adjustment (e.g. age, gender). The covariance structure of the residuals can take on different forms. Often, an unstructured (i.e. saturated parametrization) covariance matrix is assumed which can be represented by random effects in the mixed model.
 
-All of this has been implemented in proprietary software such as SAS, whose PROC MIXED routine is generally considered the gold standard for mixed models. However, this does not allow the use of interactive web applications to explore the clinical study data in a flexible way. Therefore, we wanted to implement MMRM in R in a way which could easily be embedded into a `shiny` application. See the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/) for more details about using this code inside a `shiny` application.
+All of this has been implemented in proprietary software such as `SAS`, whose `PROC MIXED` routine is generally considered the gold standard for mixed models. However, this does not allow the use of interactive web applications to explore the clinical study data in a flexible way. Therefore, we wanted to implement MMRM in R in a way which could easily be embedded into a `shiny` application. See the [`teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/) for more details about using this code inside a `shiny` application.
 
 ## Descriptive Statistics
 
@@ -37,11 +37,11 @@ Descriptive statistics for a relevant analysis population (e.g. those patients w
 
 ### Statistical model
 
-Under the linear mixed model (LMM) framework, an outcome vector ${\bf Y}$ is modeled as
+Under the linear mixed model (`LMM`) framework, an outcome vector ${\bf Y}$ is modeled as
 $$\bf Y = X \boldsymbol \beta + Z b + {\boldsymbol \varepsilon}$$
 where $\bf X$ is the matrix for fixed effects, $\bf Z$ is the matrix for random effects, $\mathbf b \sim N(0, \mathbf D(\boldsymbol \theta))$, and ${\boldsymbol \varepsilon} \sim N(0, \mathbf R(\boldsymbol \theta))$. Letting $\mathbf V = \mathbf Z \mathbf D \mathbf Z^T + \mathbf R$, the marginal and conditional models are then given by $\mathbf Y \sim N(\bf X \boldsymbol \beta, V)$ and $\mathbf Y | \mathbf b \sim N(\bf X \boldsymbol \beta + Z b, R)$, respectively.
 
-An MMRM is a special case of a LMM such that $\bf Y$ is a collection of measurements made on a set of individuals over time, i.e. $\mathbf Y = ({\bf Y}_1^T, {\bf Y}_2^T, ...)^T$ where $\mathbf Y_i = \mathbf X_i \boldsymbol \beta + \mathbf Z_i \mathbf b_i + {\boldsymbol \varepsilon}_i$. In our context of clinical trials, individuals are patients identified by their unique subject `id`, measurements are of treatment `response`, and fixed effects include treatment `arm`, categorical `visit`, treatment by visit interaction, and potentially other `covariates` (e.g. age, gender).
+An MMRM is a special case of a `LMM` such that $\bf Y$ is a collection of measurements made on a set of individuals over time, i.e. $\mathbf Y = ({\bf Y}_1^T, {\bf Y}_2^T, ...)^T$ where $\mathbf Y_i = \mathbf X_i \boldsymbol \beta + \mathbf Z_i \mathbf b_i + {\boldsymbol \varepsilon}_i$. In our context of clinical trials, individuals are patients identified by their unique subject `id`, measurements are of treatment `response`, and fixed effects include treatment `arm`, categorical `visit`, treatment by visit interaction, and potentially other `covariates` (e.g. age, gender).
 
 ### Estimation
 
@@ -70,8 +70,8 @@ LS means are calculated in `tern.mmrm` via the R package `emmeans`. Users have t
 
 ### Inference
 
-Performing inference on estimated parameters (e.g. calculating p-values) is less straightforward for MMRM. This is because the exact null distributions for parameter effects are unknown. SAS addresses this issue by utilizing Satterthwaite's method to approximate the adjusted degrees of freedom for $F$ and $t$ tests. `lme4` and `lmerTest` have also implemented Satterthwaite's method. Unfortunately we found that these are not robust in their convergence behavior. Compared to `lme4`, the R package `nlme` can consider more flexible covariance structures. However, we have chosen not to use this package because it does not provide exact Satterthwaite adjusted degrees of freedom and the available approximate degrees of freedom can differ substantially.
-Therefore we built the new package `mmrm`. With `mmrm`, `tern.mmrm` is able to replicate outputs from SAS.
+Performing inference on estimated parameters (e.g. calculating p-values) is less straightforward for MMRM. This is because the exact null distributions for parameter effects are unknown. `SAS` addresses this issue by utilizing Satterthwaite's method to approximate the adjusted degrees of freedom for $F$ and $t$ tests. `lme4` and `lmerTest` have also implemented Satterthwaite's method. Unfortunately we found that these are not robust in their convergence behavior. Compared to `lme4`, the R package `nlme` can consider more flexible covariance structures. However, we have chosen not to use this package because it does not provide exact Satterthwaite adjusted degrees of freedom and the available approximate degrees of freedom can differ substantially.
+Therefore we built the new package `mmrm`. With `mmrm`, `tern.mmrm` is able to replicate outputs from `SAS`.
 
 ### Covariance structure
 Users of `tern.mmrm` have currently the following options for the covariance structure $\mathbf V_i$:
@@ -83,10 +83,10 @@ Users of `tern.mmrm` have currently the following options for the covariance str
 - Heterogeneous Ante-Dependence: $$(\mathbf V_i)_{jk} = \sigma_j \sigma_k \prod_{i=j}^{k}\rho_i$$
 
 ## Model fitting
-In this section, we illustrate how to fit a MMRM with `tern.mmrm` and how to fit a MMRM manually in R. We then compare with SAS to show that the results match.
+In this section, we illustrate how to fit a MMRM with `tern.mmrm` and how to fit a MMRM manually in R. We then compare with `SAS` to show that the results match.
 
 ### Setup
-Our example dataset consists of several variables: subject ID (`USUBJID`), visit number (`AVISIT`), treatment (`ARMCD` = TRT or PBO), 3-category race, sex, FEV1 at baseline (%), and FEV1 at study visits (%). FEV1 (forced expired volume in one second) is a measure of how quickly the lungs can be emptied. Low levels of FEV1 may indicate chronic obstructive pulmonary disease (COPD). The scientific question at hand is whether treatment leads to an increase in FEV1 over time after adjusting for baseline covariates.
+Our example dataset consists of several variables: subject ID (`USUBJID`), visit number (`AVISIT`), treatment (`ARMCD` = `TRT` or `PBO`), 3-category race, sex, `FEV1` at baseline (%), and `FEV1` at study visits (%). `FEV1` (forced expired volume in one second) is a measure of how quickly the lungs can be emptied. Low levels of `FEV1` may indicate chronic obstructive pulmonary disease (`COPD`). The scientific question at hand is whether treatment leads to an increase in `FEV1` over time after adjusting for baseline covariates.
 
 ```{r}
 library(tern.mmrm)
@@ -110,7 +110,7 @@ mmrm_results <- fit_mmrm(
   weights_emmeans = "proportional"
 )
 ```
-The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in FEV1 over placebo at all study visits.
+The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in `FEV1` over placebo at all study visits.
 ```{r}
 mmrm_results$lsmeans$contrasts
 ```
@@ -132,9 +132,9 @@ emmeans::emmeans(fit, pairwise ~ ARMCD | AVISIT, weights = "proportional")
 Compared to manual implementation, `tern.mmrm` users can avoid specifying the `formula` manually.
 Note also that `tern.mmrm` has a default optimizer which is in fact the same as the one shown here. If the default fails to converge, it automatically attempts to use multiple other optimizers, delivering results should there be a consensus.
 
-### Model fitting via SAS
+### Model fitting via `SAS`
 
-For the unstructured model, the equivalent SAS code is given by
+For the unstructured model, the equivalent `SAS` code is given by
 ```{block2, type='sas'}
 
 ~~~sas
@@ -160,7 +160,7 @@ run;
 ## Diagnostics
 
 ### Model fitting
-A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in SAS PROC MIXED.
+A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in `SAS` `PROC MIXED`.
 
 ```{r eval=F}
 mmrm_results$diagnostics
@@ -168,12 +168,12 @@ mmrm_results$diagnostics
 
 Each criterion is specifically calculated as follows:
 
-1. REML criterion: $-2 l$ where $l$ is the REML log-likelihood. This criterion has no penalty for complexity, so generally decreases as model becomes more complex.
-2. AIC: $-2l + 2d$ where $d$ is the number of covariance parameters.
-3. AICc: $-2l + 2dn^*/(n^*-d-1)$ where $n^*$ is the number of observations minus the number of fixed effects, or $d + 2$ if it is smaller than that. AICc is a finite-sample corrected version of AIC.
-4. BIC: $-2l + d \log n$ where $n$ is the number of subjects as opposed to the number of observations.
+1. `REML` criterion: $-2 l$ where $l$ is the `REML` log-likelihood. This criterion has no penalty for complexity, so generally decreases as model becomes more complex.
+2. `AIC`: $-2l + 2d$ where $d$ is the number of covariance parameters.
+3. `AICc`: $-2l + 2dn^*/(n^*-d-1)$ where $n^*$ is the number of observations minus the number of fixed effects, or $d + 2$ if it is smaller than that. `AICc` is a finite-sample corrected version of `AIC`.
+4. `BIC`: $-2l + d \log n$ where $n$ is the number of subjects as opposed to the number of observations.
 
-An objective approach to model selection is to minimize the AIC, AICc, or BIC. For more details on these information criteria (including references), see [SAS Documentation](https://documentation.sas.com/?cdcId=statcdc&cdcVersion=14.2&docsetId=statug&docsetTarget=statug_mixed_syntax01.htm&locale=en#statug.mixed.procstmt_ic).
+An objective approach to model selection is to minimize the `AIC`, `AICc`, or `BIC`. For more details on these information criteria (including references), see [SAS Documentation](https://documentation.sas.com/?cdcId=statcdc&cdcVersion=14.2&docsetId=statug&docsetTarget=statug_mixed_syntax01.htm&locale=en#statug.mixed.procstmt_ic).
 
 ### Residual analysis
 
