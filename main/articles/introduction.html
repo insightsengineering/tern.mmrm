@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9004</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,14 +48,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.2.1">v0.2.1</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -102,12 +94,13 @@ for adjustment (e.g. age, gender). The covariance structure of the
 residuals can take on different forms. Often, an unstructured
 (i.e. saturated parametrization) covariance matrix is assumed which can
 be represented by random effects in the mixed model.</p>
-<p>All of this has been implemented in proprietary software such as SAS,
-whose PROC MIXED routine is generally considered the gold standard for
-mixed models. However, this does not allow the use of interactive web
-applications to explore the clinical study data in a flexible way.
-Therefore, we wanted to implement MMRM in R in a way which could easily
-be embedded into a <code>shiny</code> application. See the <a href="https://insightsengineering.github.io/teal.modules.clinical/" class="external-link"><code>teal.modules.clinical</code>
+<p>All of this has been implemented in proprietary software such as
+<code>SAS</code>, whose <code>PROC MIXED</code> routine is generally
+considered the gold standard for mixed models. However, this does not
+allow the use of interactive web applications to explore the clinical
+study data in a flexible way. Therefore, we wanted to implement MMRM in
+R in a way which could easily be embedded into a <code>shiny</code>
+application. See the <a href="https://insightsengineering.github.io/teal.modules.clinical/" class="external-link"><code>teal.modules.clinical</code>
 package</a> for more details about using this code inside a
 <code>shiny</code> application.</p>
 </div>
@@ -124,7 +117,8 @@ functions described in Section @ref(baseline-tables).</p>
 <div class="section level3">
 <h3 id="statistical-model">Statistical model<a class="anchor" aria-label="anchor" href="#statistical-model"></a>
 </h3>
-<p>Under the linear mixed model (LMM) framework, an outcome vector <span class="math inline">\({\bf Y}\)</span> is modeled as <span class="math display">\[\bf Y = X \boldsymbol \beta + Z b + {\boldsymbol
+<p>Under the linear mixed model (<code>LMM</code>) framework, an outcome
+vector <span class="math inline">\({\bf Y}\)</span> is modeled as <span class="math display">\[\bf Y = X \boldsymbol \beta + Z b + {\boldsymbol
 \varepsilon}\]</span> where <span class="math inline">\(\bf X\)</span>
 is the matrix for fixed effects, <span class="math inline">\(\bf
 Z\)</span> is the matrix for random effects, <span class="math inline">\(\mathbf b \sim N(0, \mathbf D(\boldsymbol
@@ -135,7 +129,7 @@ Z\)</span> is the matrix for random effects, <span class="math inline">\(\mathbf
 by <span class="math inline">\(\mathbf Y \sim N(\bf X \boldsymbol \beta,
 V)\)</span> and <span class="math inline">\(\mathbf Y | \mathbf b \sim
 N(\bf X \boldsymbol \beta + Z b, R)\)</span>, respectively.</p>
-<p>An MMRM is a special case of a LMM such that <span class="math inline">\(\bf Y\)</span> is a collection of measurements
+<p>An MMRM is a special case of a <code>LMM</code> such that <span class="math inline">\(\bf Y\)</span> is a collection of measurements
 made on a set of individuals over time, i.e. <span class="math inline">\(\mathbf Y = ({\bf Y}_1^T, {\bf Y}_2^T,
 ...)^T\)</span> where <span class="math inline">\(\mathbf Y_i = \mathbf
 X_i \boldsymbol \beta + \mathbf Z_i \mathbf b_i + {\boldsymbol
@@ -222,9 +216,9 @@ adjusted analysis of treatment response at all visits.</p>
 </h3>
 <p>Performing inference on estimated parameters (e.g. calculating
 p-values) is less straightforward for MMRM. This is because the exact
-null distributions for parameter effects are unknown. SAS addresses this
-issue by utilizing Satterthwaite’s method to approximate the adjusted
-degrees of freedom for <span class="math inline">\(F\)</span> and <span class="math inline">\(t\)</span> tests. <code>lme4</code> and
+null distributions for parameter effects are unknown. <code>SAS</code>
+addresses this issue by utilizing Satterthwaite’s method to approximate
+the adjusted degrees of freedom for <span class="math inline">\(F\)</span> and <span class="math inline">\(t\)</span> tests. <code>lme4</code> and
 <code>lmerTest</code> have also implemented Satterthwaite’s method.
 Unfortunately we found that these are not robust in their convergence
 behavior. Compared to <code>lme4</code>, the R package <code>nlme</code>
@@ -233,7 +227,8 @@ chosen not to use this package because it does not provide exact
 Satterthwaite adjusted degrees of freedom and the available approximate
 degrees of freedom can differ substantially. Therefore we built the new
 package <code>mmrm</code>. With <code>mmrm</code>,
-<code>tern.mmrm</code> is able to replicate outputs from SAS.</p>
+<code>tern.mmrm</code> is able to replicate outputs from
+<code>SAS</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="covariance-structure">Covariance structure<a class="anchor" aria-label="anchor" href="#covariance-structure"></a>
@@ -265,18 +260,20 @@ V_i)_{jk} = \sigma_j \sigma_k \prod_{i=j}^{k}\rho_i\]</span>
 </h2>
 <p>In this section, we illustrate how to fit a MMRM with
 <code>tern.mmrm</code> and how to fit a MMRM manually in R. We then
-compare with SAS to show that the results match.</p>
+compare with <code>SAS</code> to show that the results match.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
 <p>Our example dataset consists of several variables: subject ID
 (<code>USUBJID</code>), visit number (<code>AVISIT</code>), treatment
-(<code>ARMCD</code> = TRT or PBO), 3-category race, sex, FEV1 at
-baseline (%), and FEV1 at study visits (%). FEV1 (forced expired volume
-in one second) is a measure of how quickly the lungs can be emptied. Low
-levels of FEV1 may indicate chronic obstructive pulmonary disease
-(COPD). The scientific question at hand is whether treatment leads to an
-increase in FEV1 over time after adjusting for baseline covariates.</p>
+(<code>ARMCD</code> = <code>TRT</code> or <code>PBO</code>), 3-category
+race, sex, <code>FEV1</code> at baseline (%), and <code>FEV1</code> at
+study visits (%). <code>FEV1</code> (forced expired volume in one
+second) is a measure of how quickly the lungs can be emptied. Low levels
+of <code>FEV1</code> may indicate chronic obstructive pulmonary disease
+(<code>COPD</code>). The scientific question at hand is whether
+treatment leads to an increase in <code>FEV1</code> over time after
+adjusting for baseline covariates.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/tern.mmrm" class="external-link">tern.mmrm</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: tern</span></span>
@@ -322,8 +319,8 @@ and fixed effects (<code>fit</code>), the estimated LS means for a
 particular treatment at a particular visit (<code>lsmeans</code>), and
 the difference in LS means at a particular visit
 (<code>lsmeans$contrasts</code>). Based on the output, there is evidence
-that supports treatment leading to an increase in FEV1 over placebo at
-all study visits.</p>
+that supports treatment leading to an increase in <code>FEV1</code> over
+placebo at all study visits.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">lsmeans</span><span class="op">$</span><span class="va">contrasts</span></span>
 <span><span class="co">#&gt;   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat</span></span>
@@ -361,9 +358,10 @@ automatically attempts to use multiple other optimizers, delivering
 results should there be a consensus.</p>
 </div>
 <div class="section level3">
-<h3 id="model-fitting-via-sas">Model fitting via SAS<a class="anchor" aria-label="anchor" href="#model-fitting-via-sas"></a>
+<h3 id="model-fitting-via-sas">Model fitting via <code>SAS</code><a class="anchor" aria-label="anchor" href="#model-fitting-via-sas"></a>
 </h3>
-For the unstructured model, the equivalent SAS code is given by
+For the unstructured model, the equivalent <code>SAS</code> code is
+given by
 <div class="sas">
 <pre class="sas"><code>proc import datafile="location_of_data.csv"
      out=dat
@@ -390,28 +388,36 @@ run;
 </h3>
 <p>A key part in the analysis of data is model selection, where often
 the desire is to select a parsimonious model that adequately fits the
-data. We provide four of the same information criteria as found in SAS
-PROC MIXED.</p>
+data. We provide four of the same information criteria as found in
+<code>SAS</code> <code>PROC MIXED</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">diagnostics</span></span></code></pre></div>
 <p>Each criterion is specifically calculated as follows:</p>
 <ol style="list-style-type: decimal">
-<li>REML criterion: <span class="math inline">\(-2 l\)</span> where
-<span class="math inline">\(l\)</span> is the REML log-likelihood. This
-criterion has no penalty for complexity, so generally decreases as model
-becomes more complex.</li>
-<li>AIC: <span class="math inline">\(-2l + 2d\)</span> where <span class="math inline">\(d\)</span> is the number of covariance
+<li>
+<code>REML</code> criterion: <span class="math inline">\(-2
+l\)</span> where <span class="math inline">\(l\)</span> is the
+<code>REML</code> log-likelihood. This criterion has no penalty for
+complexity, so generally decreases as model becomes more complex.</li>
+<li>
+<code>AIC</code>: <span class="math inline">\(-2l + 2d\)</span>
+where <span class="math inline">\(d\)</span> is the number of covariance
 parameters.</li>
-<li>AICc: <span class="math inline">\(-2l + 2dn^*/(n^*-d-1)\)</span>
-where <span class="math inline">\(n^*\)</span> is the number of
-observations minus the number of fixed effects, or <span class="math inline">\(d + 2\)</span> if it is smaller than that. AICc is
-a finite-sample corrected version of AIC.</li>
-<li>BIC: <span class="math inline">\(-2l + d \log n\)</span> where <span class="math inline">\(n\)</span> is the number of subjects as opposed to
-the number of observations.</li>
+<li>
+<code>AICc</code>: <span class="math inline">\(-2l +
+2dn^*/(n^*-d-1)\)</span> where <span class="math inline">\(n^*\)</span>
+is the number of observations minus the number of fixed effects, or
+<span class="math inline">\(d + 2\)</span> if it is smaller than that.
+<code>AICc</code> is a finite-sample corrected version of
+<code>AIC</code>.</li>
+<li>
+<code>BIC</code>: <span class="math inline">\(-2l + d \log
+n\)</span> where <span class="math inline">\(n\)</span> is the number of
+subjects as opposed to the number of observations.</li>
 </ol>
-<p>An objective approach to model selection is to minimize the AIC,
-AICc, or BIC. For more details on these information criteria (including
-references), see <a href="https://documentation.sas.com/?cdcId=statcdc&amp;cdcVersion=14.2&amp;docsetId=statug&amp;docsetTarget=statug_mixed_syntax01.htm&amp;locale=en#statug.mixed.procstmt_ic" class="external-link">SAS
+<p>An objective approach to model selection is to minimize the
+<code>AIC</code>, <code>AICc</code>, or <code>BIC</code>. For more
+details on these information criteria (including references), see <a href="https://documentation.sas.com/?cdcId=statcdc&amp;cdcVersion=14.2&amp;docsetId=statug&amp;docsetTarget=statug_mixed_syntax01.htm&amp;locale=en#statug.mixed.procstmt_ic" class="external-link">SAS
 Documentation</a>.</p>
 </div>
 <div class="section level3">
