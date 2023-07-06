@@ -12,8 +12,8 @@ A \code{tibble} with 800 rows and 7 variables:
 \item \code{ARMCD}: treatment, \code{TRT} or \code{PBO}.
 \item \code{RACE}: 3-category race.
 \item \code{SEX}: sex.
-\item \code{FEV1_BL}: FEV1 at baseline (\%).
-\item \code{FEV1}: FEV1 at study visits.
+\item \code{FEV1_BL}: \code{FEV1} at baseline (\%).
+\item \code{FEV1}: \code{FEV1} at study visits.
 }
 }
 \usage{
@@ -22,7 +22,7 @@ mmrm_test_data
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Measurements of FEV1 (forced expired volume in one second) is a measure of how quickly the lungs can be emptied.
-Low levels of FEV1 may indicate chronic obstructive pulmonary disease (COPD).
+Measurements of \code{FEV1} (forced expired volume in one second) is a measure of how quickly the lungs can be emptied.
+Low levels of \code{FEV1} may indicate chronic obstructive pulmonary disease (\code{COPD}).
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 #'
 #' @param fit (`mmrm`)\cr object fit with [mmrm::mmrm()].
 #'
-#' @return A list with the REML criterion, the AIC, AICc and BIC.
+#' @return A list with the `REML` criterion, the `AIC`, `AICc` and `BIC`.
 #'
 #' @keywords internal
 h_get_diagnostics <- function(fit) {
