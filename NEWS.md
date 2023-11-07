@@ -1,6 +1,6 @@
 # tern.mmrm 0.2.2.9006
 
-Adapt to version 0.2.2.9003 of the `mmrm` package.
+Adapt to release 0.3 of the `mmrm` package.
 
 ### New features
 

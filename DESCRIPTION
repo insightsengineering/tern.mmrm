@@ -11,7 +11,9 @@ Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: MMRM interface for the tern R package.
+Description: Provides an interface for mixed model repeated measures (MMRM) within the 
+    'tern' framework to produce commonly used tables and graphs. It builds on the R-package 
+    'mmrm' for the actual MMRM calculations.
 License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern.mmrm,
     https://insightsengineering.github.io/tern.mmrm/

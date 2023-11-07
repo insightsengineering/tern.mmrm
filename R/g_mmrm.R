@@ -52,9 +52,9 @@ g_mmrm_diagnostic <- function(object,
 
   model <- object$fit
   vars <- object$vars
-  amended_data <- stats::model.frame(model, full = TRUE)
+  amended_data <- stats::model.frame(model)
   amended_data$.fitted <- stats::fitted(model)
-  amended_data$.resids <- amended_data[[vars$response]] - amended_data$.fitted
+  amended_data$.resids <- stats::residuals(model, type = "response")
 
   result <- if (type == "fit-residual") {
     amended_data_smooth <- suppressWarnings(tryCatch(
@@ -99,11 +99,7 @@ g_mmrm_diagnostic <- function(object,
       ggplot2::xlab("Fitted values") +
       ggplot2::ylab("Residuals")
   } else if (type == "q-q-residual") {
-    # We use visit specific standard deviation of marginal residuals for scaling residuals.
-    visit_sigmas <- sqrt(diag(object$cov_estimate))
-    weights <- if (!is.null(vars$weights)) stats::model.weights(amended_data) else 1
-    amended_data$.sigmas <- visit_sigmas[amended_data[[vars$visit]]] / sqrt(weights)
-    amended_data$.scaled_resids <- amended_data$.resids / amended_data$.sigmas
+    amended_data$.scaled_resids <- stats::residuals(model, type = "pearson")
 
     # For each visit, calculate x and y coordinates of the specific Q-Q-plot.
     plot_data <- split(amended_data, amended_data[[vars$visit]]) %>%
