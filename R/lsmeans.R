@@ -51,7 +51,7 @@ h_get_average_visit_specs <- function(emmeans_res,
                                       averages,
                                       fit) {
   visit_grid <- emmeans_res$grid[[vars$visit]]
-  model_frame <- model.frame(fit, full = TRUE)
+  model_frame <- stats::model.frame(fit)
   averages_list <- list()
   visit_vec <- n_vec <- c()
   if (!is.null(vars$arm)) {
