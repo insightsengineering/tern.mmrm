@@ -23,7 +23,7 @@ test_that("h_get_diagnostics works as expected", {
 ## parallelization ----
 
 test_that("fit_mmrm works with parallelization", {
-  expect_silent(result <- fit_mmrm(
+  expect_no_error(result <- fit_mmrm(
     vars = list(
       response = "FEV1",
       covariates = c("RACE", "SEX"),

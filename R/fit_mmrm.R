@@ -51,11 +51,12 @@ h_get_diagnostics <- function(fit) {
 #' @param weights_emmeans (`string`)\cr argument from [emmeans::emmeans()], `"proportional"` by default.
 #' @param parallel (`flag`)\cr controls whether the optimizer search can use available free cores on the
 #'   machine (not default).
-#' @param ... additional arguments for [mmrm::mmrm()], in particular `optimizer` and `accept_singular`
-#'   are still supported.
+#' @param ... additional arguments for [mmrm::mmrm()], in particular `reml` and options listed in
+#'   [mmrm::mmrm_control()].
 #'
-#' @details Both Satterthwaite and Kenward-Roger adjustment is supported via the `method` argument
-#'   passed to [mmrm::mmrm()], and they numerically match the results obtained in SAS.
+#' @details Multiple different degree of freedom adjustments are available via the `method` argument
+#'   for [mmrm::mmrm()]. In addition, covariance matrix adjustments are available via `vcov`.
+#'   Please see [mmrm::mmrm_control()] for details and additional useful options.
 #'
 #'   For the covariance structure (`cor_struct`), the user can choose among the following options.
 #'
@@ -78,8 +79,8 @@ h_get_diagnostics <- function(fit) {
 #'
 #' @return A `tern_mmrm` object which is a list with MMRM results:
 #'
-#'   - `fit`: The `mmrm` object which was fitted to the data. Note that the attribute `optimizer`
-#'       contains the finally used optimization algorithm, which can be useful for refitting the model
+#'   - `fit`: The `mmrm` object which was fitted to the data. Note that via `mmrm::component(fit, "optimizer")`
+#'       the finally used optimization algorithm can be obtained, which can be useful for refitting the model
 #'       later on.
 #'   - `cov_estimate`: The matrix with the covariance matrix estimate.
 #'   - `diagnostics`: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
