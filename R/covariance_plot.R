@@ -73,14 +73,14 @@ h_get_timepoint_vars <- function(vcov_matrix,
 h_vectorization <- function(vcov_matrix, time_prefix = NULL) {
   assert_matrix(vcov_matrix)
   assert_true(isSymmetric(vcov_matrix))
-  diag <- upper.tri(vcov_matrix, diag = T)
+  diag <- upper.tri(vcov_matrix, diag = TRUE)
   vect <- vcov_matrix[diag]
   timepoints <- h_get_timepoint_vars(vcov_matrix, time_prefix)
   time_diff <- timepoints$col_time - timepoints$row_time
   rank_row <- as.numeric(as.factor(timepoints$row_time))
   rank_col <- as.numeric(as.factor(timepoints$col_time))
   lag <- rank_col - rank_row
-  if (any(is.na(lag)) | any(is.na(time_diff))) {
+  if (any(is.na(lag)) || any(is.na(time_diff))) {
     warning(paste(
       "Verify you have used the string argument correctly or",
       "that the columns and rows of your input matrix are named as expected"
