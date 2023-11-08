@@ -118,13 +118,13 @@ h_get_diagnostics <- function(fit) {
 #'   )
 #' )
 #'
-fit_mmrm <- function(vars = list(
+fit_mmrm <- function(vars = list( # nolint start
                        response = "AVAL",
                        covariates = c(),
                        id = "USUBJID",
                        arm = "ARM",
                        visit = "AVISIT"
-                     ),
+                     ), # nolint end
                      data,
                      conf_level = 0.95,
                      cor_struct = "unstructured",
