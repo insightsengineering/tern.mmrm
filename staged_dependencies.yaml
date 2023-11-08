@@ -11,6 +11,9 @@ upstream_repos:
   insightsengineering/rtables:
     repo: insightsengineering/rtables
     host: https://github.com
+  openpharma/mmrm:
+    repo: openpharma/mmrm
+    host: https://github.com
 downstream_repos:
   insightsengineering/teal.modules.clinical:
     repo: insightsengineering/teal.modules.clinical

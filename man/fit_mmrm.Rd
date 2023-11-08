@@ -49,14 +49,14 @@ and reported along side the single visits.}
 \item{parallel}{(\code{flag})\cr controls whether the optimizer search can use available free cores on the
 machine (not default).}
 
-\item{...}{additional arguments for \code{\link[mmrm:mmrm]{mmrm::mmrm()}}, in particular \code{optimizer} and \code{accept_singular}
-are still supported.}
+\item{...}{additional arguments for \code{\link[mmrm:mmrm]{mmrm::mmrm()}}, in particular \code{reml} and options listed in
+\code{\link[mmrm:mmrm_control]{mmrm::mmrm_control()}}.}
 }
 \value{
 A \code{tern_mmrm} object which is a list with MMRM results:
 \itemize{
-\item \code{fit}: The \code{mmrm} object which was fitted to the data. Note that the attribute \code{optimizer}
-contains the finally used optimization algorithm, which can be useful for refitting the model
+\item \code{fit}: The \code{mmrm} object which was fitted to the data. Note that via \code{mmrm::component(fit, "optimizer")}
+the finally used optimization algorithm can be obtained, which can be useful for refitting the model
 later on.
 \item \code{cov_estimate}: The matrix with the covariance matrix estimate.
 \item \code{diagnostics}: A list with model diagnostic statistics (REML criterion, AIC, corrected AIC, BIC).
@@ -80,8 +80,9 @@ Does the \code{MMRM} analysis. Multiple other functions can be called on the res
 tables and graphs.
 }
 \details{
-Both Satterthwaite and Kenward-Roger adjustment is supported via the \code{method} argument
-passed to \code{\link[mmrm:mmrm]{mmrm::mmrm()}}, and they numerically match the results obtained in SAS.
+Multiple different degree of freedom adjustments are available via the \code{method} argument
+for \code{\link[mmrm:mmrm]{mmrm::mmrm()}}. In addition, covariance matrix adjustments are available via \code{vcov}.
+Please see \code{\link[mmrm:mmrm_control]{mmrm::mmrm_control()}} for details and additional useful options.
 
 For the covariance structure (\code{cor_struct}), the user can choose among the following options.
 \itemize{
