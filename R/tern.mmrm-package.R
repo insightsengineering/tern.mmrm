@@ -26,7 +26,7 @@ NULL
 #' Low levels of `FEV1` may indicate chronic obstructive pulmonary disease (`COPD`).
 #' @format A `tibble` with 800 rows and 7 variables:
 #'
-#'   - `USUBJID`: price, in US dollars.
+#'   - `USUBJID`: unique subject identifier.
 #'   - `AVISIT`: visit number.
 #'   - `ARMCD`: treatment, `TRT` or `PBO`.
 #'   - `RACE`: 3-category race.
