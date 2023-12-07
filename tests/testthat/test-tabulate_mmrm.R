@@ -258,70 +258,19 @@ get_mmrm_no_arm <- function() {
 test_that("h_mmrm_fixed works as expected", {
   mmrm <- get_mmrm()
   result <- h_mmrm_fixed(mmrm, format = "xx.xx")
-  result2 <- as.rtable(mmrm, type = "fixed", format = "xx.xx")
-  expect_identical(result, result2)
-  result_matrix <- to_string_matrix(result)
-  expect_identical(result_matrix[1L, -1L], c("Estimate", "Std. Error", "t value", "df", "Pr(>|t|)"))
-  expected_matrix <- structure(
-    c(
-      "", "(Intercept)", "BMRKR2LOW", "BMRKR2MEDIUM", "ARMA: Drug X",
-      "ARMC: Combination", "AVISITWEEK 2 DAY 15", "AVISITWEEK 3 DAY 22",
-      "AVISITWEEK 4 DAY 29", "AVISITWEEK 5 DAY 36", "ARMA: Drug X:AVISITWEEK 2 DAY 15",
-      "ARMC: Combination:AVISITWEEK 2 DAY 15", "ARMA: Drug X:AVISITWEEK 3 DAY 22",
-      "ARMC: Combination:AVISITWEEK 3 DAY 22", "ARMA: Drug X:AVISITWEEK 4 DAY 29",
-      "ARMC: Combination:AVISITWEEK 4 DAY 29", "ARMA: Drug X:AVISITWEEK 5 DAY 36",
-      "ARMC: Combination:AVISITWEEK 5 DAY 36", "Estimate", "51.97",
-      "1.58", "-2.08", "0.13", "-3.28", "-5.17", "-1.46", "-1.58",
-      "-1.20", "4.04", "5.41", "1.05", "5.44", "-1.60", "5.65", "-1.54",
-      "6.92", "Std. Error", "2.35", "1.27", "1.01", "2.92", "3.09",
-      "3.51", "3.40", "3.25", "3.73", "4.51", "4.77", "4.36", "4.62",
-      "4.18", "4.42", "4.78", "5.06", "t value", "22.14", "1.24", "-2.06",
-      "0.05", "-1.06", "-1.47", "-0.43", "-0.49", "-0.32", "0.90",
-      "1.13", "0.24", "1.18", "-0.38", "1.28", "-0.32", "1.37", "df",
-      "42", "36", "36", "38", "38", "38", "38", "38", "38", "38", "38",
-      "38", "38", "38", "38", "38", "38"
-    ),
-    dim = c(18L, 5L)
-  )
-  expect_identical(result_matrix[, -6L], expected_matrix)
+  expect_snapshot(result)
 })
 
 test_that("h_mmrm_cov works as expected", {
   mmrm <- get_mmrm()
   result <- h_mmrm_cov(mmrm, format = "xx.xx")
-  result2 <- as.rtable(mmrm, type = "cov", format = "xx.xx")
-  expect_identical(result, result2)
-
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22",
-      "WEEK 4 DAY 29", "WEEK 5 DAY 36", "WEEK 1 DAY 8", "56.70", "-8.87",
-      "-6.67", "0.50", "-14.57", "WEEK 2 DAY 15", "-8.87", "61.29",
-      "-5.99", "-16.25", "7.92", "WEEK 3 DAY 22", "-6.67", "-5.99",
-      "57.12", "9.43", "1.59", "WEEK 4 DAY 29", "0.50", "-16.25", "9.43",
-      "60.79", "-14.50", "WEEK 5 DAY 36", "-14.57", "7.92", "1.59",
-      "-14.50", "66.96"
-    ),
-    dim = c(6L, 6L)
-  )
-  expect_identical(result_matrix, expected_matrix)
+  expect_snapshot(result)
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
   mmrm <- get_mmrm()
   result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
-  result2 <- as.rtable(mmrm, type = "diagnostic", format = "xx.x")
-  expect_identical(result, result2)
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "REML criterion", "AIC", "AICc", "BIC", "Diagnostic statistic value",
-      "1341.7", "1371.7", "1374.5", "1397.4"
-    ),
-    .Dim = c(5L, 2L)
-  )
-  expect_identical(result_matrix, expected_matrix)
+  expect_snapshot(result)
 })
 
 test_that("tidy.mmrm works as expected", {
@@ -415,42 +364,7 @@ test_that("summarize_lsmeans works as expected", {
       )
     ) %>%
     build_table(df)
-
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
-      "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 3 DAY 22", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)",
-      "95% CI", "Difference in Adjusted Means (SE)", "95% CI", "Relative Increase (%)",
-      "p-value (MMRM)", "B: Placebo", "", "11", "51.5 (2.3)", "(46.9, 56.1)",
-      "", "", "", "", "", "11", "46.3 (2.4)", "(41.5, 51.1)", "", "",
-      "", "", "", "11", "50.0 (2.3)", "(45.4, 54.6)", "", "", "", "",
-      "", "11", "49.9 (2.4)", "(45.1, 54.6)", "", "", "", "", "", "11",
-      "50.3 (2.5)", "(45.3, 55.3)", "", "", "", "", "A: Drug X", "",
-      "17", "51.6 (1.8)", "(47.9, 55.3)", "0.1 (2.9)", "(-5.8, 6.0)",
-      "0%", "0.96", "", "17", "50.5 (1.9)", "(46.6, 54.3)", "4.2 (3.0)",
-      "(-2.0, 10.3)", "9%", "0.18", "", "17", "51.2 (1.8)", "(47.5, 54.9)",
-      "1.2 (2.9)", "(-4.7, 7.1)", "2%", "0.69", "", "17", "48.4 (1.9)",
-      "(44.6, 52.3)", "-1.5 (3.0)", "(-7.6, 4.6)", "-3%", "0.63", "",
-      "17", "48.9 (2.0)", "(44.8, 52.9)", "-1.4 (3.2)", "(-7.8, 5.0)",
-      "-3%", "0.66", "C: Combination", "", "13", "48.2 (2.1)", "(43.9, 52.4)",
-      "-3.3 (3.1)", "(-9.5, 3.0)", "-6%", "0.30", "", "13", "48.4 (2.2)",
-      "(44.0, 52.8)", "2.1 (3.2)", "(-4.4, 8.6)", "5%", "0.51", "",
-      "13", "52.2 (2.1)", "(47.9, 56.4)", "2.2 (3.1)", "(-4.1, 8.5)",
-      "4%", "0.49", "", "13", "52.3 (2.2)", "(47.9, 56.6)", "2.4 (3.2)",
-      "(-4.1, 8.9)", "5%", "0.46", "", "13", "53.9 (2.3)", "(49.3, 58.5)",
-      "3.6 (3.4)", "(-3.2, 10.4)", "7%", "0.29"
-    ),
-    dim = c(41L, 4L)
-  )
-  expect_identical(result_matrix, expected_matrix)
+  expect_snapshot(result)
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
@@ -467,22 +381,7 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
       )
     ) %>%
     build_table(df)
-
-  result_matrix <- to_string_matrix(result)
-  expected_matrix <- structure(
-    c(
-      "", "WEEK 1 DAY 8", "n", "Adjusted Mean (SE)", "95% CI",
-      "WEEK 2 DAY 15", "n", "Adjusted Mean (SE)", "95% CI", "WEEK 3 DAY 22",
-      "n", "Adjusted Mean (SE)", "95% CI", "WEEK 4 DAY 29", "n", "Adjusted Mean (SE)",
-      "95% CI", "WEEK 5 DAY 36", "n", "Adjusted Mean (SE)", "95% CI",
-      "all obs", "", "41", "50.5 (1.2)", "(48.1, 52.8)", "", "41",
-      "48.7 (1.2)", "(46.3, 51.1)", "", "41", "51.2 (1.2)", "(48.7, 53.7)",
-      "", "41", "50.0 (1.3)", "(47.5, 52.6)", "", "41", "50.8 (1.3)",
-      "(48.2, 53.5)"
-    ),
-    dim = c(21L, 2L)
-  )
-  expect_identical(result_matrix, expected_matrix)
+  expect_snapshot(result)
 })
 
 test_that("summarize_lsmeans works with averages of visits as expected", {
@@ -524,6 +423,5 @@ test_that("summarize_lsmeans works with averages of visits as expected", {
       )
     ) %>%
     build_table(df)
-  result_matrix <- to_string_matrix(result)
-  expect_snapshot(result_matrix)
+  expect_snapshot(result)
 })
