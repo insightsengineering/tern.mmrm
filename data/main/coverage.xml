@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.989061075660893" branch-rate="0" lines-covered="1085" lines-valid="1097" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-28 14:09:25.774079">
+<coverage line-rate="0.989061075660893" branch-rate="0" lines-covered="1085" lines-valid="1097" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-12-08 20:02:48.026621">
   <sources>
     <source>/__w/tern.mmrm/tern.mmrm/tern.mmrm</source>
   </sources>
@@ -2199,45 +2199,45 @@
           <methods>
             <method name="as.rtable.tern_mmrm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="57" hits="6" branch="false"/>
-                <line number="58" hits="6" branch="false"/>
-                <line number="59" hits="2" branch="false"/>
-                <line number="60" hits="2" branch="false"/>
-                <line number="61" hits="2" branch="false"/>
+                <line number="57" hits="3" branch="false"/>
+                <line number="58" hits="3" branch="false"/>
+                <line number="59" hits="1" branch="false"/>
+                <line number="60" hits="1" branch="false"/>
+                <line number="61" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="h_mmrm_fixed" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="69" hits="3" branch="false"/>
-                <line number="70" hits="3" branch="false"/>
-                <line number="71" hits="3" branch="false"/>
-                <line number="72" hits="3" branch="false"/>
-                <line number="73" hits="3" branch="false"/>
-                <line number="74" hits="3" branch="false"/>
-                <line number="75" hits="3" branch="false"/>
+                <line number="69" hits="2" branch="false"/>
+                <line number="70" hits="2" branch="false"/>
+                <line number="71" hits="2" branch="false"/>
+                <line number="72" hits="2" branch="false"/>
+                <line number="73" hits="2" branch="false"/>
+                <line number="74" hits="2" branch="false"/>
+                <line number="75" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="h_mmrm_cov" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="81" hits="3" branch="false"/>
-                <line number="82" hits="3" branch="false"/>
+                <line number="81" hits="2" branch="false"/>
+                <line number="82" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="h_mmrm_diagnostic" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="88" hits="3" branch="false"/>
-                <line number="89" hits="3" branch="false"/>
-                <line number="90" hits="3" branch="false"/>
-                <line number="91" hits="3" branch="false"/>
-                <line number="92" hits="3" branch="false"/>
-                <line number="93" hits="3" branch="false"/>
-                <line number="94" hits="3" branch="false"/>
-                <line number="95" hits="3" branch="false"/>
-                <line number="96" hits="3" branch="false"/>
-                <line number="97" hits="3" branch="false"/>
-                <line number="98" hits="3" branch="false"/>
-                <line number="99" hits="3" branch="false"/>
-                <line number="100" hits="3" branch="false"/>
+                <line number="88" hits="2" branch="false"/>
+                <line number="89" hits="2" branch="false"/>
+                <line number="90" hits="2" branch="false"/>
+                <line number="91" hits="2" branch="false"/>
+                <line number="92" hits="2" branch="false"/>
+                <line number="93" hits="2" branch="false"/>
+                <line number="94" hits="2" branch="false"/>
+                <line number="95" hits="2" branch="false"/>
+                <line number="96" hits="2" branch="false"/>
+                <line number="97" hits="2" branch="false"/>
+                <line number="98" hits="2" branch="false"/>
+                <line number="99" hits="2" branch="false"/>
+                <line number="100" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="tidy.tern_mmrm" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -2314,33 +2314,33 @@
             </method>
           </methods>
           <lines>
-            <line number="57" hits="6" branch="false"/>
-            <line number="58" hits="6" branch="false"/>
-            <line number="59" hits="2" branch="false"/>
-            <line number="60" hits="2" branch="false"/>
-            <line number="61" hits="2" branch="false"/>
-            <line number="69" hits="3" branch="false"/>
-            <line number="70" hits="3" branch="false"/>
-            <line number="71" hits="3" branch="false"/>
-            <line number="72" hits="3" branch="false"/>
-            <line number="73" hits="3" branch="false"/>
-            <line number="74" hits="3" branch="false"/>
-            <line number="75" hits="3" branch="false"/>
-            <line number="81" hits="3" branch="false"/>
-            <line number="82" hits="3" branch="false"/>
-            <line number="88" hits="3" branch="false"/>
-            <line number="89" hits="3" branch="false"/>
-            <line number="90" hits="3" branch="false"/>
-            <line number="91" hits="3" branch="false"/>
-            <line number="92" hits="3" branch="false"/>
-            <line number="93" hits="3" branch="false"/>
-            <line number="94" hits="3" branch="false"/>
-            <line number="95" hits="3" branch="false"/>
-            <line number="96" hits="3" branch="false"/>
-            <line number="97" hits="3" branch="false"/>
-            <line number="98" hits="3" branch="false"/>
-            <line number="99" hits="3" branch="false"/>
-            <line number="100" hits="3" branch="false"/>
+            <line number="57" hits="3" branch="false"/>
+            <line number="58" hits="3" branch="false"/>
+            <line number="59" hits="1" branch="false"/>
+            <line number="60" hits="1" branch="false"/>
+            <line number="61" hits="1" branch="false"/>
+            <line number="69" hits="2" branch="false"/>
+            <line number="70" hits="2" branch="false"/>
+            <line number="71" hits="2" branch="false"/>
+            <line number="72" hits="2" branch="false"/>
+            <line number="73" hits="2" branch="false"/>
+            <line number="74" hits="2" branch="false"/>
+            <line number="75" hits="2" branch="false"/>
+            <line number="81" hits="2" branch="false"/>
+            <line number="82" hits="2" branch="false"/>
+            <line number="88" hits="2" branch="false"/>
+            <line number="89" hits="2" branch="false"/>
+            <line number="90" hits="2" branch="false"/>
+            <line number="91" hits="2" branch="false"/>
+            <line number="92" hits="2" branch="false"/>
+            <line number="93" hits="2" branch="false"/>
+            <line number="94" hits="2" branch="false"/>
+            <line number="95" hits="2" branch="false"/>
+            <line number="96" hits="2" branch="false"/>
+            <line number="97" hits="2" branch="false"/>
+            <line number="98" hits="2" branch="false"/>
+            <line number="99" hits="2" branch="false"/>
+            <line number="100" hits="2" branch="false"/>
             <line number="116" hits="9" branch="false"/>
             <line number="117" hits="9" branch="false"/>
             <line number="118" hits="9" branch="false"/>
