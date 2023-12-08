@@ -1,4 +1,4 @@
-# tern.mmrm 0.2.2.9008
+# tern.mmrm 0.3.0
 
 Adapt to release 0.3 of the `mmrm` package.
 

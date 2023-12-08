@@ -159,7 +159,7 @@ test_that("tabulate_mmrm_subgroups works as expected", {
 
   tab <- basic_table() %>%
     tabulate_mmrm_subgroups(df)
-  tab_matrix <- to_string_matrix(tab)
+  tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
@@ -190,7 +190,7 @@ test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
         pval = "p"
       )
     )
-  tab_matrix <- to_string_matrix(tab)
+  tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
