@@ -11,10 +11,15 @@ Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: Provides an interface for mixed model repeated measures
-    (MMRM) within the 'tern' framework to produce commonly used tables and
-    graphs. It builds on the R-package 'mmrm' for the actual MMRM
-    calculations.
+Description: Mixed models for repeated measures (MMRM) are a popular choice for 
+  analyzing longitudinal continuous outcomes in randomized clinical trials and beyond;
+  see for example Cnaan, Laird and Slasor (1997) 
+  <doi:10.1002/(SICI)1097-0258(19971030)16:20%3C2349::AID-SIM667%3E3.0.CO;2-E>.
+  This package provides an interface for fitting MMRM within the 
+  'tern' <https://cran.r-project.org/package=tern> framework and tabulate results 
+  easily using 'rtables' <https://cran.r-project.org/package=rtables>.
+  It builds on 'mmrm' <https://cran.r-project.org/package=mmrm> for the actual MMRM
+  computations.
 License: Apache License 2.0 | file LICENSE
 URL: https://github.com/insightsengineering/tern.mmrm,
     https://insightsengineering.github.io/tern.mmrm/
@@ -49,8 +54,6 @@ Suggests:
     vdiffr
 VignetteBuilder:
     knitr
-Remotes:
-    insightsengineering/tern@*release
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
