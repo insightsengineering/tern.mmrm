@@ -15,3 +15,4 @@ man-roxygen/*
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$
 ^design$
+^pkgdown$
