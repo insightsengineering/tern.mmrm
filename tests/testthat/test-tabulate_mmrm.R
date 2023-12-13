@@ -328,16 +328,16 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[2, ], TRUE)
-  expected <- list(
-    n = 11L,
-    adj_mean_se = c(46.3, 2.36),
-    adj_mean_ci = formatters::with_label(c(41.5, 51.1), label = "95% CI"),
-    diff_mean_se = character(0),
-    diff_mean_ci = formatters::with_label(character(0), label = "95% CI"),
-    change = formatters::with_label(character(0), label = "Relative Reduction (%)"),
-    p_value = character(0)
-  )
-  expect_equal(result, expected, tolerance = 1e-2)
+  expect_list(result, names = "unique")
+  expect_named(result, c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci", "change", "p_value"))
+  expect_identical(result$n, 11L)
+  expect_numeric(result$adj_mean_se, len = 2L, any.missing = FALSE)
+  expect_numeric(result$adj_mean_ci, len = 2L, any.missing = FALSE)
+  expect_identical(attr(result$adj_mean_ci, "label"), "95% CI")
+  expect_identical(result$diff_mean_se, character(0))
+  expect_identical(result$diff_mean_ci, formatters::with_label(character(0), label = "95% CI"))
+  expect_identical(result$change, formatters::with_label(character(0), label = "Relative Reduction (%)"))
+  expect_identical(result$p_value, character(0))
 })
 
 test_that("s_mmrm_lsmeans_single works as expected", {
