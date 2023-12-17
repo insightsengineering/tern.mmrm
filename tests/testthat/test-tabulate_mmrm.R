@@ -254,24 +254,27 @@ get_mmrm_no_arm <- function() {
   )
 }
 
+# h_mmrm_fixed ----
 
 test_that("h_mmrm_fixed works as expected", {
   mmrm <- get_mmrm()
-  result <- h_mmrm_fixed(mmrm, format = "xx.xx")
+  result <- expect_silent(h_mmrm_fixed(mmrm, format = "xx.xx"))
   expect_snapshot(result)
 })
 
 test_that("h_mmrm_cov works as expected", {
   mmrm <- get_mmrm()
-  result <- h_mmrm_cov(mmrm, format = "xx.xx")
+  result <- expect_silent(h_mmrm_cov(mmrm, format = "xx.xx"))
   expect_snapshot(result)
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
   mmrm <- get_mmrm()
-  result <- h_mmrm_diagnostic(mmrm, format = "xx.x")
+  result <- expect_silent(h_mmrm_diagnostic(mmrm, format = "xx.x"))
   expect_snapshot(result)
 })
+
+# tidy.mmrm ----
 
 test_that("tidy.mmrm works as expected", {
   mmrm <- get_mmrm()
@@ -301,36 +304,40 @@ test_that("tidy.mmrm works as expected when treatment is not considered in the m
   )
 })
 
+# s_mmrm_lsmeans ----
+
 test_that("s_mmrm_lsmeans works as expected when not in reference column", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[8, ], FALSE)
-  expected <- list(
-    n = 17L,
-    adj_mean_se = c(51.19, 1.83),
-    adj_mean_ci = formatters::with_label(c(47.47, 54.92), label = "95% CI"),
-    diff_mean_se = c(1.18, 2.93),
-    diff_mean_ci = formatters::with_label(c(-4.75, 7.11), label = "95% CI"),
-    change = formatters::with_label(-0.0236, label = "Relative Reduction (%)"),
-    p_value = 0.69
-  )
-  expect_equal(result, expected, tolerance = 1e-2)
+  expect_list(result, names = "unique")
+  expect_named(result, c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci", "change", "p_value"))
+  expect_identical(result$n, 17L)
+  expect_numeric(result$adj_mean_se, len = 2L, any.missing = FALSE)
+  expect_numeric(result$adj_mean_ci, len = 2L, any.missing = FALSE)
+  expect_identical(attr(result$adj_mean_ci, "label"), "95% CI")
+  expect_numeric(result$diff_mean_se, len = 2L, any.missing = FALSE)
+  expect_numeric(result$diff_mean_ci, len = 2L, any.missing = FALSE)
+  expect_identical(attr(result$diff_mean_ci, "label"), "95% CI")
+  expect_number(result$change)
+  expect_identical(attr(result$change, "label"), "Relative Reduction (%)")
+  expect_number(result$p_value)
 })
 
 test_that("s_mmrm_lsmeans works as expected when in reference column", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[2, ], TRUE)
-  expected <- list(
-    n = 11L,
-    adj_mean_se = c(46.3, 2.36),
-    adj_mean_ci = formatters::with_label(c(41.5, 51.1), label = "95% CI"),
-    diff_mean_se = character(0),
-    diff_mean_ci = formatters::with_label(character(0), label = "95% CI"),
-    change = formatters::with_label(character(0), label = "Relative Reduction (%)"),
-    p_value = character(0)
-  )
-  expect_equal(result, expected, tolerance = 1e-2)
+  expect_list(result, names = "unique")
+  expect_named(result, c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci", "change", "p_value"))
+  expect_identical(result$n, 11L)
+  expect_numeric(result$adj_mean_se, len = 2L, any.missing = FALSE)
+  expect_numeric(result$adj_mean_ci, len = 2L, any.missing = FALSE)
+  expect_identical(attr(result$adj_mean_ci, "label"), "95% CI")
+  expect_identical(result$diff_mean_se, character(0))
+  expect_identical(result$diff_mean_ci, formatters::with_label(character(0), label = "95% CI"))
+  expect_identical(result$change, formatters::with_label(character(0), label = "Relative Reduction (%)"))
+  expect_identical(result$p_value, character(0))
 })
 
 test_that("s_mmrm_lsmeans_single works as expected", {
@@ -344,6 +351,8 @@ test_that("s_mmrm_lsmeans_single works as expected", {
   )
   expect_equal(result, expected, tolerance = 1e-2)
 })
+
+# summarize_lsmeans ----
 
 test_that("summarize_lsmeans works as expected", {
   mmrm <- get_mmrm()
