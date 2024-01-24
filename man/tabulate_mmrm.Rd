@@ -145,8 +145,8 @@ df <- broom::tidy(result)
 df_no_arm <- broom::tidy(result_no_arm)
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 s_mmrm_lsmeans_single(df_no_arm[4, ])
-
 library(dplyr)
+
 dat_adsl <- mmrm_test_data \%>\%
   select(USUBJID, ARMCD) \%>\%
   unique()
