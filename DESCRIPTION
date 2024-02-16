@@ -1,6 +1,6 @@
 Package: tern.mmrm
 Title: Tables and Graphs for Mixed Models for Repeated Measures (MMRM)
-Version: 0.3.0.9003
+Version: 0.3.0.9004
 Date: 2024-02-16
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
