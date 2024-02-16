@@ -236,8 +236,8 @@ a_mmrm_lsmeans_single <- make_afun(
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @export
 #' @examples
-#'
 #' library(dplyr)
+#'
 #' dat_adsl <- mmrm_test_data %>%
 #'   select(USUBJID, ARMCD) %>%
 #'   unique()

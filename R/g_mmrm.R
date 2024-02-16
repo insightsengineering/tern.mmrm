@@ -374,7 +374,7 @@ g_mmrm_lsmeans <-
           assert_names(names(n_baseline), permutation.of = arm_lvls)
           n_baseline[arm_lvls]
         } else {
-          rep(n_baseline, length = length(arm_lvls))
+          rep(n_baseline, length.out = length(arm_lvls))
         }
         baseline_estimates$n <- n_baseline_vec
         baseline_contrasts <- cbind(

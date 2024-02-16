@@ -18,6 +18,7 @@ test_that("h_get_timepoint_vars works in simple example", {
 })
 
 test_that("h_get_timepoint_vars works as expected with time_prefix specified", {
+  skip_if_not_installed("maditr")
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   result <- h_get_timepoint_vars(vcov_matrix = data_cov, time_prefix = "VIS")
@@ -29,12 +30,14 @@ test_that("h_get_timepoint_vars works as expected with time_prefix specified", {
 })
 
 test_that("h_get_timepoint_vars returns error when time_prefix not specified", {
+  skip_if_not_installed("maditr")
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   expect_error(h_get_timepoint_vars(vcov_matrix = data_cov))
 })
 
 test_that("h_get_timepoint_vars works as expected with time_prefix argument not needed", {
+  skip_if_not_installed("maditr")
   data_wide <- maditr::dcast(mmrm_test_data, USUBJID + ARMCD ~ AVISIT, value.var = "FEV1")
   data_cov <- cov(data_wide[, 3:ncol(data_wide)], use = "pairwise.complete.obs", method = "pearson")
   row.names(data_cov) <- c(1, 2, 3, 4)
