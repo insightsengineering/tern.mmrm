@@ -6,7 +6,7 @@ default_language_version:
   python: python3
 repos:
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9027
+    rev: v0.4.0
     hooks:
       - id: style-files
         name: Style code with `styler`
@@ -15,21 +15,22 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
-        - insightsengineering/nestcolor
-        - insightsengineering/tern
+        - tern
         - checkmate
+        - cowplot
         - dplyr
         - emmeans
         - formatters
         - generics
         - ggplot2
+        - lifecycle
         - magrittr
-        - openpharma/mmrm
-        - parallel
+        - mmrm
+        - parallelly
         - rlang
         - rtables
         - stats
-        - vdiffr
+        - tidyr
       - id: use-tidy-description
       - id: spell-check
         name: Check spelling with `spelling`
@@ -72,22 +73,6 @@ repos:
           (?x)^(
           design/.*
           )$
-        additional_dependencies:
-        - insightsengineering/nestcolor
-        - insightsengineering/tern
-        - checkmate
-        - dplyr
-        - emmeans
-        - formatters
-        - generics
-        - ggplot2
-        - magrittr
-        - openpharma/mmrm
-        - parallel
-        - rlang
-        - rtables
-        - stats
-        - vdiffr
       - id: readme-rmd-rendered
       - id: parsable-R
         exclude: >
