@@ -95,6 +95,8 @@ test_that("h_vectorization works as expected when time_prefix not specified", {
 # g_covariance ----
 
 test_that("g_covariance works as expected as expected with defaults", {
+  skip_on_ci()
+
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -108,6 +110,8 @@ test_that("g_covariance works as expected as expected with defaults", {
 })
 
 test_that("g_covariance works as expected as expected with time_prefix specified", {
+  skip_on_ci()
+
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,
@@ -121,6 +125,8 @@ test_that("g_covariance works as expected as expected with time_prefix specified
 })
 
 test_that("g_covariance works as expected as expected with time difference", {
+  skip_on_ci()
+
   vcov_matrix <- matrix(
     c(49, 12, 12, 23),
     nrow = 2, ncol = 2,

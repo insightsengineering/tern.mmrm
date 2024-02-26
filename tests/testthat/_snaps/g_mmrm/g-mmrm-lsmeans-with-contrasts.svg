@@ -18,7 +18,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<rect x='0.00' y='0.00' width='720.00' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='-0.000000000000064' y='0.00' width='720.00' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 <rect x='27.90' y='39.43' width='634.31' height='505.68' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <polyline points='73.21,171.07 163.82,171.07 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt;' />
 <polyline points='118.52,171.07 118.52,423.83 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt;' />
@@ -67,8 +67,6 @@
 <rect x='673.17' y='267.33' width='41.35' height='49.89' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='673.17' y='276.04' style='font-size: 11.00px; font-family: sans;' textLength='40.35px' lengthAdjust='spacingAndGlyphs'>ARMCD</text>
 <rect x='673.17' y='282.66' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<line x1='674.90' y1='291.30' x2='688.72' y2='291.30' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt;' />
-<circle cx='681.81' cy='291.30' r='1.95' style='stroke-width: 0.71; stroke: #F8766D; fill: #F8766D;' />
 <rect x='673.17' y='299.94' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <line x1='674.90' y1='308.58' x2='688.72' y2='308.58' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt;' />
 <circle cx='681.81' cy='308.58' r='1.95' style='stroke-width: 0.71; stroke: #00BFC4; fill: #00BFC4;' />
