@@ -164,8 +164,6 @@ test_that("tabulate_mmrm_subgroups table works as expected", {
 })
 
 test_that("tabulate_mmrm_subgroups forest plot works as expected", {
-  skip_on_ci()
-
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS3",
@@ -176,6 +174,8 @@ test_that("tabulate_mmrm_subgroups forest plot works as expected", {
     tabulate_mmrm_subgroups(df)
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
+
+  skip_on_ci()
   vdiffr::expect_doppelganger("MMRM forest plot", function() grid::grid.draw(forest))
 })
 
@@ -208,8 +208,6 @@ test_that("tabulate_mmrm_subgroups table with custom settings works as expected"
 })
 
 test_that("tabulate_mmrm_subgroups forest plot with custom settings works as expected", {
-  skip_on_ci()
-
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS1+2",
@@ -235,5 +233,7 @@ test_that("tabulate_mmrm_subgroups forest plot with custom settings works as exp
     )
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
+
+  skip_on_ci()
   vdiffr::expect_doppelganger("MMRM forest plot with customizations", function() grid::grid.draw(forest))
 })
