@@ -150,7 +150,7 @@ test_that("a_mmrm_subgroups works as expected", {
 
 # tabulate_mmrm_subgroups ----
 
-test_that("tabulate_mmrm_subgroups table works as expected", {
+test_that("tabulate_mmrm_subgroups works as expected", {
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS3",
@@ -161,17 +161,6 @@ test_that("tabulate_mmrm_subgroups table works as expected", {
     tabulate_mmrm_subgroups(df)
   tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
-})
-
-test_that("tabulate_mmrm_subgroups forest plot works as expected", {
-  df <- extract_mmrm_subgroups(
-    fit = mmrm_results,
-    visit = "VIS3",
-    subgroups = c("RACE", "SEX")
-  )
-
-  tab <- basic_table() %>%
-    tabulate_mmrm_subgroups(df)
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
 
@@ -179,7 +168,7 @@ test_that("tabulate_mmrm_subgroups forest plot works as expected", {
   vdiffr::expect_doppelganger("MMRM forest plot", function() grid::grid.draw(forest))
 })
 
-test_that("tabulate_mmrm_subgroups table with custom settings works as expected", {
+test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS1+2",
@@ -205,32 +194,6 @@ test_that("tabulate_mmrm_subgroups table with custom settings works as expected"
     )
   tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
-})
-
-test_that("tabulate_mmrm_subgroups forest plot with custom settings works as expected", {
-  df <- extract_mmrm_subgroups(
-    fit = mmrm_results,
-    visit = "VIS1+2",
-    subgroups = "SEX"
-  )
-
-  tab <- basic_table() %>%
-    tabulate_mmrm_subgroups(
-      df,
-      vars = c("diff", "ci", "n_tot", "pval"),
-      .formats = list(
-        n_tot = "xx",
-        diff = "xx.",
-        ci = "(xx., xx.)",
-        pval = "xx.xx"
-      ),
-      .labels = list(
-        n_tot = "Total",
-        diff = "Difference",
-        ci = "CI",
-        pval = "p"
-      )
-    )
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
 

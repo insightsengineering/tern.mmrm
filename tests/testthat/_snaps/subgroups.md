@@ -137,7 +137,7 @@
     cmFtZQAAAP4AAAQCAAAD/wAAABAAAAACAAQACQAAAAllc3RpbWF0ZXMABAAJAAAACWNvbnRy
     YXN0cwAAAP4=
 
-# tabulate_mmrm_subgroups table works as expected
+# tabulate_mmrm_subgroups works as expected
 
     WAoAAAACAAQDAgACAwAAAAIQAAAAUAAEAAkAAAAAAAQACQAAABVCYXNlbGluZSBSaXNrIEZh
     Y3RvcnMABAAJAAAADEFsbCBQYXRpZW50cwAEAAkAAAAEUmFjZQAEAAkAAAAHICBBc2lhbgAE
@@ -159,7 +159,7 @@
     CigwLjIsIDUuOSkABAAJAAAAAAAEAAkAAAAKKDIuMCwgNi40KQAEAAkAAAAKKDAuNiwgNC4x
     KQAABAIAAAABAAQACQAAAANkaW0AAAANAAAAAgAAAAoAAAAIAAAA/g==
 
-# tabulate_mmrm_subgroups table with custom settings works as expected
+# tabulate_mmrm_subgroups with custom settings works as expected
 
     WAoAAAACAAQDAgACAwAAAAIQAAAAGQAEAAkAAAAVQmFzZWxpbmUgUmlzayBGYWN0b3JzAAQA
     CQAAAAxBbGwgUGF0aWVudHMABAAJAAAABkdlbmRlcgAEAAkAAAAGICBNYWxlAAQACQAAAAgg
