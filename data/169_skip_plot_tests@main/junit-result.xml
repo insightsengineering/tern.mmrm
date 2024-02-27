@@ -1,348 +1,332 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="assert_data" timestamp="2024-02-27T00:33:56Z" hostname="41a20c44362f" tests="31" skipped="0" failures="0" errors="0" time="0.615">
-    <testcase time="0.0130000000000001" classname="assert_data" name="h_assert_one_rec_pt_visit_passes_as_expected_if_data_is_ok"/>
-    <testcase time="0.0839999999999999" classname="assert_data" name="h_assert_one_rec_pt_visit_fails_as_expected_if_data_is_wrong"/>
+  <testsuite name="assert_data" timestamp="2024-02-27T20:01:32Z" hostname="1a87d060596d" tests="31" skipped="0" failures="0" errors="0" time="0.653">
+    <testcase time="0.0129999999999999" classname="assert_data" name="h_assert_one_rec_pt_visit_passes_as_expected_if_data_is_ok"/>
+    <testcase time="0.0940000000000001" classname="assert_data" name="h_assert_one_rec_pt_visit_fails_as_expected_if_data_is_wrong"/>
     <testcase time="0.00600000000000001" classname="assert_data" name="h_assert_one_rec_pt_visit_fails_as_expected_if_data_is_wrong"/>
-    <testcase time="0.0110000000000001" classname="assert_data" name="h_assert_one_rec_pt_visit_works_with_just_one_patient_and_one_visit"/>
+    <testcase time="0.012" classname="assert_data" name="h_assert_one_rec_pt_visit_works_with_just_one_patient_and_one_visit"/>
     <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_rsp_var_works_as_expected"/>
     <testcase time="0.00500000000000012" classname="assert_data" name="h_assert_rsp_var_works_as_expected"/>
-    <testcase time="0.146" classname="assert_data" name="h_assert_rsp_var_works_as_expected"/>
-    <testcase time="0.00600000000000001" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
-    <testcase time="0.00500000000000012" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
-    <testcase time="0.004" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
-    <testcase time="0.00500000000000012" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
-    <testcase time="0.00199999999999978" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
+    <testcase time="0.16" classname="assert_data" name="h_assert_rsp_var_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
+    <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
+    <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_visit_var_works_as_expected"/>
     <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
+    <testcase time="0.00200000000000022" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
     <testcase time="0.004" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
-    <testcase time="0.00500000000000034" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
-    <testcase time="0.004" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
+    <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_id_var_works_as_expected"/>
     <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
     <testcase time="0.004" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
-    <testcase time="0.00600000000000023" classname="assert_data" name="h_assert_data_passes_as_expected"/>
-    <testcase time="0.00599999999999978" classname="assert_data" name="h_assert_data_does_not_look_at_rows_with_incomplete_regressors_for_checking_duplicates"/>
+    <testcase time="0.00499999999999989" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
+    <testcase time="0.00500000000000034" classname="assert_data" name="h_assert_weights_var_works_as_expected"/>
+    <testcase time="0.00699999999999967" classname="assert_data" name="h_assert_data_passes_as_expected"/>
+    <testcase time="0.00600000000000023" classname="assert_data" name="h_assert_data_does_not_look_at_rows_with_incomplete_regressors_for_checking_duplicates"/>
     <testcase time="0.00999999999999979" classname="assert_data" name="h_assert_data_fails_when_less_than_5_rows_in_complete_data_set_without_arm"/>
-    <testcase time="0.0110000000000001" classname="assert_data" name="h_assert_data_fails_when_less_than_5_rows_in_complete_data_set_per_arm"/>
-    <testcase time="0.102" classname="assert_data" name="h_assert_data_works_with_interaction_terms_in_covariates_"/>
-    <testcase time="0.104" classname="assert_data" name="h_assert_data_works_when_there_are_missing_values"/>
+    <testcase time="0.012" classname="assert_data" name="h_assert_data_fails_when_less_than_5_rows_in_complete_data_set_per_arm"/>
+    <testcase time="0.104" classname="assert_data" name="h_assert_data_works_with_interaction_terms_in_covariates_"/>
+    <testcase time="0.108" classname="assert_data" name="h_assert_data_works_when_there_are_missing_values"/>
     <testcase time="0.00800000000000001" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_missing"/>
-    <testcase time="0.00600000000000023" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_missing"/>
-    <testcase time="0.004" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_missing"/>
-    <testcase time="0.016" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
-    <testcase time="0.00699999999999967" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
+    <testcase time="0.00599999999999978" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_missing"/>
+    <testcase time="0.00500000000000034" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_missing"/>
+    <testcase time="0.0169999999999999" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
+    <testcase time="0.00800000000000001" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
     <testcase time="0.00800000000000001" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
     <testcase time="0.00800000000000001" classname="assert_data" name="h_assert_data_fails_if_a_variable_is_not_included_in_data_"/>
   </testsuite>
-  <testsuite name="fit_mmrm" timestamp="2024-02-27T00:33:57Z" hostname="41a20c44362f" tests="40" skipped="0" failures="0" errors="0" time="3.783">
-    <testcase time="0.0730000000000004" classname="fit_mmrm" name="h_get_diagnostics_works_as_expected"/>
-    <testcase time="0.313" classname="fit_mmrm" name="fit_mmrm_works_with_parallelization"/>
-    <testcase time="0.197" classname="fit_mmrm" name="fit_mmrm_can_specify_multiple_optimizers_to_try"/>
+  <testsuite name="fit_mmrm" timestamp="2024-02-27T20:01:33Z" hostname="1a87d060596d" tests="40" skipped="0" failures="0" errors="0" time="3.907">
+    <testcase time="0.077" classname="fit_mmrm" name="h_get_diagnostics_works_as_expected"/>
+    <testcase time="0.327" classname="fit_mmrm" name="fit_mmrm_works_with_parallelization"/>
+    <testcase time="0.205" classname="fit_mmrm" name="fit_mmrm_can_specify_multiple_optimizers_to_try"/>
     <testcase time="0.004" classname="fit_mmrm" name="fit_mmrm_can_specify_multiple_optimizers_to_try"/>
     <testcase time="0.317" classname="fit_mmrm" name="fit_mmrm_can_specify_adjustment_method"/>
-    <testcase time="0.00199999999999978" classname="fit_mmrm" name="fit_mmrm_can_specify_adjustment_method"/>
     <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_can_specify_adjustment_method"/>
-    <testcase time="0.181" classname="fit_mmrm" name="fit_mmrm_works_with_character_ID_variable"/>
-    <testcase time="0.2" classname="fit_mmrm" name="fit_mmrm_works_with_character_ID_variable"/>
-    <testcase time="0.205" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.0190000000000001" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00499999999999989" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_can_specify_adjustment_method"/>
+    <testcase time="0.187" classname="fit_mmrm" name="fit_mmrm_works_with_character_ID_variable"/>
+    <testcase time="0.208" classname="fit_mmrm" name="fit_mmrm_works_with_character_ID_variable"/>
+    <testcase time="0.214" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.0209999999999999" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00500000000000078" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00299999999999923" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00900000000000034" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.0149999999999997" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00400000000000045" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.00199999999999978" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
     <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00800000000000001" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.0169999999999999" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00299999999999967" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
-    <testcase time="0.18" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
+    <testcase time="0.00399999999999956" classname="fit_mmrm" name="fit_mmrm_works_with_unstructured_covariance_matrix_and_produces_same_results_as_SAS"/>
+    <testcase time="0.188000000000001" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.0179999999999998" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
+    <testcase time="0.00499999999999989" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.00400000000000045" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
-    <testcase time="0.00399999999999956" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.00999999999999979" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.0110000000000001" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
-    <testcase time="0.00400000000000045" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
     <testcase time="0.00299999999999923" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
-    <testcase time="0.00200000000000067" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
-    <testcase time="0.226999999999999" classname="fit_mmrm" name="fit_mmrm_works_also_with_rank_deficient_model_matrix"/>
-    <testcase time="0.201000000000001" classname="fit_mmrm" name="fit_mmrm_works_also_with_weights"/>
-    <testcase time="0.00399999999999956" classname="fit_mmrm" name="fit_mmrm_works_also_with_weights"/>
-    <testcase time="0.2" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_toeplitz_covariance_matrix"/>
-    <testcase time="0.208" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_toeplitz_covariance_matrix"/>
-    <testcase time="0.207" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_ante_dependence_covariance_matrix"/>
-    <testcase time="0.201000000000001" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_ante_dependence_covariance_matrix"/>
-    <testcase time="0.188" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_auto_regressive_covariance_matrix"/>
-    <testcase time="0.186" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_auto_regressive_covariance_matrix"/>
-    <testcase time="0.177" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_compound_symmetry_covariance_matrix"/>
-    <testcase time="0.186" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_compound_symmetry_covariance_matrix"/>
+    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
+    <testcase time="0.00300000000000011" classname="fit_mmrm" name="fit_mmrm_works_also_with_missing_data"/>
+    <testcase time="0.237" classname="fit_mmrm" name="fit_mmrm_works_also_with_rank_deficient_model_matrix"/>
+    <testcase time="0.206" classname="fit_mmrm" name="fit_mmrm_works_also_with_weights"/>
+    <testcase time="0.00499999999999989" classname="fit_mmrm" name="fit_mmrm_works_also_with_weights"/>
+    <testcase time="0.204" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_toeplitz_covariance_matrix"/>
+    <testcase time="0.213" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_toeplitz_covariance_matrix"/>
+    <testcase time="0.213" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_ante_dependence_covariance_matrix"/>
+    <testcase time="0.205" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_ante_dependence_covariance_matrix"/>
+    <testcase time="0.192" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_auto_regressive_covariance_matrix"/>
+    <testcase time="0.194999999999999" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_auto_regressive_covariance_matrix"/>
+    <testcase time="0.182" classname="fit_mmrm" name="fit_mmrm_works_with_homogeneous_compound_symmetry_covariance_matrix"/>
+    <testcase time="0.196" classname="fit_mmrm" name="fit_mmrm_works_with_heterogeneous_compound_symmetry_covariance_matrix"/>
   </testsuite>
-  <testsuite name="formula" timestamp="2024-02-27T00:34:01Z" hostname="41a20c44362f" tests="4" skipped="0" failures="0" errors="0" time="0.052">
-    <testcase time="0.0290000000000008" classname="formula" name="build_formula_gives_error_message_if_incorrect_covariance_structure_is_given"/>
-    <testcase time="0.00799999999999912" classname="formula" name="build_formula_builds_the_correct_formula"/>
-    <testcase time="0.00800000000000001" classname="formula" name="build_formula_builds_the_correct_formula_with_no_arm_variable_given"/>
-    <testcase time="0.00700000000000056" classname="formula" name="build_formula_builds_the_correct_formula_with_no_covariates_given"/>
+  <testsuite name="formula" timestamp="2024-02-27T20:01:37Z" hostname="1a87d060596d" tests="4" skipped="0" failures="0" errors="0" time="0.054">
+    <testcase time="0.032" classname="formula" name="build_formula_gives_error_message_if_incorrect_covariance_structure_is_given"/>
+    <testcase time="0.00900000000000034" classname="formula" name="build_formula_builds_the_correct_formula"/>
+    <testcase time="0.00699999999999967" classname="formula" name="build_formula_builds_the_correct_formula_with_no_arm_variable_given"/>
+    <testcase time="0.00600000000000023" classname="formula" name="build_formula_builds_the_correct_formula_with_no_covariates_given"/>
   </testsuite>
-  <testsuite name="g_mmrm" timestamp="2024-02-27T00:34:01Z" hostname="41a20c44362f" tests="32" skipped="16" failures="0" errors="0" time="1.849">
-    <testcase time="0.397" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_with_defaults"/>
-    <testcase time="0.00599999999999934" classname="g_mmrm" name="g_mmrm_diagnostic_plot_works_well_with_defaults">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:32:3')"/>
+  <testsuite name="g_mmrm" timestamp="2024-02-27T20:01:37Z" hostname="1a87d060596d" tests="16" skipped="16" failures="0" errors="0" time="1.867">
+    <testcase time="0.407" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_with_defaults">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:29:3')"/>
     </testcase>
-    <testcase time="0.0449999999999999" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot"/>
-    <testcase time="0.00400000000000045" classname="g_mmrm" name="g_mmrm_diagnostic_plot_works_well_for_Q_Q_residuals_plot">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:44:3')"/>
+    <testcase time="0.0489999999999995" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:36:3')"/>
     </testcase>
-    <testcase time="0.0369999999999999" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot_with_z_threshold"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_diagnostic_plot_works_well_for_Q_Q_residuals_plot_with_z_threshold">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:56:3')"/>
+    <testcase time="0.0410000000000004" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot_with_z_threshold">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:43:3')"/>
     </testcase>
-    <testcase time="0.214" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot_with_weights"/>
-    <testcase time="0.00600000000000023" classname="g_mmrm" name="g_mmrm_diagnostic_plot_works_well_for_Q_Q_residuals_plot_with_weights">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:86:3')"/>
+    <testcase time="0.225" classname="g_mmrm" name="g_mmrm_diagnostic_works_well_for_Q_Q_residuals_plot_with_weights">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:67:3')"/>
     </testcase>
-    <testcase time="0.0389999999999997" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_default_arguments"/>
-    <testcase time="0.00400000000000045" classname="g_mmrm" name="g_mmrm_lsmeans_plot_works_well_with_default_arguments">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:118:3')"/>
+    <testcase time="0.0420000000000007" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_default_arguments">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:76:3')"/>
     </testcase>
-    <testcase time="0.0179999999999998" classname="g_mmrm" name="g_mmrm_lsmeans_can_select_estimates_only"/>
-    <testcase time="0.00499999999999989" classname="g_mmrm" name="g_mmrm_lsmeans_plot_can_select_estimates_only">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:130:3')"/>
+    <testcase time="0.0199999999999996" classname="g_mmrm" name="g_mmrm_lsmeans_can_select_estimates_only">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:83:3')"/>
     </testcase>
-    <testcase time="0.0220000000000002" classname="g_mmrm" name="g_mmrm_lsmeans_can_select_contrasts_only"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_can_select_contrasts_only">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:142:3')"/>
+    <testcase time="0.024" classname="g_mmrm" name="g_mmrm_lsmeans_can_select_contrasts_only">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:90:3')"/>
     </testcase>
-    <testcase time="0.0250000000000004" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_constant_baseline_added"/>
-    <testcase time="0.00400000000000045" classname="g_mmrm" name="g_mmrm_lsmeans_plot_works_well_with_constant_baseline_added">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:154:3')"/>
+    <testcase time="0.0270000000000001" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_constant_baseline_added">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:97:3')"/>
     </testcase>
-    <testcase time="0.024" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_lines_added"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_works_well_with_lines_added">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:166:3')"/>
+    <testcase time="0.0259999999999998" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_lines_added">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:104:3')"/>
     </testcase>
-    <testcase time="0.024" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_multiple_customizations"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_multiple_customizations">
+    <testcase time="0.0250000000000004" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_multiple_customizations">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:120:3')"/>
+    </testcase>
+    <testcase time="0.0199999999999996" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_constant_baseline_and_no_arms">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:127:3')"/>
+    </testcase>
+    <testcase time="0.261" classname="g_mmrm" name="g_mmrm_lsmeans_plots_stats_table_for_estimates_as_expected">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:138:3')"/>
+    </testcase>
+    <testcase time="0.222" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_with_custom_settings">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:163:3')"/>
+    </testcase>
+    <testcase time="0.137" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_without_arms">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:174:3')"/>
+    </testcase>
+    <testcase time="0.198" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_with_constant_baseline">
       <skipped message="Reason: On CI ('test-g_mmrm.R:187:3')"/>
     </testcase>
-    <testcase time="0.0180000000000007" classname="g_mmrm" name="g_mmrm_lsmeans_works_well_with_constant_baseline_and_no_arms"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_works_well_with_constant_baseline_and_no_arms">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:208:3')"/>
-    </testcase>
-    <testcase time="0.253" classname="g_mmrm" name="g_mmrm_lsmeans_stats_table_for_estimates_as_expected"/>
-    <testcase time="0.00499999999999989" classname="g_mmrm" name="g_mmrm_lsmeans_plots_stats_table_for_estimates_as_expected">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:224:3')"/>
-    </testcase>
-    <testcase time="0.217000000000001" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_with_custom_settings"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_plots_estimates_stats_table_with_custom_settings">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:258:3')"/>
-    </testcase>
-    <testcase time="0.126" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_without_arms"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_plots_estimates_stats_table_also_without_arms">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:292:3')"/>
-    </testcase>
-    <testcase time="0.187" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_with_constant_baseline"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_plots_estimates_stats_table_also_with_constant_baseline">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:314:3')"/>
-    </testcase>
-    <testcase time="0.133" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_with_constant_baseline_and_without_arms"/>
-    <testcase time="0.00399999999999956" classname="g_mmrm" name="g_mmrm_lsmeans_plot_plots_estimates_stats_table_also_with_constant_baseline_and_without_arms">
-      <skipped message="Reason: On CI ('test-g_mmrm.R:338:3')"/>
+    <testcase time="0.142999999999999" classname="g_mmrm" name="g_mmrm_lsmeans_plots_estimates_stats_table_also_with_constant_baseline_and_without_arms">
+      <skipped message="Reason: On CI ('test-g_mmrm.R:200:3')"/>
     </testcase>
   </testsuite>
-  <testsuite name="labels" timestamp="2024-02-27T00:34:03Z" hostname="41a20c44362f" tests="10" skipped="0" failures="0" errors="0" time="0.055">
-    <testcase time="0.0170000000000012" classname="labels" name="h_is_specified_works_as_expected"/>
-    <testcase time="0.00199999999999889" classname="labels" name="h_is_specified_works_as_expected"/>
+  <testsuite name="labels" timestamp="2024-02-27T20:01:39Z" hostname="1a87d060596d" tests="10" skipped="0" failures="0" errors="0" time="0.059">
+    <testcase time="0.0180000000000007" classname="labels" name="h_is_specified_works_as_expected"/>
     <testcase time="0.00300000000000011" classname="labels" name="h_is_specified_works_as_expected"/>
     <testcase time="0.00200000000000067" classname="labels" name="h_is_specified_works_as_expected"/>
-    <testcase time="0.00500000000000078" classname="labels" name="h_is_specified_and_in_data_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="labels" name="h_is_specified_works_as_expected"/>
+    <testcase time="0.00599999999999845" classname="labels" name="h_is_specified_and_in_data_works_as_expected"/>
     <testcase time="0.00600000000000023" classname="labels" name="h_check_and_get_label_works_as_expected"/>
-    <testcase time="0.00600000000000023" classname="labels" name="h_labels_works_as_expected"/>
-    <testcase time="0.00599999999999845" classname="labels" name="h_labels_works_if_covariates_is_empty_vector"/>
-    <testcase time="0.00200000000000067" classname="labels" name="h_labels_works_if_covariates_is_empty_vector"/>
+    <testcase time="0.00700000000000145" classname="labels" name="h_labels_works_as_expected"/>
+    <testcase time="0.00499999999999901" classname="labels" name="h_labels_works_if_covariates_is_empty_vector"/>
+    <testcase time="0.00300000000000011" classname="labels" name="h_labels_works_if_covariates_is_empty_vector"/>
     <testcase time="0.00600000000000023" classname="labels" name="h_labels_works_as_expected_also_with_weights"/>
   </testsuite>
-  <testsuite name="lsmeans" timestamp="2024-02-27T00:34:03Z" hostname="41a20c44362f" tests="49" skipped="6" failures="0" errors="0" time="1.866">
-    <testcase time="0.0739999999999998" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
+  <testsuite name="lsmeans" timestamp="2024-02-27T20:01:39Z" hostname="1a87d060596d" tests="49" skipped="6" failures="0" errors="0" time="1.978">
+    <testcase time="0.0779999999999994" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
     <testcase time="0.000999999999999446" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
-    <testcase time="0.00199999999999889" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
+    <testcase time="0.000999999999999446" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
     <testcase time="0.00300000000000011" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
-    <testcase time="0.0180000000000007" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
-    <testcase time="0.0839999999999996" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
+    <testcase time="0.0190000000000001" classname="lsmeans" name="h_get_emmeans_res_works_as_expected"/>
+    <testcase time="0.0890000000000004" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
     <testcase time="0.000999999999999446" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
-    <testcase time="0.000999999999999446" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
+    <testcase time="0.00199999999999889" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
     <testcase time="0.00399999999999956" classname="lsmeans" name="h_get_emmeans_res_works_as_expected_without_arm_variable"/>
-    <testcase time="0.0939999999999994" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected"/>
-    <testcase time="0.00400000000000134" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected"/>
-    <testcase time="0.0919999999999987" classname="lsmeans" name="h_get_average_visit_specs_gives_error_if_not_all_visits_are_correct"/>
-    <testcase time="0.0860000000000003" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected_without_arm"/>
+    <testcase time="0.0920000000000005" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected"/>
+    <testcase time="0.00399999999999956" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected"/>
+    <testcase time="0.0990000000000002" classname="lsmeans" name="h_get_average_visit_specs_gives_error_if_not_all_visits_are_correct"/>
+    <testcase time="0.101000000000001" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected_without_arm"/>
     <testcase time="0.00399999999999956" classname="lsmeans" name="h_get_average_visit_specs_works_as_expected_without_arm"/>
     <testcase time="0.00600000000000023" classname="lsmeans" name="h_get_average_visit_specs_uses_number_of_patients_with_any_of_the_averaged_visits_as_n">
       <skipped message="Reason: On CI ('test-lsmeans.R:178:3')"/>
     </testcase>
-    <testcase time="0.103" classname="lsmeans" name="h_get_spec_visit_estimates_works_as_expected"/>
+    <testcase time="0.106" classname="lsmeans" name="h_get_spec_visit_estimates_works_as_expected"/>
     <testcase time="0.0120000000000005" classname="lsmeans" name="h_get_spec_visit_estimates_works_as_expected"/>
-    <testcase time="0.093" classname="lsmeans" name="h_get_spec_visit_estimates_produces_test_results_optionally"/>
+    <testcase time="0.097999999999999" classname="lsmeans" name="h_get_spec_visit_estimates_produces_test_results_optionally"/>
     <testcase time="0.0150000000000006" classname="lsmeans" name="h_get_spec_visit_estimates_produces_test_results_optionally"/>
-    <testcase time="0.0890000000000004" classname="lsmeans" name="h_get_spec_visit_estimates_works_without_arm"/>
-    <testcase time="0.0190000000000001" classname="lsmeans" name="h_get_spec_visit_estimates_works_without_arm">
+    <testcase time="0.0950000000000006" classname="lsmeans" name="h_get_spec_visit_estimates_works_without_arm"/>
+    <testcase time="0.0179999999999989" classname="lsmeans" name="h_get_spec_visit_estimates_works_without_arm">
       <skipped message="Reason: On CRAN ('test-lsmeans.R:300:3')"/>
     </testcase>
-    <testcase time="0.109" classname="lsmeans" name="h_get_single_visit_estimates_works_as_expected"/>
+    <testcase time="0.107000000000001" classname="lsmeans" name="h_get_single_visit_estimates_works_as_expected"/>
     <testcase time="0.00399999999999956" classname="lsmeans" name="h_get_single_visit_estimates_works_as_expected">
       <skipped message="Reason: On CRAN ('test-lsmeans.R:311:3')"/>
     </testcase>
-    <testcase time="0.102" classname="lsmeans" name="h_get_single_visit_estimates_works_without_arm"/>
-    <testcase time="0.00399999999999956" classname="lsmeans" name="h_get_single_visit_estimates_works_without_arm">
+    <testcase time="0.112" classname="lsmeans" name="h_get_single_visit_estimates_works_without_arm"/>
+    <testcase time="0.00499999999999901" classname="lsmeans" name="h_get_single_visit_estimates_works_without_arm">
       <skipped message="Reason: On CRAN ('test-lsmeans.R:320:3')"/>
     </testcase>
-    <testcase time="0.106999999999999" classname="lsmeans" name="h_get_relative_reduc_df_works_as_expected"/>
-    <testcase time="0.00400000000000134" classname="lsmeans" name="h_get_relative_reduc_df_works_as_expected">
+    <testcase time="0.110000000000001" classname="lsmeans" name="h_get_relative_reduc_df_works_as_expected"/>
+    <testcase time="0.00499999999999901" classname="lsmeans" name="h_get_relative_reduc_df_works_as_expected">
       <skipped message="Reason: On CRAN ('test-lsmeans.R:335:3')"/>
     </testcase>
-    <testcase time="0.097999999999999" classname="lsmeans" name="h_single_visit_contrast_specs_works_as_expected"/>
+    <testcase time="0.0990000000000002" classname="lsmeans" name="h_single_visit_contrast_specs_works_as_expected"/>
     <testcase time="0.00399999999999956" classname="lsmeans" name="h_single_visit_contrast_specs_works_as_expected"/>
-    <testcase time="0.0850000000000009" classname="lsmeans" name="h_average_visit_contrast_specs_works_as_expected"/>
-    <testcase time="0.00499999999999901" classname="lsmeans" name="h_average_visit_contrast_specs_works_as_expected"/>
-    <testcase time="0.00700000000000145" classname="lsmeans" name="h_average_visit_contrast_specs_works_also_for_3_arms_and_many_visits"/>
+    <testcase time="0.0890000000000004" classname="lsmeans" name="h_average_visit_contrast_specs_works_as_expected"/>
+    <testcase time="0.00399999999999956" classname="lsmeans" name="h_average_visit_contrast_specs_works_as_expected"/>
+    <testcase time="0.0080000000000009" classname="lsmeans" name="h_average_visit_contrast_specs_works_also_for_3_arms_and_many_visits"/>
     <testcase time="0.00399999999999956" classname="lsmeans" name="h_average_visit_contrast_specs_works_also_for_3_arms_and_many_visits"/>
-    <testcase time="0.31" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
-    <testcase time="0.000999999999999446" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
+    <testcase time="0.131" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
-    <testcase time="0.000999999999999446" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
     <testcase time="0.00199999999999889" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
+    <testcase time="0.00200000000000067" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
+    <testcase time="0.225" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
     <testcase time="0.00300000000000011" classname="lsmeans" name="get_mmrm_lsmeans_can_calculate_the_LS_mean_results"/>
-    <testcase time="0.093" classname="lsmeans" name="get_mmrm_lsmeans_preserves_combined_arm_levels."/>
-    <testcase time="0.00400000000000134" classname="lsmeans" name="get_mmrm_lsmeans_preserves_combined_arm_levels."/>
-    <testcase time="0.0960000000000001" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm"/>
-    <testcase time="0.00199999999999889" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm"/>
+    <testcase time="0.0950000000000006" classname="lsmeans" name="get_mmrm_lsmeans_preserves_combined_arm_levels."/>
+    <testcase time="0.00399999999999956" classname="lsmeans" name="get_mmrm_lsmeans_preserves_combined_arm_levels."/>
+    <testcase time="0.0990000000000002" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm"/>
+    <testcase time="0.000999999999999446" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm"/>
     <testcase time="0.00200000000000067" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm"/>
-    <testcase time="0.00399999999999956" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm">
+    <testcase time="0.00499999999999901" classname="lsmeans" name="get_mmrm_lsmeans_works_without_arm">
       <skipped message="Reason: On CRAN ('test-lsmeans.R:648:3')"/>
     </testcase>
   </testsuite>
-  <testsuite name="subgroups" timestamp="2024-02-27T00:34:05Z" hostname="41a20c44362f" tests="13" skipped="8" failures="0" errors="0" time="3.668">
-    <testcase time="0.261000000000001" classname="subgroups" name="h_mmrm_subgroup_df_works_as_expected_for_overall_group"/>
+  <testsuite name="subgroups" timestamp="2024-02-27T20:01:41Z" hostname="1a87d060596d" tests="13" skipped="8" failures="0" errors="0" time="5.941">
+    <testcase time="0.26" classname="subgroups" name="h_mmrm_subgroup_df_works_as_expected_for_overall_group"/>
     <testcase time="0.016" classname="subgroups" name="h_mmrm_subgroup_df_works_as_expected_for_subgroup_when_fit_did_not_converge"/>
-    <testcase time="0.718999999999999" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected">
+    <testcase time="0.74" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected">
       <skipped message="Reason: On CRAN ('test-subgroups.R:110:3')"/>
     </testcase>
-    <testcase time="0.0229999999999997" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected_without_subgroup_variables">
+    <testcase time="0.0230000000000015" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected_without_subgroup_variables">
       <skipped message="Reason: On CRAN ('test-subgroups.R:118:3')"/>
     </testcase>
-    <testcase time="0.35" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected_with_groups_lists">
+    <testcase time="0.357999999999999" classname="subgroups" name="extract_mmrm_subgroups_works_as_expected_with_groups_lists">
       <skipped message="Reason: On CRAN ('test-subgroups.R:131:3')"/>
     </testcase>
     <testcase time="0.547000000000001" classname="subgroups" name="extract_mmrm_subgroups_works_when_model_does_not_work_for_some_subgroups"/>
     <testcase time="0.00399999999999956" classname="subgroups" name="extract_mmrm_subgroups_works_when_model_does_not_work_for_some_subgroups">
       <skipped message="Reason: On CRAN ('test-subgroups.R:140:3')"/>
     </testcase>
-    <testcase time="0.0199999999999996" classname="subgroups" name="a_mmrm_subgroups_works_as_expected"/>
-    <testcase time="0.00100000000000122" classname="subgroups" name="a_mmrm_subgroups_works_as_expected"/>
-    <testcase time="1.272" classname="subgroups" name="tabulate_mmrm_subgroups_table_works_as_expected">
+    <testcase time="0.0190000000000001" classname="subgroups" name="a_mmrm_subgroups_works_as_expected"/>
+    <testcase time="0.00200000000000067" classname="subgroups" name="a_mmrm_subgroups_works_as_expected"/>
+    <testcase time="1.259" classname="subgroups" name="tabulate_mmrm_subgroups_table_works_as_expected">
       <skipped message="Reason: On CRAN ('test-subgroups.R:163:3')"/>
     </testcase>
-    <testcase time="0.0129999999999999" classname="subgroups" name="tabulate_mmrm_subgroups_forest_plot_works_as_expected">
-      <skipped message="Reason: On CI ('test-subgroups.R:167:3')"/>
+    <testcase time="1.53" classname="subgroups" name="tabulate_mmrm_subgroups_forest_plot_works_as_expected">
+      <skipped message="Reason: On CI ('test-subgroups.R:178:3')"/>
     </testcase>
-    <testcase time="0.429" classname="subgroups" name="tabulate_mmrm_subgroups_table_with_custom_settings_works_as_expected">
+    <testcase time="0.48" classname="subgroups" name="tabulate_mmrm_subgroups_table_with_custom_settings_works_as_expected">
       <skipped message="Reason: On CRAN ('test-subgroups.R:207:3')"/>
     </testcase>
-    <testcase time="0.0129999999999999" classname="subgroups" name="tabulate_mmrm_subgroups_forest_plot_with_custom_settings_works_as_expected">
-      <skipped message="Reason: On CI ('test-subgroups.R:211:3')"/>
+    <testcase time="0.702999999999999" classname="subgroups" name="tabulate_mmrm_subgroups_forest_plot_with_custom_settings_works_as_expected">
+      <skipped message="Reason: On CI ('test-subgroups.R:237:3')"/>
     </testcase>
   </testsuite>
-  <testsuite name="table_mmrmt01" timestamp="2024-02-27T00:34:09Z" hostname="41a20c44362f" tests="4" skipped="4" failures="0" errors="0" time="0.859">
-    <testcase time="0.539999999999999" classname="table_mmrmt01" name="LS_means_table_is_produced_correctly">
+  <testsuite name="table_mmrmt01" timestamp="2024-02-27T20:01:47Z" hostname="1a87d060596d" tests="4" skipped="4" failures="0" errors="0" time="0.916">
+    <testcase time="0.582000000000001" classname="table_mmrmt01" name="LS_means_table_is_produced_correctly">
       <skipped message="Reason: On CRAN ('test-table_mmrmt01.R:41:3')"/>
     </testcase>
-    <testcase time="0.195" classname="table_mmrmt01" name="Fixed_effects_table_is_produced_correctly">
+    <testcase time="0.210999999999999" classname="table_mmrmt01" name="Fixed_effects_table_is_produced_correctly">
       <skipped message="Reason: On CRAN ('test-table_mmrmt01.R:46:3')"/>
     </testcase>
-    <testcase time="0.0619999999999994" classname="table_mmrmt01" name="Covariance_matrix_table_is_produced_correctly">
+    <testcase time="0.0590000000000011" classname="table_mmrmt01" name="Covariance_matrix_table_is_produced_correctly">
       <skipped message="Reason: On CRAN ('test-table_mmrmt01.R:51:3')"/>
     </testcase>
-    <testcase time="0.0620000000000012" classname="table_mmrmt01" name="Model_diagnostics_table_is_produced_correctly">
+    <testcase time="0.0640000000000001" classname="table_mmrmt01" name="Model_diagnostics_table_is_produced_correctly">
       <skipped message="Reason: On CRAN ('test-table_mmrmt01.R:56:3')"/>
     </testcase>
   </testsuite>
-  <testsuite name="tabulate_mmrm" timestamp="2024-02-27T00:34:09Z" hostname="41a20c44362f" tests="36" skipped="6" failures="0" errors="0" time="3.008">
-    <testcase time="0.254999999999999" classname="tabulate_mmrm" name="h_mmrm_fixed_works_as_expected"/>
-    <testcase time="0.119" classname="tabulate_mmrm" name="h_mmrm_fixed_works_as_expected">
+  <testsuite name="tabulate_mmrm" timestamp="2024-02-27T20:01:48Z" hostname="1a87d060596d" tests="36" skipped="6" failures="0" errors="0" time="3.103">
+    <testcase time="0.279" classname="tabulate_mmrm" name="h_mmrm_fixed_works_as_expected"/>
+    <testcase time="0.0889999999999986" classname="tabulate_mmrm" name="h_mmrm_fixed_works_as_expected">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:262:3')"/>
     </testcase>
-    <testcase time="0.173" classname="tabulate_mmrm" name="h_mmrm_cov_works_as_expected"/>
-    <testcase time="0.0500000000000007" classname="tabulate_mmrm" name="h_mmrm_cov_works_as_expected">
+    <testcase time="0.184999999999999" classname="tabulate_mmrm" name="h_mmrm_cov_works_as_expected"/>
+    <testcase time="0.0420000000000016" classname="tabulate_mmrm" name="h_mmrm_cov_works_as_expected">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:268:3')"/>
     </testcase>
-    <testcase time="0.183" classname="tabulate_mmrm" name="h_mmrm_diagnostic_works_as_expected"/>
-    <testcase time="0.0220000000000002" classname="tabulate_mmrm" name="h_mmrm_diagnostic_works_as_expected">
+    <testcase time="0.195999999999998" classname="tabulate_mmrm" name="h_mmrm_diagnostic_works_as_expected"/>
+    <testcase time="0.0230000000000032" classname="tabulate_mmrm" name="h_mmrm_diagnostic_works_as_expected">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:274:3')"/>
     </testcase>
-    <testcase time="0.157999999999999" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected"/>
-    <testcase time="0.00200000000000067" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected"/>
-    <testcase time="0.0890000000000004" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected_when_treatment_is_not_considered_in_the_model"/>
-    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected_when_treatment_is_not_considered_in_the_model"/>
-    <testcase time="0.175000000000001" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.000999999999999446" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.00399999999999956" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.00200000000000067" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.000999999999999446" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.00400000000000134" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.154" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected"/>
+    <testcase time="0.000999999999997669" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected"/>
+    <testcase time="0.103000000000002" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected_when_treatment_is_not_considered_in_the_model"/>
+    <testcase time="0.000999999999997669" classname="tabulate_mmrm" name="tidy.mmrm_works_as_expected_when_treatment_is_not_considered_in_the_model"/>
+    <testcase time="0.169" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00200000000000244" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00399999999999778" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00100000000000122" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
     <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.000999999999999446" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00400000000000134" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00100000000000122" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00300000000000011" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
+    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
     <testcase time="0.00300000000000011" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
     <testcase time="0.00100000000000122" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.00100000000000122" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_not_in_reference_column"/>
-    <testcase time="0.141" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.157" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.000999999999997669" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
     <testcase time="0.00400000000000134" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.000999999999999446" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
     <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.00400000000000134" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.00200000000000244" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.00399999999999778" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
     <testcase time="0.00300000000000011" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.00399999999999956" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.00399999999999956" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
     <testcase time="0.00300000000000011" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
-    <testcase time="0.0969999999999995" classname="tabulate_mmrm" name="s_mmrm_lsmeans_single_works_as_expected"/>
-    <testcase time="0.534000000000001" classname="tabulate_mmrm" name="summarize_lsmeans_works_as_expected">
+    <testcase time="0.00300000000000011" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.00199999999999889" classname="tabulate_mmrm" name="s_mmrm_lsmeans_works_as_expected_when_in_reference_column"/>
+    <testcase time="0.0920000000000023" classname="tabulate_mmrm" name="s_mmrm_lsmeans_single_works_as_expected"/>
+    <testcase time="0.556999999999999" classname="tabulate_mmrm" name="summarize_lsmeans_works_as_expected">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:376:3')"/>
     </testcase>
-    <testcase time="0.277000000000001" classname="tabulate_mmrm" name="summarize_lsmeans_works_as_expected_when_treatment_is_not_considered_in_the_model">
+    <testcase time="0.289999999999999" classname="tabulate_mmrm" name="summarize_lsmeans_works_as_expected_when_treatment_is_not_considered_in_the_model">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:393:3')"/>
     </testcase>
-    <testcase time="0.681999999999999" classname="tabulate_mmrm" name="summarize_lsmeans_works_with_averages_of_visits_as_expected">
+    <testcase time="0.716000000000001" classname="tabulate_mmrm" name="summarize_lsmeans_works_with_averages_of_visits_as_expected">
       <skipped message="Reason: On CRAN ('test-tabulate_mmrm.R:435:3')"/>
     </testcase>
   </testsuite>
-  <testsuite name="utils" timestamp="2024-02-27T00:34:12Z" hostname="41a20c44362f" tests="5" skipped="0" failures="0" errors="0" time="0.027">
-    <testcase time="0.0160000000000018" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
+  <testsuite name="utils" timestamp="2024-02-27T20:01:51Z" hostname="1a87d060596d" tests="5" skipped="0" failures="0" errors="0" time="0.03">
+    <testcase time="0.0190000000000019" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
     <testcase time="0.00300000000000011" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
     <testcase time="0.00300000000000011" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
     <testcase time="0.00199999999999889" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="utils" name="h_get_covariate_parts_works_as_expected"/>
   </testsuite>
-  <testsuite name="covariance_plot" timestamp="2024-02-27T00:34:12Z" hostname="41a20c44362f" tests="13" skipped="3" failures="0" errors="0" time="0.171">
-    <testcase time="0.0069999999999979" classname="covariance_plot" name="h_get_timepoint_vars_works_in_simple_example"/>
+  <testsuite name="covariance_plot" timestamp="2024-02-27T20:01:51Z" hostname="1a87d060596d" tests="13" skipped="3" failures="0" errors="0" time="0.157">
+    <testcase time="0.00799999999999912" classname="covariance_plot" name="h_get_timepoint_vars_works_in_simple_example"/>
     <testcase time="0.00300000000000011" classname="covariance_plot" name="h_get_timepoint_vars_works_in_simple_example"/>
-    <testcase time="0.0650000000000013" classname="covariance_plot" name="h_get_timepoint_vars_works_as_expected_with_time_prefix_specified"/>
+    <testcase time="0.0670000000000002" classname="covariance_plot" name="h_get_timepoint_vars_works_as_expected_with_time_prefix_specified"/>
     <testcase time="0.0100000000000016" classname="covariance_plot" name="h_get_timepoint_vars_returns_error_when_time_prefix_not_specified"/>
     <testcase time="0.00799999999999912" classname="covariance_plot" name="h_get_timepoint_vars_works_as_expected_with_time_prefix_argument_not_needed"/>
-    <testcase time="0.0069999999999979" classname="covariance_plot" name="h_vectorization_works_as_expected_with_time_prefix_specified"/>
+    <testcase time="0.00799999999999912" classname="covariance_plot" name="h_vectorization_works_as_expected_with_time_prefix_specified"/>
     <testcase time="0.00600000000000023" classname="covariance_plot" name="h_vectorization_works_as_expected_when_time_prefix_not_specified"/>
-    <testcase time="0.00799999999999912" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_defaults"/>
-    <testcase time="0.00400000000000134" classname="covariance_plot" name="g_covariance_plot_works_as_expected_as_expected_with_defaults">
-      <skipped message="Reason: On CI ('test_covariance_plot.R:111:3')"/>
+    <testcase time="0.0100000000000016" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_defaults"/>
+    <testcase time="0.000999999999997669" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_defaults">
+      <skipped message="Reason: On CI ('test_covariance_plot.R:108:3')"/>
     </testcase>
-    <testcase time="0.0279999999999987" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_time_prefix_specified"/>
-    <testcase time="0.00400000000000134" classname="covariance_plot" name="g_covariance_plot_works_as_expected_as_expected_with_time_prefix_specified">
-      <skipped message="Reason: On CI ('test_covariance_plot.R:139:3')"/>
+    <testcase time="0.0169999999999995" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_time_prefix_specified"/>
+    <testcase time="0.00100000000000122" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_time_prefix_specified">
+      <skipped message="Reason: On CI ('test_covariance_plot.R:123:3')"/>
     </testcase>
     <testcase time="0.0169999999999995" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_time_difference"/>
-    <testcase time="0.00400000000000134" classname="covariance_plot" name="g_covariance_plot_works_as_expected_as_expected_with_time_difference">
-      <skipped message="Reason: On CI ('test_covariance_plot.R:167:3')"/>
+    <testcase time="0.00100000000000122" classname="covariance_plot" name="g_covariance_works_as_expected_as_expected_with_time_difference">
+      <skipped message="Reason: On CI ('test_covariance_plot.R:138:3')"/>
     </testcase>
   </testsuite>
 </testsuites>
