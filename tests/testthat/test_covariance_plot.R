@@ -95,6 +95,19 @@ test_that("h_vectorization works as expected when time_prefix not specified", {
 # g_covariance ----
 
 test_that("g_covariance works as expected as expected with defaults", {
+  vcov_matrix <- matrix(
+    c(49, 12, 12, 23),
+    nrow = 2, ncol = 2,
+    dimnames = list(
+      c(1, 2),
+      c(1, 2)
+    )
+  )
+  result <- g_covariance(vcov_matrix)
+  expect_silent(result)
+})
+
+test_that("g_covariance plot works as expected as expected with defaults", {
   skip_on_ci()
 
   vcov_matrix <- matrix(
@@ -105,11 +118,24 @@ test_that("g_covariance works as expected as expected with defaults", {
       c(1, 2)
     )
   )
-  result <- expect_silent(g_covariance(vcov_matrix))
+  result <- g_covariance(vcov_matrix)
   vdiffr::expect_doppelganger("g_covariance plot with defaults", result)
 })
 
 test_that("g_covariance works as expected as expected with time_prefix specified", {
+  vcov_matrix <- matrix(
+    c(49, 12, 12, 23),
+    nrow = 2, ncol = 2,
+    dimnames = list(
+      c("VIS1", "VIS2"),
+      c("VIS1", "VIS2")
+    )
+  )
+  result <- g_covariance(vcov_matrix, time_prefix = "VIS")
+  expect_silent(result)
+})
+
+test_that("g_covariance plot works as expected as expected with time_prefix specified", {
   skip_on_ci()
 
   vcov_matrix <- matrix(
@@ -120,11 +146,24 @@ test_that("g_covariance works as expected as expected with time_prefix specified
       c("VIS1", "VIS2")
     )
   )
-  result <- expect_silent(g_covariance(vcov_matrix, time_prefix = "VIS"))
+  result <- g_covariance(vcov_matrix, time_prefix = "VIS")
   vdiffr::expect_doppelganger("g_covariance plot with time_prefix specified", result)
 })
 
 test_that("g_covariance works as expected as expected with time difference", {
+  vcov_matrix <- matrix(
+    c(49, 12, 12, 23),
+    nrow = 2, ncol = 2,
+    dimnames = list(
+      c(1, 2),
+      c(1, 2)
+    )
+  )
+  result <- g_covariance(vcov_matrix, x_var = "time_diff")
+  expect_silent(result)
+})
+
+test_that("g_covariance plot works as expected as expected with time difference", {
   skip_on_ci()
 
   vcov_matrix <- matrix(
@@ -135,6 +174,6 @@ test_that("g_covariance works as expected as expected with time difference", {
       c(1, 2)
     )
   )
-  result <- expect_silent(g_covariance(vcov_matrix, x_var = "time_diff"))
+  result <- g_covariance(vcov_matrix, x_var = "time_diff")
   vdiffr::expect_doppelganger("g_covariance plot with time diff", result)
 })
