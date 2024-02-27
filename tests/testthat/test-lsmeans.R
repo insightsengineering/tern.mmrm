@@ -74,7 +74,7 @@ test_that("h_get_emmeans_res works as expected", {
   ns <- datfull %>%
     dplyr::group_by(ARMCD, AVISIT) %>%
     dplyr::summarize(n_expected = dplyr::n())
-  compare_grid <- result$grid %>% dplyr::full_join(ns)
+  compare_grid <- result$grid %>% dplyr::full_join(ns, by = join_by(AVISIT, ARMCD))
   expect_identical(compare_grid$n, compare_grid$n_expected)
 })
 
