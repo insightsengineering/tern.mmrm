@@ -30,7 +30,7 @@ Depends:
     R (>= 3.6),
     tern (>= 0.9.3)
 Imports:
-    checkmate (>= 3.0.4),
+    checkmate (>= 2.1.0),
     cowplot,
     dplyr (>= 1.1.0),
     emmeans (>= 1.6),
