@@ -60,7 +60,7 @@ VignetteBuilder:
 Config/Needs/verdepcheck:
     insightsengineering/tern, mllg/checkmate, wilkelab/cowplot,
     tidyverse/dplyr, rvlenth/emmeans, insightsengineering/formatters,
-    tidyverse/ggplot2, r-lib/lifecycle, r-lib/magrittr, openpharma/mmrm,
+    tidyverse/ggplot2, r-lib/lifecycle, tidyverse/magrittr, openpharma/mmrm,
     HenrikBengtsson/parallelly, r-lib/rlang, insightsengineering/rtables,
     tidyverse/tidyr, tidymodels/broom, yihui/knitr, gdemin/maditr, cran/Matrix,
     rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr, r-lib/withr
