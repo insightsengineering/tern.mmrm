@@ -53,7 +53,7 @@ Suggests:
     Matrix,
     rmarkdown (>= 2.19),
     testthat (>= 3.1),
-    vdiffr,
+    vdiffr (>= 1.0.7),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr
