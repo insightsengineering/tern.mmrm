@@ -49,7 +49,7 @@ Suggests:
     broom (>= 0.7.10),
     grid,
     knitr (>= 1.42),
-    maditr,
+    maditr (>= 0.7.1),
     Matrix,
     rmarkdown (>= 2.19),
     testthat (>= 3.1),
