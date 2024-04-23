@@ -40,7 +40,7 @@ Imports:
     lifecycle (>= 0.2.0),
     magrittr,
     mmrm (>= 0.3.5),
-    parallelly,
+    parallelly (>= 1.25.0),
     rlang (>= 1.0.1),
     rtables (>= 0.6.6),
     stats,
