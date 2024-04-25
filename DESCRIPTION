@@ -1,7 +1,7 @@
 Package: tern.mmrm
 Title: Tables and Graphs for Mixed Models for Repeated Measures (MMRM)
-Version: 0.3.0.9005
-Date: 2024-02-27
+Version: 0.3.0.9006
+Date: 2024-04-25
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
     person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
@@ -57,13 +57,14 @@ Suggests:
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr
-Config/Needs/verdepcheck:
-    insightsengineering/tern, mllg/checkmate, wilkelab/cowplot,
-    tidyverse/dplyr, rvlenth/emmeans, insightsengineering/formatters, r-lib/generics,
-    tidyverse/ggplot2, r-lib/lifecycle, tidyverse/magrittr, openpharma/mmrm,
+Config/Needs/verdepcheck: insightsengineering/tern, mllg/checkmate,
+    wilkelab/cowplot, tidyverse/dplyr, rvlenth/emmeans,
+    insightsengineering/formatters, r-lib/generics, tidyverse/ggplot2,
+    r-lib/lifecycle, tidyverse/magrittr, openpharma/mmrm,
     HenrikBengtsson/parallelly, r-lib/rlang, insightsengineering/rtables,
-    tidyverse/tidyr, tidymodels/broom, yihui/knitr, gdemin/maditr, cran/Matrix,
-    rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr, r-lib/withr
+    tidyverse/tidyr, tidymodels/broom, yihui/knitr, gdemin/maditr,
+    cran/Matrix, rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr,
+    r-lib/withr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
