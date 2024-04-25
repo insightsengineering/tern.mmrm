@@ -30,33 +30,40 @@ Depends:
     R (>= 3.6),
     tern (>= 0.9.3)
 Imports:
-    checkmate,
+    checkmate (>= 2.1.0),
     cowplot,
-    dplyr,
+    dplyr (>= 1.1.0),
     emmeans (>= 1.6),
     formatters (>= 0.5.5),
     generics,
     ggplot2,
-    lifecycle,
+    lifecycle (>= 0.2.0),
     magrittr,
     mmrm (>= 0.3.5),
-    parallelly,
-    rlang,
+    parallelly (>= 1.25.0),
+    rlang (>= 1.0.1),
     rtables (>= 0.6.6),
     stats,
-    tidyr
+    tidyr (>= 0.8.3)
 Suggests:
-    broom,
+    broom (>= 0.7.10),
     grid,
-    knitr,
-    maditr,
+    knitr (>= 1.42),
+    maditr (>= 0.8.1),
     Matrix,
-    rmarkdown,
+    rmarkdown (>= 2.19),
     testthat (>= 3.1),
-    vdiffr,
+    vdiffr (>= 1.0.7),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr
+Config/Needs/verdepcheck:
+    insightsengineering/tern, mllg/checkmate, wilkelab/cowplot,
+    tidyverse/dplyr, rvlenth/emmeans, insightsengineering/formatters, r-lib/generics,
+    tidyverse/ggplot2, r-lib/lifecycle, tidyverse/magrittr, openpharma/mmrm,
+    HenrikBengtsson/parallelly, r-lib/rlang, insightsengineering/rtables,
+    tidyverse/tidyr, tidymodels/broom, yihui/knitr, gdemin/maditr, cran/Matrix,
+    rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr, r-lib/withr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
