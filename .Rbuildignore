@@ -16,6 +16,6 @@ man-roxygen/*
 ^\.gitlab-ci\.yml$
 ^design$
 ^pkgdown$
-^revdeprefs\.yaml$
+^.revdeprefs\.yaml$
 ^revdep$
 ^\.covrignore$
