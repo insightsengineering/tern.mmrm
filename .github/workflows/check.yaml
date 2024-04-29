@@ -30,7 +30,6 @@ jobs:
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
     with:
-      enforce-note-blocklist: false
       additional-env-vars: |
         NOT_CRAN=true
   linter:
