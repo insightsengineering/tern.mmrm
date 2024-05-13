@@ -140,12 +140,12 @@ approximately the result should look like to fit into the workflow:
 
 ```{r}
 # Testing dataset.
-library(scda)
+library(random.cdisc.data)
 library(dplyr)
 library(forcats)
 library(rtables)
 
-adtte <- synthetic_cdisc_data("latest")$adtte
+adtte <- cadtte
 
 # Save variable labels before data processing steps.
 adtte_labels <- formatters::var_labels(adtte)
