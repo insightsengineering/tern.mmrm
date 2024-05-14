@@ -19,7 +19,7 @@ library(rtables)
 library(tern.mmrm)
 library(dplyr)
 library(r2stream)
-library(scda)
+library(random.cdisc.data)
 library(glmmTMB)
 library(emmeans)
 ```
@@ -28,7 +28,7 @@ library(emmeans)
 
 
 ```{r}
-adqs <- synthetic_cdisc_data("latest")$adqs
+adqs <- cadqs
 adqs_f <- adqs %>%
   dplyr::filter(PARAMCD == "FKSI-FWB" & AVISIT %in% c("WEEK 1 DAY 8", "WEEK 2 DAY 15", "WEEK 3 DAY 22")) %>%
   droplevels() %>%
@@ -45,7 +45,7 @@ formatters::var_labels(adqs_f) <- formatters::var_labels(adqs)
 
 ## Model fitting
 
-Results: Model did not converge for both `scda` and `random.cdisc.data` using all `AVISIT` values in datasets. Hence, for this example comparison, only "WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22" were filtered in the dataset.
+Results: Model did not converge for `random.cdisc.data` using all `AVISIT` values in datasets. Hence, for this example comparison, only "WEEK 1 DAY 8",  "WEEK 2 DAY 15", "WEEK 3 DAY 22" were filtered in the dataset.
 
 ### Using the lme4 / lmerTest package to get the Satterthwaite df (Current `tern.mmrm` implementation)
 

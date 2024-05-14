@@ -1,5 +1,9 @@
 # tern.mmrm 0.3.0.9007
 
+### Miscellaneous
+
+* Replace usage of `scda` and `scda.2022` in vignettes with `random.cdisc.data`.
+
 # tern.mmrm 0.3.0.9001
 
 Adapt to release 0.3 of the `mmrm` package.
