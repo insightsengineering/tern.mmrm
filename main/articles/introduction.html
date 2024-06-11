@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9007</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9008</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,15 +48,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.2.1">v0.2.1</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -301,10 +292,11 @@ adjusting for baseline covariates.</p>
 <span><span class="co">#&gt;     str</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'tern':</span></span>
 <span><span class="co">#&gt;   method   from </span></span>
-<span><span class="co">#&gt;   tidy.glm broom</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mmrm_test_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   tidy.glm broom</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mmrm_test_data</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mmrm_test_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;   USUBJID AVISIT ARMCD RACE                      SEX    FEV1_BL  FEV1</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> PT1     VIS1   TRT   Black or African American Female    25.3  <span style="color: #BB0000;">NA</span>  </span></span>
@@ -320,7 +312,7 @@ adjusting for baseline covariates.</p>
 <p>Fitting MMRM is easy in <code>tern.mmrm</code>. By default, the model
 fitting function <code>fit_mmrm</code> assumes unstructured correlation
 and proportional weights when calculating LS means.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    response <span class="op">=</span> <span class="st">"FEV1"</span>,</span>
@@ -340,7 +332,7 @@ the difference in LS means at a particular visit
 (<code>lsmeans$contrasts</code>). Based on the output, there is evidence
 that supports treatment leading to an increase in <code>FEV1</code> over
 placebo at all study visits.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">lsmeans</span><span class="op">$</span><span class="va">contrasts</span></span>
 <span><span class="co">#&gt;   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat</span></span>
 <span><span class="co">#&gt; 1   TRT   VIS1 3.983290 1.0454036 142.3210 1.916765 6.049815 3.810289</span></span>
@@ -360,15 +352,15 @@ considered.</p>
 </h3>
 <p>One can reproduce these results manually in R. For example, to fit
 the unstructured model:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://openpharma.github.io/mmrm/" class="external-link">mmrm</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans" class="external-link">emmeans</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rvlenth.github.io/emmeans/" class="external-link">emmeans</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">FEV1</span> <span class="op">~</span> <span class="va">RACE</span> <span class="op">+</span> <span class="va">SEX</span> <span class="op">+</span> <span class="va">FEV1_BL</span> <span class="op">+</span> <span class="va">ARMCD</span> <span class="op">*</span> <span class="va">AVISIT</span> <span class="op">+</span> <span class="fu">us</span><span class="op">(</span><span class="va">AVISIT</span> <span class="op">|</span> <span class="va">USUBJID</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span></code></pre></div>
 <p>Compared to manual implementation, <code>tern.mmrm</code> users can
 avoid specifying the <code>formula</code> manually. Note also that
 <code>tern.mmrm</code> has a default optimizer which is in fact the same
@@ -409,7 +401,7 @@ run;
 the desire is to select a parsimonious model that adequately fits the
 data. We provide four of the same information criteria as found in
 <code>SAS</code> <code>PROC MIXED</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">diagnostics</span></span></code></pre></div>
 <p>Each criterion is specifically calculated as follows:</p>
 <ol style="list-style-type: decimal">
