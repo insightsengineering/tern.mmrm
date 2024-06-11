@@ -45,15 +45,21 @@ However if you use another reporting framework then it will be better to directl
 
 ## Installation
 
-### GitHub
+`tern.mmrm` is available on CRAN and you can install the latest released version with:
 
-It is recommended that you [create and use a GitHub PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to install the latest version of this package. Once you have the PAT, run the following:
-
-```r
-Sys.setenv(GITHUB_PAT = "your_access_token_here")
-if (!require("remotes")) install.packages("remotes")
-remotes::install_github("insightsengineering/tern.mmrm@*release")
+``` r
+install.packages("tern.mmrm")
 ```
+
+or you can install the latest development version directly from GitHub by running the following:
+
+``` r
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("insightsengineering/tern.mmrm")
+```
+
+Note that it is recommended you [create and use a `GITHUB_PAT`](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) if installing from GitHub.
+
 
 ### `NEST` distribution
 
