@@ -23,12 +23,12 @@
 
 `tern.mmrm` provides an interface for mixed model repeated measures (MMRM) within the
 [`tern`](https://insightsengineering.github.io/tern) framework
-to produce commonly used tables (using [`rtables`](https://roche.github.io/rtables)) and graphs.
+to produce commonly used tables (using [`rtables`](https://insightsengineering.github.io/rtables/) and graphs.
 It builds on the R-package [`mmrm`](https://openpharma.github.io/mmrm/) for the actual MMRM calculations.
 
 ## When to use this package
 
-If you would like to use the [`tern`](https://insightsengineering.github.io/tern) framework for
+If you would like to use the [`tern`](https://insightsengineering.github.io/tern/latest-tag/) framework for
 tabulation and graphs, then this package is ideal for your MMRM fits.
 However if you use another reporting framework then it will be better to directly use
 [`mmrm`](https://openpharma.github.io/mmrm/) and perform the tabulation and plots differently.
