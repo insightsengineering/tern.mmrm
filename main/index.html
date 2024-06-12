@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,15 +48,6 @@
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.2.1">v0.2.1</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -86,12 +77,12 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>tern.mmrm</code> provides an interface for mixed model repeated measures (MMRM) within the <a href="https://insightsengineering.github.io/tern" class="external-link"><code>tern</code></a> framework to produce commonly used tables (using <a href="https://insightsengineering.github.io/rtables/" class="external-link"><code>rtables</code></a> and graphs. It builds on the R-package <a href="https://openpharma.github.io/mmrm/" class="external-link"><code>mmrm</code></a> for the actual MMRM calculations.</p>
+<p><code>tern.mmrm</code> provides an interface for mixed model repeated measures (MMRM) within the <a href="https://insightsengineering.github.io/tern/" class="external-link"><code>tern</code></a> framework to produce commonly used tables (using <a href="https://insightsengineering.github.io/rtables/" class="external-link"><code>rtables</code></a> and graphs. It builds on the R-package <a href="https://openpharma.github.io/mmrm/" class="external-link"><code>mmrm</code></a> for the actual MMRM calculations.</p>
 </div>
 <div class="section level2">
 <h2 id="when-to-use-this-package">When to use this package<a class="anchor" aria-label="anchor" href="#when-to-use-this-package"></a>
 </h2>
-<p>If you would like to use the <a href="https://insightsengineering.github.io/tern/latest-tag/" class="external-link"><code>tern</code></a> framework for tabulation and graphs, then this package is ideal for your MMRM fits. However if you use another reporting framework then it will be better to directly use <a href="https://openpharma.github.io/mmrm/" class="external-link"><code>mmrm</code></a> and perform the tabulation and plots differently.</p>
+<p>If you would like to use the <a href="https://insightsengineering.github.io/tern/" class="external-link"><code>tern</code></a> framework for tabulation and graphs, then this package is ideal for your MMRM fits. However if you use another reporting framework then it will be better to directly use <a href="https://openpharma.github.io/mmrm/" class="external-link"><code>mmrm</code></a> and perform the tabulation and plots differently.</p>
 </div>
 <div class="section level2">
 <h2 id="main-features">Main Features<a class="anchor" aria-label="anchor" href="#main-features"></a>
@@ -108,15 +99,14 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="github">GitHub<a class="anchor" aria-label="anchor" href="#github"></a>
-</h3>
-<p>It is recommended that you <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">create and use a GitHub PAT</a> to install the latest version of this package. Once you have the PAT, run the following:</p>
+<p><code>tern.mmrm</code> is available on CRAN and you can install the latest released version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT <span class="op">=</span> <span class="st">"your_access_token_here"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"insightsengineering/tern.mmrm@*release"</span><span class="op">)</span></span></code></pre></div>
-</div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tern.mmrm"</span><span class="op">)</span></span></code></pre></div>
+<p>or you can install the latest development version directly from GitHub by running the following:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"insightsengineering/tern.mmrm"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that it is recommended you <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">create and use a <code>GITHUB_PAT</code></a> if installing from GitHub.</p>
 <div class="section level3">
 <h3 id="nest-distribution">
 <code>NEST</code> distribution<a class="anchor" aria-label="anchor" href="#nest-distribution"></a>
@@ -128,7 +118,7 @@
 <h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
 <p>You can get started by trying out the example:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/tern.mmrm" class="external-link">tern.mmrm</a></span><span class="op">)</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_mmrm.html">fit_mmrm</a></span><span class="op">(</span></span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -151,7 +141,7 @@
 <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h2>
 <p>For a more detailed introduction to all of the features of this package, look at the introduction vignette:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -203,12 +193,12 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Daniel Sabanés Bové <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Daniel Sabanés Bové <br><small class="roles"> Author </small>  </li>
+<li>Joe Zhu <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Godwin Yung <br><small class="roles"> Author </small>  </li>
 <li>Francois Collin <br><small class="roles"> Author </small>  </li>
 <li>Julia Dedic <br><small class="roles"> Author </small>  </li>
 <li>Jana Stoilova <br><small class="roles"> Author </small>  </li>
-<li>Joe Zhu <br><small class="roles"> Author </small>  </li>
 <li>F. Hoffmann-La Roche AG <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
