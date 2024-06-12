@@ -18,15 +18,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
+\strong{Maintainer}: Joe Zhu \email{joe.zhu@roche.com}
 
 Authors:
 \itemize{
+  \item Daniel Sabanés Bové \email{daniel@rconis.com}
   \item Godwin Yung \email{yungg@gene.com}
   \item Francois Collin
   \item Julia Dedic \email{julia.dedic@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
-  \item Joe Zhu \email{joe.zhu@roche.com}
 }
 
 Other contributors:
