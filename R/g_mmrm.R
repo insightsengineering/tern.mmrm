@@ -273,6 +273,8 @@ g_mmrm_lsmeans <-
            ),
            xlab = object$labels$visit,
            ylab = paste0("Estimates with ", round(object$conf_level * 100), "% CIs"),
+           xlimits = NULL,
+           ylimits = NULL,
            width = 0.6,
            show_pval = TRUE,
            show_lines = FALSE,
@@ -437,7 +439,8 @@ g_mmrm_lsmeans <-
         nrow = length(select),
         scales = "free_y", # Since estimates and contrasts need to have different y scales.
         labeller = ggplot2::as_labeller(titles)
-      )
+      ) +
+      ggplot2::coord_cartesian(ylim = ylimits, xlim = xlimits)
     if (show_lines) {
       result <- result +
         ggplot2::geom_line(position = pd)
