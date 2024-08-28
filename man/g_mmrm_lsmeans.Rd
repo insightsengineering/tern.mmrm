@@ -39,6 +39,10 @@ Note "contrasts" option is not applicable to model summaries excluding an arm va
 
 \item{ylab}{(\code{string})\cr the y axis label.}
 
+\item{xlimits}{(\code{numeric})\cr x axis limits.}
+
+\item{ylimits}{(\code{numeric})\cr y axis limits.}
+
 \item{width}{(\code{numeric})\cr width of the error bars.}
 
 \item{show_pval}{(\code{flag})\cr should the p-values for the differences of

@@ -1,5 +1,9 @@
 # tern.mmrm 0.3.1.9002
 
+### Miscellaneous
+
+Added `xlimits` and `ylimits` arguments to the `g_mmrm_lsmeans` function.
+
 # tern.mmrm 0.3.1
 
 ### Miscellaneous

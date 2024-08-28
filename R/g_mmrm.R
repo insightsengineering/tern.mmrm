@@ -153,6 +153,8 @@ g_mmrm_diagnostic <- function(object,
 #' @param titles (`character`)\cr with elements `estimates` and `contrasts` containing the plot titles.
 #' @param xlab (`string`)\cr the x axis label.
 #' @param ylab (`string`)\cr the y axis label.
+#' @param xlimits (`numeric`)\cr x axis limits.
+#' @param ylimits (`numeric`)\cr y axis limits.
 #' @param width (`numeric`)\cr width of the error bars.
 #' @param show_pval (`flag`)\cr should the p-values for the differences of
 #'   LS means vs. control be displayed (not default)?
