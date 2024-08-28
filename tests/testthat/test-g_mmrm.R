@@ -26,6 +26,7 @@ fit_mmrm_no_arms_object <- fit_mmrm(
 test_that("g_mmrm_diagnostic works well with defaults", {
   result <- g_mmrm_diagnostic(fit_mmrm_object)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_diagnostic with defaults", result)
 })
@@ -33,6 +34,7 @@ test_that("g_mmrm_diagnostic works well with defaults", {
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
   result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual")
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual defaults", result)
 })
@@ -40,6 +42,7 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with z threshold", {
   result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with z threshold", result)
 })
@@ -73,6 +76,7 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
 test_that("g_mmrm_lsmeans works well with default arguments", {
   result <- g_mmrm_lsmeans(fit_mmrm_object)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with defaults", result)
 })
@@ -80,6 +84,7 @@ test_that("g_mmrm_lsmeans works well with default arguments", {
 test_that("g_mmrm_lsmeans can select estimates only", {
   result <- g_mmrm_lsmeans(fit_mmrm_object, select = "estimates")
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with estimates", result)
 })
@@ -87,6 +92,7 @@ test_that("g_mmrm_lsmeans can select estimates only", {
 test_that("g_mmrm_lsmeans can select contrasts only", {
   result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts")
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with contrasts", result)
 })
@@ -94,6 +100,7 @@ test_that("g_mmrm_lsmeans can select contrasts only", {
 test_that("g_mmrm_lsmeans works well with constant baseline added", {
   result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0))
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with constant baseline", result)
 })
@@ -101,6 +108,7 @@ test_that("g_mmrm_lsmeans works well with constant baseline added", {
 test_that("g_mmrm_lsmeans works well with lines added", {
   result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with lines", result)
 })
@@ -117,6 +125,7 @@ test_that("g_mmrm_lsmeans works well with multiple customizations", {
     constant_baseline = c(BLA = 2)
   )
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with multiple customizations", result)
 })

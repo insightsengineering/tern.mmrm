@@ -105,6 +105,7 @@ test_that("g_covariance works as expected as expected with defaults", {
   )
   result <- expect_silent(g_covariance(vcov_matrix))
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_covariance plot with defaults", result)
 })
@@ -120,6 +121,7 @@ test_that("g_covariance works as expected as expected with time_prefix specified
   )
   result <- expect_silent(g_covariance(vcov_matrix, time_prefix = "VIS"))
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_covariance plot with time_prefix specified", result)
 })
@@ -135,6 +137,7 @@ test_that("g_covariance works as expected as expected with time difference", {
   )
   result <- expect_silent(g_covariance(vcov_matrix, x_var = "time_diff"))
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("g_covariance plot with time diff", result)
 })

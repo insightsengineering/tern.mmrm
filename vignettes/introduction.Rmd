@@ -118,11 +118,11 @@ Other correlation structures and weighting schemes can be considered.
 
 ### Model fitting manually in R
 One can reproduce these results manually in R. For example, to fit the unstructured model:
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(mmrm)
 library(emmeans)
 
-fit <- lmer(
+fit <- mmrm(
   formula = FEV1 ~ RACE + SEX + FEV1_BL + ARMCD * AVISIT + us(AVISIT | USUBJID),
   data = mmrm_test_data
 )
@@ -162,7 +162,7 @@ run;
 ### Model fitting
 A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in `SAS` `PROC MIXED`.
 
-```{r eval=F}
+```{r eval=TRUE}
 mmrm_results$diagnostics
 ```
 
