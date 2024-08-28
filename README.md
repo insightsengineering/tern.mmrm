@@ -54,15 +54,9 @@ install.packages("tern.mmrm")
 or you can install the latest development version directly from GitHub by running the following:
 
 ``` r
-if (!require("remotes")) install.packages("remotes")
-remotes::install_github("insightsengineering/tern.mmrm")
+# install.packages("pak")
+pak::pak("insightsengineering/tern.mmrm")
 ```
-
-Note that it is recommended you [create and use a `GITHUB_PAT`](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) if installing from GitHub.
-
-### `NEST` distribution
-
-A stable release of all `NEST` packages is also available [here](https://github.com/insightsengineering/depository#readme).
 
 ## Getting started
 
