@@ -12,6 +12,8 @@ g_mmrm_lsmeans(
     object$labels$response, " adjusted means vs. control ('", object$ref_level, "')")),
   xlab = object$labels$visit,
   ylab = paste0("Estimates with ", round(object$conf_level * 100), "\% CIs"),
+  xlimits = NULL,
+  ylimits = NULL,
   width = 0.6,
   show_pval = TRUE,
   show_lines = FALSE,
