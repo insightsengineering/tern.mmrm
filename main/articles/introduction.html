@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern.mmrm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9002</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,16 +40,6 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.3.1">v0.3.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern.mmrm/v0.2.1">v0.2.1</a> </div></li>
-<!-- end dropdown for versions -->
 <ul class="navbar-nav">
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern.mmrm"><span class="fa fa-github"></span></a></li>
       </ul>
@@ -358,13 +348,63 @@ considered.</p>
 the unstructured model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://openpharma.github.io/mmrm/" class="external-link">mmrm</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'mmrm'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:tern.mmrm':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     fit_mmrm</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rvlenth.github.io/emmeans/" class="external-link">emmeans</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Welcome to emmeans.</span></span>
+<span><span class="co">#&gt; Caution: You lose important information if you filter this package's results.</span></span>
+<span><span class="co">#&gt; See '? untidy'</span></span>
 <span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lmer</span><span class="op">(</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://openpharma.github.io/mmrm/latest-tag/reference/mmrm.html" class="external-link">mmrm</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">FEV1</span> <span class="op">~</span> <span class="va">RACE</span> <span class="op">+</span> <span class="va">SEX</span> <span class="op">+</span> <span class="va">FEV1_BL</span> <span class="op">+</span> <span class="va">ARMCD</span> <span class="op">*</span> <span class="va">AVISIT</span> <span class="op">+</span> <span class="fu">us</span><span class="op">(</span><span class="va">AVISIT</span> <span class="op">|</span> <span class="va">USUBJID</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mmrm_test_data</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">emmeans</span><span class="fu">::</span><span class="fu"><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">pairwise</span> <span class="op">~</span> <span class="va">ARMCD</span> <span class="op">|</span> <span class="va">AVISIT</span>, weights <span class="op">=</span> <span class="st">"proportional"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $emmeans</span></span>
+<span><span class="co">#&gt; AVISIT = VIS1:</span></span>
+<span><span class="co">#&gt;  ARMCD emmean    SE  df lower.CL upper.CL</span></span>
+<span><span class="co">#&gt;  PBO     32.9 0.732 141     31.5     34.4</span></span>
+<span><span class="co">#&gt;  TRT     36.9 0.743 141     35.4     38.4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS2:</span></span>
+<span><span class="co">#&gt;  ARMCD emmean    SE  df lower.CL upper.CL</span></span>
+<span><span class="co">#&gt;  PBO     37.7 0.576 142     36.6     38.8</span></span>
+<span><span class="co">#&gt;  TRT     41.6 0.570 140     40.5     42.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS3:</span></span>
+<span><span class="co">#&gt;  ARMCD emmean    SE  df lower.CL upper.CL</span></span>
+<span><span class="co">#&gt;  PBO     43.3 0.441 127     42.4     44.2</span></span>
+<span><span class="co">#&gt;  TRT     46.3 0.494 130     45.3     47.2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS4:</span></span>
+<span><span class="co">#&gt;  ARMCD emmean    SE  df lower.CL upper.CL</span></span>
+<span><span class="co">#&gt;  PBO     48.1 1.173 133     45.8     50.4</span></span>
+<span><span class="co">#&gt;  TRT     52.5 1.174 133     50.2     54.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results are averaged over the levels of: RACE, SEX </span></span>
+<span><span class="co">#&gt; Confidence level used: 0.95 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $contrasts</span></span>
+<span><span class="co">#&gt; AVISIT = VIS1:</span></span>
+<span><span class="co">#&gt;  contrast  estimate    SE  df t.ratio p.value</span></span>
+<span><span class="co">#&gt;  PBO - TRT    -3.98 1.045 142  -3.810  0.0002</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS2:</span></span>
+<span><span class="co">#&gt;  contrast  estimate    SE  df t.ratio p.value</span></span>
+<span><span class="co">#&gt;  PBO - TRT    -3.93 0.814 142  -4.832  &lt;.0001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS3:</span></span>
+<span><span class="co">#&gt;  contrast  estimate    SE  df t.ratio p.value</span></span>
+<span><span class="co">#&gt;  PBO - TRT    -2.98 0.666 130  -4.482  &lt;.0001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; AVISIT = VIS4:</span></span>
+<span><span class="co">#&gt;  contrast  estimate    SE  df t.ratio p.value</span></span>
+<span><span class="co">#&gt;  PBO - TRT    -4.40 1.660 133  -2.652  0.0090</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results are averaged over the levels of: RACE, SEX</span></span></code></pre></div>
 <p>Compared to manual implementation, <code>tern.mmrm</code> users can
 avoid specifying the <code>formula</code> manually. Note also that
 <code>tern.mmrm</code> has a default optimizer which is in fact the same
@@ -406,7 +446,18 @@ the desire is to select a parsimonious model that adequately fits the
 data. We provide four of the same information criteria as found in
 <code>SAS</code> <code>PROC MIXED</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">diagnostics</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mmrm_results</span><span class="op">$</span><span class="va">diagnostics</span></span>
+<span><span class="co">#&gt; $`REML criterion`</span></span>
+<span><span class="co">#&gt; [1] 3361.379</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $AIC</span></span>
+<span><span class="co">#&gt; [1] 3381.379</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $AICc</span></span>
+<span><span class="co">#&gt; [1] 3381.807</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $BIC</span></span>
+<span><span class="co">#&gt; [1] 3414.211</span></span></code></pre></div>
 <p>Each criterion is specifically calculated as follows:</p>
 <ol style="list-style-type: decimal">
 <li>
