@@ -164,6 +164,7 @@ test_that("tabulate_mmrm_subgroups works as expected", {
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("MMRM forest plot", function() grid::grid.draw(forest))
 })
@@ -197,6 +198,7 @@ test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
 
   forest <- g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
 
+  skip_if_not_installed("vdiffr")
   skip_on_ci()
   vdiffr::expect_doppelganger("MMRM forest plot with customizations", function() grid::grid.draw(forest))
 })
