@@ -12,6 +12,8 @@ g_mmrm_lsmeans(
     object$labels$response, " adjusted means vs. control ('", object$ref_level, "')")),
   xlab = object$labels$visit,
   ylab = paste0("Estimates with ", round(object$conf_level * 100), "\% CIs"),
+  xlimits = NULL,
+  ylimits = NULL,
   width = 0.6,
   show_pval = TRUE,
   show_lines = FALSE,
@@ -36,6 +38,10 @@ Note "contrasts" option is not applicable to model summaries excluding an arm va
 \item{xlab}{(\code{string})\cr the x axis label.}
 
 \item{ylab}{(\code{string})\cr the y axis label.}
+
+\item{xlimits}{(\code{numeric})\cr x axis limits.}
+
+\item{ylimits}{(\code{numeric})\cr y axis limits.}
 
 \item{width}{(\code{numeric})\cr width of the error bars.}
 
