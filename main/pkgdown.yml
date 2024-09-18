@@ -1,9 +1,9 @@
-pandoc: '3.2'
+pandoc: '3.3'
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2024-09-03T02:21Z
+last_built: 2024-09-18T08:05Z
 urls:
   reference: https://insightsengineering.github.io/tern.mmrm/reference
   article: https://insightsengineering.github.io/tern.mmrm/articles
