@@ -74,7 +74,7 @@ test_that("h_get_emmeans_res works as expected", {
   ns <- datfull %>%
     dplyr::group_by(ARMCD, AVISIT) %>%
     dplyr::summarize(n_expected = dplyr::n())
-  compare_grid <- result$grid %>% dplyr::full_join(ns, by = join_by(AVISIT, ARMCD))
+  compare_grid <- result$grid %>% dplyr::full_join(ns, by = dplyr::join_by(AVISIT, ARMCD))
   expect_identical(compare_grid$n, compare_grid$n_expected)
 })
 
@@ -177,11 +177,6 @@ test_that("h_get_average_visit_specs works as expected without arm", {
 test_that("h_get_average_visit_specs uses number of patients with any of the averaged visits as n", {
   skip_on_ci()
 
-  small_dat <- data.frame(
-    FEV1 = c(1, 2, 3, 4, 5, 6),
-    AVISIT = factor(c("V1", "V1", "V2", "V3", "V3", "V4")),
-    USUBJID = c("A", "B", "A", "C", "D", "A")
-  )
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -189,7 +184,7 @@ test_that("h_get_average_visit_specs uses number of patients with any of the ave
   )
   fit <- mmrm::mmrm(
     formula = FEV1 ~ AVISIT + ar1(AVISIT | USUBJID),
-    data = small_dat
+    data = mmrm_test_data
   )
   emmeans_res <- h_get_emmeans_res(
     fit = fit,
@@ -197,8 +192,8 @@ test_that("h_get_average_visit_specs uses number of patients with any of the ave
     weights = "proportional"
   )
   averages <- list(
-    "V1+3" = c("V1", "V3"),
-    "V2+4" = c("V2", "V4")
+    "V1+3" = c("VIS1", "VIS3"),
+    "V2+4" = c("VIS2", "VIS4")
   )
   avg_specs <- h_get_average_visit_specs(
     emmeans_res = emmeans_res,
@@ -209,7 +204,7 @@ test_that("h_get_average_visit_specs uses number of patients with any of the ave
   result <- avg_specs$grid
   expected <- data.frame(
     AVISIT = c("V1+3", "V2+4"),
-    n = c(4L, 1L)
+    n = c(179L, 179L)
   )
   expect_identical(result, expected)
 })
