@@ -1,96 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/404.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/SECURITY.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/index.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/a_mmrm_subgroups.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/build_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/extract_mmrm_subgroups.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/fit_mmrm.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/g_covariance.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/g_mmrm_diagnostic.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/g_mmrm_lsmeans.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/get_mmrm_lsmeans.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_assert_data.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_covariate_parts.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_diagnostics.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_timepoint_vars.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_mmrm_subgroup_df.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/h_vectorization.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/labels.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/lsmeans_helpers.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/mmrm_test_data.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/tabulate_mmrm.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/tabulate_mmrm_subgroups.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern.mmrm/reference/tern.mmrm-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/404.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/CONTRIBUTING.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/SECURITY.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/articles/index.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/articles/introduction.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/authors.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/index.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/news/index.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/a_mmrm_subgroups.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/build_formula.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/extract_mmrm_subgroups.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/fit_mmrm.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/g_covariance.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/g_mmrm_diagnostic.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/g_mmrm_lsmeans.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/get_mmrm_lsmeans.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_assert_data.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_covariate_parts.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_diagnostics.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_get_timepoint_vars.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_mmrm_subgroup_df.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/h_vectorization.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/index.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/labels.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/lsmeans_helpers.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/mmrm_test_data.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/reexports.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/tabulate_mmrm.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/tabulate_mmrm_subgroups.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern.mmrm/reference/tern.mmrm-package.html</loc></url>
 </urlset>
+
