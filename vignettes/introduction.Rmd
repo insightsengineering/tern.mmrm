@@ -129,7 +129,7 @@ Other correlation structures and weighting schemes can be considered.
 
 ### Model fitting manually in R
 One can reproduce these results manually in R. For example, to fit the unstructured model:
-```{r, eval=TRUE}
+```{r}
 library(mmrm)
 library(emmeans)
 
