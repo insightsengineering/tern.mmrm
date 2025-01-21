@@ -24,6 +24,7 @@ fit_mmrm_no_arms_object <- fit_mmrm(
 # g_mmrm_diagnostic ----
 
 test_that("g_mmrm_diagnostic works well with defaults", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_diagnostic(fit_mmrm_object)
 
   skip_if_not_installed("vdiffr")
@@ -32,22 +33,24 @@ test_that("g_mmrm_diagnostic works well with defaults", {
 })
 
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
-  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual")
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual")
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual defaults", result)
 })
 
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with z threshold", {
-  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2)
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+
+  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2)
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with z threshold", result)
 })
 
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   dat <- get_version(version = "A")
 
   set.seed(123, kind = "Wichmann-Hill")
@@ -74,14 +77,16 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
 # g_mmrm_lsmeans ----
 
 test_that("g_mmrm_lsmeans works well with default arguments", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object)
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+
+  result <- g_mmrm_lsmeans(fit_mmrm_object)
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with defaults", result)
 })
 
 test_that("g_mmrm_lsmeans can select estimates only", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(fit_mmrm_object, select = "estimates")
 
   skip_if_not_installed("vdiffr")
@@ -90,30 +95,35 @@ test_that("g_mmrm_lsmeans can select estimates only", {
 })
 
 test_that("g_mmrm_lsmeans can select contrasts only", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts")
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+
+  result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts")
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with contrasts", result)
 })
 
 test_that("g_mmrm_lsmeans works well with constant baseline added", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0))
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+
+  result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0))
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with constant baseline", result)
 })
 
 test_that("g_mmrm_lsmeans works well with lines added", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE)
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   skip_if_not_installed("vdiffr")
   skip_on_ci()
+
+  result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE)
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with lines", result)
 })
 
 test_that("g_mmrm_lsmeans works well with multiple customizations", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- g_mmrm_lsmeans(
     fit_mmrm_object,
     titles = c(estimates = "LS means", contrasts = "LS mean contrasts"),
@@ -131,6 +141,8 @@ test_that("g_mmrm_lsmeans works well with multiple customizations", {
 })
 
 test_that("g_mmrm_lsmeans works well with constant baseline and no arms", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- g_mmrm_lsmeans(fit_mmrm_no_arms_object, constant_baseline = c(XYZBSL = 10))
 
   skip_on_ci()
@@ -138,6 +150,7 @@ test_that("g_mmrm_lsmeans works well with constant baseline and no arms", {
 })
 
 test_that("g_mmrm_lsmeans plots stats table for estimates as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(
     fit_mmrm_object,
     select = "estimates",
@@ -149,6 +162,7 @@ test_that("g_mmrm_lsmeans plots stats table for estimates as expected", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table with custom settings", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(
     fit_mmrm_object,
     select = "estimates",
@@ -174,6 +188,7 @@ test_that("g_mmrm_lsmeans plots estimates stats table with custom settings", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also without arms", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(
     fit_mmrm_no_arms_object,
     select = "estimates",
@@ -185,6 +200,7 @@ test_that("g_mmrm_lsmeans plots estimates stats table also without arms", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(
     fit_mmrm_object,
     select = "estimates",
@@ -198,6 +214,7 @@ test_that("g_mmrm_lsmeans plots estimates stats table also with constant baselin
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline and without arms", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- g_mmrm_lsmeans(
     fit_mmrm_no_arms_object,
     select = "estimates",
