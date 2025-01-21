@@ -107,7 +107,7 @@ head(mmrm_test_data)
 
 ### Model fitting via `tern.mmrm`
 Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting function `fit_mmrm` assumes unstructured correlation and proportional weights when calculating LS means.
-```{r message=FALSE, results="hide"}
+```{r}
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",

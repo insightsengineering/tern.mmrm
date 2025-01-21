@@ -3,6 +3,7 @@ library(dplyr)
 # h_get_diagnostics ----
 
 test_that("h_get_diagnostics works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   fit <- mmrm::mmrm(
     formula = FEV1 ~ us(AVISIT | USUBJID),
     data = mmrm_test_data
@@ -23,6 +24,7 @@ test_that("h_get_diagnostics works as expected", {
 ## parallelization ----
 
 test_that("fit_mmrm works with parallelization", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   expect_no_error(result <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -40,6 +42,7 @@ test_that("fit_mmrm works with parallelization", {
 ## optimizer ----
 
 test_that("fit_mmrm can specify multiple optimizers to try", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -59,6 +62,7 @@ test_that("fit_mmrm can specify multiple optimizers to try", {
 ## method ----
 
 test_that("fit_mmrm can specify adjustment method", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   result <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -79,6 +83,7 @@ test_that("fit_mmrm can specify adjustment method", {
 ## character ID ----
 
 test_that("fit_mmrm works with character ID variable", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   dat <- mmrm_test_data
   dat$USUBJID <- as.character(dat$USUBJID) # nolint
   expect_silent(result <- fit_mmrm(
@@ -109,6 +114,7 @@ test_that("fit_mmrm works with character ID variable", {
 ## unstructured numbers ----
 
 test_that("fit_mmrm works with unstructured covariance matrix and produces same results as SAS", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   dat <- get_version(version = "A")
 
   mmrm_results <- fit_mmrm(
@@ -256,6 +262,8 @@ test_that("fit_mmrm works with unstructured covariance matrix and produces same 
 ## missing data ----
 
 test_that("fit_mmrm works also with missing data", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   dat <- get_version(version = "B")
   stopifnot(identical(
     nrow(stats::na.omit(dat)),
@@ -412,6 +420,7 @@ test_that("fit_mmrm works also with missing data", {
 ## singular fit ----
 
 test_that("fit_mmrm works also with rank deficient model matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   dat <- get_version(version = "A")
   dat$SEX2 <- dat$SEX # nolint
 
@@ -435,6 +444,8 @@ test_that("fit_mmrm works also with rank deficient model matrix", {
 ## weights ----
 
 test_that("fit_mmrm works also with weights", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   dat <- get_version(version = "A")
 
   set.seed(123, kind = "Wichmann-Hill")
@@ -464,6 +475,7 @@ test_that("fit_mmrm works also with weights", {
 ## different cov structures ----
 
 test_that("fit_mmrm works with homogeneous toeplitz covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -480,6 +492,7 @@ test_that("fit_mmrm works with homogeneous toeplitz covariance matrix", {
 })
 
 test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -496,6 +509,7 @@ test_that("fit_mmrm works with heterogeneous toeplitz covariance matrix", {
 })
 
 test_that("fit_mmrm works with homogeneous ante-dependence covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -512,6 +526,7 @@ test_that("fit_mmrm works with homogeneous ante-dependence covariance matrix", {
 })
 
 test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -528,6 +543,7 @@ test_that("fit_mmrm works with heterogeneous ante-dependence covariance matrix",
 })
 
 test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -544,6 +560,7 @@ test_that("fit_mmrm works with homogeneous auto-regressive covariance matrix", {
 })
 
 test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -560,6 +577,7 @@ test_that("fit_mmrm works with heterogeneous auto-regressive covariance matrix",
 })
 
 test_that("fit_mmrm works with homogeneous compound symmetry covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -576,6 +594,7 @@ test_that("fit_mmrm works with homogeneous compound symmetry covariance matrix",
 })
 
 test_that("fit_mmrm works with heterogeneous compound symmetry covariance matrix", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
