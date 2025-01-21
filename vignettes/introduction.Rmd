@@ -173,7 +173,7 @@ run;
 ### Model fitting
 A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in `SAS` `PROC MIXED`.
 
-```{r eval=TRUE}
+```{r}
 mmrm_results$diagnostics
 ```
 
