@@ -1,4 +1,4 @@
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   fit_mmrm_object <- fit_mmrm(
     vars = list(
       response = "FEV1",
