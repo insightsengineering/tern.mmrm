@@ -1,27 +1,29 @@
-dat <- mmrm_test_data
-dat$EXTRA <- factor(c(rep("A", 10), rep("B", nrow(dat) - 10))) # nolint
-formatters::var_labels(dat) <- c(
-  "Subject ID",
-  "Visit No.",
-  "Treatment",
-  "Race",
-  "Gender",
-  "FEV1 at Baseline",
-  "FEV1 measurement",
-  "Extra variable"
-)
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("RACE", "SEX"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = dat,
-  cor_struct = "unstructured",
-  averages_emmeans = list("VIS1+2" = c("VIS1", "VIS2"))
-)
+if (requireNamespace("TMB")){
+  dat <- mmrm_test_data
+  dat$EXTRA <- factor(c(rep("A", 10), rep("B", nrow(dat) - 10))) # nolint
+  formatters::var_labels(dat) <- c(
+    "Subject ID",
+    "Visit No.",
+    "Treatment",
+    "Race",
+    "Gender",
+    "FEV1 at Baseline",
+    "FEV1 measurement",
+    "Extra variable"
+  )
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = dat,
+    cor_struct = "unstructured",
+    averages_emmeans = list("VIS1+2" = c("VIS1", "VIS2"))
+  )
+}
 
 # h_mmrm_subgroup_df ----
 

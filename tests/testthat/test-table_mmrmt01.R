@@ -4,18 +4,20 @@ library(dplyr)
 library(tern)
 library(broom)
 
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("SEX", "FEV1_BL"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional"
+if (requireNamespace("TMB")){
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
+    weights_emmeans = "proportional"
 )
+}
 
 testthat::test_that("LS means table is produced correctly", {
   testthat::skip_if_not(requireNamespace("TMB"))
