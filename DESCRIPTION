@@ -44,8 +44,7 @@ Imports:
     rlang (>= 1.0.1),
     rtables (>= 0.6.10),
     stats,
-    tidyr (>= 0.8.3),
-    TMB (>= 1.9.1)
+    tidyr (>= 0.8.3)
 Suggests:
     broom (>= 0.7.10),
     grid,
@@ -54,6 +53,7 @@ Suggests:
     Matrix,
     rmarkdown (>= 2.23),
     testthat (>= 3.1),
+    TMB (>= 1.9.1),
     vdiffr (>= 1.0.7),
     withr (>= 2.0.0)
 VignetteBuilder:
