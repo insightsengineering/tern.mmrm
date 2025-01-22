@@ -26,6 +26,8 @@ mmrm_results <- fit_mmrm(
 # h_mmrm_subgroup_df ----
 
 test_that("h_mmrm_subgroup_df works as expected for overall group", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- h_mmrm_subgroup_df(
     lsmeans = mmrm_results$lsmeans,
     overall_fit = mmrm_results,
@@ -63,6 +65,8 @@ test_that("h_mmrm_subgroup_df works as expected for overall group", {
 })
 
 test_that("h_mmrm_subgroup_df works as expected for subgroup when fit did not converge", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- h_mmrm_subgroup_df(
     lsmeans = NULL,
     overall_fit = mmrm_results,
@@ -102,6 +106,8 @@ test_that("h_mmrm_subgroup_df works as expected for subgroup when fit did not co
 # extract_mmrm_subgroups ----
 
 test_that("extract_mmrm_subgroups works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS3",
@@ -111,6 +117,8 @@ test_that("extract_mmrm_subgroups works as expected", {
 })
 
 test_that("extract_mmrm_subgroups works as expected without subgroup variables", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS2"
@@ -119,6 +127,8 @@ test_that("extract_mmrm_subgroups works as expected without subgroup variables",
 })
 
 test_that("extract_mmrm_subgroups works as expected with groups_lists", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS2",
@@ -132,6 +142,8 @@ test_that("extract_mmrm_subgroups works as expected with groups_lists", {
 })
 
 test_that("extract_mmrm_subgroups works when model does not work for some subgroups", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   expect_message(result <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS1+2",

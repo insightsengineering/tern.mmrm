@@ -191,7 +191,7 @@ g_mmrm_diagnostic <- function(object,
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' library(dplyr)
 #'
 #' mmrm_results <- fit_mmrm(

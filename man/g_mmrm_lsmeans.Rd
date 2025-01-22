@@ -96,6 +96,7 @@ considered in the \code{tern_mmrm} object input,
 no matter if \code{select} argument contains the \code{contrasts} value.
 }
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 
 mmrm_results <- fit_mmrm(
@@ -168,4 +169,5 @@ g_mmrm_lsmeans(
   titles = c(estimates = "Adjusted mean of FKSI-FWB"),
   table_stats = c("n", "ci")
 )
+\dontshow{\}) # examplesIf}
 }
