@@ -45,7 +45,7 @@ Imports:
     rtables (>= 0.6.10),
     stats,
     tidyr (>= 0.8.3),
-    TMB
+    TMB (>= 1.9.1)
 Suggests:
     broom (>= 0.7.10),
     grid,

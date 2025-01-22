@@ -8,6 +8,7 @@
 #' @import checkmate
 #' @import ggplot2
 #' @import rtables
+#' @import TMB
 #' @importFrom cowplot add_sub
 #' @importFrom dplyr across
 #' @importFrom lifecycle deprecated
