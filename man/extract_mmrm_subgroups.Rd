@@ -63,6 +63,7 @@ If the original model \code{vars} include \code{covariates} which are used here 
 model is fitted.
 }
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -90,4 +91,5 @@ extract_mmrm_subgroups(
     )
   )
 )
+\dontshow{\}) # examplesIf}
 }

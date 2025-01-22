@@ -24,7 +24,7 @@ tern::as.rtable
 #' @export
 #' @method as.rtable tern_mmrm
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' result <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",

@@ -42,6 +42,7 @@ The \code{rtables} object.
 This function tabulates the results from \code{\link[=extract_mmrm_subgroups]{extract_mmrm_subgroups()}}.
 }
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -78,4 +79,5 @@ tab
 
 ## Forest plot can be produced based on this very easily.
 g_forest(tab, logx = FALSE, xlim = c(-10, 10), x_at = c(-10, -5, 0, 5, 10), vline = 0)
+\dontshow{\}) # examplesIf}
 }

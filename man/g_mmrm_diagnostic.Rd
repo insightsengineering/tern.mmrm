@@ -41,6 +41,7 @@ and the difference of those fitted values vs. the observed data are
 the residuals.
 }
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 mmrm_results <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -55,6 +56,7 @@ mmrm_results <- fit_mmrm(
 )
 g_mmrm_diagnostic(mmrm_results)
 g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=g_mmrm_lsmeans]{g_mmrm_lsmeans()}} for plotting the least-squares means and contrasts.

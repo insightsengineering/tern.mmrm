@@ -18,6 +18,8 @@ mmrm_results <- fit_mmrm(
 )
 
 testthat::test_that("LS means table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
@@ -42,16 +44,22 @@ testthat::test_that("LS means table is produced correctly", {
 })
 
 testthat::test_that("Fixed effects table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "fixed", format = "xx.xx")
   testthat::expect_snapshot(result)
 })
 
 testthat::test_that("Covariance matrix table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "cov", format = "xx.xx")
   testthat::expect_snapshot(result)
 })
 
 testthat::test_that("Model diagnostics table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "diagnostic", format = "xx.xx")
   testthat::expect_snapshot(result)
 })

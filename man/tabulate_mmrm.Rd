@@ -115,6 +115,7 @@ which can be further customized by calling
 
 }}
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 result <- fit_mmrm(
   vars = list(
     response = "FEV1",
@@ -141,6 +142,7 @@ result_no_arm <- fit_mmrm(
   weights_emmeans = "equal"
 )
 as.rtable(result_no_arm, type = "cov", format = "xx.x")
+\dontshow{\}) # examplesIf}
 df <- broom::tidy(result)
 df_no_arm <- broom::tidy(result_no_arm)
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
