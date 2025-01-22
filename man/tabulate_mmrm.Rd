@@ -143,10 +143,17 @@ result_no_arm <- fit_mmrm(
 )
 as.rtable(result_no_arm, type = "cov", format = "xx.x")
 \dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 df <- broom::tidy(result)
 df_no_arm <- broom::tidy(result_no_arm)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 s_mmrm_lsmeans_single(df_no_arm[4, ])
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 
 dat_adsl <- mmrm_test_data \%>\%
@@ -173,4 +180,5 @@ basic_table() \%>\%
     df = broom::tidy(result_no_arm),
     alt_counts_df = dat_adsl
   )
+\dontshow{\}) # examplesIf}
 }

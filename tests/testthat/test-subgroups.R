@@ -165,6 +165,8 @@ test_that("a_mmrm_subgroups works as expected", {
 # tabulate_mmrm_subgroups ----
 
 test_that("tabulate_mmrm_subgroups works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS3",
@@ -184,6 +186,8 @@ test_that("tabulate_mmrm_subgroups works as expected", {
 })
 
 test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   df <- extract_mmrm_subgroups(
     fit = mmrm_results,
     visit = "VIS1+2",

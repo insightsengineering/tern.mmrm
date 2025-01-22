@@ -2,18 +2,19 @@
 title: "Introduction to tern.mmrm"
 date: "2022-03-09"
 output:
-    rmarkdown::html_document:
-        theme: "spacelab"
-        highlight: "kate"
-        toc: true
-        toc_float: true
+  rmarkdown::html_vignette:
+    theme: "spacelab"
+    highlight: "kate"
+    toc: true
+    toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Introduction to tern.mmrm}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Introduction to tern.mmrm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 editor_options:
-    markdown:
-        wrap: 72
+  chunk_output_type: console
+  markdown:
+      wrap: 72
 ---
 
 ```{r, include = FALSE}

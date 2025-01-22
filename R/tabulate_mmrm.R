@@ -108,7 +108,7 @@ generics::tidy
 #'   `tern_mmrm` object containing the least-squares means and contrasts.
 #' @method tidy tern_mmrm
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' df <- broom::tidy(result)
 #' df_no_arm <- broom::tidy(result_no_arm)
 tidy.tern_mmrm <- function(x, ...) {
@@ -142,7 +142,7 @@ tidy.tern_mmrm <- function(x, ...) {
 #' @param show_relative should the "reduction" (`control - treatment`, default) or the "increase"
 #'   (`treatment - control`) be shown for the relative change from baseline?
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 s_mmrm_lsmeans <- function(df, .in_ref_col, show_relative = c("reduction", "increase")) {
   show_relative <- match.arg(show_relative)
@@ -196,7 +196,7 @@ a_mmrm_lsmeans <- make_afun(
 #' @describeIn tabulate_mmrm Statistics function which is extracting estimates from a tidied least-squares means
 #' data frame when `ARM` is not considered in the model.
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' s_mmrm_lsmeans_single(df_no_arm[4, ])
 s_mmrm_lsmeans_single <- function(df) {
   list(
@@ -235,7 +235,7 @@ a_mmrm_lsmeans_single <- make_afun(
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' library(dplyr)
 #'
 #' dat_adsl <- mmrm_test_data %>%
