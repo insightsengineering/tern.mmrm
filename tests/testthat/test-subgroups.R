@@ -1,4 +1,4 @@
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   dat <- mmrm_test_data
   dat$EXTRA <- factor(c(rep("A", 10), rep("B", nrow(dat) - 10))) # nolint
   formatters::var_labels(dat) <- c(

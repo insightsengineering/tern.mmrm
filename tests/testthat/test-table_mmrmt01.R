@@ -4,7 +4,7 @@ library(dplyr)
 library(tern)
 library(broom)
 
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -16,7 +16,7 @@ if (requireNamespace("TMB")){
     data = mmrm_test_data,
     cor_struct = "unstructured",
     weights_emmeans = "proportional"
-)
+  )
 }
 
 testthat::test_that("LS means table is produced correctly", {
