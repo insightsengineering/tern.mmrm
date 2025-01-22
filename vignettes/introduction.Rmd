@@ -106,7 +106,7 @@ head(mmrm_test_data)
 ### Model fitting via `tern.mmrm`
 Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting function `fit_mmrm` assumes unstructured correlation and proportional weights when calculating LS means.
 ```{r}
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   mmrm_results <- fit_mmrm(
     vars = list(
       response = "FEV1",
@@ -123,7 +123,7 @@ if (requireNamespace("TMB")){
 ```
 The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in `FEV1` over placebo at all study visits.
 ```{r}
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   mmrm_results$lsmeans$contrasts
 }
 ```
@@ -176,7 +176,7 @@ run;
 A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in `SAS` `PROC MIXED`.
 
 ```{r}
-if (requireNamespace("TMB")){
+if (requireNamespace("TMB")) {
   mmrm_results$diagnostics
 }
 ```
