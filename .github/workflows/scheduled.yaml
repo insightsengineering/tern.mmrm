@@ -63,8 +63,10 @@ jobs:
         inputs.chosen-workflow == 'rhub'
       )
     name: R-hub 🌐
-    uses: insightsengineering/r.pkg.template/.github/workflows/rhub.yaml@main
+    uses: insightsengineering/r.pkg.template/.github/workflows/rhub.yaml@rhub_extra_pkgs
     with:
+      extra-packages: |
+        cran::TMB
       lookup-refs: |
         insightsengineering/tern
         insightsengineering/formatters
