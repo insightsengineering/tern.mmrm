@@ -137,7 +137,7 @@ h_mmrm_subgroup_df <- function(lsmeans,
 #'        that this has half the number of rows as `estimates`.
 #'
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",
@@ -323,7 +323,7 @@ a_mmrm_subgroups <- function(.formats) {
 #' @return The `rtables` object.
 #' @export
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",

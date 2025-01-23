@@ -98,7 +98,7 @@ h_get_diagnostics <- function(fit) {
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' library(dplyr)
 #' library(rtables)
 #'

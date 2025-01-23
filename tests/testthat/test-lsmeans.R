@@ -47,6 +47,7 @@ get_lsmeans_example_no_arm <- function() {
 # h_get_emmeans_res ----
 
 test_that("h_get_emmeans_res works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -79,6 +80,7 @@ test_that("h_get_emmeans_res works as expected", {
 })
 
 test_that("h_get_emmeans_res works as expected without arm variable", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -105,6 +107,7 @@ test_that("h_get_emmeans_res works as expected without arm variable", {
 # h_get_average_visit_specs ----
 
 test_that("h_get_average_visit_specs works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   averages <- list(
     "VIS1+3" = c("VIS1", "VIS3"),
@@ -133,6 +136,7 @@ test_that("h_get_average_visit_specs works as expected", {
 })
 
 test_that("h_get_average_visit_specs gives error if not all visits are correct", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   averages <- list(
     "VIS4+5" = c("VIS4", "VIS5") # VIS5 is not included in data.
@@ -150,6 +154,7 @@ test_that("h_get_average_visit_specs gives error if not all visits are correct",
 })
 
 test_that("h_get_average_visit_specs works as expected without arm", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example_no_arm()
   averages <- list(
     "VIS1+3" = c("VIS1", "VIS3"),
@@ -176,7 +181,7 @@ test_that("h_get_average_visit_specs works as expected without arm", {
 
 test_that("h_get_average_visit_specs uses number of patients with any of the averaged visits as n", {
   skip_on_ci()
-
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -212,6 +217,7 @@ test_that("h_get_average_visit_specs uses number of patients with any of the ave
 # h_get_spec_visit_estimates ----
 
 test_that("h_get_spec_visit_estimates works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   specs <- list(
     coefs = list(
@@ -243,6 +249,7 @@ test_that("h_get_spec_visit_estimates works as expected", {
 })
 
 test_that("h_get_spec_visit_estimates produces test results optionally", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   specs <- list(
     coefs = list(
@@ -277,6 +284,7 @@ test_that("h_get_spec_visit_estimates produces test results optionally", {
 })
 
 test_that("h_get_spec_visit_estimates works without arm", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example_no_arm()
   specs <- list(
     coefs = list(
@@ -298,6 +306,7 @@ test_that("h_get_spec_visit_estimates works without arm", {
 # h_get_single_visit_estimates ----
 
 test_that("h_get_single_visit_estimates works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   result <- expect_silent(h_get_single_visit_estimates(
     emmeans_res = example$emmeans_res,
@@ -307,6 +316,7 @@ test_that("h_get_single_visit_estimates works as expected", {
 })
 
 test_that("h_get_single_visit_estimates works without arm", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example_no_arm()
   result <- expect_silent(h_get_single_visit_estimates(
     emmeans_res = example$emmeans_res,
@@ -318,6 +328,7 @@ test_that("h_get_single_visit_estimates works without arm", {
 # h_get_relative_reduc_df ----
 
 test_that("h_get_relative_reduc_df works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   estimates <- h_get_single_visit_estimates(
     emmeans_res = example$emmeans_res,
@@ -333,6 +344,7 @@ test_that("h_get_relative_reduc_df works as expected", {
 # h_single_visit_contrast_specs ----
 
 test_that("h_single_visit_contrast_specs works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   result <- expect_silent(h_single_visit_contrast_specs(
     emmeans_res = example$emmeans_res,
@@ -356,6 +368,7 @@ test_that("h_single_visit_contrast_specs works as expected", {
 # h_average_visit_contrast_specs ----
 
 test_that("h_average_visit_contrast_specs works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   example <- get_lsmeans_example()
   single_specs <- h_single_visit_contrast_specs(
     emmeans_res = example$emmeans_res,
@@ -557,6 +570,7 @@ test_that("h_average_visit_contrast_specs works also for 3 arms and many visits"
 # get_mmrm_lsmeans ----
 
 test_that("get_mmrm_lsmeans can calculate the LS mean results", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -588,6 +602,7 @@ test_that("get_mmrm_lsmeans can calculate the LS mean results", {
 })
 
 test_that("get_mmrm_lsmeans preserves combined arm levels.", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",
@@ -615,6 +630,7 @@ test_that("get_mmrm_lsmeans preserves combined arm levels.", {
 })
 
 test_that("get_mmrm_lsmeans works without arm", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   vars <- list(
     response = "FEV1",
     id = "USUBJID",

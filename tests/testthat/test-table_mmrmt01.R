@@ -4,20 +4,24 @@ library(dplyr)
 library(tern)
 library(broom)
 
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("SEX", "FEV1_BL"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional"
-)
+if (requireNamespace("TMB")) {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
+    weights_emmeans = "proportional"
+  )
+}
 
 testthat::test_that("LS means table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   df <- broom::tidy(mmrm_results)
   result <- basic_table() %>%
     split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
@@ -42,16 +46,22 @@ testthat::test_that("LS means table is produced correctly", {
 })
 
 testthat::test_that("Fixed effects table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "fixed", format = "xx.xx")
   testthat::expect_snapshot(result)
 })
 
 testthat::test_that("Covariance matrix table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "cov", format = "xx.xx")
   testthat::expect_snapshot(result)
 })
 
 testthat::test_that("Model diagnostics table is produced correctly", {
+  testthat::skip_if_not(requireNamespace("TMB"))
+
   result <- as.rtable(mmrm_results, type = "diagnostic", format = "xx.xx")
   testthat::expect_snapshot(result)
 })

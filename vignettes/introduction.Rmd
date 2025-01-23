@@ -2,26 +2,35 @@
 title: "Introduction to tern.mmrm"
 date: "2022-03-09"
 output:
-    rmarkdown::html_document:
-        theme: "spacelab"
-        highlight: "kate"
-        toc: true
-        toc_float: true
+  rmarkdown::html_document:
+    theme: "spacelab"
+    highlight: "kate"
+    toc: true
+    toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Introduction to tern.mmrm}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Introduction to tern.mmrm}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options:
-    markdown:
-        wrap: 72
+  chunk_output_type: console
+  markdown:
+      wrap: 72
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
+suggested_dependent_pkgs <- c("TMB")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = all(vapply(
+    suggested_dependent_pkgs,
+    requireNamespace,
+    logical(1),
+    quietly = TRUE
+  ))
 )
 ```
+
 
 ## Introduction
 
@@ -96,29 +105,33 @@ head(mmrm_test_data)
 
 ### Model fitting via `tern.mmrm`
 Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting function `fit_mmrm` assumes unstructured correlation and proportional weights when calculating LS means.
-```{r message=FALSE, results="hide"}
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("RACE", "SEX", "FEV1_BL"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional"
-)
+```{r}
+if (requireNamespace("TMB")) {
+  mmrm_results <- fit_mmrm(
+    vars = list(
+      response = "FEV1",
+      covariates = c("RACE", "SEX", "FEV1_BL"),
+      id = "USUBJID",
+      arm = "ARMCD",
+      visit = "AVISIT"
+    ),
+    data = mmrm_test_data,
+    cor_struct = "unstructured",
+    weights_emmeans = "proportional"
+  )
+}
 ```
 The resulting object consists among other things the estimated random and fixed effects (`fit`), the estimated LS means for a particular treatment at a particular visit (`lsmeans`), and the difference in LS means at a particular visit (`lsmeans$contrasts`). Based on the output, there is evidence that supports treatment leading to an increase in `FEV1` over placebo at all study visits.
 ```{r}
-mmrm_results$lsmeans$contrasts
+if (requireNamespace("TMB")) {
+  mmrm_results$lsmeans$contrasts
+}
 ```
 Other correlation structures and weighting schemes can be considered.
 
 ### Model fitting manually in R
 One can reproduce these results manually in R. For example, to fit the unstructured model:
-```{r, eval=TRUE}
+```{r}
 library(mmrm)
 library(emmeans)
 
@@ -162,8 +175,10 @@ run;
 ### Model fitting
 A key part in the analysis of data is model selection, where often the desire is to select a parsimonious model that adequately fits the data. We provide four of the same information criteria as found in `SAS` `PROC MIXED`.
 
-```{r eval=TRUE}
-mmrm_results$diagnostics
+```{r}
+if (requireNamespace("TMB")) {
+  mmrm_results$diagnostics
+}
 ```
 
 Each criterion is specifically calculated as follows:

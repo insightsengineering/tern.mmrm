@@ -28,7 +28,7 @@
 #'
 #' @seealso [g_mmrm_lsmeans()] for plotting the least-squares means and contrasts.
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' mmrm_results <- fit_mmrm(
 #'   vars = list(
 #'     response = "FEV1",
@@ -191,7 +191,7 @@ g_mmrm_diagnostic <- function(object,
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf requireNamespace("TMB")
 #' library(dplyr)
 #'
 #' mmrm_results <- fit_mmrm(

@@ -105,6 +105,7 @@ variance parameters.
 }
 }
 \examples{
+\dontshow{if (requireNamespace("TMB")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 library(rtables)
 
@@ -123,5 +124,5 @@ mmrm_results <- fit_mmrm(
     "VIS1+2" = c("VIS1", "VIS2")
   )
 )
-
+\dontshow{\}) # examplesIf}
 }

@@ -257,18 +257,21 @@ get_mmrm_no_arm <- function() {
 # h_mmrm_fixed ----
 
 test_that("h_mmrm_fixed works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   result <- expect_silent(h_mmrm_fixed(mmrm, format = "xx.xx"))
   expect_snapshot(result)
 })
 
 test_that("h_mmrm_cov works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   result <- expect_silent(h_mmrm_cov(mmrm, format = "xx.xx"))
   expect_snapshot(result)
 })
 
 test_that("h_mmrm_diagnostic works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   result <- expect_silent(h_mmrm_diagnostic(mmrm, format = "xx.x"))
   expect_snapshot(result)
@@ -277,6 +280,7 @@ test_that("h_mmrm_diagnostic works as expected", {
 # tidy.mmrm ----
 
 test_that("tidy.mmrm works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   result <- broom::tidy(mmrm)
   expect_data_frame(result, nrows = 15L, ncols = 17L)
@@ -292,6 +296,7 @@ test_that("tidy.mmrm works as expected", {
 })
 
 test_that("tidy.mmrm works as expected when treatment is not considered in the model", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm_no_arm()
   result <- broom::tidy(mmrm)
   expect_data_frame(result, nrows = 5L, ncols = 8L)
@@ -307,6 +312,7 @@ test_that("tidy.mmrm works as expected when treatment is not considered in the m
 # s_mmrm_lsmeans ----
 
 test_that("s_mmrm_lsmeans works as expected when not in reference column", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[8, ], FALSE)
@@ -325,6 +331,7 @@ test_that("s_mmrm_lsmeans works as expected when not in reference column", {
 })
 
 test_that("s_mmrm_lsmeans works as expected when in reference column", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans(df[2, ], TRUE)
@@ -341,6 +348,7 @@ test_that("s_mmrm_lsmeans works as expected when in reference column", {
 })
 
 test_that("s_mmrm_lsmeans_single works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
   result <- s_mmrm_lsmeans_single(df[2, ])
@@ -355,6 +363,7 @@ test_that("s_mmrm_lsmeans_single works as expected", {
 # summarize_lsmeans ----
 
 test_that("summarize_lsmeans works as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%
@@ -377,6 +386,7 @@ test_that("summarize_lsmeans works as expected", {
 })
 
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
   result <- basic_table() %>%
@@ -394,6 +404,7 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
 })
 
 test_that("summarize_lsmeans works with averages of visits as expected", {
+  testthat::skip_if_not(requireNamespace("TMB"))
   anl <- get_anl() %>%
     dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
