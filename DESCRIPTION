@@ -1,11 +1,11 @@
 Package: tern.mmrm
 Title: Tables and Graphs for Mixed Models for Repeated Measures (MMRM)
-Version: 0.3.2.9002
-Date: 2024-11-01
+Version: 0.3.2.9003
+Date: 2025-01-23
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel@rconis.com", role = "aut"),
-    person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"), 
-      comment = c(ORCID = "0000-0001-7566-2787")),
+    person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7566-2787")),
     person("Godwin", "Yung", , "yungg@gene.com", role = "aut"),
     person("Francois", "Collin", role = "aut"),
     person("Julia", "Dedic", , "julia.dedic@roche.com", role = "aut"),
