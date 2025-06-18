@@ -157,8 +157,10 @@ test_that("tabulate_mmrm_subgroups works as expected", {
     subgroups = c("RACE", "SEX")
   )
 
-  tab <- basic_table() %>%
-    tabulate_mmrm_subgroups(df)
+  expect_silent(
+    tab <- basic_table() %>%
+      tabulate_mmrm_subgroups(df)
+  )
   tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
 
@@ -176,23 +178,25 @@ test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
     subgroups = "SEX"
   )
 
-  tab <- basic_table() %>%
-    tabulate_mmrm_subgroups(
-      df,
-      vars = c("diff", "ci", "n_tot", "pval"),
-      .formats = list(
-        n_tot = "xx",
-        diff = "xx.",
-        ci = "(xx., xx.)",
-        pval = "xx.xx"
-      ),
-      .labels = list(
-        n_tot = "Total",
-        diff = "Difference",
-        ci = "CI",
-        pval = "p"
+  expect_silent(
+    tab <- basic_table() %>%
+      tabulate_mmrm_subgroups(
+        df,
+        vars = c("diff", "ci", "n_tot", "pval"),
+        .formats = list(
+          n_tot = "xx",
+          diff = "xx.",
+          ci = "(xx., xx.)",
+          pval = "xx.xx"
+        ),
+        .labels = list(
+          n_tot = "Total",
+          diff = "Difference",
+          ci = "CI",
+          pval = "p"
+        )
       )
-    )
+  )
   tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
   expect_snapshot_value(tab_matrix, style = "serialize")
 
