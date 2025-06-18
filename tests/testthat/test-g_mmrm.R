@@ -74,7 +74,12 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
 # g_mmrm_lsmeans ----
 
 test_that("g_mmrm_lsmeans works well with default arguments", {
-  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_object))
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -90,7 +95,12 @@ test_that("g_mmrm_lsmeans can select estimates only", {
 })
 
 test_that("g_mmrm_lsmeans can select contrasts only", {
-  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts"))
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts"),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -98,7 +108,12 @@ test_that("g_mmrm_lsmeans can select contrasts only", {
 })
 
 test_that("g_mmrm_lsmeans works well with constant baseline added", {
-  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0)))
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0)),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -106,7 +121,12 @@ test_that("g_mmrm_lsmeans works well with constant baseline added", {
 })
 
 test_that("g_mmrm_lsmeans works well with lines added", {
-  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE))
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
