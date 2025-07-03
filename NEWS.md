@@ -3,6 +3,7 @@
 ### Miscellaneous
 
 * Created additional tests for plot functions.
+* Added `parent_name` parameter to internal `rtables::split_rows_by()` calls to ensure uniqueness of row names, due to upstream `rtables` enhancements.
 
 # tern.mmrm 0.3.2
 
