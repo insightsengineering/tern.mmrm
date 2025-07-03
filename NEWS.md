@@ -1,10 +1,14 @@
-# tern.mmrm 0.3.2.9006
+# tern.mmrm 0.3.3
+
+### Miscellaneous
+
+* Created additional tests for plot functions.
 
 # tern.mmrm 0.3.2
 
 ### Miscellaneous
 
-Added `xlimits` and `ylimits` arguments to the `g_mmrm_lsmeans` function.
+* Added `xlimits` and `ylimits` arguments to the `g_mmrm_lsmeans` function.
 
 # tern.mmrm 0.3.1
 
