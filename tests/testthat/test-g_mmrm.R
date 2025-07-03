@@ -24,7 +24,7 @@ fit_mmrm_no_arms_object <- fit_mmrm(
 # g_mmrm_diagnostic ----
 
 test_that("g_mmrm_diagnostic works well with defaults", {
-  result <- g_mmrm_diagnostic(fit_mmrm_object)
+  expect_silent(result <- g_mmrm_diagnostic(fit_mmrm_object))
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -32,7 +32,7 @@ test_that("g_mmrm_diagnostic works well with defaults", {
 })
 
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
-  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual")
+  expect_silent(result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual"))
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -40,7 +40,7 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot", {
 })
 
 test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with z threshold", {
-  result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2)
+  expect_silent(result <- g_mmrm_diagnostic(fit_mmrm_object, type = "q-q-residual", z_threshold = 2))
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -65,7 +65,7 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
     data = dat,
     cor_struct = "unstructured"
   )
-  result <- g_mmrm_diagnostic(mmrm_results, type = "q-q-residual")
+  expect_silent(result <- g_mmrm_diagnostic(mmrm_results, type = "q-q-residual"))
 
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_diagnostic q-q-residual with weighted MMRM", result)
@@ -74,7 +74,12 @@ test_that("g_mmrm_diagnostic works well for Q-Q residuals plot with weights", {
 # g_mmrm_lsmeans ----
 
 test_that("g_mmrm_lsmeans works well with default arguments", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object)
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -82,7 +87,7 @@ test_that("g_mmrm_lsmeans works well with default arguments", {
 })
 
 test_that("g_mmrm_lsmeans can select estimates only", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, select = "estimates")
+  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_object, select = "estimates"))
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -90,7 +95,12 @@ test_that("g_mmrm_lsmeans can select estimates only", {
 })
 
 test_that("g_mmrm_lsmeans can select contrasts only", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts")
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, select = "contrasts"),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -98,7 +108,12 @@ test_that("g_mmrm_lsmeans can select contrasts only", {
 })
 
 test_that("g_mmrm_lsmeans works well with constant baseline added", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0))
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, constant_baseline = c(XYZBSL = 0)),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -106,7 +121,12 @@ test_that("g_mmrm_lsmeans works well with constant baseline added", {
 })
 
 test_that("g_mmrm_lsmeans works well with lines added", {
-  result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE)
+  expect_silent(
+    expect_message(
+      result <- g_mmrm_lsmeans(fit_mmrm_object, show_lines = TRUE),
+      "Coordinate system already present"
+    )
+  )
 
   skip_if_not_installed("vdiffr")
   skip_on_ci()
@@ -114,15 +134,17 @@ test_that("g_mmrm_lsmeans works well with lines added", {
 })
 
 test_that("g_mmrm_lsmeans works well with multiple customizations", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_object,
-    titles = c(estimates = "LS means", contrasts = "LS mean contrasts"),
-    xlab = "visit",
-    ylab = "estimates",
-    width = 0.3,
-    show_pval = FALSE,
-    show_lines = TRUE,
-    constant_baseline = c(BLA = 2)
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_object,
+      titles = c(estimates = "LS means", contrasts = "LS mean contrasts"),
+      xlab = "visit",
+      ylab = "estimates",
+      width = 0.3,
+      show_pval = FALSE,
+      show_lines = TRUE,
+      constant_baseline = c(BLA = 2)
+    )
   )
 
   skip_if_not_installed("vdiffr")
@@ -131,17 +153,19 @@ test_that("g_mmrm_lsmeans works well with multiple customizations", {
 })
 
 test_that("g_mmrm_lsmeans works well with constant baseline and no arms", {
-  result <- g_mmrm_lsmeans(fit_mmrm_no_arms_object, constant_baseline = c(XYZBSL = 10))
+  expect_silent(result <- g_mmrm_lsmeans(fit_mmrm_no_arms_object, constant_baseline = c(XYZBSL = 10)))
 
   skip_on_ci()
   vdiffr::expect_doppelganger("g_mmrm_lsmeans with constant baseline and no arms", result)
 })
 
 test_that("g_mmrm_lsmeans plots stats table for estimates as expected", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_object,
-    select = "estimates",
-    table_stats = c("n", "estimate", "ci", "se")
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_object,
+      select = "estimates",
+      table_stats = c("n", "estimate", "ci", "se")
+    )
   )
 
   skip_on_ci()
@@ -149,24 +173,26 @@ test_that("g_mmrm_lsmeans plots stats table for estimates as expected", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table with custom settings", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_object,
-    select = "estimates",
-    table_stats = c("n", "estimate", "ci", "se"),
-    table_formats = c(
-      n = "xx.xx",
-      estimate = "xx.xxxx",
-      se = "xx.",
-      ci = "(xx.xxxx, xx.xxxx)"
-    ),
-    table_labels = c(
-      n = "N",
-      estimate = "mean",
-      se = "SE",
-      ci = "CI"
-    ),
-    table_font_size = 2,
-    table_rel_height = 1
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_object,
+      select = "estimates",
+      table_stats = c("n", "estimate", "ci", "se"),
+      table_formats = c(
+        n = "xx.xx",
+        estimate = "xx.xxxx",
+        se = "xx.",
+        ci = "(xx.xxxx, xx.xxxx)"
+      ),
+      table_labels = c(
+        n = "N",
+        estimate = "mean",
+        se = "SE",
+        ci = "CI"
+      ),
+      table_font_size = 2,
+      table_rel_height = 1
+    )
   )
 
   skip_on_ci()
@@ -174,10 +200,12 @@ test_that("g_mmrm_lsmeans plots estimates stats table with custom settings", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also without arms", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_no_arms_object,
-    select = "estimates",
-    table_stats = c("n", "se")
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_no_arms_object,
+      select = "estimates",
+      table_stats = c("n", "se")
+    )
   )
 
   skip_on_ci()
@@ -185,12 +213,14 @@ test_that("g_mmrm_lsmeans plots estimates stats table also without arms", {
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_object,
-    select = "estimates",
-    table_stats = c("n", "se"),
-    constant_baseline = c(BSL = 1),
-    n_baseline = c(TRT = 101L, PBO = 100L)
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_object,
+      select = "estimates",
+      table_stats = c("n", "se"),
+      constant_baseline = c(BSL = 1),
+      n_baseline = c(TRT = 101L, PBO = 100L)
+    )
   )
 
   skip_on_ci()
@@ -198,12 +228,14 @@ test_that("g_mmrm_lsmeans plots estimates stats table also with constant baselin
 })
 
 test_that("g_mmrm_lsmeans plots estimates stats table also with constant baseline and without arms", {
-  result <- g_mmrm_lsmeans(
-    fit_mmrm_no_arms_object,
-    select = "estimates",
-    table_stats = c("n", "se"),
-    constant_baseline = c(BSL = 1),
-    n_baseline = 150L
+  expect_silent(
+    result <- g_mmrm_lsmeans(
+      fit_mmrm_no_arms_object,
+      select = "estimates",
+      table_stats = c("n", "se"),
+      constant_baseline = c(BSL = 1),
+      n_baseline = 150L
+    )
   )
 
   skip_on_ci()
