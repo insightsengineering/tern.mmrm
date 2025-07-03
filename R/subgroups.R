@@ -235,7 +235,6 @@ extract_mmrm_subgroups <- function(fit,
         },
         error = function(e) {
           message(paste(e, "\n"))
-          return(NULL)
         }
       )
       this_var_results[[this_group]] <- h_mmrm_subgroup_df(

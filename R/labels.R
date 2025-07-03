@@ -49,5 +49,5 @@ h_labels <- function(vars,
   if (h_is_specified("weights", vars)) {
     labels$weights <- h_check_and_get_label("weights", vars, data)
   }
-  return(labels)
+  labels
 }

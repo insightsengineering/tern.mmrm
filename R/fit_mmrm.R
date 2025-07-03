@@ -17,7 +17,7 @@ h_get_diagnostics <- function(fit) {
     AICc = stats::AIC(fit, corrected = TRUE),
     BIC = stats::BIC(fit)
   )
-  return(result)
+  result
 }
 
 #' `MMRM` Analysis
