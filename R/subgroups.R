@@ -235,7 +235,6 @@ extract_mmrm_subgroups <- function(fit,
         },
         error = function(e) {
           message(paste(e, "\n"))
-          return(NULL)
         }
       )
       this_var_results[[this_group]] <- h_mmrm_subgroup_df(
@@ -410,7 +409,8 @@ tabulate_mmrm_subgroups <- function(lyt,
       lyt = lyt_estimates,
       var = "row_type",
       split_fun = keep_split_levels("content"),
-      nested = FALSE
+      nested = FALSE,
+      parent_name = "estimates1"
     )
     lyt_estimates <- summarize_row_groups(
       lyt = lyt_estimates,
@@ -429,9 +429,10 @@ tabulate_mmrm_subgroups <- function(lyt,
         var = "row_type",
         split_fun = keep_split_levels("analysis"),
         nested = FALSE,
-        child_labels = "hidden"
+        child_labels = "hidden",
+        parent_name = "analysis"
       )
-      lyt_estimates <- split_rows_by(lyt = lyt_estimates, var = "var_label", nested = TRUE)
+      lyt_estimates <- split_rows_by(lyt = lyt_estimates, var = "var_label", nested = TRUE, parent_name = "estimates2")
       lyt_estimates <- analyze_colvars(
         lyt = lyt_estimates,
         afun = afun_lst[names(colvars_estimates$labels)],
@@ -449,7 +450,8 @@ tabulate_mmrm_subgroups <- function(lyt,
     lyt = lyt,
     var = "row_type",
     split_fun = keep_split_levels("content"),
-    nested = FALSE
+    nested = FALSE,
+    parent_name = "contrasts1"
   )
   lyt_contrasts <- summarize_row_groups(
     lyt = lyt_contrasts,
@@ -469,9 +471,10 @@ tabulate_mmrm_subgroups <- function(lyt,
       var = "row_type",
       split_fun = keep_split_levels("analysis"),
       nested = FALSE,
-      child_labels = "hidden"
+      child_labels = "hidden",
+      parent_name = "analysis"
     )
-    lyt_contrasts <- split_rows_by(lyt = lyt_contrasts, var = "var_label", nested = TRUE)
+    lyt_contrasts <- split_rows_by(lyt = lyt_contrasts, var = "var_label", nested = TRUE, parent_name = "contrasts2")
     lyt_contrasts <- analyze_colvars(
       lyt = lyt_contrasts,
       afun = afun_lst[names(colvars_contrasts$labels)],
