@@ -74,7 +74,6 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Collate:
     'utils.R'
     'assert_data.R'
@@ -87,3 +86,4 @@ Collate:
     'subgroups.R'
     'tabulate_mmrm.R'
     'tern.mmrm-package.R'
+Config/roxygen2/version: 8.0.0

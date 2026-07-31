@@ -65,11 +65,11 @@ df <- extract_mmrm_subgroups(
 )
 
 ## Table with default columns.
-basic_table() \%>\%
+basic_table() |>
   tabulate_mmrm_subgroups(df)
 
 ## Table with selected columns.
-tab <- basic_table() \%>\%
+tab <- basic_table() |>
   tabulate_mmrm_subgroups(
     df = df,
     vars = c("n_tot", "diff", "ci", "pval")

@@ -95,7 +95,7 @@ These functions can be used to produce tables from a fitted \code{MMRM} produced
 
 \item \code{h_mmrm_diagnostic()}: Helper function to produce a diagnostic statistics table.
 
-\item \code{tidy(tern_mmrm)}: Helper method (for \code{\link[broom:reexports]{broom::tidy()}}) to prepare a \code{data.frame} from an
+\item \code{tidy(tern_mmrm)}: Helper method (for \code{\link[broom:tidy]{broom::tidy()}}) to prepare a \code{data.frame} from an
 \code{tern_mmrm} object containing the least-squares means and contrasts.
 
 \item \code{s_mmrm_lsmeans()}: Statistics function which is extracting estimates from a tidied least-squares means
