@@ -5,8 +5,8 @@ to see their documentation.
 
 - generics:
 
-  [`tidy`](https://generics.r-lib.org/reference/tidy.html)
+  [`tidy()`](https://generics.r-lib.org/reference/tidy.html)
 
 - tern:
 
-  [`as.rtable`](https://rdrr.io/pkg/tern/man/as.rtable.html)
+  [`as.rtable()`](https://rdrr.io/pkg/tern/man/as.rtable.html)

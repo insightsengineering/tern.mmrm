@@ -134,8 +134,8 @@ or diagnostic statistics tables.
   statistics table.
 
 - `tidy(tern_mmrm)`: Helper method (for
-  [`broom::tidy()`](https://broom.tidymodels.org/reference/reexports.html))
-  to prepare a `data.frame` from an `tern_mmrm` object containing the
+  [`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)) to
+  prepare a `data.frame` from an `tern_mmrm` object containing the
   least-squares means and contrasts.
 
 - `s_mmrm_lsmeans()`: Statistics function which is extracting estimates

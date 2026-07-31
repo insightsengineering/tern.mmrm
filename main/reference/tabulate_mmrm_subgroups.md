@@ -83,7 +83,7 @@ df <- extract_mmrm_subgroups(
 )
 
 ## Table with default columns.
-basic_table() %>%
+basic_table() |>
   tabulate_mmrm_subgroups(df)
 #>                                            PBO         TRT                                   
 #> Baseline Risk Factors         Total n   n    Mean   n    Mean   Mean Difference     95% CI   
@@ -98,7 +98,7 @@ basic_table() %>%
 #>   Female                        71      36   44.2   35   46.4         2.2         (-1.0, 5.3)
 
 ## Table with selected columns.
-tab <- basic_table() %>%
+tab <- basic_table() |>
   tabulate_mmrm_subgroups(
     df = df,
     vars = c("n_tot", "diff", "ci", "pval")

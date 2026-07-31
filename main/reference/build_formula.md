@@ -46,8 +46,8 @@ vars <- list(
 )
 build_formula(vars, "auto-regressive")
 #> AVAL ~ RACE + SEX + ARMCD * AVISIT + ar1(AVISIT | USUBJID)
-#> <environment: 0x55998e4d24c8>
+#> <environment: 0x5623624a96c0>
 build_formula(vars)
 #> AVAL ~ RACE + SEX + ARMCD * AVISIT + us(AVISIT | USUBJID)
-#> <environment: 0x55998e5183f8>
+#> <environment: 0x5623624ef698>
 ```
