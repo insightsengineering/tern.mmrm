@@ -11,7 +11,6 @@
 #' @importFrom cowplot add_sub
 #' @importFrom dplyr across
 #' @importFrom lifecycle deprecated
-#' @importFrom magrittr %>%
 #' @importFrom mmrm df_1d
 #' @importFrom parallelly as.cluster
 #' @importFrom rlang .data :=

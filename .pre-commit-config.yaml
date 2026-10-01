@@ -24,7 +24,6 @@ repos:
         - generics
         - ggplot2
         - lifecycle
-        - magrittr
         - mmrm
         - parallelly
         - rlang

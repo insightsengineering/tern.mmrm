@@ -27,11 +27,14 @@ importFrom(cowplot,add_sub)
 importFrom(dplyr,across)
 importFrom(generics,tidy)
 importFrom(lifecycle,deprecated)
-importFrom(magrittr,"%>%")
 importFrom(mmrm,df_1d)
 importFrom(parallelly,as.cluster)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  ":=",
+  .data
+)
 importFrom(stats,model.frame)
-importFrom(tern,as.rtable)
-importFrom(tern,f_conf_level)
+importFrom(tern,
+  as.rtable,
+  f_conf_level
+)

@@ -71,10 +71,10 @@ test_that("h_get_emmeans_res works as expected", {
 
   datfull <- na.omit(fit$data)
   assert_true(identical(nrow(datfull), length(fit$tmb_data$y_vector)))
-  ns <- datfull %>%
-    dplyr::group_by(ARMCD, AVISIT) %>%
+  ns <- datfull |>
+    dplyr::group_by(ARMCD, AVISIT) |>
     dplyr::summarize(n_expected = dplyr::n())
-  compare_grid <- result$grid %>% dplyr::full_join(ns, by = dplyr::join_by(AVISIT, ARMCD))
+  compare_grid <- result$grid |> dplyr::full_join(ns, by = dplyr::join_by(AVISIT, ARMCD))
   expect_identical(compare_grid$n, compare_grid$n_expected)
 })
 

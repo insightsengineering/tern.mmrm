@@ -158,7 +158,7 @@ test_that("tabulate_mmrm_subgroups works as expected", {
   )
 
   expect_silent(
-    tab <- basic_table() %>%
+    tab <- basic_table() |>
       tabulate_mmrm_subgroups(df)
   )
   tab_matrix <- to_string_matrix(tab, with_spaces = FALSE)
@@ -179,7 +179,7 @@ test_that("tabulate_mmrm_subgroups with custom settings works as expected", {
   )
 
   expect_silent(
-    tab <- basic_table() %>%
+    tab <- basic_table() |>
       tabulate_mmrm_subgroups(
         df,
         vars = c("diff", "ci", "n_tot", "pval"),

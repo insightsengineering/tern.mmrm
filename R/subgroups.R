@@ -462,7 +462,7 @@ tabulate_mmrm_subgroups <- function(lyt,
     lyt = lyt_contrasts,
     vars = colvars_contrasts$vars,
     varlabels = colvars_contrasts$labels
-  ) %>%
+  ) |>
     append_topleft("Baseline Risk Factors")
 
   if ("analysis" %in% df$contrasts$row_type) {

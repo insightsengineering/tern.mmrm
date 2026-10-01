@@ -216,7 +216,7 @@ get_anl <- function() {
 }
 
 get_mmrm <- function() {
-  anl <- get_anl() %>%
+  anl <- get_anl() |>
     dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
@@ -236,7 +236,7 @@ get_mmrm <- function() {
 }
 
 get_mmrm_no_arm <- function() {
-  anl <- get_anl() %>%
+  anl <- get_anl() |>
     dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
@@ -357,9 +357,9 @@ test_that("s_mmrm_lsmeans_single works as expected", {
 test_that("summarize_lsmeans works as expected", {
   mmrm <- get_mmrm()
   df <- broom::tidy(mmrm)
-  result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = mmrm$ref_level) %>%
-    split_rows_by("AVISIT") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM", ref_group = mmrm$ref_level) |>
+    split_rows_by("AVISIT") |>
     summarize_lsmeans(
       show_relative = "increase",
       .formats = c(
@@ -371,7 +371,7 @@ test_that("summarize_lsmeans works as expected", {
         change = "xx.%",
         p_value = "xx.xx"
       )
-    ) %>%
+    ) |>
     build_table(df)
   expect_snapshot(result)
 })
@@ -379,8 +379,8 @@ test_that("summarize_lsmeans works as expected", {
 test_that("summarize_lsmeans works as expected when treatment is not considered in the model", {
   mmrm <- get_mmrm_no_arm()
   df <- broom::tidy(mmrm)
-  result <- basic_table() %>%
-    split_rows_by("AVISIT") %>%
+  result <- basic_table() |>
+    split_rows_by("AVISIT") |>
     summarize_lsmeans(
       arms = FALSE,
       .formats = c(
@@ -388,13 +388,13 @@ test_that("summarize_lsmeans works as expected when treatment is not considered 
         adj_mean_se = sprintf_format("%.1f (%.1f)"),
         adj_mean_ci = "(xx.x, xx.x)"
       )
-    ) %>%
+    ) |>
     build_table(df)
   expect_snapshot(result)
 })
 
 test_that("summarize_lsmeans works with averages of visits as expected", {
-  anl <- get_anl() %>%
+  anl <- get_anl() |>
     dplyr::mutate(
       ARM = factor(ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination")),
       AVISIT = factor(AVISIT)
@@ -417,9 +417,9 @@ test_that("summarize_lsmeans works with averages of visits as expected", {
   )
 
   df <- broom::tidy(mmrm)
-  result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = mmrm$ref_level) %>%
-    split_rows_by("AVISIT") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM", ref_group = mmrm$ref_level) |>
+    split_rows_by("AVISIT") |>
     summarize_lsmeans(
       .formats = c(
         n = "xx.",
@@ -430,7 +430,7 @@ test_that("summarize_lsmeans works with averages of visits as expected", {
         change = "xx.%",
         p_value = "xx.xx"
       )
-    ) %>%
+    ) |>
     build_table(df)
   expect_snapshot(result)
 })

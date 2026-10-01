@@ -176,7 +176,7 @@ test_that("h_assert_data works with interaction terms in `covariates`", {
 
 test_that("h_assert_data works when there are missing values", {
   set.seed(123)
-  data <- mmrm_test_data %>%
+  data <- mmrm_test_data |>
     dplyr::mutate(
       # Introduce extra missing response variable values.
       FEV1 = ifelse(
