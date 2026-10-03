@@ -5,8 +5,17 @@ template:
   package: nesttemplate
 
 navbar:
-  right:
-    - icon: fa-github
+  structure:
+    left: [intro, reference, articles, news, reports]
+    right: [search, github]
+  components:
+    reports:
+      text: Reports
+      menu:
+      - text: Validation report
+        href: https://pharmar.github.io/pharmapkgs/src/contrib/Meta/validation_report_tern.mmrm_v0.3.3.html
+    github:
+      icon: fa-github
       href: https://github.com/insightsengineering/tern.mmrm
 
 reference:

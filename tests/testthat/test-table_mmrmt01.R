@@ -19,10 +19,10 @@ mmrm_results <- fit_mmrm(
 
 testthat::test_that("LS means table is produced correctly", {
   df <- broom::tidy(mmrm_results)
-  result <- basic_table() %>%
-    split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) %>%
-    add_colcounts() %>%
-    split_rows_by("AVISIT") %>%
+  result <- basic_table() |>
+    split_cols_by("ARMCD", ref_group = mmrm_results$ref_level) |>
+    add_colcounts() |>
+    split_rows_by("AVISIT") |>
     summarize_lsmeans(
       show_relative = "increase",
       # Note: We are using less precise formats here to avoid spurious differences
@@ -36,7 +36,7 @@ testthat::test_that("LS means table is produced correctly", {
         change = "xx.%",
         p_value = "xx.xx"
       )
-    ) %>%
+    ) |>
     build_table(df, alt_counts_df = mmrm_test_data)
   expect_snapshot(result)
 })

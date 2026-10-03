@@ -147,26 +147,26 @@ s_mmrm_lsmeans(df[8, ], .in_ref_col = FALSE)
 s_mmrm_lsmeans_single(df_no_arm[4, ])
 library(dplyr)
 
-dat_adsl <- mmrm_test_data \%>\%
-  select(USUBJID, ARMCD) \%>\%
+dat_adsl <- mmrm_test_data |>
+  select(USUBJID, ARMCD) |>
   unique()
-basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = result$ref_level) \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("AVISIT") \%>\%
+basic_table() |>
+  split_cols_by("ARMCD", ref_group = result$ref_level) |>
+  add_colcounts() |>
+  split_rows_by("AVISIT") |>
   summarize_lsmeans(
     .stats = c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci"),
     .labels = c(adj_mean_se = "Adj. LS Mean (Std. Error)"),
     .formats = c(adj_mean_se = sprintf_format("\%.1f (\%.2f)"))
-  ) \%>\%
+  ) |>
   build_table(
     df = broom::tidy(result),
     alt_counts_df = dat_adsl
   )
 
-basic_table() \%>\%
-  split_rows_by("AVISIT") \%>\%
-  summarize_lsmeans(arms = FALSE) \%>\%
+basic_table() |>
+  split_rows_by("AVISIT") |>
+  summarize_lsmeans(arms = FALSE) |>
   build_table(
     df = broom::tidy(result_no_arm),
     alt_counts_df = dat_adsl

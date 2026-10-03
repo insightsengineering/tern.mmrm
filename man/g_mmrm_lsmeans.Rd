@@ -126,7 +126,7 @@ g_mmrm_lsmeans(
   width = 0.8
 )
 
-mmrm_test_data2 <- mmrm_test_data \%>\%
+mmrm_test_data2 <- mmrm_test_data |>
   filter(ARMCD == "TRT")
 
 mmrm_results_no_arm <- fit_mmrm(

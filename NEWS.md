@@ -1,4 +1,9 @@
-# tern.mmrm 0.3.3.9002
+# tern.mmrm 0.3.4
+
+### Miscellaneous
+
+* `rtables` upversioning.
+* Replaced the `magrittr` pipe (`%>%`) with the native R pipe (`|>`) throughout, and removed the `magrittr` dependency. The package now requires R >= 4.1.
 
 # tern.mmrm 0.3.3
 

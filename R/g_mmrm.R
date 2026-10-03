@@ -102,7 +102,7 @@ g_mmrm_diagnostic <- function(object,
     amended_data$.scaled_resids <- stats::residuals(model, type = "pearson")
 
     # For each visit, calculate x and y coordinates of the specific Q-Q-plot.
-    plot_data <- split(amended_data, amended_data[[vars$visit]]) %>%
+    plot_data <- split(amended_data, amended_data[[vars$visit]]) |>
       lapply(function(data) {
         res <- data.frame(
           x = stats::qnorm(stats::ppoints(data$.scaled_resids)),
@@ -110,8 +110,8 @@ g_mmrm_diagnostic <- function(object,
         )
         res[[vars$visit]] <- data[[vars$visit]] # Note that these are all the same.
         res
-      }) %>%
-      do.call(what = rbind)
+      }) |>
+      (\(x) do.call(rbind, x))()
     tmp <- ggplot2::ggplot(plot_data, ggplot2::aes(x = .data$x, y = .data$y)) +
       ggplot2::geom_point(colour = "blue", alpha = 0.3) +
       ggplot2::xlab("Standard normal quantiles") +
@@ -222,7 +222,7 @@ g_mmrm_diagnostic <- function(object,
 #'   width = 0.8
 #' )
 #'
-#' mmrm_test_data2 <- mmrm_test_data %>%
+#' mmrm_test_data2 <- mmrm_test_data |>
 #'   filter(ARMCD == "TRT")
 #'
 #' mmrm_results_no_arm <- fit_mmrm(
@@ -505,7 +505,7 @@ g_mmrm_lsmeans <-
 
       stats_lev <- rev(setdiff(colnames(est_stats_tab), strata_vars))
 
-      est_stats_tab <- est_stats_tab %>%
+      est_stats_tab <- est_stats_tab |>
         tidyr::pivot_longer(
           cols = -dplyr::all_of(strata_vars),
           names_to = "stat",
