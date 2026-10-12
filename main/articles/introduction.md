@@ -163,38 +163,35 @@ may indicate chronic obstructive pulmonary disease (`COPD`). The
 scientific question at hand is whether treatment leads to an increase in
 `FEV1` over time after adjusting for baseline covariates.
 
-``` r
-
-library(tern.mmrm)
-#> Loading required package: tern
-#> Loading required package: rtables
-#> Loading required package: formatters
-#> 
-#> Attaching package: 'formatters'
-#> The following object is masked from 'package:base':
-#> 
-#>     %||%
-#> Loading required package: magrittr
-#> 
-#> Attaching package: 'rtables'
-#> The following object is masked from 'package:utils':
-#> 
-#>     str
-#> Registered S3 method overwritten by 'tern':
-#>   method   from 
-#>   tidy.glm broom
-data(mmrm_test_data)
-head(mmrm_test_data)
-#> # A tibble: 6 × 7
-#>   USUBJID AVISIT ARMCD RACE                      SEX    FEV1_BL  FEV1
-#>   <fct>   <fct>  <fct> <fct>                     <fct>    <dbl> <dbl>
-#> 1 PT1     VIS1   TRT   Black or African American Female    25.3  NA  
-#> 2 PT1     VIS2   TRT   Black or African American Female    25.3  40.0
-#> 3 PT1     VIS3   TRT   Black or African American Female    25.3  NA  
-#> 4 PT1     VIS4   TRT   Black or African American Female    25.3  20.5
-#> 5 PT2     VIS1   PBO   Asian                     Male      45.0  NA  
-#> 6 PT2     VIS2   PBO   Asian                     Male      45.0  31.5
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tern.mmrm`](https://github.com/insightsengineering/tern.mmrm)`)`\
+`#> Loading required package: tern`\
+`#> Loading required package: rtables`\
+`#> Loading required package: formatters`\
+`#> `\
+`#> Attaching package: 'formatters'`\
+`#> The following object is masked from 'package:base':`\
+`#> `\
+`#>     %||%`\
+`#> `\
+`#> Attaching package: 'rtables'`\
+`#> The following object is masked from 'package:utils':`\
+`#> `\
+`#>     str`\
+`#> Registered S3 method overwritten by 'tern':`\
+`#>   method   from `\
+`#>   tidy.glm broom`\
+[`data`](https://rdrr.io/r/utils/data.html)`(``mmrm_test_data``)`\
+[`head`](https://rdrr.io/r/utils/head.html)`(``mmrm_test_data``)`\
+`#> ``# A tibble: 6 × 7`\
+`#>   USUBJID AVISIT ARMCD RACE                      SEX    FEV1_BL  FEV1`\
+`#>   ``<fct>``   ``<fct>``  ``<fct>`` ``<fct>``                     ``<fct>``    ``<dbl>`` ``<dbl>`\
+`#> ``1`` PT1     VIS1   TRT   Black or African American Female    25.3  ``NA``  `\
+`#> ``2`` PT1     VIS2   TRT   Black or African American Female    25.3  40.0`\
+`#> ``3`` PT1     VIS3   TRT   Black or African American Female    25.3  ``NA``  `\
+`#> ``4`` PT1     VIS4   TRT   Black or African American Female    25.3  20.5`\
+`#> ``5`` PT2     VIS1   PBO   Asian                     Male      45.0  ``NA``  `\
+`#> ``6`` PT2     VIS2   PBO   Asian                     Male      45.0  31.5`
 
 ### Model fitting via `tern.mmrm`
 
@@ -202,21 +199,19 @@ Fitting MMRM is easy in `tern.mmrm`. By default, the model fitting
 function `fit_mmrm` assumes unstructured correlation and proportional
 weights when calculating LS means.
 
-``` r
-
-mmrm_results <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("RACE", "SEX", "FEV1_BL"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "proportional"
-)
-```
+\
+`mmrm_results`` ``<-`` `[`fit_mmrm`](https://insightsengineering.github.io/tern.mmrm/reference/fit_mmrm.md)`(`\
+`  vars ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
+`    response ``=`` ``"FEV1"``,`\
+`    covariates ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"RACE"``, ``"SEX"``, ``"FEV1_BL"``)``,`\
+`    id ``=`` ``"USUBJID"``,`\
+`    arm ``=`` ``"ARMCD"``,`\
+`    visit ``=`` ``"AVISIT"`\
+`  ``)``,`\
+`  data ``=`` ``mmrm_test_data``,`\
+`  cor_struct ``=`` ``"unstructured"``,`\
+`  weights_emmeans ``=`` ``"proportional"`\
+`)`
 
 The resulting object consists among other things the estimated random
 and fixed effects (`fit`), the estimated LS means for a particular
@@ -225,20 +220,18 @@ means at a particular visit (`lsmeans$contrasts`). Based on the output,
 there is evidence that supports treatment leading to an increase in
 `FEV1` over placebo at all study visits.
 
-``` r
-
-mmrm_results$lsmeans$contrasts
-#>   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat
-#> 1   TRT   VIS1 3.983290 1.0454036 142.3210 1.916765 6.049815 3.810289
-#> 2   TRT   VIS2 3.930758 0.8135131 142.2576 2.322622 5.538895 4.831831
-#> 3   TRT   VIS3 2.983718 0.6656674 129.6093 1.666737 4.300699 4.482295
-#> 4   TRT   VIS4 4.404001 1.6604869 132.8789 1.119595 7.688407 2.652235
-#>        p_value relative_reduc
-#> 1 2.058960e-04    -0.12101832
-#> 2 3.460313e-06    -0.10424997
-#> 3 1.606280e-05    -0.06893864
-#> 4 8.969722e-03    -0.09154581
-```
+\
+`mmrm_results``$``lsmeans``$``contrasts`\
+`#>   ARMCD AVISIT estimate        se       df lower_cl upper_cl   t_stat`\
+`#> 1   TRT   VIS1 3.983290 1.0454036 142.3210 1.916765 6.049815 3.810289`\
+`#> 2   TRT   VIS2 3.930758 0.8135131 142.2576 2.322622 5.538895 4.831831`\
+`#> 3   TRT   VIS3 2.983718 0.6656674 129.6093 1.666737 4.300699 4.482295`\
+`#> 4   TRT   VIS4 4.404001 1.6604869 132.8789 1.119595 7.688407 2.652235`\
+`#>        p_value relative_reduc`\
+`#> 1 2.058960e-04    -0.12101832`\
+`#> 2 3.460313e-06    -0.10424997`\
+`#> 3 1.606280e-05    -0.06893864`\
+`#> 4 8.969722e-03    -0.09154581`
 
 Other correlation structures and weighting schemes can be considered.
 
@@ -247,67 +240,65 @@ Other correlation structures and weighting schemes can be considered.
 One can reproduce these results manually in R. For example, to fit the
 unstructured model:
 
-``` r
-
-library(mmrm)
-#> 
-#> Attaching package: 'mmrm'
-#> The following object is masked from 'package:tern.mmrm':
-#> 
-#>     fit_mmrm
-library(emmeans)
-#> Welcome to emmeans.
-#> Caution: You lose important information if you filter this package's results.
-#> See '? untidy'
-
-fit <- mmrm(
-  formula = FEV1 ~ RACE + SEX + FEV1_BL + ARMCD * AVISIT + us(AVISIT | USUBJID),
-  data = mmrm_test_data
-)
-emmeans::emmeans(fit, pairwise ~ ARMCD | AVISIT, weights = "proportional")
-#> $emmeans
-#> AVISIT = VIS1:
-#>  ARMCD emmean    SE  df lower.CL upper.CL
-#>  PBO     32.9 0.732 141     31.5     34.4
-#>  TRT     36.9 0.743 141     35.4     38.4
-#> 
-#> AVISIT = VIS2:
-#>  ARMCD emmean    SE  df lower.CL upper.CL
-#>  PBO     37.7 0.576 142     36.6     38.8
-#>  TRT     41.6 0.570 140     40.5     42.8
-#> 
-#> AVISIT = VIS3:
-#>  ARMCD emmean    SE  df lower.CL upper.CL
-#>  PBO     43.3 0.441 127     42.4     44.2
-#>  TRT     46.3 0.494 130     45.3     47.2
-#> 
-#> AVISIT = VIS4:
-#>  ARMCD emmean    SE  df lower.CL upper.CL
-#>  PBO     48.1 1.170 133     45.8     50.4
-#>  TRT     52.5 1.170 133     50.2     54.8
-#> 
-#> Results are averaged over the levels of: RACE, SEX 
-#> Confidence level used: 0.95 
-#> 
-#> $contrasts
-#> AVISIT = VIS1:
-#>  contrast  estimate    SE  df t.ratio p.value
-#>  PBO - TRT    -3.98 1.050 142  -3.810  0.0002
-#> 
-#> AVISIT = VIS2:
-#>  contrast  estimate    SE  df t.ratio p.value
-#>  PBO - TRT    -3.93 0.814 142  -4.832 <0.0001
-#> 
-#> AVISIT = VIS3:
-#>  contrast  estimate    SE  df t.ratio p.value
-#>  PBO - TRT    -2.98 0.666 130  -4.482 <0.0001
-#> 
-#> AVISIT = VIS4:
-#>  contrast  estimate    SE  df t.ratio p.value
-#>  PBO - TRT    -4.40 1.660 133  -2.652  0.0090
-#> 
-#> Results are averaged over the levels of: RACE, SEX
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`mmrm`](https://openpharma.github.io/mmrm/)`)`\
+`#> `\
+`#> Attaching package: 'mmrm'`\
+`#> The following object is masked from 'package:tern.mmrm':`\
+`#> `\
+`#>     fit_mmrm`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`emmeans`](https://rvlenth.github.io/emmeans/)`)`\
+`#> Welcome to emmeans.`\
+`#> Caution: You lose important information if you filter this package's results.`\
+`#> See '? untidy'`\
+\
+`fit`` ``<-`` `[`mmrm`](https://openpharma.github.io/mmrm/latest-tag/reference/mmrm.html)`(`\
+`  formula ``=`` ``FEV1`` ``~`` ``RACE`` ``+`` ``SEX`` ``+`` ``FEV1_BL`` ``+`` ``ARMCD`` ``*`` ``AVISIT`` ``+`` ``us``(``AVISIT`` ``|`` ``USUBJID``)``,`\
+`  data ``=`` ``mmrm_test_data`\
+`)`\
+`emmeans``::`[`emmeans`](https://rvlenth.github.io/emmeans/reference/emmeans.html)`(``fit``, ``pairwise`` ``~`` ``ARMCD`` ``|`` ``AVISIT``, weights ``=`` ``"proportional"``)`\
+`#> $emmeans`\
+`#> AVISIT = VIS1:`\
+`#>  ARMCD emmean    SE  df lower.CL upper.CL`\
+`#>  PBO     32.9 0.732 141     31.5     34.4`\
+`#>  TRT     36.9 0.743 141     35.4     38.4`\
+`#> `\
+`#> AVISIT = VIS2:`\
+`#>  ARMCD emmean    SE  df lower.CL upper.CL`\
+`#>  PBO     37.7 0.576 142     36.6     38.8`\
+`#>  TRT     41.6 0.570 140     40.5     42.8`\
+`#> `\
+`#> AVISIT = VIS3:`\
+`#>  ARMCD emmean    SE  df lower.CL upper.CL`\
+`#>  PBO     43.3 0.441 127     42.4     44.2`\
+`#>  TRT     46.3 0.494 130     45.3     47.2`\
+`#> `\
+`#> AVISIT = VIS4:`\
+`#>  ARMCD emmean    SE  df lower.CL upper.CL`\
+`#>  PBO     48.1 1.170 133     45.8     50.4`\
+`#>  TRT     52.5 1.170 133     50.2     54.8`\
+`#> `\
+`#> Results are averaged over the levels of: RACE, SEX `\
+`#> Confidence level used: 0.95 `\
+`#> `\
+`#> $contrasts`\
+`#> AVISIT = VIS1:`\
+`#>  contrast  estimate    SE  df t.ratio p.value`\
+`#>  PBO - TRT    -3.98 1.050 142  -3.810  0.0002`\
+`#> `\
+`#> AVISIT = VIS2:`\
+`#>  contrast  estimate    SE  df t.ratio p.value`\
+`#>  PBO - TRT    -3.93 0.814 142  -4.832 <0.0001`\
+`#> `\
+`#> AVISIT = VIS3:`\
+`#>  contrast  estimate    SE  df t.ratio p.value`\
+`#>  PBO - TRT    -2.98 0.666 130  -4.482 <0.0001`\
+`#> `\
+`#> AVISIT = VIS4:`\
+`#>  contrast  estimate    SE  df t.ratio p.value`\
+`#>  PBO - TRT    -4.40 1.660 133  -2.652  0.0090`\
+`#> `\
+`#> Results are averaged over the levels of: RACE, SEX`
 
 Compared to manual implementation, `tern.mmrm` users can avoid
 specifying the `formula` manually. Note also that `tern.mmrm` has a
@@ -319,7 +310,7 @@ other optimizers, delivering results should there be a consensus.
 
 For the unstructured model, the equivalent `SAS` code is given by
 
-``` sas
+```
 proc import datafile="location_of_data.csv"
      out=dat
      dbms=csv
@@ -344,21 +335,19 @@ desire is to select a parsimonious model that adequately fits the data.
 We provide four of the same information criteria as found in `SAS`
 `PROC MIXED`.
 
-``` r
-
-mmrm_results$diagnostics
-#> $`REML criterion`
-#> [1] 3361.379
-#> 
-#> $AIC
-#> [1] 3381.379
-#> 
-#> $AICc
-#> [1] 3381.807
-#> 
-#> $BIC
-#> [1] 3414.211
-```
+\
+`mmrm_results``$``diagnostics`\
+`` #> $`REML criterion` ``\
+`#> [1] 3361.379`\
+`#> `\
+`#> $AIC`\
+`#> [1] 3381.379`\
+`#> `\
+`#> $AICc`\
+`#> [1] 3381.807`\
+`#> `\
+`#> $BIC`\
+`#> [1] 3414.211`
 
 Each criterion is specifically calculated as follows:
 

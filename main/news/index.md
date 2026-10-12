@@ -1,6 +1,13 @@
 # Changelog
 
-## tern.mmrm 0.3.3.9002
+## tern.mmrm 0.3.4.9000
+
+#### Miscellaneous
+
+- `rtables` upversioning.
+- Replaced the `magrittr` pipe (`%>%`) with the native R pipe (`|>`)
+  throughout, and removed the `magrittr` dependency. The package now
+  requires R \>= 4.1.
 
 ## tern.mmrm 0.3.3
 
@@ -10,7 +17,7 @@ CRAN release: 2025-07-04
 
 - Created additional tests for plot functions.
 - Added `parent_name` parameter to internal
-  [`rtables::split_rows_by()`](https://rdrr.io/pkg/rtables/man/split_rows_by.html)
+  [`rtables::split_rows_by()`](https://insightsengineering.github.io/rtables/latest-tag/reference/split_rows_by.html)
   calls to ensure uniqueness of row names, due to upstream `rtables`
   enhancements.
 

@@ -36,9 +36,9 @@ Issues](https://img.shields.io/github/issues-raw/insightsengineering/tern.mmrm?c
 `tern.mmrm` provides an interface for mixed model repeated measures
 (MMRM) within the [`tern`](https://insightsengineering.github.io/tern/)
 framework to produce commonly used tables (using
-[`rtables`](https://insightsengineering.github.io/rtables/) and graphs.
-It builds on the R-package [`mmrm`](https://openpharma.github.io/mmrm/)
-for the actual MMRM calculations.
+[`rtables`](https://pharmaverse.github.io/rtables/)) and graphs. It
+builds on the R-package [`mmrm`](https://openpharma.github.io/mmrm/) for
+the actual MMRM calculations.
 
 ## When to use this package
 
@@ -66,43 +66,37 @@ the tabulation and plots differently.
 `tern.mmrm` is available on CRAN and you can install the latest released
 version with:
 
-``` r
-
-install.packages("tern.mmrm")
-```
+\
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"tern.mmrm"``)`
 
 or you can install the latest development version directly from GitHub
 by running the following:
 
-``` r
-
-# install.packages("pak")
-pak::pak("insightsengineering/tern.mmrm")
-```
+\
+`# install.packages("pak")`\
+`pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"insightsengineering/tern.mmrm"``)`
 
 ## Getting started
 
 You can get started by trying out the example:
 
-``` r
-
-library(tern.mmrm)
-fit <- fit_mmrm(
-  vars = list(
-    response = "FEV1",
-    covariates = c("RACE", "SEX"),
-    id = "USUBJID",
-    arm = "ARMCD",
-    visit = "AVISIT"
-  ),
-  data = mmrm_test_data,
-  cor_struct = "unstructured",
-  weights_emmeans = "equal",
-  averages_emmeans = list(
-    "VIS1+2" = c("VIS1", "VIS2")
-  )
-)
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tern.mmrm`](https://github.com/insightsengineering/tern.mmrm)`)`\
+`fit`` ``<-`` `[`fit_mmrm`](https://insightsengineering.github.io/tern.mmrm/reference/fit_mmrm.md)`(`\
+`  vars ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
+`    response ``=`` ``"FEV1"``,`\
+`    covariates ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"RACE"``, ``"SEX"``)``,`\
+`    id ``=`` ``"USUBJID"``,`\
+`    arm ``=`` ``"ARMCD"``,`\
+`    visit ``=`` ``"AVISIT"`\
+`  ``)``,`\
+`  data ``=`` ``mmrm_test_data``,`\
+`  cor_struct ``=`` ``"unstructured"``,`\
+`  weights_emmeans ``=`` ``"equal"``,`\
+`  averages_emmeans ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
+`    ``"VIS1+2"`` ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"VIS1"``, ``"VIS2"``)`\
+`  ``)`\
+`)`
 
 This specifies an MMRM with the `FEV1` outcome and the `RACE` and `SEX`
 covariates for subjects identified by `USUBJID` and treatment arm
@@ -118,10 +112,8 @@ addition to the single visit specific results an average across visits
 For a more detailed introduction to all of the features of this package,
 look at the introduction vignette:
 
-``` r
-
-vignette("introduction")
-```
+\
+[`vignette`](https://rdrr.io/r/utils/vignette.html)`(``"introduction"``)`
 
 ## Stargazers
 

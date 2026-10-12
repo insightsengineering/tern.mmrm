@@ -124,7 +124,7 @@ or diagnostic statistics tables.
 ## Functions
 
 - `as.rtable(tern_mmrm)`: Produce simple `MMRM` tables via the generic
-  [`as.rtable()`](https://rdrr.io/pkg/tern/man/as.rtable.html).
+  [`as.rtable()`](https://pharmaverse.github.io/tern/latest-tag/reference/as.rtable.html).
 
 - `h_mmrm_fixed()`: Helper function to produce fixed effects table.
 
@@ -143,9 +143,9 @@ or diagnostic statistics tables.
 
 - `a_mmrm_lsmeans()`: Formatted Analysis function which can be further
   customized by calling
-  [`rtables::make_afun()`](https://rdrr.io/pkg/rtables/man/make_afun.html)
+  [`rtables::make_afun()`](https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html)
   on it. It is used as `afun` in
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `s_mmrm_lsmeans_single()`: Statistics function which is extracting
   estimates from a tidied least-squares means data frame when `ARM` is
@@ -154,9 +154,9 @@ or diagnostic statistics tables.
 - `a_mmrm_lsmeans_single()`: Formatted Analysis function (when `ARM` is
   not considered in the model) which can be further customized by
   calling
-  [`rtables::make_afun()`](https://rdrr.io/pkg/rtables/man/make_afun.html)
+  [`rtables::make_afun()`](https://insightsengineering.github.io/rtables/latest-tag/reference/make_afun.html)
   on it. It is used as `afun` in
-  [`rtables::analyze()`](https://rdrr.io/pkg/rtables/man/analyze.html).
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
 
 - `summarize_lsmeans()`: Analyze function for tabulating least-squares
   means estimates from tidied `mmrm` results.
@@ -246,18 +246,18 @@ s_mmrm_lsmeans_single(df_no_arm[4, ])
 #> 
 library(dplyr)
 
-dat_adsl <- mmrm_test_data %>%
-  select(USUBJID, ARMCD) %>%
+dat_adsl <- mmrm_test_data |>
+  select(USUBJID, ARMCD) |>
   unique()
-basic_table() %>%
-  split_cols_by("ARMCD", ref_group = result$ref_level) %>%
-  add_colcounts() %>%
-  split_rows_by("AVISIT") %>%
+basic_table() |>
+  split_cols_by("ARMCD", ref_group = result$ref_level) |>
+  add_colcounts() |>
+  split_rows_by("AVISIT") |>
   summarize_lsmeans(
     .stats = c("n", "adj_mean_se", "adj_mean_ci", "diff_mean_se", "diff_mean_ci"),
     .labels = c(adj_mean_se = "Adj. LS Mean (Std. Error)"),
     .formats = c(adj_mean_se = sprintf_format("%.1f (%.2f)"))
-  ) %>%
+  ) |>
   build_table(
     df = broom::tidy(result),
     alt_counts_df = dat_adsl
@@ -290,9 +290,9 @@ basic_table() %>%
 #>   Difference in Adjusted Means (SE)                       4.398 (1.681)  
 #>   95% CI                                                  (1.074, 7.722) 
 
-basic_table() %>%
-  split_rows_by("AVISIT") %>%
-  summarize_lsmeans(arms = FALSE) %>%
+basic_table() |>
+  split_rows_by("AVISIT") |>
+  summarize_lsmeans(arms = FALSE) |>
   build_table(
     df = broom::tidy(result_no_arm),
     alt_counts_df = dat_adsl

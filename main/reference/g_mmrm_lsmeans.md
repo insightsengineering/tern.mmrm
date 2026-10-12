@@ -191,7 +191,7 @@ g_mmrm_lsmeans(
 #> ℹ Adding new coordinate system, which will replace the existing one.
 
 
-mmrm_test_data2 <- mmrm_test_data %>%
+mmrm_test_data2 <- mmrm_test_data |>
   filter(ARMCD == "TRT")
 
 mmrm_results_no_arm <- fit_mmrm(
