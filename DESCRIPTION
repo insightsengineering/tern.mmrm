@@ -1,7 +1,7 @@
 Package: tern.mmrm
 Title: Tables and Graphs for Mixed Models for Repeated Measures (MMRM)
-Version: 0.3.4
-Date: 2026-10-01
+Version: 0.3.4.9000
+Date: 2026-10-12
 Authors@R: c(
     person("Daniel", "Sabanés Bové", , "daniel@rconis.com", role = "aut"),
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
@@ -63,11 +63,10 @@ VignetteBuilder:
 Config/Needs/verdepcheck: insightsengineering/tern, mllg/checkmate,
     wilkelab/cowplot, tidyverse/dplyr, rvlenth/emmeans,
     insightsengineering/formatters, r-lib/generics, tidyverse/ggplot2,
-    r-lib/lifecycle, openpharma/mmrm,
-    HenrikBengtsson/parallelly, r-lib/rlang, insightsengineering/rtables,
-    tidyverse/tidyr, tidymodels/broom, yihui/knitr, gdemin/maditr,
-    cran/Matrix, rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr,
-    r-lib/withr
+    r-lib/lifecycle, openpharma/mmrm, HenrikBengtsson/parallelly,
+    r-lib/rlang, insightsengineering/rtables, tidyverse/tidyr,
+    tidymodels/broom, yihui/knitr, gdemin/maditr, cran/Matrix,
+    rstudio/rmarkdown, r-lib/testthat, r-lib/vdiffr, r-lib/withr
 Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
 Encoding: UTF-8
